@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>RAB Pro</title>
+    <meta name="description" content="Aplikasi Web Rencana Anggaran Biaya (RAB) Profesional & Modern untuk Estimasi Proyek Konstruksi Indonesia" />
+    <meta property="og:title" content="RAB Pro" />
+    <meta property="og:description" content="Aplikasi Web Rencana Anggaran Biaya (RAB) Profesional & Modern untuk Estimasi Proyek Konstruksi Indonesia" />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#0f172a" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 100%;
+        background-color: #0f172a;
+        color: #f8fafc;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- PHASE 01: PRE-REACT HTML DIAGNOSTIC MARKER -->
+    <div id="pre-react-html-diagnostic" style="display:none;background:#1e293b;color:#38bdf8;padding:8px 16px;font-size:12px;font-weight:bold;border-bottom:1px solid #334155;">
+      RAB PRO BOOT TEST — HTML OK
+    </div>
+
+    <!-- PHASE 02: PRE-REACT JS DIAGNOSTIC MARKER -->
+    <div id="pre-react-js-diagnostic" style="display:none;background:#065f46;color:#34d399;padding:8px 16px;font-size:12px;font-weight:bold;border-bottom:1px solid #047857;">
+      RAB PRO BOOT TEST — JAVASCRIPT OK
+    </div>
+
+    <script>
+      try {
+        var htmlEl = document.getElementById('pre-react-html-diagnostic');
+        if (htmlEl) htmlEl.style.display = 'block';
+        var jsEl = document.getElementById('pre-react-js-diagnostic');
+        if (jsEl) jsEl.style.display = 'block';
+      } catch (e) {
+        console.warn('Pre-react diagnostic script error:', e);
+      }
+    </script>
+
+    <div id="root">
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:80vh;background:#0f172a;color:#f8fafc;text-align:center;padding:20px;">
+        <div style="width:48px;height:48px;border:3px solid rgba(59,130,246,0.2);border-top-color:#3b82f6;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:16px;"></div>
+        <h2 style="margin:0 0 8px 0;font-size:20px;font-weight:700;letter-spacing:-0.5px;">RAB Pro</h2>
+        <p style="margin:0;font-size:14px;color:#94a3b8;">Menyiapkan Sistem Estimasi Konstruksi...</p>
+      </div>
+      <style>
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      </style>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

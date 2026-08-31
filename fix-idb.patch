@@ -1,0 +1,27 @@
+--- src/db/indexedDBAdapter.ts
++++ src/db/indexedDBAdapter.ts
+@@ -19,8 +19,13 @@
+   private isAvailable: boolean = true;
+ 
+   constructor() {
+-    if (typeof window === 'undefined' || !window.indexedDB) {
++    if (typeof window === 'undefined') {
+       this.isAvailable = false;
++    } else {
++      try {
++        if (!window.indexedDB) this.isAvailable = false;
++      } catch (e) {
++        this.isAvailable = false;
++      }
+     }
+   }
+ 
+   public isSupported(): boolean {
+-    return this.isAvailable && typeof window !== 'undefined' && !!window.indexedDB;
++    if (!this.isAvailable || typeof window === 'undefined') return false;
++    try {
++      return !!window.indexedDB;
++    } catch (e) {
++      return false;
++    }
+   }

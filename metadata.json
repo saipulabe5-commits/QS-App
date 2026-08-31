@@ -1,0 +1,6 @@
+{
+  "name": "RAB Pro",
+  "description": "Aplikasi Web Rencana Anggaran Biaya (RAB) Profesional & Modern untuk Estimasi Proyek Konstruksi Indonesia",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
