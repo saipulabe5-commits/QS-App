@@ -1,35 +1,64 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import App from './App';
 import './index.css';
-import { ErrorBoundary } from './ErrorBoundary';
 import { diagnostics, renderEmergencyBootUI } from './runtime/BootShell';
 
 // STEP 1: INITIALIZE BOOT SEQUENCE
-diagnostics.log('BOOT_START', 'START', 'Memulai inisialisasi runtime bootstrap RAB Pro V10');
+diagnostics.log('BOOT_START', 'START', 'Memulai inisialisasi runtime bootstrap RAB Pro V12');
 
 const container = document.getElementById('root');
 
 if (!container) {
   diagnostics.log('ROOT_NOT_FOUND', 'FAILURE', 'Elemen #root tidak ditemukan pada dokumen');
 } else {
-  try {
+  // Dynamically load React and AppBootstrap
+  diagnostics.log('REACT_IMPORT_START', 'START', 'Memuat modul React dan pustaka dasar secara dinamis');
+  
+  Promise.all([
+    import('react'),
+    import('react-dom/client'),
+    import('./runtime/AppBootstrap')
+  ]).then(([React, ReactDOM, BootstrapModule]) => {
+    diagnostics.log('REACT_IMPORT_SUCCESS', 'SUCCESS', 'Pustaka dasar berhasil dimuat');
     diagnostics.log('REACT_MOUNT_START', 'START', 'Memasang React root pada DOM');
-    const root = createRoot(container);
-    root.render(
-      <StrictMode>
-        <ErrorBoundary>
-          <App />
-        </ErrorBoundary>
-      </StrictMode>,
-    );
-    diagnostics.log('REACT_MOUNT_SUCCESS', 'SUCCESS', 'Aplikasi RAB Pro V10 aktif terpasang');
-  } catch (bootError: any) {
-    diagnostics.log('APP_MOUNT_FAILURE', 'FAILURE', 'Kegagalan pemasangan modul utama', bootError);
+    
+    try {
+      const root = ReactDOM.createRoot(container);
+      const AppBootstrap = BootstrapModule.default;
+      
+      root.render(
+        React.createElement(AppBootstrap)
+      );
+      
+      diagnostics.log('REACT_MOUNT_SUCCESS', 'SUCCESS', 'Aplikasi RAB Pro V12 aktif terpasang');
+      
+      // Clear Blank Screen Watchdog
+      if (typeof window !== 'undefined' && (window as any).__rabBootTimeout) {
+        clearTimeout((window as any).__rabBootTimeout);
+      }
+      
+    } catch (renderError) {
+      diagnostics.log('REACT_MOUNT_FAILURE', 'FAILURE', 'Kegagalan saat proses render awal (createRoot)', renderError);
+      
+      // Clear Blank Screen Watchdog so our emergency UI isn't overwritten
+      if (typeof window !== 'undefined' && (window as any).__rabBootTimeout) {
+        clearTimeout((window as any).__rabBootTimeout);
+      }
+      
+      renderEmergencyBootUI(container, {
+        phase: 'REACT_MOUNT',
+        error: renderError,
+      });
+    }
+  }).catch((importError) => {
+    diagnostics.log('APP_IMPORT_FAILURE', 'FAILURE', 'Kegagalan pemuatan modul dinamis (import error)', importError);
+    
+    // Clear Blank Screen Watchdog
+    if (typeof window !== 'undefined' && (window as any).__rabBootTimeout) {
+      clearTimeout((window as any).__rabBootTimeout);
+    }
+      
     renderEmergencyBootUI(container, {
-      phase: 'APP_MOUNT',
-      error: bootError,
+      phase: 'DYNAMIC_IMPORT_RESOLUTION',
+      error: importError,
     });
-  }
+  });
 }
-

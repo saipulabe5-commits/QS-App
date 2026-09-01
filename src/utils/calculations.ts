@@ -316,7 +316,7 @@ export function calculateProjectFinancials(
     0,
     safeNumber(
       rawConfig?.taxConfig?.rate ?? projectOrConfig?.taxPercent,
-      11
+      0
     )
   );
   const taxMode = rawConfig?.taxConfig?.mode || 'TAX_EXCLUSIVE';
@@ -482,33 +482,16 @@ export function calculateProjectFinancials(
     }
   });
 
-  // 8. Overhead Calculation
-  let overheadCost = 0;
-  if (overheadConfig.isEnabled) {
-    if (overheadConfig.method === 'fixed_amount') {
-      overheadCost = roundCurrency(overheadConfig.fixedAmount);
-    } else {
-      overheadCost = roundCurrency(directCost * (overheadConfig.rate / 100));
-    }
-  }
+  // 8. Overhead Calculation (Now moved to AHSP level, project-level OH is 0)
+  const overheadCost = 0;
 
-  // 9. Profit Calculation
-  let profitCost = 0;
-  if (profitConfig.isEnabled) {
-    if (profitConfig.method === 'fixed_amount') {
-      profitCost = roundCurrency(profitConfig.fixedAmount);
-    } else if (profitConfig.method === 'percentage_of_cost_plus_overhead') {
-      profitCost = roundCurrency((directCost + overheadCost) * (profitConfig.rate / 100));
-    } else {
-      // Default: percentage of direct cost
-      profitCost = roundCurrency(directCost * (profitConfig.rate / 100));
-    }
-  }
+  // 9. Profit Calculation (Now moved to AHSP level, project-level Profit is 0)
+  const profitCost = 0;
 
   // 10. Subtotal Before Tax
   const subtotalBeforeTax = directCost + overheadCost + profitCost;
 
-  // 11. Tax Base & Tax Cost Calculation
+  // 0. Tax Base & Tax Cost Calculation
   let taxBase = subtotalBeforeTax;
   let taxCost = 0;
   let grandTotal = subtotalBeforeTax;
@@ -624,12 +607,12 @@ export function calculateRAB(
   itemsOrProject: RABItem[] | (Partial<Project> & { overheadPercent?: number; profitPercent?: number; taxPercent?: number }),
   itemsOrOverhead: RABItem[] | number = 5,
   profitPercentParam: number = 10,
-  taxPercentParam: number = 11
+  taxPercentParam: number = 0
 ): RABCalculationResult {
   let items: RABItem[] = [];
   let overheadPercent = 5;
   let profitPercent = 10;
-  let taxPercent = 11;
+  let taxPercent = 0;
   let projectObj: Partial<Project> = {};
 
   if (Array.isArray(itemsOrProject)) {
@@ -646,7 +629,7 @@ export function calculateRAB(
     projectObj = itemsOrProject;
     overheadPercent = typeof projectObj.overheadPercent === 'number' ? projectObj.overheadPercent : 5;
     profitPercent = typeof projectObj.profitPercent === 'number' ? projectObj.profitPercent : 10;
-    taxPercent = typeof projectObj.taxPercent === 'number' ? projectObj.taxPercent : 11;
+    taxPercent = typeof projectObj.taxPercent === 'number' ? projectObj.taxPercent : 0;
     items = Array.isArray(itemsOrOverhead) ? itemsOrOverhead : [];
   }
 
@@ -724,7 +707,7 @@ export function calculateCostStructure(
   items: RABItem[],
   overheadPercent: number = 5,
   profitPercent: number = 10,
-  taxPercent: number = 11
+  taxPercent: number = 0
 ): CanonicalCostStructure {
   const canonical = calculateProjectFinancials(items, {
     overheadPercent,

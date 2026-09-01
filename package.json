@@ -9,7 +9,7 @@
     "start": "node dist/server.cjs",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "test": "tsx test/runAllTests.ts && tsx test/runV6Tests.ts && tsx test/runV7Tests.ts && tsx test/runV8Tests.ts && tsx test/runV9Tests.ts && tsx test/runV10Tests.ts"
+    "test": "tsx test/runAllTests.ts && tsx test/runV6Tests.ts && tsx test/runV7Tests.ts && tsx test/runV8Tests.ts && tsx test/runV9Tests.ts && tsx test/runV10Tests.ts && tsx test/runV11Tests.ts && tsx test/runV12PreviewTests.ts && tsx test/runV13Tests.ts && tsx test/runV13FinancialTests.ts && tsx test/runV13AdversarialTests.ts && tsx test/runV14SecurityTests.ts && tsx test/runV15Tests.ts && tsx test/runV16Tests.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

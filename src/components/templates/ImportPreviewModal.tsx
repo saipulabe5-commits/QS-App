@@ -78,7 +78,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
   const [templateProjectType, setTemplateProjectType] = useState<string>('Rumah Tinggal');
   const [overheadPercent, setOverheadPercent] = useState<number>(5);
   const [profitPercent, setProfitPercent] = useState<number>(10);
-  const [taxPercent, setTaxPercent] = useState<number>(11);
+  const [taxPercent, setTaxPercent] = useState<number>(0);
   const [templateVisibility, setTemplateVisibility] = useState<'private' | 'team' | 'public'>('team');
 
   // Apply to project settings

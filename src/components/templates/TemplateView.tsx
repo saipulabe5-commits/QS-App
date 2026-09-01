@@ -52,6 +52,7 @@ export const TemplateView: React.FC = () => {
     setActiveTab,
     startImportJob,
     showToast,
+    settings,
   } = useApp();
 
   // Modals state
@@ -110,7 +111,7 @@ export const TemplateView: React.FC = () => {
         notes: `Dibuat dari master template ${templateToApply.name}`,
         overheadPercent: templateToApply.defaultOverhead,
         profitPercent: templateToApply.defaultProfit,
-        taxPercent: templateToApply.defaultTax,
+        taxPercent: settings.defaultTax,
       });
     } else if (selectedProject) {
       applyRABTemplateToProject(templateToApply.id, selectedProject.id, applyMode);

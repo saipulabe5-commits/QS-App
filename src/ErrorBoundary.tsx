@@ -37,7 +37,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error(`[RAB Pro V9 ErrorBoundary ${(this as any).state?.errorId}]:`, error, errorInfo);
+    console.error(`[RAB Pro V11 ErrorBoundary ${(this as any).state?.errorId}]:`, error, errorInfo);
   }
 
   private handleReload = () => {
@@ -55,8 +55,8 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         }
         if ('caches' in window) {
           caches.keys().then((keys) => {
-            keys.forEach((key) => caches.delete(key));
-          });
+            keys.forEach((key) => caches.delete(key).catch(() => {}));
+          }).catch(() => {});
         }
       }
     } catch (e) {
@@ -117,7 +117,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               <ShieldAlert className="w-8 h-8" />
             </div>
             <h1 className="text-2xl font-bold text-white mb-2">
-              Pemulihan Runtime RAB Pro V9
+              Pemulihan Runtime RAB Pro V11
             </h1>
             <p className="text-slate-400 text-sm mb-6 leading-relaxed">
               Sistem mendeteksi kendala pada rendering komponen frontend. Data proyek Anda tersimpan secara aman di database lokal/server.

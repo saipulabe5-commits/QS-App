@@ -295,18 +295,42 @@ export const RABTable: React.FC<RABTableProps> = ({
           {/* Table Footer: Total Biaya Langsung */}
           <tfoot className="bg-slate-100 font-bold border-t-2 border-slate-300 text-slate-900">
             <tr>
-              <td colSpan={6} className="px-4 py-3 text-right uppercase tracking-wider text-xs">
+              <td colSpan={6} className="px-4 py-2 text-right uppercase tracking-wider text-xs">
                 Total Biaya Langsung Pekerjaan (Direct Cost):
               </td>
-              <td className="px-4 py-3 text-right font-black text-sm text-slate-900 font-mono">
+              <td className="px-4 py-2 text-right font-black text-sm text-slate-900 font-mono">
                 {formatRupiah(calc.directCost)}
               </td>
-              <td className="px-3 py-3 text-right font-black text-xs text-blue-700 font-mono">
+              <td className="px-3 py-2 text-right font-black text-xs text-blue-700 font-mono">
                 100,00%
               </td>
-              <td colSpan={2} className="px-3 py-3 text-[11px] text-slate-500 font-normal">
+              <td colSpan={2} className="px-3 py-2 text-[11px] text-slate-500 font-normal">
                 {items.length} Pos Pekerjaan
               </td>
+            </tr>
+
+            {/* Tax */}
+            {calc.taxCost > 0 && (
+              <tr className="bg-slate-50 text-slate-700 font-semibold border-t border-slate-200">
+                <td colSpan={6} className="px-4 py-1.5 text-right uppercase text-xs">
+                  Pajak Pertambahan Nilai / PPN ({calc.taxPercent}%)
+                </td>
+                <td className="px-4 py-1.5 text-right font-mono text-sm text-slate-800">
+                  {formatRupiah(calc.taxCost)}
+                </td>
+                <td colSpan={3} className="px-3 py-1.5"></td>
+              </tr>
+            )}
+
+            {/* Grand Total */}
+            <tr className="bg-slate-200 font-black border-t-2 border-slate-400 text-slate-900">
+              <td colSpan={6} className="px-4 py-3 text-right uppercase tracking-wider text-sm">
+                GRAND TOTAL NILAI RAB:
+              </td>
+              <td className="px-4 py-3 text-right font-black text-lg text-blue-900 font-mono">
+                {formatRupiah(calc.grandTotal)}
+              </td>
+              <td colSpan={3} className="px-3 py-3"></td>
             </tr>
           </tfoot>
         </table>

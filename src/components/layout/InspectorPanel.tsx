@@ -51,10 +51,10 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
 
   const overheadPercent = selectedProject?.overheadPercent ?? settings?.defaultOverhead ?? 5;
   const profitPercent = selectedProject?.profitPercent ?? settings?.defaultProfit ?? 10;
-  const taxPercent = selectedProject?.taxPercent ?? settings?.defaultTax ?? 11;
+  const taxPercent = selectedProject?.taxPercent ?? settings?.defaultTax ?? 0;
 
-  const overheadCost = Math.round((directCost * overheadPercent) / 100);
-  const profitCost = Math.round((directCost * profitPercent) / 100);
+  const overheadCost = 0;
+  const profitCost = 0;
   const subtotalBeforeTax = directCost + overheadCost + profitCost;
   const taxCost = Math.round((subtotalBeforeTax * taxPercent) / 100);
   const grandTotal = subtotalBeforeTax + taxCost;
@@ -141,10 +141,6 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                 <span className="text-slate-500 block">Metode Pajak</span>
                 <span className="font-bold text-slate-800">PPN {taxPercent}% (SNI)</span>
               </div>
-              <div className="bg-white/80 p-2 rounded-lg border border-blue-100">
-                <span className="text-slate-500 block">Overhead & Profit</span>
-                <span className="font-bold text-slate-800">+{overheadPercent + profitPercent}%</span>
-              </div>
             </div>
           </div>
 
@@ -154,24 +150,12 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
               <span>Struktur Komponen Biaya</span>
               <span className="text-[10px] text-slate-400 font-mono">{projectRABItems.length} Items</span>
             </div>
-
             <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 space-y-2">
               <div className="flex justify-between items-center text-slate-600">
-                <span>Biaya Langsung (Direct Cost):</span>
+                <span>Biaya Pekerjaan (Cost):</span>
                 <span className="font-semibold text-slate-900 tabular-nums">{formatCurrency(directCost)}</span>
               </div>
-              <div className="flex justify-between items-center text-slate-600">
-                <span>Biaya Umum / Overhead ({overheadPercent}%):</span>
-                <span className="font-semibold text-slate-900 tabular-nums">+{formatCurrency(overheadCost)}</span>
-              </div>
-              <div className="flex justify-between items-center text-slate-600">
-                <span>Estimasi Keuntungan ({profitPercent}%):</span>
-                <span className="font-semibold text-slate-900 tabular-nums">+{formatCurrency(profitCost)}</span>
-              </div>
-              <div className="pt-2 border-t border-slate-200 flex justify-between items-center text-slate-700 font-medium">
-                <span>Subtotal Sebelum Pajak:</span>
-                <span className="font-bold text-slate-900 tabular-nums">{formatCurrency(subtotalBeforeTax)}</span>
-              </div>
+              
               <div className="flex justify-between items-center text-slate-600">
                 <span>Pajak Pertambahan Nilai ({taxPercent}%):</span>
                 <span className="font-semibold text-slate-900 tabular-nums">+{formatCurrency(taxCost)}</span>

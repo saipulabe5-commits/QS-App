@@ -68,7 +68,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
     targetBudget: 350000000,
     overheadPercent: 5,
     profitPercent: 10,
-    taxPercent: 11,
+    taxPercent: 0,
     notes: 'Dibuat melalui Quick RAB Builder',
   });
 

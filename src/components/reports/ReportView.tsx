@@ -334,6 +334,50 @@ export const ReportView: React.FC = () => {
                     </td>
                   </tr>
                 ))}
+                
+                {/* Subtotal Biaya Langsung */}
+                <tr className="bg-slate-50 font-bold border-t-2 border-slate-300">
+                  <td colSpan={2} className="p-2 border-r border-slate-200 text-right">
+                    TOTAL BIAYA PEKERJAAN
+                  </td>
+                  <td className="p-2 border-r border-slate-200 text-right font-mono text-slate-900">
+                    {formatRupiah(calc.directCost)}
+                  </td>
+                  <td className="p-2 text-right font-mono">-</td>
+                </tr>
+
+                {/* PPN */}
+                <tr>
+                  <td colSpan={2} className="p-2 border-r border-slate-200 text-right font-semibold text-slate-700">
+                    PAJAK PERTAMBAHAN NILAI (PPN) ({selectedProject.taxPercent}%)
+                  </td>
+                  <td className="p-2 border-r border-slate-200 text-right font-mono font-semibold text-slate-800">
+                    {formatRupiah(calc.taxCost)}
+                  </td>
+                  <td className="p-2 text-right font-mono">-</td>
+                </tr>
+
+                {/* Grand Total */}
+                <tr className="bg-slate-100 font-black text-sm border-t-2 border-slate-400">
+                  <td colSpan={2} className="p-3 border-r border-slate-200 text-right uppercase">
+                    GRAND TOTAL
+                  </td>
+                  <td className="p-3 border-r border-slate-200 text-right font-mono text-blue-900">
+                    {formatRupiah(calc.grandTotal)}
+                  </td>
+                  <td className="p-3 text-right font-mono">-</td>
+                </tr>
+
+                {/* Harga Rata-Rata per m2 */}
+                <tr className="bg-blue-50 font-bold text-xs border-t border-blue-200">
+                  <td colSpan={2} className="p-2 border-r border-slate-200 text-right text-blue-800 uppercase">
+                    Harga Permeter Bangunan {selectedProject.buildingArea ? `(Luas: ${selectedProject.buildingArea} m²)` : '(Luas belum diisi)'}
+                  </td>
+                  <td className="p-2 border-r border-slate-200 text-right font-mono text-blue-900">
+                    {selectedProject.buildingArea ? `${formatRupiah(Math.round(calc.grandTotal / selectedProject.buildingArea))} / m²` : 'Rp 0 / m²'}
+                  </td>
+                  <td className="p-2 text-right font-mono">-</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -349,27 +393,19 @@ export const ReportView: React.FC = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td className="p-2.5">B. Biaya Overhead ({selectedProject.overheadPercent}%)</td>
-                  <td className="p-2.5 text-right font-mono">{formatRupiah(calc.overheadCost)}</td>
-                </tr>
-                <tr>
-                  <td className="p-2.5">C. Profit Kontraktor ({selectedProject.profitPercent}%)</td>
-                  <td className="p-2.5 text-right font-mono">{formatRupiah(calc.profitCost)}</td>
-                </tr>
-                <tr className="bg-slate-50 font-semibold">
-                  <td className="p-2.5">D. Subtotal Nilai Proyek (A + B + C)</td>
-                  <td className="p-2.5 text-right font-mono font-bold">
-                    {formatRupiah(calc.directCost + calc.overheadCost + calc.profitCost)}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="p-2.5">E. Pajak PPN ({selectedProject.taxPercent}%)</td>
+                  <td className="p-2.5">B. Pajak PPN ({selectedProject.taxPercent}%)</td>
                   <td className="p-2.5 text-right font-mono">{formatRupiah(calc.taxCost)}</td>
                 </tr>
                 <tr className="bg-slate-900 text-white font-black text-sm">
-                  <td className="p-3 uppercase">GRAND TOTAL NILAI RAB (D + E)</td>
+                  <td className="p-3 uppercase">GRAND TOTAL NILAI RAB (A + B)</td>
                   <td className="p-3 text-right font-mono text-blue-300">
                     {formatRupiah(calc.grandTotal)}
+                  </td>
+                </tr>
+                <tr className="bg-blue-900/10 text-blue-900 font-semibold text-xs border-t-2 border-slate-900">
+                  <td className="p-2.5">Harga Permeter Bangunan {selectedProject.buildingArea ? `(Luas: ${selectedProject.buildingArea} m²)` : '(Luas belum diisi)'}</td>
+                  <td className="p-2.5 text-right font-mono">
+                    {selectedProject.buildingArea ? `${formatRupiah(Math.round(calc.grandTotal / selectedProject.buildingArea))} / m²` : 'Rp 0 / m²'}
                   </td>
                 </tr>
               </tbody>

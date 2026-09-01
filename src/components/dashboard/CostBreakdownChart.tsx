@@ -96,7 +96,7 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
       icon: Receipt,
       description: 'Pajak Pertambahan Nilai (PPN) resmi negara.',
     },
-  ];
+  ].filter(c => c.cost > 0);
 
   return (
     <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs">

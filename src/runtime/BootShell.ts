@@ -1,5 +1,5 @@
 /**
- * RAB PRO V10 - Native Zero-Dependency Boot Shell & Runtime Instrumenter
+ * RAB PRO V11 - Native Zero-Dependency Boot Shell & Runtime Instrumenter
  * Fully isolated from React, Tailwind, Lucide, Recharts, Framer Motion, IndexedDB, and APIs.
  */
 

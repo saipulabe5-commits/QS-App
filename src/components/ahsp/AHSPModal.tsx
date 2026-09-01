@@ -23,7 +23,7 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
   itemToEdit,
   onClose,
 }) => {
-  const { addAHSPItem, updateAHSPItem, priceDatabase } = useApp();
+  const { addAHSPItem, updateAHSPItem, priceDatabase, settings } = useApp();
 
   const [code, setCode] = useState('');
   const [name, setName] = useState('');
@@ -32,6 +32,9 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
   const [unit, setUnit] = useState('m³');
   const [notes, setNotes] = useState('');
   const [components, setComponents] = useState<AHSPComponent[]>([]);
+
+  const overheadPercent = settings?.defaultOverhead ?? 5;
+  const profitPercent = settings?.defaultProfit ?? 10;
 
   // Add Component Sub-state
   const [compType, setCompType] = useState<'material' | 'labor' | 'equipment'>('material');
@@ -93,7 +96,10 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
     .filter((c) => c.type === 'equipment')
     .reduce((s, c) => s + c.totalCost, 0);
 
-  const grandHSP = totalMaterial + totalLabor + totalEquipment;
+  const subtotal = totalMaterial + totalLabor + totalEquipment;
+  const overheadCost = subtotal * (overheadPercent / 100);
+  const profitCost = subtotal * (profitPercent / 100);
+  const grandHSP = subtotal + overheadCost + profitCost;
 
   const handleAddComponent = () => {
     if (!compName.trim()) return;
@@ -150,6 +156,8 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
         unit: unit.trim(),
         notes: notes.trim(),
         components,
+        overheadPercent,
+        profitPercent,
         unitPrice: grandHSP,
       });
     } else {
@@ -162,6 +170,8 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
         unit: unit.trim(),
         notes: notes.trim(),
         components,
+        overheadPercent,
+        profitPercent,
         unitPrice: grandHSP,
       });
     }
@@ -491,6 +501,40 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
                       </tr>
                     ))
                   )}
+                  {components.length > 0 && (
+                    <>
+                      <tr className="bg-slate-50/50">
+                        <td className="px-5 py-3">
+                          <span className="text-[10px] font-bold px-2 py-1 rounded-md bg-slate-200 text-slate-700">
+                            Overhead
+                          </span>
+                        </td>
+                        <td className="px-5 py-3 font-medium text-slate-800">Biaya Overhead</td>
+                        <td className="px-5 py-3 text-center text-slate-500">ls</td>
+                        <td className="px-5 py-3 text-right font-mono font-medium text-slate-600">{formatNumber(overheadPercent / 100, 4)}</td>
+                        <td className="px-5 py-3 text-right font-mono text-slate-600">{formatRupiah(subtotal)}</td>
+                        <td className="px-5 py-3 text-right font-mono font-bold text-slate-900">
+                          {formatRupiah(overheadCost)}
+                        </td>
+                        <td className="px-5 py-3 text-center"></td>
+                      </tr>
+                      <tr className="bg-slate-50/50">
+                        <td className="px-5 py-3">
+                          <span className="text-[10px] font-bold px-2 py-1 rounded-md bg-slate-200 text-slate-700">
+                            Profit
+                          </span>
+                        </td>
+                        <td className="px-5 py-3 font-medium text-slate-800">Keuntungan Pelaksana / Profit</td>
+                        <td className="px-5 py-3 text-center text-slate-500">ls</td>
+                        <td className="px-5 py-3 text-right font-mono font-medium text-slate-600">{formatNumber(profitPercent / 100, 4)}</td>
+                        <td className="px-5 py-3 text-right font-mono text-slate-600">{formatRupiah(subtotal)}</td>
+                        <td className="px-5 py-3 text-right font-mono font-bold text-slate-900">
+                          {formatRupiah(profitCost)}
+                        </td>
+                        <td className="px-5 py-3 text-center"></td>
+                      </tr>
+                    </>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -509,7 +553,7 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
               <div className="font-mono text-sm">{formatRupiah(totalLabor + totalEquipment)}</div>
             </div>
             <div className="pl-6 border-l border-slate-700">
-              <div className="text-[10px] text-indigo-300 uppercase font-black tracking-widest mb-1">Total HSP</div>
+              <div className="text-[10px] text-indigo-300 uppercase font-black tracking-widest mb-1">Total HSP (D + E + F)</div>
               <div className="font-mono text-xl font-bold text-white">{formatRupiah(grandHSP)}</div>
             </div>
           </div>

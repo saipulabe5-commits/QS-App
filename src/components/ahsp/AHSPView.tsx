@@ -514,6 +514,8 @@ export const AHSPView: React.FC = () => {
                           setInsertVolume(1);
                         }}
                         hasActiveProject={Boolean(selectedProject)}
+                        
+                        
                       />
                     ))}
                   </div>
@@ -538,6 +540,8 @@ export const AHSPView: React.FC = () => {
                   setInsertVolume(1);
                 }}
                 hasActiveProject={Boolean(selectedProject)}
+                
+                
               />
             </div>
           ))}
@@ -647,6 +651,8 @@ interface AHSPItemCardProps {
   onDelete: () => void;
   onInsertToRAB: () => void;
   hasActiveProject: boolean;
+  overheadPercent?: number;
+  profitPercent?: number;
 }
 
 const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
@@ -665,6 +671,12 @@ const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
   const totalMat = matComps.reduce((s, c) => s + c.totalCost, 0);
   const totalLab = laborComps.reduce((s, c) => s + c.totalCost, 0);
   const totalEq = eqComps.reduce((s, c) => s + c.totalCost, 0);
+  const subtotal = totalMat + totalLab + totalEq;
+  
+  const actualOverheadPercent = item.overheadPercent ?? 5;
+  const actualProfitPercent = item.profitPercent ?? 10;
+  const computedOverhead = subtotal * (actualOverheadPercent / 100);
+  const computedProfit = subtotal * (actualProfitPercent / 100);
 
   return (
     <div className="rounded-xl border border-slate-100 hover:border-blue-200 bg-white overflow-hidden transition-all">
@@ -835,10 +847,40 @@ const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
                   </>
                 )}
 
-                {/* Grand Total Row */}
-                <tr className="bg-slate-900 text-white font-bold text-xs">
+                {/* Subtotal Biaya Langsung */}
+                <tr className="bg-slate-200 text-slate-800 font-bold text-xs border-t-2 border-slate-300">
                   <td colSpan={5} className="px-4 py-2 uppercase tracking-wide">
-                    Total Harga Satuan Pekerjaan (A + B + C)
+                    D. SUBTOTAL BIAYA LANGSUNG (A + B + C)
+                  </td>
+                  <td className="px-4 py-2 text-right font-mono text-slate-900 font-black">
+                    {formatRupiah(subtotal)}
+                  </td>
+                </tr>
+
+                {/* Overhead */}
+                <tr className="hover:bg-slate-50/60">
+                  <td className="px-4 py-1 text-slate-400 pl-8">&bull; Overhead</td>
+                  <td className="px-3 py-1 font-medium text-slate-800">Biaya Overhead</td>
+                  <td className="px-2 py-1 text-center text-slate-500">ls</td>
+                  <td className="px-3 py-1 text-right font-mono text-slate-600">{formatNumber(actualOverheadPercent / 100, 4)}</td>
+                  <td className="px-4 py-1 text-right font-mono text-slate-600">{formatRupiah(subtotal)}</td>
+                  <td className="px-4 py-1 text-right font-mono font-semibold text-slate-800">{formatRupiah(computedOverhead)}</td>
+                </tr>
+
+                {/* Profit */}
+                <tr className="hover:bg-slate-50/60 border-b border-slate-200">
+                  <td className="px-4 py-1 text-slate-400 pl-8">&bull; Profit</td>
+                  <td className="px-3 py-1 font-medium text-slate-800">Keuntungan Pelaksana</td>
+                  <td className="px-2 py-1 text-center text-slate-500">ls</td>
+                  <td className="px-3 py-1 text-right font-mono text-slate-600">{formatNumber(actualProfitPercent / 100, 4)}</td>
+                  <td className="px-4 py-1 text-right font-mono text-slate-600">{formatRupiah(subtotal)}</td>
+                  <td className="px-4 py-1 text-right font-mono font-semibold text-slate-800">{formatRupiah(computedProfit)}</td>
+                </tr>
+
+                {/* Grand Total Row */}
+                <tr className="bg-slate-900 text-white font-bold text-xs border-t-2 border-blue-500">
+                  <td colSpan={5} className="px-4 py-2 uppercase tracking-wide">
+                    TOTAL HARGA SATUAN PEKERJAAN (D + E + F)
                   </td>
                   <td className="px-4 py-2 text-right font-mono text-blue-300 font-black">
                     {formatRupiah(item.unitPrice)}

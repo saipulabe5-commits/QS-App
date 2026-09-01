@@ -33,7 +33,7 @@ export const INITIAL_SETTINGS: AppSettings = {
   logoUrl: '',
   defaultOverhead: 5,
   defaultProfit: 10,
-  defaultTax: 11,
+  defaultTax: 0,
   decimalDigits: 0,
   documentNumberFormat: 'RAB/{YEAR}/{MONTH}/{SEQ}',
 };
@@ -146,7 +146,7 @@ export const INITIAL_PROJECTS: Project[] = [
     status: 'Berjalan',
     overheadPercent: 5,
     profitPercent: 10,
-    taxPercent: 11,
+    taxPercent: 0,
   },
   {
     id: 'proj_02',
@@ -164,7 +164,7 @@ export const INITIAL_PROJECTS: Project[] = [
     status: 'Draft',
     overheadPercent: 5,
     profitPercent: 10,
-    taxPercent: 11,
+    taxPercent: 0,
   },
   {
     id: 'proj_03',
@@ -182,7 +182,7 @@ export const INITIAL_PROJECTS: Project[] = [
     status: 'Selesai',
     overheadPercent: 5,
     profitPercent: 8,
-    taxPercent: 11,
+    taxPercent: 0,
   },
 ];
 
@@ -570,7 +570,7 @@ export const INITIAL_RAB_TEMPLATES: RABTemplate[] = [
     estimatedTotal: 845000000,
     defaultOverhead: 5,
     defaultProfit: 10,
-    defaultTax: 11,
+    defaultTax: 0,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     items: [
@@ -596,7 +596,7 @@ export const INITIAL_RAB_TEMPLATES: RABTemplate[] = [
           projectType: 'Infrastruktur Kawasan',
           defaultOverhead: 5,
           defaultProfit: 10,
-          defaultTax: 11,
+          defaultTax: 0,
           estimatedTotal: 845000000,
           items: []
         }
@@ -622,7 +622,7 @@ export const INITIAL_RAB_TEMPLATES: RABTemplate[] = [
     estimatedTotal: 84325000,
     defaultOverhead: 5,
     defaultProfit: 10,
-    defaultTax: 11,
+    defaultTax: 0,
     createdAt: '2026-08-01T08:00:00.000Z',
     updatedAt: '2026-08-15T10:30:00.000Z',
     items: [
@@ -656,7 +656,7 @@ export const INITIAL_RAB_TEMPLATES: RABTemplate[] = [
           projectType: 'Rumah 1 Lantai',
           defaultOverhead: 5,
           defaultProfit: 10,
-          defaultTax: 11,
+          defaultTax: 0,
           estimatedTotal: 84325000,
           items: [],
         },
@@ -681,7 +681,7 @@ export const INITIAL_RAB_TEMPLATES: RABTemplate[] = [
     estimatedTotal: 412500000,
     defaultOverhead: 5,
     defaultProfit: 10,
-    defaultTax: 11,
+    defaultTax: 0,
     createdAt: '2026-08-05T09:00:00.000Z',
     updatedAt: '2026-08-20T14:00:00.000Z',
     items: [
@@ -714,7 +714,7 @@ export const INITIAL_RAB_TEMPLATES: RABTemplate[] = [
           projectType: 'Rumah 2 Lantai',
           defaultOverhead: 5,
           defaultProfit: 10,
-          defaultTax: 11,
+          defaultTax: 0,
           estimatedTotal: 405000000,
           items: [],
         },
@@ -733,7 +733,7 @@ export const INITIAL_RAB_TEMPLATES: RABTemplate[] = [
           projectType: 'Rumah 2 Lantai',
           defaultOverhead: 5,
           defaultProfit: 10,
-          defaultTax: 11,
+          defaultTax: 0,
           estimatedTotal: 412500000,
           items: [],
         },
@@ -758,7 +758,7 @@ export const INITIAL_RAB_TEMPLATES: RABTemplate[] = [
     estimatedTotal: 108425000,
     defaultOverhead: 5,
     defaultProfit: 10,
-    defaultTax: 11,
+    defaultTax: 0,
     createdAt: '2026-08-10T11:00:00.000Z',
     updatedAt: '2026-08-18T16:00:00.000Z',
     items: [
@@ -786,7 +786,7 @@ export const INITIAL_RAB_TEMPLATES: RABTemplate[] = [
           projectType: 'Renovasi Ruko',
           defaultOverhead: 5,
           defaultProfit: 10,
-          defaultTax: 11,
+          defaultTax: 0,
           estimatedTotal: 108425000,
           items: [],
         },

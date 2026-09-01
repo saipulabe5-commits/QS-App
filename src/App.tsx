@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
+import { lazyWithRetry } from './utils/lazyImport';
 import { motion, AnimatePresence } from 'motion/react';
 import { AppProvider, useApp } from './context/AppContext';
 import { ErrorBoundary } from './ErrorBoundary';
@@ -16,25 +17,25 @@ import { DashboardView } from './components/dashboard/DashboardView';
 import { AuthGate } from './components/auth/AuthGate';
 
 // PROGRESSIVE LAZY MODULE LOADING (ISOLATION OF SUB-MODULE FAILURES)
-const ProjectListView = lazy(() => import('./components/projects/ProjectListView').then(m => ({ default: m.ProjectListView })));
-const RABView = lazy(() => import('./components/rab/RABView').then(m => ({ default: m.RABView })));
-const AHSPView = lazy(() => import('./components/ahsp/AHSPView').then(m => ({ default: m.AHSPView })));
-const PriceDatabaseView = lazy(() => import('./components/database/PriceDatabaseView').then(m => ({ default: m.PriceDatabaseView })));
-const TemplateView = lazy(() => import('./components/templates/TemplateView').then(m => ({ default: m.TemplateView })));
-const VolumeCalculatorView = lazy(() => import('./components/calculator/VolumeCalculatorView').then(m => ({ default: m.VolumeCalculatorView })));
-const ReportView = lazy(() => import('./components/reports/ReportView').then(m => ({ default: m.ReportView })));
-const SettingsView = lazy(() => import('./components/settings/SettingsView').then(m => ({ default: m.SettingsView })));
-const DrawingAnalysisView = lazy(() => import('./components/drawings/DrawingAnalysisView').then(m => ({ default: m.DrawingAnalysisView })));
-const SCurvePlanView = lazy(() => import('./components/scurve/SCurvePlanView').then(m => ({ default: m.SCurvePlanView })));
-const SCurveActualView = lazy(() => import('./components/scurve/SCurveActualView').then(m => ({ default: m.SCurveActualView })));
-const SCurveComparisonView = lazy(() => import('./components/scurve/SCurveComparisonView').then(m => ({ default: m.SCurveComparisonView })));
-const GanttChartView = lazy(() => import('./components/scurve/GanttChartView').then(m => ({ default: m.GanttChartView })));
+const ProjectListView = lazyWithRetry(() => import('./components/projects/ProjectListView').then(m => ({ default: m.ProjectListView })));
+const RABView = lazyWithRetry(() => import('./components/rab/RABView').then(m => ({ default: m.RABView })));
+const AHSPView = lazyWithRetry(() => import('./components/ahsp/AHSPView').then(m => ({ default: m.AHSPView })));
+const PriceDatabaseView = lazyWithRetry(() => import('./components/database/PriceDatabaseView').then(m => ({ default: m.PriceDatabaseView })));
+const TemplateView = lazyWithRetry(() => import('./components/templates/TemplateView').then(m => ({ default: m.TemplateView })));
+const VolumeCalculatorView = lazyWithRetry(() => import('./components/calculator/VolumeCalculatorView').then(m => ({ default: m.VolumeCalculatorView })));
+const ReportView = lazyWithRetry(() => import('./components/reports/ReportView').then(m => ({ default: m.ReportView })));
+const SettingsView = lazyWithRetry(() => import('./components/settings/SettingsView').then(m => ({ default: m.SettingsView })));
+const DrawingAnalysisView = lazyWithRetry(() => import('./components/drawings/DrawingAnalysisView').then(m => ({ default: m.DrawingAnalysisView })));
+const SCurvePlanView = lazyWithRetry(() => import('./components/scurve/SCurvePlanView').then(m => ({ default: m.SCurvePlanView })));
+const SCurveActualView = lazyWithRetry(() => import('./components/scurve/SCurveActualView').then(m => ({ default: m.SCurveActualView })));
+const SCurveComparisonView = lazyWithRetry(() => import('./components/scurve/SCurveComparisonView').then(m => ({ default: m.SCurveComparisonView })));
+const GanttChartView = lazyWithRetry(() => import('./components/scurve/GanttChartView').then(m => ({ default: m.GanttChartView })));
 
 // LAZY MODALS
-const ProjectModal = lazy(() => import('./components/projects/ProjectModal').then(m => ({ default: m.ProjectModal })));
-const RABAssistantModal = lazy(() => import('./components/ai/RABAssistantModal').then(m => ({ default: m.RABAssistantModal })));
-const AuthModal = lazy(() => import('./components/auth/AuthModal').then(m => ({ default: m.AuthModal })));
-const QuickRABBuilderModal = lazy(() => import('./components/rab/QuickRABBuilderModal').then(m => ({ default: m.QuickRABBuilderModal })));
+const ProjectModal = lazyWithRetry(() => import('./components/projects/ProjectModal').then(m => ({ default: m.ProjectModal })));
+const RABAssistantModal = lazyWithRetry(() => import('./components/ai/RABAssistantModal').then(m => ({ default: m.RABAssistantModal })));
+const AuthModal = lazyWithRetry(() => import('./components/auth/AuthModal').then(m => ({ default: m.AuthModal })));
+const QuickRABBuilderModal = lazyWithRetry(() => import('./components/rab/QuickRABBuilderModal').then(m => ({ default: m.QuickRABBuilderModal })));
 
 const MainLayout: React.FC = () => {
   const { activeTab, setActiveTab, user } = useApp();

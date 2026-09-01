@@ -48,7 +48,7 @@ export class SyncService {
    */
   static subscribe(listener: SyncListener): () => void {
     this.listeners.add(listener);
-    this.getSyncStatus().then(listener);
+    this.getSyncStatus().then(listener).catch(() => {});
     return () => this.listeners.delete(listener);
   }
 

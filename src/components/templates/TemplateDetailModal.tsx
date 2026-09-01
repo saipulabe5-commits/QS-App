@@ -68,7 +68,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
   const [editProjectType, setEditProjectType] = useState(template?.projectType || 'Umum');
   const [editOverhead, setEditOverhead] = useState(template?.defaultOverhead || 5);
   const [editProfit, setEditProfit] = useState(template?.defaultProfit || 10);
-  const [editTax, setEditTax] = useState(template?.defaultTax || 11);
+  const [editTax, setEditTax] = useState(template?.defaultTax ?? 0);
 
   if (!isOpen || !template) return null;
 
@@ -96,7 +96,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
   const overheadAmount = (directCost * (template.defaultOverhead || 5)) / 100;
   const profitAmount = (directCost * (template.defaultProfit || 10)) / 100;
   const subtotalBeforeTax = directCost + overheadAmount + profitAmount;
-  const taxAmount = (subtotalBeforeTax * (template.defaultTax || 11)) / 100;
+  const taxAmount = (subtotalBeforeTax * (template.defaultTax ?? 0)) / 100;
   const grandTotal = subtotalBeforeTax + taxAmount;
 
   // Save metadata changes

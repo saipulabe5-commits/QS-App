@@ -6,15 +6,14 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>RAB Pro</title>
+    <title>RAB Pro V12</title>
     <meta name="description" content="Aplikasi Web Rencana Anggaran Biaya (RAB) Profesional & Modern untuk Estimasi Proyek Konstruksi Indonesia" />
-    <meta property="og:title" content="RAB Pro" />
+    <meta property="og:title" content="RAB Pro V12" />
     <meta property="og:description" content="Aplikasi Web Rencana Anggaran Biaya (RAB) Profesional & Modern untuk Estimasi Proyek Konstruksi Indonesia" />
     <meta property="og:type" content="website" />
     <meta name="theme-color" content="#0f172a" />
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <link rel="manifest" href="/manifest.webmanifest" />
-
     <style>
       html, body {
         margin: 0;
@@ -26,13 +25,26 @@
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       }
     </style>
+    <script>
+      // PHASE 7 - SERVICE WORKER QUARANTINE
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for(let registration of registrations) {
+            registration.unregister().catch(function(e){ console.debug('SW unregister failed', e) });
+            console.log('[RAB RUNTIME] Service Worker Quarantined/Unregistered:', registration);
+          }
+        }).catch(function(err) {
+          console.warn('[RAB RUNTIME] Service Worker Unregistration Error:', err);
+        });
+      }
+    </script>
   </head>
   <body>
     <div id="root">
-      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:80vh;background:#0f172a;color:#f8fafc;text-align:center;padding:20px;">
-        <div style="width:48px;height:48px;border:3px solid rgba(59,130,246,0.2);border-top-color:#3b82f6;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:16px;"></div>
-        <h2 style="margin:0 0 8px 0;font-size:20px;font-weight:700;letter-spacing:-0.5px;">RAB Pro</h2>
-        <p style="margin:0;font-size:14px;color:#94a3b8;">Menyiapkan Sistem Estimasi Konstruksi...</p>
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#0f172a;color:#f8fafc;text-align:center;padding:20px;box-sizing:border-box;">
+        <div style="width:48px;height:48px;border:3px solid rgba(59,130,246,0.2);border-top-color:#3b82f6;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:24px;"></div>
+        <h2 style="margin:0 0 8px 0;font-size:20px;font-weight:700;letter-spacing:-0.5px;">RAB Pro V12</h2>
+        <p style="margin:0;font-size:14px;color:#94a3b8;font-family:monospace;">INITIALIZING DIAGNOSTICS BOOT...</p>
       </div>
       <style>
         @keyframes spin {
@@ -41,6 +53,35 @@
         }
       </style>
     </div>
+    
+    <script>
+      // PHASE 8 - NATIVE RUNTIME DIAGNOSTICS (Catch early errors before Vite chunks load)
+      window.addEventListener('error', function(e) {
+        console.error('[NATIVE BOOT ERROR]', e.message, e.filename, e.lineno);
+        if (e.message.includes('dynamically imported module') || e.message.includes('fetch')) {
+          var root = document.getElementById('root');
+          if (root) {
+            root.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#0f172a;color:#f8fafc;text-align:center;padding:20px;"><div style="font-size:40px;margin-bottom:16px;">⚠️</div><h2 style="margin:0 0 8px 0;font-size:20px;font-weight:700;">NETWORK BOOT FAILURE</h2><p style="margin:0 0 16px 0;font-size:14px;color:#94a3b8;max-width: 400px;line-height: 1.5;">Gagal memuat script aplikasi (Chunk Load Error). Jaringan mungkin terputus atau koneksi ke Google AI Studio Preview mengalami gangguan.</p><button onclick="window.location.reload()" style="background:#2563eb;color:#fff;border:none;padding:12px 24px;border-radius:8px;font-weight:bold;cursor:pointer;margin-bottom: 12px;">Muat Ulang Halaman</button><button onclick="if(window.caches) caches.keys().then(k=>k.forEach(c=>caches.delete(c).catch(()=>{}))).catch(()=>{}); window.location.reload();" style="background:transparent;color:#94a3b8;border:1px solid #334155;padding:8px 16px;border-radius:8px;font-size:12px;cursor:pointer;">Bersihkan Cache Runtime</button></div>';
+          }
+        }
+      });
+      
+      window.addEventListener('unhandledrejection', function(e) {
+        // Use warn instead of error to prevent non-critical promise rejections from triggering strict error overlays
+        console.warn('[NATIVE BOOT PROMISE REJECTION]', e.reason);
+      });
+
+      // PHASE 13 - BLANK SCREEN WATCHDOG
+      window.__rabBootTimeout = setTimeout(function() {
+        var root = document.getElementById('root');
+        if (!root || root.innerHTML.trim() === '' || root.innerHTML.includes('INITIALIZING DIAGNOSTICS BOOT...')) {
+          console.error('[WATCHDOG] Application failed to render within timeout limit (15s).');
+          if (root) {
+            root.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#0f172a;color:#f8fafc;text-align:center;padding:20px;box-sizing:border-box;"><div style="font-size:48px;margin-bottom:16px;">⏱️</div><h2 style="margin:0 0 8px 0;font-size:20px;font-weight:700;">BOOT TIMEOUT EXCEEDED</h2><p style="margin:0 0 16px 0;font-size:14px;color:#94a3b8;max-width:400px;line-height: 1.5;">Aplikasi gagal memuat antarmuka dalam batas waktu yang ditentukan (15 detik). Ini dapat disebabkan oleh koneksi yang lambat, jaringan yang terputus di Google AI Studio, atau masalah runtime.</p><button onclick="window.location.reload()" style="background:#2563eb;color:#fff;border:none;padding:12px 24px;border-radius:8px;font-weight:bold;cursor:pointer;margin-bottom:12px;">Muat Ulang Halaman</button><button onclick="if(window.caches) caches.keys().then(k=>k.forEach(c=>caches.delete(c).catch(()=>{}))).catch(()=>{}); window.location.reload();" style="background:transparent;color:#94a3b8;border:1px solid #334155;padding:8px 16px;border-radius:8px;font-size:12px;cursor:pointer;">Bersihkan Cache Runtime</button></div>';
+          }
+        }
+      }, 15000);
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

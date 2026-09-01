@@ -143,6 +143,8 @@ export interface AHSPItem {
   unit: string;
   components: AHSPComponent[];
   unitPrice: number; // sum of all components
+  overheadPercent?: number;
+  profitPercent?: number;
   notes?: string;
   sniReference?: string;
   tahun?: number;

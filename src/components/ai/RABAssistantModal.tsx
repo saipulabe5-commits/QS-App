@@ -613,7 +613,7 @@ Saya siap membantu Anda dalam:
                                 category: 'Pekerjaan Struktur',
                                 unit: msg.volumeResult!.unit,
                                 volume: msg.volumeResult!.calculatedVolume,
-                                unitPrice: 150000,
+                                unitPrice: 0,
                                 notes: `Rumus: ${msg.volumeResult!.formula}`,
                               });
                               showToast('Volume Dimasukkan', 'Pos pekerjaan berhasil ditambahkan ke RAB.', 'success');
@@ -984,7 +984,7 @@ Saya siap membantu Anda dalam:
                         category: 'Pekerjaan Struktur',
                         unit: volumeResult.unit,
                         volume: volumeResult.volume,
-                        unitPrice: 125000,
+                        unitPrice: 0,
                         notes: `Dihitung oleh AI: ${volumeResult.formulaUsed}`,
                       });
                       showToast('Volume Ditambahkan', `Pos ${volumeResult.workName} dimasukkan ke RAB.`, 'success');

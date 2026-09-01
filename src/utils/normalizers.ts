@@ -72,7 +72,7 @@ export function normalizeCategory(rawCat?: string): RABCategory {
 /**
  * Normalisasi data Project dari berbagai variasi field alias (misal docNumber, ownerName, contractorName).
  */
-export function normalizeProject(raw: any, fallbackUserId: string = 'usr_demo_1'): Project {
+export function normalizeProject(raw: any, fallbackUserId: string = 'usr_admin_main'): Project {
   if (!raw || typeof raw !== 'object') {
     const nowStr = new Date().toISOString().split('T')[0];
     return {
@@ -91,7 +91,7 @@ export function normalizeProject(raw: any, fallbackUserId: string = 'usr_demo_1'
       status: 'Draft',
       overheadPercent: 5,
       profitPercent: 10,
-      taxPercent: 11,
+      taxPercent: 0,
     };
   }
 
@@ -117,7 +117,7 @@ export function normalizeProject(raw: any, fallbackUserId: string = 'usr_demo_1'
 
   const overheadPercent = Math.max(0, Number(raw.overheadPercent ?? raw.overhead ?? 5));
   const profitPercent = Math.max(0, Number(raw.profitPercent ?? raw.profit ?? 10));
-  const taxPercent = Math.max(0, Number(raw.taxPercent ?? raw.tax ?? 11));
+  const taxPercent = Math.max(0, Number(raw.taxPercent ?? raw.tax ?? 0));
 
   return {
     id,
@@ -189,7 +189,7 @@ export function normalizeRABItem(raw: any, projectId: string = ''): RABItem {
 /**
  * Normalisasi data PriceItem di database harga
  */
-export function normalizePriceItem(raw: any, fallbackUserId: string = 'usr_demo_1'): PriceItem {
+export function normalizePriceItem(raw: any, fallbackUserId: string = 'usr_admin_main'): PriceItem {
   const id = raw.id || `prc_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
   const userId = raw.userId || fallbackUserId;
   const code = String(raw.code || raw.itemCode || 'MAT-01').trim();
@@ -226,7 +226,7 @@ export function normalizePriceItem(raw: any, fallbackUserId: string = 'usr_demo_
 /**
  * Normalisasi data AHSP Item
  */
-export function normalizeAHSPItem(raw: any, fallbackUserId: string = 'usr_demo_1'): AHSPItem {
+export function normalizeAHSPItem(raw: any, fallbackUserId: string = 'usr_admin_main'): AHSPItem {
   const id = raw.id || `ahsp_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
   const userId = raw.userId || fallbackUserId;
   const code = String(raw.code || raw.kode || raw.ahspCode || 'A.1.1').trim();

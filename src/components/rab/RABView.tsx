@@ -47,9 +47,10 @@ export const RABView: React.FC<RABViewProps> = ({
     addRABItem,
     deleteRABItem,
     clearProjectRAB,
-    templates,
-    applyTemplateToProject,
+    rabTemplates,
+    applyRABTemplateToProject,
     saveProjectAsTemplate,
+    deleteRABTemplate,
     updateProject,
     setActiveTab,
     showToast,
@@ -172,7 +173,7 @@ export const RABView: React.FC<RABViewProps> = ({
 
   const handleApplyTemplate = () => {
     if (!selectedTemplateToApply) return;
-    applyTemplateToProject(selectedTemplateToApply, selectedProject.id, templateApplyMode);
+    applyRABTemplateToProject(selectedTemplateToApply, selectedProject.id, templateApplyMode);
     setIsApplyTemplateOpen(false);
     setSelectedTemplateToApply('');
   };
@@ -393,6 +394,7 @@ export const RABView: React.FC<RABViewProps> = ({
         calc={calc}
         itemCount={projectRABItems.length}
         onUpdateProjectRates={handleUpdateRates}
+        onUpdateBuildingArea={(area) => updateProject(selectedProject.id, { buildingArea: area })}
         onSaveAsTemplate={() => {
           setNewTemplateName(`Template ${selectedProject.name}`);
           setIsSaveTemplateOpen(true);
@@ -457,9 +459,9 @@ export const RABView: React.FC<RABViewProps> = ({
                   className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl"
                 >
                   <option value="">-- Pilih Template --</option>
-                  {templates.map((tpl) => (
+                  {rabTemplates.map((tpl) => (
                     <option key={tpl.id} value={tpl.id}>
-                      {tpl.name} ({tpl.items.length} item) - {tpl.category}
+                      {tpl.name} ({tpl.items?.length || 0} item) - {tpl.category}
                     </option>
                   ))}
                 </select>

@@ -335,18 +335,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               {/* Financial Summary */}
               <div className="mt-5 pt-4 border-t border-slate-100 space-y-2 text-xs">
                 <div className="flex justify-between text-slate-600">
-                  <span>Biaya Langsung ({activeProjectItems.length} item)</span>
+                  <span>Biaya Pekerjaan ({activeProjectItems.length} item)</span>
                   <span className="font-bold text-slate-800">
                     {formatRupiah(activeCalc.directCost)}
                   </span>
-                </div>
-                <div className="flex justify-between text-slate-600">
-                  <span>Overhead ({selectedProject.overheadPercent}%)</span>
-                  <span>{formatRupiah(activeCalc.overheadCost)}</span>
-                </div>
-                <div className="flex justify-between text-slate-600">
-                  <span>Profit Kontraktor ({selectedProject.profitPercent}%)</span>
-                  <span>{formatRupiah(activeCalc.profitCost)}</span>
                 </div>
                 <div className="flex justify-between text-slate-600">
                   <span>PPN / Pajak ({selectedProject.taxPercent}%)</span>

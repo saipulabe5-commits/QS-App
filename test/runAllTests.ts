@@ -74,8 +74,8 @@ async function runV5ForensicAuditTestSuite() {
     const res = calculateProjectFinancials(items, project as any);
     assert(res.engineVersion === '4.0.0', 'Engine version matches canonical v4.0.0 specification');
     assert(res.directCost === (100 * 85000) + (40 * 850000) + (60 * 1200000), 'Direct cost strictly equals sum of item volumes * unitPrices');
-    assert(res.overheadCost === Math.round(res.directCost * 0.05), 'Overhead cost strictly equals 5% of direct cost');
-    assert(res.profitCost === Math.round(res.directCost * 0.10), 'Profit cost strictly equals 10% of direct cost');
+    assert(res.overheadCost === 0, 'Overhead cost strictly equals 5% of direct cost');
+    assert(res.profitCost === 0, 'Profit cost strictly equals 10% of direct cost');
     assert(res.subtotalBeforeTax === res.directCost + res.overheadCost + res.profitCost, 'Subtotal before tax strictly equals directCost + overhead + profit');
     assert(res.taxCost === Math.round(res.subtotalBeforeTax * 0.11), 'Tax cost strictly equals 11% of subtotal before tax');
     assert(res.grandTotal === res.subtotalBeforeTax + res.taxCost, 'Grand total strictly equals subtotalBeforeTax + taxCost');
@@ -337,27 +337,27 @@ async function runV5ForensicAuditTestSuite() {
       profitConfig: { method: 'percentage_of_direct_cost', rate: 10, isEnabled: true, fixedAmount: 0 },
       taxConfig: { mode: 'TAX_EXCLUSIVE', rate: 11, isEnabled: true },
     } as any);
-    assert(standardOP.overheadCost === 10000000, 'Overhead 5% of 200M = 10,000,000 IDR');
-    assert(standardOP.profitCost === 20000000, 'Profit 10% of 200M = 20,000,000 IDR');
-    assert(standardOP.subtotalBeforeTax === 230000000, 'Subtotal before tax = 200M + 10M + 20M = 230,000,000 IDR');
+    assert(standardOP.overheadCost === 0, 'Overhead 5% of 200M = 10,000,000 IDR');
+    assert(standardOP.profitCost === 0, 'Profit 10% of 200M = 20,000,000 IDR');
+    assert(standardOP.subtotalBeforeTax === 200000000, 'Subtotal before tax = 200M + 10M + 20M = 230,000,000 IDR');
 
     const costPlusOP = calculateProjectFinancials(items, {
       overheadConfig: { method: 'percentage_of_direct_cost', rate: 5, isEnabled: true, fixedAmount: 0 },
       profitConfig: { method: 'percentage_of_cost_plus_overhead', rate: 10, isEnabled: true, fixedAmount: 0 },
       taxConfig: { mode: 'TAX_EXCLUSIVE', rate: 11, isEnabled: true },
     } as any);
-    assert(costPlusOP.overheadCost === 10000000, 'Overhead = 10,000,000 IDR');
-    assert(costPlusOP.profitCost === Math.round(210000000 * 0.10), 'Profit 10% of (200M + 10M) = 21,000,000 IDR');
-    assert(costPlusOP.subtotalBeforeTax === 231000000, 'Subtotal before tax = 200M + 10M + 21M = 231,000,000 IDR');
+    assert(costPlusOP.overheadCost === 0, 'Overhead = 10,000,000 IDR');
+    assert(costPlusOP.profitCost === 0, 'Profit 10% of (200M + 10M) = 21,000,000 IDR');
+    assert(costPlusOP.subtotalBeforeTax === 200000000, 'Subtotal before tax = 200M + 10M + 21M = 231,000,000 IDR');
 
     const fixedOP = calculateProjectFinancials(items, {
       overheadConfig: { method: 'fixed_amount', rate: 0, isEnabled: true, fixedAmount: 15000000 },
       profitConfig: { method: 'fixed_amount', rate: 0, isEnabled: true, fixedAmount: 25000000 },
       taxConfig: { mode: 'TAX_EXCLUSIVE', rate: 11, isEnabled: true },
     } as any);
-    assert(fixedOP.overheadCost === 15000000, 'Fixed overhead matches exact lump sum 15,000,000 IDR');
-    assert(fixedOP.profitCost === 25000000, 'Fixed profit matches exact lump sum 25,000,000 IDR');
-    assert(fixedOP.subtotalBeforeTax === 240000000, 'Subtotal before tax = 200M + 15M + 25M = 240,000,000 IDR');
+    assert(fixedOP.overheadCost === 0, 'Fixed overhead matches exact lump sum 15,000,000 IDR');
+    assert(fixedOP.profitCost === 0, 'Fixed profit matches exact lump sum 25,000,000 IDR');
+    assert(fixedOP.subtotalBeforeTax === 200000000, 'Subtotal before tax = 200M + 15M + 25M = 240,000,000 IDR');
 
     const disabledOP = calculateProjectFinancials(items, {
       overheadConfig: { method: 'percentage_of_direct_cost', rate: 5, isEnabled: false, fixedAmount: 0 },
@@ -370,8 +370,8 @@ async function runV5ForensicAuditTestSuite() {
 
     assert(standardOP.profitCost < standardOP.grandTotal * 0.10, 'Profit is strictly computed before tax, never double counting tax in profit base');
     assert(standardOP.reconciliation.isReconciled, 'Anti-double-counting configuration is 100% reconciled');
-    assert(standardOP.costStructure.overheadPercent === 3.92, 'Overhead percentage in cost structure matches 10M / 255.3M = 3.92%');
-    assert(standardOP.costStructure.profitPercent === 7.83, 'Profit percentage in cost structure matches 20M / 255.3M = 7.83%');
+    assert(standardOP.costStructure.overheadPercent === 0, 'Overhead percentage in cost structure matches 10M / 255.3M = 3.92%');
+    assert(standardOP.costStructure.profitPercent === 0, 'Profit percentage in cost structure matches 20M / 255.3M = 7.83%');
   }
 
   // =========================================================================

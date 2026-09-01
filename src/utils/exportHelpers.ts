@@ -65,10 +65,13 @@ export function exportRABToCSV(
   // Summary footer
   rows.push([]);
   rows.push(['', '', 'A. Total Biaya Langsung', '', '', '', '', String(calc.directCost)]);
-  rows.push(['', '', `B. Overhead (${project.overheadPercent}%)`, '', '', '', '', String(calc.overheadCost)]);
-  rows.push(['', '', `C. Profit Kontraktor (${project.profitPercent}%)`, '', '', '', '', String(calc.profitCost)]);
-  rows.push(['', '', `D. Pajak PPN (${project.taxPercent}%)`, '', '', '', '', String(calc.taxCost)]);
-  rows.push(['', '', 'GRAND TOTAL RAB', '', '', '', '', String(calc.grandTotal)]);
+  if (project.taxPercent > 0) {
+    rows.push(['', '', `B. Pajak PPN (${project.taxPercent}%)`, '', '', '', '', String(calc.taxCost)]);
+  }
+  rows.push(['', '', project.taxPercent > 0 ? 'GRAND TOTAL RAB (A + B)' : 'GRAND TOTAL RAB', '', '', '', '', String(calc.grandTotal)]);
+  if (project.buildingArea) {
+    rows.push(['', '', `Harga Rata-Rata per m2 (Luas: ${project.buildingArea} m2)`, '', '', '', '', String(Math.round(calc.grandTotal / project.buildingArea))]);
+  }
 
   const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + rows.map((e) => e.join(',')).join('\n');
   const encodedUri = encodeURI(csvContent);

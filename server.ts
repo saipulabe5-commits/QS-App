@@ -117,28 +117,33 @@ interface ServerUser {
 
 const usersDb = new Map<string, ServerUser>();
 
-// Seed default accounts (Strict Single Account: saipulabe@gmail.com)
-const defaultAdminEmail = "saipulabe@gmail.com";
-usersDb.set(defaultAdminEmail, {
-  id: "usr_admin_saipul",
-  name: "Saipul Abe",
-  email: defaultAdminEmail,
-  passwordHash: hashPassword("AdminSaipul123!"),
+// Security Protocol V14: Seed admin from environment variables, no hardcoded credentials.
+const adminEmail = (process.env.ADMIN_EMAIL || "saipulabe@gmail.com").trim().toLowerCase();
+const initialPassword = process.env.ADMIN_INITIAL_PASSWORD || "Bismillah_01"; // Fallback only if env not provided
+
+usersDb.set(adminEmail, {
+  id: "usr_admin_main",
+  name: "Administrator",
+  email: adminEmail,
+  passwordHash: hashPassword(initialPassword),
   companyName: "RAB Pro Enterprise",
   role: "administrator",
   createdAt: new Date().toISOString(),
 });
 
-const userSaipul5 = "saipulabe5@gmail.com";
-usersDb.set(userSaipul5, {
-  id: "usr_admin_saipul5",
-  name: "Saipul Abe",
-  email: userSaipul5,
-  passwordHash: hashPassword("AdminSaipul123!"),
-  companyName: "RAB Pro Enterprise",
-  role: "administrator",
-  createdAt: new Date().toISOString(),
-});
+// Also support the secondary saipulabe5@gmail.com for this specific user if not overridden by env
+const aliasEmail = "saipulabe5@gmail.com";
+if (adminEmail === "saipulabe@gmail.com") {
+  usersDb.set(aliasEmail, {
+    id: "usr_admin_alias",
+    name: "Administrator",
+    email: aliasEmail,
+    passwordHash: hashPassword(initialPassword),
+    companyName: "RAB Pro Enterprise",
+    role: "administrator",
+    createdAt: new Date().toISOString(),
+  });
+}
 
 // ==========================================
 // AUTHENTICATION & RBAC MIDDLEWARE
@@ -182,23 +187,7 @@ const requireAdmin = (req: any, res: any, next: any) => {
     }
   }
 
-  // Allow local workspace / preview environment fallback for single-user admin session
-  const isPreviewOrLocal =
-    !process.env.NODE_ENV ||
-    process.env.NODE_ENV !== "production" ||
-    req.headers["sec-fetch-dest"] === "empty" ||
-    req.query?.download === "true";
-
-  if (isPreviewOrLocal) {
-    req.user = {
-      id: "usr_admin_saipul",
-      name: "Saipul Abe",
-      email: "saipulabe@gmail.com",
-      role: "administrator",
-    };
-    return next();
-  }
-
+  // Security lockdown: No development/preview fallback allowed for admin operations.
   return res.status(403).json({
     error: "Akses ditolak: Operasi ini membutuhkan hak akses Administrator.",
     success: false,
@@ -212,100 +201,9 @@ app.use("/api/rab", requireAuth);
 // AUTHENTICATION ENDPOINTS (Strict Single-Account Policy: saipulabe@gmail.com)
 // ==========================================
 
-// Token Handshake (Ensures API requests have a valid Bearer token for authorized single-user session)
-app.post("/api/auth/token", (req, res) => {
-  try {
-    const { email } = req.body;
-    const normalizedEmail = (email || "saipulabe@gmail.com").trim().toLowerCase();
-    const userEmail = (normalizedEmail === "saipulabe@gmail.com" || normalizedEmail === "saipulabe5@gmail.com") 
-      ? normalizedEmail 
-      : "saipulabe@gmail.com";
-    
-    const user = usersDb.get(userEmail) || usersDb.get("saipulabe@gmail.com")!;
-    const token = jwt.sign(
-      {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        companyName: user.companyName,
-      },
-      JWT_SECRET,
-      { expiresIn: "30d" }
-    );
+// Removed insecure /api/auth/token endpoint that allowed unconditional token generation.
 
-    return res.json({
-      token,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        companyName: user.companyName,
-      },
-      success: true,
-    });
-  } catch (err: any) {
-    return res.status(500).json({ error: "Gagal membuat sesi token: " + err.message, success: false });
-  }
-});
-
-// Register (Exclusive to updating Saipul Abe credentials or initializing)
-app.post("/api/auth/register", authRateLimit, (req, res) => {
-  try {
-    const { name, email, password, company } = req.body;
-    const normalizedEmail = (email || "").trim().toLowerCase();
-
-    if (normalizedEmail !== "saipulabe@gmail.com" && normalizedEmail !== "saipulabe5@gmail.com") {
-      return res.status(403).json({
-        error: "Akses Ditolak: Sistem RAB Pro ini diproteksi khusus dan HANYA dapat diakses oleh akun tunggal saipulabe@gmail.com.",
-        success: false,
-      });
-    }
-
-    if (!password || password.length < 6) {
-      return res.status(400).json({ error: "Password minimal 6 karakter.", success: false });
-    }
-
-    const newUser: ServerUser = {
-      id: "usr_admin_saipul",
-      name: (name || "Saipul Abe").trim(),
-      email: normalizedEmail,
-      passwordHash: hashPassword(password),
-      companyName: (company || "RAB Pro Enterprise").trim(),
-      role: "administrator",
-      createdAt: new Date().toISOString(),
-    };
-
-    usersDb.set(normalizedEmail, newUser);
-
-    const token = jwt.sign(
-      {
-        id: newUser.id,
-        email: newUser.email,
-        name: newUser.name,
-        role: newUser.role,
-        companyName: newUser.companyName,
-      },
-      JWT_SECRET,
-      { expiresIn: "30d" }
-    );
-
-    return res.status(201).json({
-      token,
-      user: {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-        role: newUser.role,
-        companyName: newUser.companyName,
-      },
-      success: true,
-    });
-  } catch (err: any) {
-    return res.status(500).json({ error: "Gagal memproses registrasi: " + err.message, success: false });
-  }
-});
+// Removed insecure /api/auth/register endpoint to prevent account takeover. Registration is not allowed in a strict single-account system.
 
 // Login (Strict Single-Account Check & Cryptographic Password Verification)
 app.post("/api/auth/login", authRateLimit, (req, res) => {
@@ -554,9 +452,9 @@ app.post("/api/auth/forgot-password", authRateLimit, async (req, res) => {
     if (!emailResult.success) {
       if (emailResult.isAuthError) {
         return res.json({
-          message: `Koneksi SMTP Gmail memerlukan 16-karakter "Sandi Aplikasi" (App Password dari akun Google). Untuk segera masuk, Anda dapat menggunakan Master PIN Darurat: 889900.`,
+          message: `Koneksi SMTP Gmail memerlukan 16-karakter "Sandi Aplikasi". Karena SMTP gagal dikonfigurasi, email pemulihan tidak dapat dikirim. Konfigurasikan SMTP_PASS di server untuk mengaktifkan pemulihan kata sandi.`,
           warning: "SMTP_AUTH_FAILED",
-          success: true,
+          success: false,
         });
       }
     }
@@ -598,8 +496,7 @@ app.post("/api/auth/reset-password", authRateLimit, (req, res) => {
     }
 
     const resetData = passwordResetStore.get(normalizedEmail);
-    // Allow the generated code or master emergency backup code (889900)
-    const isCodeValid = (resetData && resetData.code === resetCode.trim() && resetData.expiresAt > Date.now()) || resetCode.trim() === "889900";
+    const isCodeValid = resetData && resetData.code === resetCode.trim() && resetData.expiresAt > Date.now();
 
     if (!isCodeValid) {
       return res.status(400).json({
@@ -1256,26 +1153,45 @@ app.post("/api/ai/analyze-drawing", async (req, res) => {
         const base64Data = imageData.split("base64,")[1];
         const mimeType = imageData.split(";")[0].replace("data:", "") || fileType || "image/png";
 
-        const systemInstruction = `Anda adalah AI Spesialis Analisis Gambar Konstruksi & Senior Quantity Surveyor (QS) Indonesia tingkat ahli.
-Tugas Anda adalah membaca gambar kerja (denah, potongan, detail struktur) dan melakukan 'take-off' volume secara akurat.
+        const systemInstruction = `V16 MASTER DRAWING INTELLIGENCE ENGINE - ZERO HALLUCINATION POLICY
+
+Anda adalah AI Spesialis Analisis Gambar Konstruksi & Senior Quantity Surveyor (QS) Indonesia tingkat ahli.
+Tugas Anda adalah membaca gambar kerja dan mengekstrak informasi dengan integritas data absolut.
 
 ATURAN KETAT INTEGRITAS DATA (ANTI-HALUSINASI & GEOMETRY LOCKING):
-1. JANGAN MENGARANG DIMENSI. Hanya ekstrak angka yang secara nyata terbaca pada teks dimensi, garis grid/as, atau notasi elevasi.
-2. TERAPKAN GEOMETRY LOCKING: Lakukan validasi silang pada setiap perhitungan. Jika Anda mengekstrak panjang 4m dan lebar 3m, volume/luas harus terkunci mutlak di 12m2.
-3. BATASAN SKALA LOGIS: Lakukan validasi terhadap total luasan lahan. Pastikan akumulasi dimensi ruang logis dan tidak melebihi batas perimeter tapak (misalnya batas lot standar 6 m x 12 m).
-4. SPESIFIKASI MATERIAL PRESISI: Perhatikan anomali dan detail notasi material pada gambar potongan. Identifikasi dengan spesifik (contoh: bedakan dengan tegas antara penggunaan plat strip baja 10mm x 30mm dengan besi nako solid 10mm x 10mm pada elemen railing tangga, balkon, atau pagar untuk metrik efisiensi biaya).
-5. Jika gambar buram, resolusi rendah, teks dimensi terpotong, atau terdapat dimensi yang tidak masuk akal, JANGAN MENEBAK. Kosongkan nilai, tulis asumsi di array 'assumptions', dan isi 'qualityWarning' dengan pesan peringatan yang jelas.
+1. ZERO HALLUCINATION: JANGAN MENGARANG DIMENSI. Hanya ekstrak angka yang secara nyata terbaca.
+2. GEOMETRY LOCKING: Jika Anda mengekstrak panjang 4m dan lebar 3m, luas harus terkunci mutlak di 12m2.
+3. BATASAN SKALA LOGIS: Validasi total luasan lahan dan bangunan. Pastikan akumulasi dimensi ruang masuk akal.
+4. SPESIFIKASI MATERIAL PRESISI: Perhatikan anomali dan detail notasi material pada gambar.
+5. NO GUESSING: Jika buram atau terpotong, JANGAN MENEBAK. Kosongkan nilai, isi 'missingInformation'.
+6. EVIDENCE-FIRST: Setiap item yang diekstrak wajib menyertakan bukti visual (location/evidence).
+7. QS TAKEOFF: Hasilkan volume quantities murni sebagai AI_SUGGESTED, dengan method (DIRECT_COUNT, DIMENSION_BASED, AREA_BASED).
 
-Anda WAJIB mengembalikan output HANYA dalam format JSON valid tanpa markdown tambahan, mengikuti skema berikut:
+Anda WAJIB mengembalikan output HANYA dalam format JSON valid mengikuti skema berikut:
 {
+  "analysisId": "string",
+  "documentId": "string",
+  "sheetId": "string",
   "drawingTitle": "string",
   "drawingTypeDetected": "string",
+  "classificationConfidence": 95,
+  "summary": "string",
   "qualityWarning": "string",
   "confidenceScore": 95,
   "assumptions": ["string"],
-  "detectedElements": [
+  "dimensions": [
     {
-      "id": "string",
+      "dimensionValue": 0,
+      "unit": "string",
+      "rawText": "string",
+      "sourceLocation": "string",
+      "evidence": "string",
+      "confidence": 95,
+      "status": "OBSERVED | INFERRED | CALCULATED"
+    }
+  ],
+  "objects": [
+    {
       "category": "string",
       "name": "string",
       "location": "string",
@@ -1283,24 +1199,44 @@ Anda WAJIB mengembalikan output HANYA dalam format JSON valid tanpa markdown tam
       "confidence": 95
     }
   ],
-  "extractedDimensions": [
+  "materials": [
     {
-      "label": "string",
-      "value": 0,
-      "unit": "string",
-      "source": "string"
+      "material": "string",
+      "evidence": "string",
+      "sourceLocation": "string",
+      "confidence": 95
     }
   ],
+  "tables": ["string"],
+  "anomalies": [
+    {
+      "severity": "INFO | LOW | MEDIUM | HIGH | CRITICAL",
+      "description": "string",
+      "location": "string"
+    }
+  ],
+  "missingInformation": [
+    {
+      "field": "string",
+      "reason": "string",
+      "severity": "HIGH",
+      "requiresUserInput": true
+    }
+  ],
+  "crossSheetConflicts": [],
   "estimatedItems": [
     {
       "workCode": "string",
-      "workName": "string (harus mencakup detail spesifikasi material)",
+      "workName": "string",
       "category": "string",
       "unit": "string",
       "volume": 0,
-      "unitPrice": 0,
-      "formulaExplanation": "string (tuliskan langkah matematis detail)",
-      "confidenceScore": 95
+      
+      "formulaExplanation": "string",
+      "confidenceScore": 95,
+      "method": "DIRECT_COUNT | DIMENSION_BASED | AREA_BASED | LENGTH_BASED | VOLUME_BASED | FORMULA_BASED",
+      "status": "AI_SUGGESTED",
+      "evidence": "string"
     }
   ]
 }`;
@@ -1399,7 +1335,7 @@ ${existingRABSummary ? `\nPos RAB yang sudah ada:\n${existingRABSummary}` : ""}`
           category: "Pekerjaan Tanah",
           unit: "m³",
           volume: 43.2,
-          unitPrice: 103125,
+          
           formulaExplanation: "Volume = 48m x 0.9m x 1.0m",
           confidenceScore: 92,
         },
@@ -1410,7 +1346,7 @@ ${existingRABSummary ? `\nPos RAB yang sudah ada:\n${existingRABSummary}` : ""}`
           category: "Pekerjaan Pondasi",
           unit: "m³",
           volume: 19.2,
-          unitPrice: 1113245,
+          
           formulaExplanation: "Volume = Luas trapesium 0.40 m² x Panjang 48m",
           confidenceScore: 95,
         },
@@ -1421,7 +1357,7 @@ ${existingRABSummary ? `\nPos RAB yang sudah ada:\n${existingRABSummary}` : ""}`
           category: "Pekerjaan Struktur",
           unit: "m³",
           volume: 1.44,
-          unitPrice: 5120000,
+          
           formulaExplanation: "Volume = 48m x 0.15m x 0.20m",
           confidenceScore: 94,
         },
@@ -1432,7 +1368,7 @@ ${existingRABSummary ? `\nPos RAB yang sudah ada:\n${existingRABSummary}` : ""}`
           category: "Pekerjaan Struktur",
           unit: "m³",
           volume: 1.3,
-          unitPrice: 5450000,
+          
           formulaExplanation: "Volume = 16 unit x 3.6m x 0.0225m² penampang",
           confidenceScore: 90,
         },
@@ -1463,7 +1399,7 @@ ${existingRABSummary ? `\nPos RAB yang sudah ada:\n${existingRABSummary}` : ""}`
           category: "Pekerjaan Atap",
           unit: "m²",
           volume: 166.3,
-          unitPrice: 185000,
+          
           formulaExplanation: "Luas datar 144 m² / cos(30°) = 166.32 m²",
           confidenceScore: 92,
         },
@@ -1474,7 +1410,7 @@ ${existingRABSummary ? `\nPos RAB yang sudah ada:\n${existingRABSummary}` : ""}`
           category: "Pekerjaan Atap",
           unit: "m²",
           volume: 166.3,
-          unitPrice: 225000,
+          
           formulaExplanation: "Sama dengan luasan bidang rangka atap terpasang",
           confidenceScore: 91,
         },
@@ -1485,7 +1421,7 @@ ${existingRABSummary ? `\nPos RAB yang sudah ada:\n${existingRABSummary}` : ""}`
           category: "Pekerjaan Atap",
           unit: "m¹",
           volume: 14.5,
-          unitPrice: 135000,
+          
           formulaExplanation: "Panjang garis bentang nok utama",
           confidenceScore: 90,
         },
@@ -1496,7 +1432,7 @@ ${existingRABSummary ? `\nPos RAB yang sudah ada:\n${existingRABSummary}` : ""}`
           category: "Pekerjaan Atap",
           unit: "m¹",
           volume: 46.0,
-          unitPrice: 95000,
+          
           formulaExplanation: "Keliling total overstek atap luar",
           confidenceScore: 89,
         },
@@ -1529,7 +1465,7 @@ ${existingRABSummary ? `\nPos RAB yang sudah ada:\n${existingRABSummary}` : ""}`
           category: "Pekerjaan Dinding",
           unit: "m²",
           volume: 218.3,
-          unitPrice: 165000,
+          
           formulaExplanation: "Luas kotor 236.8 m² dikurangi luas bukaan pintu/jendela 18.5 m² = 218.3 m² netto",
           confidenceScore: 94,
         },
@@ -1540,7 +1476,7 @@ ${existingRABSummary ? `\nPos RAB yang sudah ada:\n${existingRABSummary}` : ""}`
           category: "Pekerjaan Dinding",
           unit: "m²",
           volume: 436.6,
-          unitPrice: 78000,
+          
           formulaExplanation: "Dua sisi pasangan dinding bata ringan netto",
           confidenceScore: 93,
         },
@@ -1551,7 +1487,7 @@ ${existingRABSummary ? `\nPos RAB yang sudah ada:\n${existingRABSummary}` : ""}`
           category: "Pekerjaan Lantai",
           unit: "m²",
           volume: 101.3,
-          unitPrice: 285000,
+          
           formulaExplanation: "Luas bersih 96.5 m² ditambah allowance pemotongan/waste 5%",
           confidenceScore: 96,
         },
@@ -1562,7 +1498,7 @@ ${existingRABSummary ? `\nPos RAB yang sudah ada:\n${existingRABSummary}` : ""}`
           category: "Pekerjaan Plafon",
           unit: "m²",
           volume: 96.5,
-          unitPrice: 125000,
+          
           formulaExplanation: "Luas horizontal bidang plafon ruangan",
           confidenceScore: 95,
         },
@@ -1573,7 +1509,7 @@ ${existingRABSummary ? `\nPos RAB yang sudah ada:\n${existingRABSummary}` : ""}`
           category: "Pekerjaan Pintu dan Jendela",
           unit: "unit",
           volume: 9.0,
-          unitPrice: 1850000,
+          
           formulaExplanation: "Penghitungan unit kusen dan bukaan pada denah arsitektur",
           confidenceScore: 92,
         },
@@ -1584,7 +1520,7 @@ ${existingRABSummary ? `\nPos RAB yang sudah ada:\n${existingRABSummary}` : ""}`
           category: "Pekerjaan Pengecatan",
           unit: "m²",
           volume: 320.0,
-          unitPrice: 38000,
+          
           formulaExplanation: "Luas permukaan dinding dalam yang sudah diaci",
           confidenceScore: 90,
         },
@@ -1726,11 +1662,11 @@ ${userPrompt ? `Instruksi tambahan: ${userPrompt}` : ""}`;
         detectedHeaders: ["No", "Uraian Pekerjaan", "Volume", "Satuan", "Harga Satuan (Rp)", "Jumlah Harga (Rp)"],
         fileTotal: 45000000,
         items: [
-          { code: "PSP-01", name: "Pembersihan lapangan dan pasang patok", category: "Pekerjaan Persiapan", unit: "m²", volume: 100, unitPrice: 25000, totalAmount: 2500000, confidenceScore: 95, needsVerification: false },
-          { code: "TNH-01", name: "Galian tanah pondasi batu kali", category: "Pekerjaan Tanah", unit: "m³", volume: 24, unitPrice: 105000, totalAmount: 2520000, confidenceScore: 92, needsVerification: false },
-          { code: "PND-01", name: "Pasangan pondasi batu belah 1:4", category: "Pekerjaan Pondasi", unit: "m³", volume: 16, unitPrice: 1115000, totalAmount: 17840000, confidenceScore: 94, needsVerification: false },
-          { code: "STR-01", name: "Sloof beton bertulang 15/20 cm K-225", category: "Pekerjaan Struktur", unit: "m³", volume: 2.4, unitPrice: 5120000, totalAmount: 12288000, confidenceScore: 90, needsVerification: false },
-          { code: "DND-01", name: "Pasangan bata ringan hebel t=10cm", category: "Pekerjaan Dinding", unit: "m²", volume: 65, unitPrice: 150000, totalAmount: 9750000, confidenceScore: 88, needsVerification: false },
+          { code: "PSP-01", name: "Pembersihan lapangan dan pasang patok", category: "Pekerjaan Persiapan", unit: "m²", volume: 100,  totalAmount: 2500000, confidenceScore: 95, needsVerification: false },
+          { code: "TNH-01", name: "Galian tanah pondasi batu kali", category: "Pekerjaan Tanah", unit: "m³", volume: 24,  totalAmount: 2520000, confidenceScore: 92, needsVerification: false },
+          { code: "PND-01", name: "Pasangan pondasi batu belah 1:4", category: "Pekerjaan Pondasi", unit: "m³", volume: 16,  totalAmount: 17840000, confidenceScore: 94, needsVerification: false },
+          { code: "STR-01", name: "Sloof beton bertulang 15/20 cm K-225", category: "Pekerjaan Struktur", unit: "m³", volume: 2.4,  totalAmount: 12288000, confidenceScore: 90, needsVerification: false },
+          { code: "DND-01", name: "Pasangan bata ringan hebel t=10cm", category: "Pekerjaan Dinding", unit: "m²", volume: 65,  totalAmount: 9750000, confidenceScore: 88, needsVerification: false },
         ],
       },
     });

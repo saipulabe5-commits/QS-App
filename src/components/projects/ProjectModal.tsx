@@ -15,11 +15,12 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
   projectToEdit,
   onClose,
 }) => {
-  const { addProject, updateProject, templates, settings } = useApp();
+  const { addProject, updateProject, rabTemplates, settings } = useApp();
 
   const [formData, setFormData] = useState({
     name: '',
     documentNo: '',
+    buildingArea: 0,
     clientName: '',
     location: '',
     contractor: '',
@@ -41,6 +42,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
       setFormData({
         name: projectToEdit.name,
         documentNo: projectToEdit.documentNo,
+        buildingArea: projectToEdit.buildingArea || 0,
         clientName: projectToEdit.clientName,
         location: projectToEdit.location,
         contractor: projectToEdit.contractor,
@@ -58,10 +60,10 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
       const currentYear = new Date().getFullYear();
       const currentMonthRoman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'][new Date().getMonth()];
       const docNo = `RAB/${currentYear}/${currentMonthRoman}/001`;
-
       setFormData({
         name: '',
         documentNo: docNo,
+        buildingArea: 0,
         clientName: '',
         location: '',
         contractor: settings.companyName,
@@ -110,6 +112,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
       updateProject(projectToEdit.id, {
         name: formData.name.trim(),
         documentNo: formData.documentNo.trim(),
+        buildingArea: Number(formData.buildingArea) || 0,
         clientName: formData.clientName.trim(),
         location: formData.location.trim(),
         contractor: formData.contractor.trim(),
@@ -127,6 +130,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
         {
           name: formData.name.trim(),
           documentNo: formData.documentNo.trim(),
+          buildingArea: Number(formData.buildingArea) || 0,
           clientName: formData.clientName.trim(),
           location: formData.location.trim(),
           contractor: formData.contractor.trim(),
@@ -243,8 +247,8 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
             </div>
           </div>
 
-          {/* Row 2: Klien & Lokasi */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Row 2: Klien, Lokasi, dan Luas */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1">
                 Nama Pemilik / Klien
@@ -267,6 +271,19 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                 value={formData.location}
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                 placeholder="BSD City, Tangerang Selatan"
+                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">
+                Luas Bangunan (m²)
+              </label>
+              <input
+                type="number"
+                value={formData.buildingArea || ''}
+                onChange={(e) => setFormData({ ...formData, buildingArea: Number(e.target.value) })}
+                placeholder="100"
                 className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
               />
             </div>
@@ -396,9 +413,9 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                 className="w-full px-3 py-2 text-xs bg-white border border-blue-200 rounded-lg text-slate-700 focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
               >
                 <option value="">-- Mulai dengan RAB Kosong --</option>
-                {templates.map((tpl) => (
+                {rabTemplates.map((tpl) => (
                   <option key={tpl.id} value={tpl.id}>
-                    {tpl.name} ({tpl.items.length} item pekerjaan)
+                    {tpl.name} ({tpl.items?.length || 0} item pekerjaan)
                   </option>
                 ))}
               </select>

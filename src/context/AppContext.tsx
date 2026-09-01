@@ -24,7 +24,7 @@ import {
   ADMIN_PERMISSIONS,
 } from '../types';
 import {
-  INITIAL_USER,
+  
   INITIAL_SETTINGS,
   INITIAL_PROJECTS,
   INITIAL_RAB_ITEMS,
@@ -205,7 +205,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isDbBooting, setIsDbBooting] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(INITIAL_USER);
+  const [user, setUser] = useState<User | null>(null);
   const [activeTab, setActiveTab] = useState<string>('dashboard');
   const [activeProjectId, setActiveProjectId] = useState<string | null>(INITIAL_PROJECTS[0]?.id || null);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
@@ -298,15 +298,60 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     async function bootDB() {
       setIsDbBooting(true);
       try {
-        const rawUser = safeLocalStorageGet(STORAGE_KEYS.USER);
-        if (rawUser) {
+        const token = safeLocalStorageGet('rabpro_token');
+        if (token) {
           try {
-            setUser(JSON.parse(rawUser));
-          } catch {
-            setUser(INITIAL_USER);
+            const res = await fetch('/api/auth/me', {
+              headers: { Authorization: `Bearer ${token}` }
+            });
+            if (res.ok) {
+              const data = await res.json();
+              if (data.success && data.user) {
+                setUser(data.user);
+                safeLocalStorageSet(STORAGE_KEYS.USER, JSON.stringify(data.user));
+              } else {
+                throw new Error('Invalid response');
+              }
+            } else {
+              // Token invalid or expired
+              safeLocalStorageRemove('rabpro_token');
+              safeLocalStorageRemove(STORAGE_KEYS.USER);
+              setUser(null);
+            }
+          } catch (e) {
+            // Network error or fetch failed.
+            // Strict zero trust: Only authenticate locally if we have a valid, unexpired JWT.
+            try {
+              const base64Url = token.split('.')[1];
+              const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+              const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                  return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+              }).join(''));
+              const payload = JSON.parse(jsonPayload);
+              if (payload.exp && payload.exp * 1000 > Date.now()) {
+                const storedUser = safeLocalStorageGet(STORAGE_KEYS.USER);
+                if (storedUser) {
+                  const parsedUser = JSON.parse(storedUser);
+                  // Ensure ID matches
+                  if (parsedUser.id === payload.id) {
+                    setUser(parsedUser);
+                  } else {
+                    setUser(null);
+                  }
+                } else {
+                  setUser(null);
+                }
+              } else {
+                safeLocalStorageRemove('rabpro_token');
+                safeLocalStorageRemove(STORAGE_KEYS.USER);
+                setUser(null);
+              }
+            } catch(jwtErr) {
+              setUser(null);
+            }
           }
         } else {
-          setUser(INITIAL_USER);
+          setUser(null);
         }
 
         const rawActiveProject = safeLocalStorageGet(STORAGE_KEYS.ACTIVE_PROJECT);
@@ -375,22 +420,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
           }
         }
 
-        // Auto authenticate if token missing
-        if (!safeLocalStorageGet('rabpro_token')) {
-          try {
-            const res = await fetch('/api/auth/token', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email: rawUser ? JSON.parse(rawUser)?.email : 'saipulabe@gmail.com' }),
-            });
-            const data = await res.json();
-            if (data.token) {
-              safeLocalStorageSet('rabpro_token', data.token);
-            }
-          } catch (e) {
-            console.warn('Auto auth token init:', e);
-          }
-        }
       } catch (e) {
         console.error('Error during DB boot:', e);
       } finally {
@@ -492,32 +521,16 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       if (data.token) {
         safeLocalStorageSet('rabpro_token', data.token);
       }
-      const loggedUser: User = data.user || {
-        id: 'usr_1',
-        name: email.split('@')[0],
-        email: email,
-        role: 'superadmin',
-        companyName: 'PT. Citra Kusuma Development',
-        permissions: ADMIN_PERMISSIONS,
-        avatarUrl: '',
-      };
+      if (!data.user) throw new Error('Data user tidak valid dari server');
+      const loggedUser: User = data.user;
       setUser(loggedUser);
       showToast('Login Berhasil', `Selamat datang kembali, ${loggedUser.name}!`, 'success');
       return { success: true, user: loggedUser };
     } catch (err: any) {
-      // Offline fallback
-      const fallbackUser: User = {
-        id: 'usr_offline',
-        name: email.split('@')[0] || 'Pengguna RAB',
-        email: email || 'user@rabpro.id',
-        role: 'superadmin',
-        companyName: 'PT. Citra Kusuma Development',
-        permissions: ADMIN_PERMISSIONS,
-        avatarUrl: '',
-      };
-      setUser(fallbackUser);
-      showToast('Login Berhasil (Offline)', `Masuk sebagai ${fallbackUser.name}`, 'success');
-      return { success: true, user: fallbackUser, error: err.message };
+      // Offline fallback is explicitly forbidden for security reasons.
+      // Must not authenticate without server validation.
+      showToast('Login Gagal', err.message || 'Koneksi ke server gagal. Periksa jaringan Anda.', 'error');
+      return { success: false, error: err.message || 'Koneksi ke server gagal' };
     }
   };
 
@@ -543,31 +556,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       if (data.token) {
         safeLocalStorageSet('rabpro_token', data.token);
       }
-      const newUser: User = data.user || {
-        id: `usr_${Date.now()}`,
-        name,
-        email,
-        role: 'superadmin',
-        companyName: company || 'PT. Citra Kusuma Development',
-        permissions: ADMIN_PERMISSIONS,
-        avatarUrl: '',
-      };
+      if (!data.user) throw new Error('Data user tidak valid dari server');
+      const newUser: User = data.user;
       setUser(newUser);
-      showToast('Akun Dibuat', `Selamat datang di RAB Pro, ${name}!`, 'success');
+      showToast('Akun Dibuat', `Selamat datang di RAB Pro, ${newUser.name}!`, 'success');
       return { success: true, user: newUser };
     } catch (err: any) {
-      const offlineUser: User = {
-        id: `usr_${Date.now()}`,
-        name,
-        email,
-        role: 'superadmin',
-        companyName: company || 'PT. Citra Kusuma Development',
-        permissions: ADMIN_PERMISSIONS,
-        avatarUrl: '',
-      };
-      setUser(offlineUser);
-      showToast('Akun Dibuat (Offline)', `Selamat datang, ${name}!`, 'success');
-      return { success: true, user: offlineUser, error: err.message };
+      showToast('Pendaftaran Gagal', err.message || 'Koneksi ke server gagal.', 'error');
+      return { success: false, error: err.message || 'Koneksi ke server gagal' };
     }
   };
 
@@ -626,11 +622,18 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       const res = await fetch('/api/auth/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, code, newPassword: newPass }),
+        body: JSON.stringify({ email, resetCode: code, newPassword: newPass }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Gagal mereset password');
-      showToast('Password Berhasil Direset', 'Silakan login dengan password baru Anda.', 'success');
+      if (!res.ok || !data.success) throw new Error(data.error || 'Gagal mereset password');
+      
+      if (data.token && data.user) {
+        safeLocalStorageSet('rabpro_token', data.token);
+        safeLocalStorageSet(STORAGE_KEYS.USER, JSON.stringify(data.user));
+        setUser(data.user);
+      }
+      
+      showToast('Password Berhasil Direset', 'Anda telah masuk dengan password baru Anda.', 'success');
       return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message };
@@ -656,7 +659,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       status: projectData.status || 'Draft',
       overheadPercent: projectData.overheadPercent ?? 5,
       profitPercent: projectData.profitPercent ?? 10,
-      taxPercent: projectData.taxPercent ?? 11,
+      taxPercent: projectData.taxPercent ?? 0,
       targetBudget: projectData.targetBudget ?? 0,
       projectType: projectData.projectType || 'Bangunan Gedung',
       buildingArea: projectData.buildingArea ?? 0,
@@ -667,7 +670,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     if (templateId) {
       setTimeout(() => {
-        applyTemplateToProject(templateId, newProject.id, 'append');
+        applyRABTemplate(templateId, newProject.id, 'append');
       }, 0);
     }
 
@@ -898,7 +901,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       estimatedTotal: total,
       defaultOverhead: proj?.overheadPercent ?? 5,
       defaultProfit: proj?.profitPercent ?? 10,
-      defaultTax: proj?.taxPercent ?? 11,
+      defaultTax: proj?.taxPercent ?? 0,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       items: tplItems,
@@ -1211,7 +1214,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       estimatedTotal: total,
       defaultOverhead: 5,
       defaultProfit: 10,
-      defaultTax: 11,
+      defaultTax: 0,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       items: tplItems,
@@ -1357,11 +1360,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const createProjectFromRABTemplate = (templateId: string, projectData: Partial<Project>): Project => {
     const tmpl = rabTemplates.find((t) => t.id === templateId);
     const newProject = addProject({
-      ...projectData,
-      name: projectData.name || (tmpl ? `Proyek dari ${tmpl.name}` : 'Proyek Baru'),
+      name: tmpl ? `Proyek dari ${tmpl.name}` : 'Proyek Baru',
       overheadPercent: tmpl?.defaultOverhead ?? 5,
       profitPercent: tmpl?.defaultProfit ?? 10,
-      taxPercent: tmpl?.defaultTax ?? 11,
+      taxPercent: settings.defaultTax,
+      ...projectData,
     });
     if (tmpl) {
       applyRABTemplate(templateId, newProject.id, 'replace');
@@ -1604,7 +1607,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       }
 
       const aiData = await res.json();
-      const estimated: EstimatedDrawingItem[] = (aiData.estimatedItems || []).map((it: any, idx: number) => {
+      const payload = aiData.data || aiData;
+      const estimated: EstimatedDrawingItem[] = (payload.estimatedItems || []).map((it: any, idx: number) => {
         const vol = Number(it.volume) || 1;
         const up = Number(it.unitPrice) || 0;
         return {
@@ -1634,9 +1638,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         fileName: drawing.fileName,
         status: 'completed',
         analyzedAt: new Date().toISOString(),
-        summary: aiData.summary || 'Analisis dokumen gambar konstruksi selesai.',
-        detectedElements: aiData.detectedElements || [],
-        extractedDimensions: aiData.extractedDimensions || [],
+        summary: payload.summary || 'Analisis dokumen gambar konstruksi selesai.',
+        detectedElements: payload.objects || payload.detectedElements || [],
+        extractedDimensions: payload.dimensions || payload.extractedDimensions || [],
+        assumptions: payload.assumptions || payload.missingInformation || [],
+        qualityWarning: payload.qualityWarning || '',
         estimatedItems: estimated,
         totalEstimatedCost: total,
         estimatedTotal: total,
@@ -1880,8 +1886,33 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   // ── Settings & Reset ───────────────────────────────────────────────────────
   const updateSettings = (updates: Partial<CompanySettings>) => {
-    setSettings((prev) => ({ ...prev, ...updates }));
-    showToast('Pengaturan Disimpan', 'Pengaturan perusahaan berhasil diperbarui.', 'success');
+    setSettings((prev) => {
+      const newSettings = { ...prev, ...updates };
+      
+      // Cascade global OHP changes to all AHSP Master Data
+      if (
+        (updates.defaultOverhead !== undefined && updates.defaultOverhead !== prev.defaultOverhead) ||
+        (updates.defaultProfit !== undefined && updates.defaultProfit !== prev.defaultProfit)
+      ) {
+        setAhspItems((prevAhsp) => {
+          return prevAhsp.map(ahsp => {
+            const subtotal = ahsp.components.reduce((sum, c) => sum + (c.totalCost || c.coefficient * c.unitPrice || 0), 0);
+            const oh = subtotal * (newSettings.defaultOverhead / 100);
+            const pr = subtotal * (newSettings.defaultProfit / 100);
+            const newUnitPrice = subtotal + oh + pr;
+            
+            return {
+              ...ahsp,
+              overheadPercent: newSettings.defaultOverhead,
+              profitPercent: newSettings.defaultProfit,
+              unitPrice: newUnitPrice
+            };
+          });
+        });
+      }
+      return newSettings;
+    });
+    showToast('Pengaturan Disimpan', 'Pengaturan perusahaan berhasil diperbarui dan diterapkan ke seluruh Master Data AHSP.', 'success');
   };
 
   const resetToDemoData = () => {

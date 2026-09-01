@@ -20,6 +20,7 @@ interface RABSummaryCardProps {
   calc: RABCalculationResult;
   itemCount: number;
   onUpdateProjectRates: (overheadPercent: number, profitPercent: number, taxPercent: number) => void;
+  onUpdateBuildingArea?: (area: number) => void;
   onSaveAsTemplate: () => void;
 }
 
@@ -28,20 +29,30 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
   calc,
   itemCount,
   onUpdateProjectRates,
+  onUpdateBuildingArea,
   onSaveAsTemplate,
 }) => {
   const [isEditingRates, setIsEditingRates] = useState(false);
-  const [overhead, setOverhead] = useState<number>(project.overheadPercent || 5);
-  const [profit, setProfit] = useState<number>(project.profitPercent || 10);
-  const [tax, setTax] = useState<number>(project.taxPercent || 11);
+  const [tax, setTax] = useState<number>(project.taxPercent ?? 0);
+  const [buildingArea, setBuildingArea] = useState<number>(project.buildingArea ?? 0);
   const [showCategoryPills, setShowCategoryPills] = useState(false);
 
-  const handleSaveRates = () => {
-    const validOverhead = Math.min(100, Math.max(0, Number(overhead) || 0));
-    const validProfit = Math.min(100, Math.max(0, Number(profit) || 0));
-    const validTax = Math.min(100, Math.max(0, Number(tax) || 0));
+  React.useEffect(() => {
+    setTax(project.taxPercent ?? 0);
+    setBuildingArea(project.buildingArea ?? 0);
+  }, [project.taxPercent, project.buildingArea]);
 
+  const handleSaveRates = () => {
+    const validTax = Math.min(100, Math.max(0, Number(tax) || 0));
+    const validOverhead = project.overheadPercent || 5;
+    const validProfit = project.profitPercent || 10;
+    
     onUpdateProjectRates(validOverhead, validProfit, validTax);
+    
+    if (onUpdateBuildingArea) {
+      onUpdateBuildingArea(Math.max(0, Number(buildingArea) || 0));
+    }
+    
     setIsEditingRates(false);
   };
 
@@ -72,8 +83,8 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
                 : 'bg-slate-800 border-slate-700 text-slate-300 hover:text-white hover:bg-slate-700'
             }`}
           >
-            <Percent className="w-3.5 h-3.5" />
-            <span>{isEditingRates ? 'Tutup Parameter' : 'Ubah % Parameter'}</span>
+            <Building2 className="w-3.5 h-3.5" />
+            <span>{isEditingRates ? 'Tutup Parameter' : 'Atur Luas Bangunan'}</span>
           </button>
 
           <button
@@ -87,60 +98,37 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
         </div>
       </div>
 
-      {/* Editable Rates Parameters Form */}
+      {/* Editable Area Form */}
       {isEditingRates && (
         <div className="p-4 bg-slate-800 rounded-xl border border-slate-700 space-y-4">
           <div className="flex items-center justify-between">
             <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
               <Percent className="w-3.5 h-3.5 text-blue-400" />
-              Pengaturan Persentase Biaya Tidak Langsung
+              Pengaturan Parameter Proyek
             </h4>
-            <span className="text-[11px] text-slate-400">Rentang valid: 0% s.d. 100%</span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1">
-                Overhead Proyek (%)
+                Luas Bangunan (m²)
               </label>
               <div className="relative">
                 <input
                   type="number"
                   min="0"
-                  max="100"
-                  step="0.5"
-                  value={overhead}
-                  onChange={(e) => setOverhead(Number(e.target.value))}
+                  value={buildingArea || ''}
+                  onChange={(e) => setBuildingArea(Number(e.target.value))}
+                  placeholder="0"
                   className="w-full pl-3 pr-8 py-2 text-xs bg-slate-900 border border-slate-700 rounded-xl text-white font-mono focus:border-blue-500 focus:outline-none"
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-bold">
-                  %
+                  m²
                 </span>
               </div>
-              <p className="text-[10px] text-slate-400 mt-1">Standar umum: 3% - 8%</p>
+              <p className="text-[10px] text-slate-400 mt-1">Digunakan untuk menghitung Harga Permeter Bangunan.</p>
             </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
-                Keuntungan / Profit (%)
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  min="0"
-                  max="100"
-                  step="0.5"
-                  value={profit}
-                  onChange={(e) => setProfit(Number(e.target.value))}
-                  className="w-full pl-3 pr-8 py-2 text-xs bg-slate-900 border border-slate-700 rounded-xl text-white font-mono focus:border-blue-500 focus:outline-none"
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-bold">
-                  %
-                </span>
-              </div>
-              <p className="text-[10px] text-slate-400 mt-1">Standar jasa kontraktor: 10% - 15%</p>
-            </div>
-
+            
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1">
                 Pajak PPN (%)
@@ -150,16 +138,16 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
                   type="number"
                   min="0"
                   max="100"
-                  step="1"
-                  value={tax}
+                  value={tax || ''}
                   onChange={(e) => setTax(Number(e.target.value))}
+                  placeholder="0"
                   className="w-full pl-3 pr-8 py-2 text-xs bg-slate-900 border border-slate-700 rounded-xl text-white font-mono focus:border-blue-500 focus:outline-none"
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-bold">
                   %
                 </span>
               </div>
-              <p className="text-[10px] text-slate-400 mt-1">PPN Indonesia: 11% / 12%</p>
+              <p className="text-[10px] text-slate-400 mt-1">Ditambahkan pada total akhir Rekapitulasi RAB.</p>
             </div>
           </div>
 
@@ -223,52 +211,11 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
             </span>
           </div>
 
-          {/* B. Overhead */}
-          <div className="flex justify-between items-center py-1 text-slate-300 border-t border-slate-700/60">
+          {/* B. Pajak PPN */}
+          <div className="flex justify-between items-center py-1 text-slate-300 border-t border-slate-700/60 mt-1 pt-2">
             <div className="flex items-center space-x-2">
               <span className="w-5 h-5 rounded-md bg-slate-900 text-slate-300 border border-slate-700 flex items-center justify-center font-bold text-[10px]">
                 B
-              </span>
-              <span>Biaya Overhead</span>
-              <span className="text-[11px] font-bold text-blue-400 bg-blue-950 px-1.5 py-0.5 rounded-sm border border-blue-800">
-                {project.overheadPercent}%
-              </span>
-            </div>
-            <span className="font-mono text-slate-200">{formatRupiah(calc.overheadCost)}</span>
-          </div>
-
-          {/* C. Profit */}
-          <div className="flex justify-between items-center py-1 text-slate-300 border-t border-slate-700/60">
-            <div className="flex items-center space-x-2">
-              <span className="w-5 h-5 rounded-md bg-slate-900 text-slate-300 border border-slate-700 flex items-center justify-center font-bold text-[10px]">
-                C
-              </span>
-              <span>Keuntungan Pelaksana (Profit)</span>
-              <span className="text-[11px] font-bold text-blue-400 bg-blue-950 px-1.5 py-0.5 rounded-sm border border-blue-800">
-                {project.profitPercent}%
-              </span>
-            </div>
-            <span className="font-mono text-slate-200">{formatRupiah(calc.profitCost)}</span>
-          </div>
-
-          {/* D. Subtotal Biaya Proyek */}
-          <div className="flex justify-between items-center py-1.5 text-slate-200 border-t border-slate-700 font-semibold bg-slate-900/40 px-2.5 rounded-lg">
-            <div className="flex items-center space-x-2">
-              <span className="w-5 h-5 rounded-md bg-blue-900 text-blue-200 flex items-center justify-center font-bold text-[10px]">
-                D
-              </span>
-              <span>Subtotal Biaya Proyek (A + B + C)</span>
-            </div>
-            <span className="font-mono font-bold text-white">
-              {formatRupiah(calc.directCost + calc.overheadCost + calc.profitCost)}
-            </span>
-          </div>
-
-          {/* E. Pajak PPN */}
-          <div className="flex justify-between items-center py-1 text-slate-300 border-t border-slate-700/60">
-            <div className="flex items-center space-x-2">
-              <span className="w-5 h-5 rounded-md bg-slate-900 text-slate-300 border border-slate-700 flex items-center justify-center font-bold text-[10px]">
-                E
               </span>
               <span>Pajak Pertambahan Nilai (PPN)</span>
               <span className="text-[11px] font-bold text-blue-400 bg-blue-950 px-1.5 py-0.5 rounded-sm border border-blue-800">
@@ -288,6 +235,16 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
             </div>
             <div className="text-lg sm:text-2xl font-black text-blue-400 font-mono tracking-tight">
               {formatRupiah(calc.grandTotal)}
+            </div>
+          </div>
+          
+          {/* HARGA PER METER */}
+          <div className="flex justify-between items-center pt-2 mt-2 border-t border-slate-700/50">
+            <div className="text-xs text-slate-400">
+              Harga Permeter Bangunan {project.buildingArea ? `(Luas: ${project.buildingArea} m²)` : '(Luas belum diisi)'}
+            </div>
+            <div className="font-mono font-bold text-sm text-slate-300">
+              {project.buildingArea ? `${formatRupiah(Math.round(calc.grandTotal / project.buildingArea))} / m²` : 'Rp 0 / m²'}
             </div>
           </div>
         </div>
