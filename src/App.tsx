@@ -1,9 +1,15 @@
-import React, { useState, Suspense, lazy } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { AppProvider, useApp } from './context/AppContext';
 import { ErrorBoundary } from './ErrorBoundary';
 import { Sidebar } from './components/layout/Sidebar';
-import { Topbar } from './components/layout/Topbar';
+import { MacToolbar } from './components/layout/MacToolbar';
+import { StatusBar } from './components/layout/StatusBar';
+import { InspectorPanel } from './components/layout/InspectorPanel';
+import { CommandBar } from './components/layout/CommandBar';
+import { ProjectSwitcherModal } from './components/layout/ProjectSwitcherModal';
+import { KeyboardShortcutsModal } from './components/layout/KeyboardShortcutsModal';
+import { DiagnosticsModal } from './components/diagnostics/DiagnosticsModal';
 import { ToastContainer } from './components/layout/Toast';
 import { ViewFallback } from './components/layout/ViewFallback';
 import { DashboardView } from './components/dashboard/DashboardView';
@@ -36,12 +42,55 @@ const MainLayout: React.FC = () => {
   // Check if Safe Mode is requested via URL query (?safemode=1)
   const isSafeMode = typeof window !== 'undefined' && window.location.search.includes('safemode=1');
 
-  // Modals state
+  // Desktop Panels & Modals State
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [isAIModalOpen, setIsAIModalOpen] = useState(false);
   const [aiInitialTab, setAiInitialTab] = useState<'chat' | 'missing' | 'audit' | 'volume' | 'savings' | 'summary' | 'estimate'>('chat');
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isQuickBuilderOpen, setIsQuickBuilderOpen] = useState(false);
+
+  // Mac Desktop Experience Panels
+  const [isCommandBarOpen, setIsCommandBarOpen] = useState(false);
+  const [isProjectSwitcherOpen, setIsProjectSwitcherOpen] = useState(false);
+  const [isInspectorOpen, setIsInspectorOpen] = useState(false);
+  const [isShortcutsModalOpen, setIsShortcutsModalOpen] = useState(false);
+  const [isDiagnosticsModalOpen, setIsDiagnosticsModalOpen] = useState(false);
+  const [isFocusMode, setIsFocusMode] = useState(false);
+
+  // GLOBAL KEYBOARD SHORTCUTS CONTROLLER
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't intercept shortcuts when typing in inputs/textareas except for Command+K/P/I/Escape
+      const target = e.target as HTMLElement;
+      const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
+
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsCommandBarOpen((prev) => !prev);
+      } else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'p') {
+        e.preventDefault();
+        setIsProjectSwitcherOpen((prev) => !prev);
+      } else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'i') {
+        e.preventDefault();
+        setIsInspectorOpen((prev) => !prev);
+      } else if ((e.metaKey || e.ctrlKey) && e.key === '/') {
+        e.preventDefault();
+        setIsShortcutsModalOpen((prev) => !prev);
+      } else if (e.altKey && e.key.toLowerCase() === 'd') {
+        e.preventDefault();
+        setIsDiagnosticsModalOpen((prev) => !prev);
+      } else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'n' && !isInput) {
+        e.preventDefault();
+        setIsProjectModalOpen(true);
+      } else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'j' && !isInput) {
+        e.preventDefault();
+        handleOpenAIWithTab('chat');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // STRICT ACCESS GATE: JIKA USER LOGOUT ATAU BELUM LOGIN, APLIKASI TERKUNCI TOTAL
   if (!user) {
@@ -64,7 +113,7 @@ const MainLayout: React.FC = () => {
         return <DashboardView />;
       case 'projects':
         return (
-          <Suspense fallback={<ViewFallback label="Memuat Daftar Proyek..." />}>
+          <Suspense fallback={<ViewFallback label="Memuat Manajemen Proyek..." />}>
             <ProjectListView onNewProject={() => setIsProjectModalOpen(true)} />
           </Suspense>
         );
@@ -149,10 +198,10 @@ const MainLayout: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-slate-100 text-slate-900 overflow-hidden antialiased">
+    <div className="flex flex-col h-screen bg-slate-100 text-slate-900 overflow-hidden antialiased select-none font-sans">
       {/* SAFE MODE BANNER IF ACTIVATED */}
       {isSafeMode && (
-        <div className="fixed top-0 left-0 right-0 z-50 bg-amber-500 text-slate-950 font-bold px-4 py-1 text-xs text-center flex items-center justify-between shadow-sm">
+        <div className="bg-amber-500 text-slate-950 font-bold px-4 py-1 text-xs text-center flex items-center justify-between shadow-sm z-50 flex-shrink-0">
           <span>SAFE MODE AKTIF: Fitur berat diisolasi untuk keandalan maksimal.</span>
           <button
             onClick={() => { window.location.href = window.location.pathname; }}
@@ -163,49 +212,108 @@ const MainLayout: React.FC = () => {
         </div>
       )}
 
-      {/* Sidebar Navigation */}
-      <Sidebar
-        onOpenAIEstimator={() => handleOpenAIWithTab('chat')}
-        onOpenNewProject={() => setIsProjectModalOpen(true)}
-        onOpenAuthModal={() => setIsAuthModalOpen(true)}
-        onOpenQuickBuilder={() => setIsQuickBuilderOpen(true)}
+      {/* Primary Workspace Window */}
+      <div className="flex-1 flex overflow-hidden min-h-0 relative">
+        {/* Sidebar Navigation (Collapsible in focus mode) */}
+        {!isFocusMode && (
+          <Sidebar
+            onOpenAIEstimator={() => handleOpenAIWithTab('chat')}
+            onOpenNewProject={() => setIsProjectModalOpen(true)}
+            onOpenAuthModal={() => setIsAuthModalOpen(true)}
+            onOpenQuickBuilder={() => setIsQuickBuilderOpen(true)}
+          />
+        )}
+
+        {/* Main Content Viewport */}
+        <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-slate-50/50">
+          {/* Top Window Bar (Mac Toolbar) */}
+          <MacToolbar
+            onOpenNewProject={() => setIsProjectModalOpen(true)}
+            onOpenAIEstimator={() => handleOpenAIWithTab('chat')}
+            onOpenAuth={() => setIsAuthModalOpen(true)}
+            onOpenQuickBuilder={() => setIsQuickBuilderOpen(true)}
+            onOpenCommandBar={() => setIsCommandBarOpen(true)}
+            onOpenProjectSwitcher={() => setIsProjectSwitcherOpen(true)}
+            onToggleInspector={() => setIsInspectorOpen((prev) => !prev)}
+            onOpenShortcuts={() => setIsShortcutsModalOpen(true)}
+            onOpenDiagnostics={() => setIsDiagnosticsModalOpen(true)}
+            isInspectorOpen={isInspectorOpen}
+            isFocusMode={isFocusMode}
+            onToggleFocusMode={() => setIsFocusMode((prev) => !prev)}
+          />
+
+          {/* Viewport Workspace with Error Boundary */}
+          <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-7 custom-scrollbar select-auto">
+            <div className="max-w-7xl mx-auto pb-8 relative">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, y: 8, scale: 0.99 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -8, scale: 0.99 }}
+                  transition={{ 
+                    type: "spring", 
+                    stiffness: 350, 
+                    damping: 28, 
+                    mass: 0.7 
+                  }}
+                  className="w-full h-full"
+                >
+                  <ErrorBoundary key={activeTab} isViewLevel={true} fallbackTitle={`Modul ${activeTab.toUpperCase()}`}>
+                    {renderActiveView()}
+                  </ErrorBoundary>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </main>
+        </div>
+
+        {/* Inspector Panel Slide-Over */}
+        <InspectorPanel
+          isOpen={isInspectorOpen}
+          onClose={() => setIsInspectorOpen(false)}
+          onOpenAIEstimator={() => handleOpenAIWithTab('chat')}
+        />
+      </div>
+
+      {/* Bottom Desktop Status Bar */}
+      <StatusBar
+        onOpenCommandBar={() => setIsCommandBarOpen(true)}
+        onOpenProjectSwitcher={() => setIsProjectSwitcherOpen(true)}
+        onToggleInspector={() => setIsInspectorOpen((prev) => !prev)}
+        onOpenShortcuts={() => setIsShortcutsModalOpen(true)}
+        onOpenDiagnostics={() => setIsDiagnosticsModalOpen(true)}
+        isInspectorOpen={isInspectorOpen}
       />
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Topbar */}
-        <Topbar
-          onOpenNewProject={() => setIsProjectModalOpen(true)}
-          onOpenAIEstimator={() => handleOpenAIWithTab('chat')}
-          onOpenAuth={() => setIsAuthModalOpen(true)}
-          onOpenQuickBuilder={() => setIsQuickBuilderOpen(true)}
-        />
+      {/* Command Palette (⌘K) */}
+      <CommandBar
+        isOpen={isCommandBarOpen}
+        onClose={() => setIsCommandBarOpen(false)}
+        onOpenNewProject={() => setIsProjectModalOpen(true)}
+        onOpenAIEstimator={() => handleOpenAIWithTab('chat')}
+        onOpenQuickBuilder={() => setIsQuickBuilderOpen(true)}
+        onOpenDiagnostics={() => setIsDiagnosticsModalOpen(true)}
+      />
 
-        {/* Viewport Content */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 custom-scrollbar bg-slate-50/50">
-          <div className="max-w-7xl mx-auto pb-12 relative">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -10, scale: 0.98 }}
-                transition={{ 
-                  type: "spring", 
-                  stiffness: 300, 
-                  damping: 25, 
-                  mass: 0.8 
-                }}
-                className="w-full h-full"
-              >
-                <ErrorBoundary key={activeTab} isViewLevel={true} fallbackTitle={`Modul ${activeTab.toUpperCase()}`}>
-                  {renderActiveView()}
-                </ErrorBoundary>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </main>
-      </div>
+      {/* Quick Project Switcher (⌘P) */}
+      <ProjectSwitcherModal
+        isOpen={isProjectSwitcherOpen}
+        onClose={() => setIsProjectSwitcherOpen(false)}
+        onOpenNewProject={() => setIsProjectModalOpen(true)}
+      />
+
+      {/* Keyboard Shortcuts Helper (⌘/) */}
+      <KeyboardShortcutsModal
+        isOpen={isShortcutsModalOpen}
+        onClose={() => setIsShortcutsModalOpen(false)}
+      />
+
+      {/* Runtime Diagnostics Modal (⌥D) */}
+      <DiagnosticsModal
+        isOpen={isDiagnosticsModalOpen}
+        onClose={() => setIsDiagnosticsModalOpen(false)}
+      />
 
       {/* Global Modals loaded lazily only when requested */}
       {isProjectModalOpen && (

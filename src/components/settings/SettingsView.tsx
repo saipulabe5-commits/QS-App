@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { AppSettings } from '../../types';
+import { safeLocalStorageGet } from '../../utils/storageUtils';
 import {
   Building2,
   Percent,
@@ -99,34 +100,54 @@ export const SettingsView: React.FC = () => {
   };
 
   const handleExportBackup = () => {
-    const backupData = {
-      version: '1.0',
-      timestamp: new Date().toISOString(),
-      settings,
-      projects,
-      rabItems,
-      priceDatabase,
-      ahspItems,
-    };
+    try {
+      const backupData = {
+        version: '1.0',
+        timestamp: new Date().toISOString(),
+        settings,
+        projects,
+        rabItems,
+        priceDatabase,
+        ahspItems,
+      };
 
-    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(backupData, null, 2));
-    const downloadAnchor = document.createElement('a');
-    downloadAnchor.setAttribute('href', dataStr);
-    downloadAnchor.setAttribute('download', `RAB_PRO_BACKUP_${new Date().toISOString().slice(0, 10)}.json`);
-    document.body.appendChild(downloadAnchor);
-    downloadAnchor.click();
-    downloadAnchor.remove();
+      const jsonStr = JSON.stringify(backupData, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8' });
+      const url = window.URL.createObjectURL(blob);
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.href = url;
+      downloadAnchor.download = `RAB_PRO_BACKUP_${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      setTimeout(() => {
+        downloadAnchor.remove();
+        window.URL.revokeObjectURL(url);
+      }, 150);
 
-    showToast('Backup Berhasil', 'File cadangan JSON seluruh database RAB berhasil diunduh.', 'success');
+      showToast('Backup Berhasil', 'File cadangan JSON seluruh database RAB berhasil diunduh.', 'success');
+    } catch (err: any) {
+      console.error('Backup download error:', err);
+      showToast('Gagal Mengunduh', err?.message || 'Terjadi kesalahan saat mengekspor cadangan data.', 'error');
+    }
   };
 
   const handleExportSourceCodeJSON = async () => {
     setIsDownloadingSource(true);
     try {
-      const response = await fetch('/api/export/source-code?download=true');
+      const token = safeLocalStorageGet('rabpro_token');
+      const headers: Record<string, string> = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      const response = await fetch('/api/export/source-code?download=true', {
+        headers,
+      });
+
       if (!response.ok) {
         throw new Error(`Server returned error ${response.status}`);
       }
+
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -134,8 +155,11 @@ export const SettingsView: React.FC = () => {
       a.download = `SOURCE_CODE_RAB_PRO_${new Date().toISOString().slice(0, 10)}.json`;
       document.body.appendChild(a);
       a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
+      setTimeout(() => {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }, 150);
+
       showToast('Export Source Code Berhasil', 'Berkas JSON source code lengkap berhasil diunduh.', 'success');
     } catch (err: any) {
       console.error('Download source error:', err);

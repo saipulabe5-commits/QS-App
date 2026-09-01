@@ -224,16 +224,16 @@ export const ReportView: React.FC = () => {
 
                     return (
                       <React.Fragment key={cat}>
-                        {/* Category Row */}
-                        <tr className="bg-slate-50 font-bold border-y border-slate-300">
-                          <td className="p-2 border-r border-slate-300 text-center">{romanNum}</td>
-                          <td colSpan={5} className="p-2 border-r border-slate-300 uppercase">
+                        {/* Category Row (SUB-TOTAL) */}
+                        <tr className="bg-slate-300 text-slate-950 font-bold border-y-2 border-slate-400">
+                          <td className="p-2 border-r border-slate-400 text-center font-mono font-black text-slate-950">{romanNum}</td>
+                          <td colSpan={5} className="p-2 border-r border-slate-400 uppercase tracking-wide font-black text-xs text-slate-950">
                             {cat}
                           </td>
-                          <td className="p-2 border-r border-slate-300 text-right font-mono font-bold">
+                          <td className="p-2 border-r border-slate-400 text-right font-mono font-black text-slate-950">
                             {formatRupiah(catSubtotal)}
                           </td>
-                          <td className="p-2 text-right font-mono font-bold">
+                          <td className="p-2 text-right font-mono font-bold text-blue-900">
                             {formatNumber(catWeight, 2)}%
                           </td>
                         </tr>
@@ -242,34 +242,61 @@ export const ReportView: React.FC = () => {
                         {catItems.map((item, itemIdx) => {
                           const itemWeight =
                             calc.directCost > 0 ? (item.totalCost / calc.directCost) * 100 : 0;
+                          const prevItem = itemIdx > 0 ? catItems[itemIdx - 1] : null;
+                          const isNewFloor = Boolean(item.floor && (!prevItem || prevItem.floor !== item.floor));
+                          const isNewSubcategory = Boolean(item.subcategory && (!prevItem || prevItem.subcategory !== item.subcategory || isNewFloor));
 
                           return (
-                            <tr key={item.id} className="border-b border-slate-200">
-                              <td className="p-2 border-r border-slate-200 text-center text-slate-500">
-                                {itemIdx + 1}
-                              </td>
-                              <td className="p-2 border-r border-slate-200 font-mono text-slate-600">
-                                {item.code}
-                              </td>
-                              <td className="p-2 border-r border-slate-200 font-medium">
-                                {item.name}
-                              </td>
-                              <td className="p-2 border-r border-slate-200 text-center">
-                                {item.unit}
-                              </td>
-                              <td className="p-2 border-r border-slate-200 text-right font-mono">
-                                {formatNumber(item.volume, 2)}
-                              </td>
-                              <td className="p-2 border-r border-slate-200 text-right font-mono">
-                                {formatRupiah(item.unitPrice)}
-                              </td>
-                              <td className="p-2 border-r border-slate-200 text-right font-mono font-semibold">
-                                {formatRupiah(item.totalCost)}
-                              </td>
-                              <td className="p-2 text-right font-mono text-slate-700">
-                                {formatNumber(itemWeight, 2)}%
-                              </td>
-                            </tr>
+                            <React.Fragment key={item.id}>
+                              {isNewFloor && (
+                                <tr className="bg-blue-50/80 font-bold border-y border-blue-200">
+                                  <td colSpan={8} className="p-2 pl-4 text-xs text-blue-900 uppercase tracking-wide">
+                                    <span className="inline-block px-2 py-0.5 mr-2 bg-blue-700 text-white rounded text-[10px] font-black">
+                                      LANTAI
+                                    </span>
+                                    {item.floor}
+                                  </td>
+                                </tr>
+                              )}
+
+                              {isNewSubcategory && (
+                                <tr className="bg-slate-100 font-semibold border-y border-slate-200">
+                                  <td colSpan={8} className="p-1.5 pl-6 text-xs text-slate-800 uppercase tracking-wide">
+                                    ▸ {item.subcategory}
+                                  </td>
+                                </tr>
+                              )}
+
+                              <tr className="border-b border-slate-200 hover:bg-slate-50/50">
+                                <td className="p-2 border-r border-slate-200 text-center text-slate-500 font-mono text-xs">
+                                  {itemIdx + 1}
+                                </td>
+                                <td className="p-2 border-r border-slate-200 font-mono text-slate-600 text-xs">
+                                  {item.code}
+                                </td>
+                                <td className="p-2 border-r border-slate-200 font-medium">
+                                  <div className="text-slate-900">{item.name}</div>
+                                  {item.notes && (
+                                    <div className="text-[10px] text-slate-500">{item.notes}</div>
+                                  )}
+                                </td>
+                                <td className="p-2 border-r border-slate-200 text-center">
+                                  {item.unit}
+                                </td>
+                                <td className="p-2 border-r border-slate-200 text-right font-mono">
+                                  {formatNumber(item.volume, 2)}
+                                </td>
+                                <td className="p-2 border-r border-slate-200 text-right font-mono">
+                                  {formatRupiah(item.unitPrice)}
+                                </td>
+                                <td className="p-2 border-r border-slate-200 text-right font-mono font-semibold text-blue-950">
+                                  {formatRupiah(item.totalCost)}
+                                </td>
+                                <td className="p-2 text-right font-mono text-slate-700">
+                                  {formatNumber(itemWeight, 2)}%
+                                </td>
+                              </tr>
+                            </React.Fragment>
                           );
                         })}
                       </React.Fragment>

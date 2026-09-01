@@ -20,6 +20,7 @@ export interface RABTemplateItem {
   templateId: string;
   parentId?: string;
   category: RABCategory;
+  floor?: string;
   subcategory?: string;
   itemCode: string;
   description: string;

@@ -21,7 +21,7 @@ export const RAB_CATEGORIES = [
   'Lain-lain',
 ] as const;
 
-export type RABCategory = typeof RAB_CATEGORIES[number];
+export type RABCategory = (typeof RAB_CATEGORIES)[number] | (string & {});
 
 export interface RABItem {
   id: string;
@@ -29,6 +29,8 @@ export interface RABItem {
   code: string;
   name: string;
   category: RABCategory;
+  floor?: string;
+  subcategory?: string;
   unit: string;
   volume: number;
   unitPrice: number;

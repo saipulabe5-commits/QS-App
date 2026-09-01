@@ -50,6 +50,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
   const [pickerTab, setPickerTab] = useState<'form' | 'priceDb' | 'ahsp'>('form');
   const [dbSearch, setDbSearch] = useState('');
   const [priceTypeFilter, setPriceTypeFilter] = useState<'all' | 'material' | 'labor' | 'equipment'>('all');
+  const [ahspCategoryFilter, setAhspCategoryFilter] = useState<string>('all');
 
   // Mini Quick Volume Calculator Inside Modal
   const [isMiniCalcOpen, setIsMiniCalcOpen] = useState(false);
@@ -166,8 +167,6 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
     if (!code) setCode(item.code);
     setPickerTab('form');
   };
-
-  const [ahspCategoryFilter, setAhspCategoryFilter] = useState<string>('all');
 
   const handleSelectFromAHSP = (item: AHSPItem) => {
     setName(item.name);

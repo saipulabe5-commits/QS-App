@@ -37,7 +37,7 @@ class RuntimeDiagnostics {
       }
     }
     if (error && typeof console !== 'undefined' && console.error) {
-      console.error('[RAB PRO BOOT EXCEPTION]:', error);
+      console.error('[RAB Pro Runtime Error]:', error);
     }
   }
 

@@ -12,6 +12,7 @@ import {
   ProjectSCurve,
   ADMIN_PERMISSIONS,
 } from '../types';
+import { LUXURY_RESIDENCE_TEMPLATE } from './luxuryResidenceTemplate';
 
 
 export const INITIAL_USER: User = {
@@ -550,6 +551,7 @@ export const INITIAL_RAB_ITEMS: RABItem[] = [
 ];
 
 export const INITIAL_RAB_TEMPLATES: RABTemplate[] = [
+  LUXURY_RESIDENCE_TEMPLATE,
   {
     id: 'tpl_infra_01',
     ownerId: 'usr_admin_saipul',

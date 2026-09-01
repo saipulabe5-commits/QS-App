@@ -17,6 +17,8 @@ export function formatRupiah(amount: number, decimalPlaces: number = 0): string 
   return `${isNegative ? '- ' : ''}Rp ${integerPart}${decimalPart}`;
 }
 
+export const formatCurrency = formatRupiah;
+
 /**
  * Format angka umum Indonesia (titik untuk ribuan, koma untuk desimal)
  * Contoh: 1250.5 -> "1.250,5"

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { safeLocalStorageGet } from '../../utils/storageUtils';
 import {
   X,
   Download,
@@ -87,7 +88,15 @@ export const SourceCodeExportModal: React.FC<SourceCodeExportModalProps> = ({
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/export/source-code');
+      const token = safeLocalStorageGet('rabpro_token');
+      const headers: Record<string, string> = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      const res = await fetch('/api/export/source-code', {
+        headers,
+      });
       if (!res.ok) {
         throw new Error(`Server returned status ${res.status}`);
       }

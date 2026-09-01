@@ -333,11 +333,21 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         const loadedAHSP = await loadStoreData(DB_STORES.AHSP, INITIAL_AHSP, STORAGE_KEYS.AHSP, normalizeAHSPItem);
         setAhspItems(loadedAHSP);
 
-        const loadedTemplates = await loadStoreData(DB_STORES.TEMPLATES, INITIAL_TEMPLATES, STORAGE_KEYS.TEMPLATES);
-        setTemplates(loadedTemplates);
+        const loadedTemplatesRaw = await loadStoreData(DB_STORES.TEMPLATES, INITIAL_TEMPLATES, STORAGE_KEYS.TEMPLATES);
+        const existingTplIds = new Set((loadedTemplatesRaw || []).map((t: any) => t.id));
+        const mergedTemplates = [
+          ...(loadedTemplatesRaw || []),
+          ...INITIAL_TEMPLATES.filter((t) => !existingTplIds.has(t.id)),
+        ];
+        setTemplates(mergedTemplates);
 
-        const loadedRabTemplates = await loadStoreData(DB_STORES.RAB_TEMPLATES, INITIAL_RAB_TEMPLATES, STORAGE_KEYS.RAB_TEMPLATES);
-        setRabTemplates(loadedRabTemplates);
+        const loadedRabTemplatesRaw = await loadStoreData(DB_STORES.RAB_TEMPLATES, INITIAL_RAB_TEMPLATES, STORAGE_KEYS.RAB_TEMPLATES);
+        const existingRabTplIds = new Set((loadedRabTemplatesRaw || []).map((t: any) => t.id));
+        const mergedRabTemplates = [
+          ...INITIAL_RAB_TEMPLATES.filter((t) => t.isBuiltIn),
+          ...(loadedRabTemplatesRaw || []).filter((t: any) => !t.isBuiltIn || !INITIAL_RAB_TEMPLATES.some((it) => it.id === t.id)),
+        ];
+        setRabTemplates(mergedRabTemplates);
 
         const loadedDrawings = await loadStoreData(DB_STORES.DRAWINGS, INITIAL_DRAWINGS, STORAGE_KEYS.DRAWINGS);
         setDrawings(loadedDrawings);
@@ -1322,6 +1332,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       code: it.itemCode,
       name: it.description,
       category: it.category,
+      floor: it.floor,
+      subcategory: it.subcategory,
       unit: it.unit,
       volume: it.volume,
       unitPrice: it.unitPrice,
