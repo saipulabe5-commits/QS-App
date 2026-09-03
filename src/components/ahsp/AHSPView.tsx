@@ -456,7 +456,7 @@ export const AHSPView: React.FC = () => {
                 {/* Category Header Bar */}
                 <div
                   onClick={() => toggleCategoryExpand(group.category)}
-                  className="p-4 sm:p-5 bg-gradient-to-r from-slate-50 via-slate-50/80 to-white hover:bg-[var(--bg-elevated-hover)]/80 border-b border-[var(--border-primary)]/80 flex items-center justify-between cursor-pointer select-none transition-colors"
+                  className="p-4 sm:p-5 bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] border-b border-[var(--border-primary)] flex items-center justify-between cursor-pointer select-none transition-colors"
                 >
                   <div className="flex items-center space-x-3.5">
                     <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-sm shadow-xs flex-shrink-0">
