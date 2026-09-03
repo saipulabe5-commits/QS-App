@@ -1,0 +1,8 @@
+
+> react-example@0.0.0 dev
+> tsx --env-file=.env server.ts
+
+◇ injected env (3) from .env // tip: ⌘ suppress logs { quiet: true }
+Users store loaded successfully.
+Security store loaded successfully.
+RAB Pro Server running on port 3000 (percobaan ke-1)

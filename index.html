@@ -85,6 +85,16 @@
         }
       }, 45000);
 
+      
+      // SUPPRESS VITE HMR WEBSOCKET ERRORS IN PREVIEW
+      const originalConsoleError = console.error;
+      console.error = function(...args) {
+        if (typeof args[0] === 'string' && args[0].includes('[vite] failed to connect to websocket')) {
+          return; // Completely silence Vite's hardcoded console.error
+        }
+        originalConsoleError.apply(console, args);
+      };
+
       // PHASE 8 - NATIVE RUNTIME DIAGNOSTICS (Catch early errors before Vite chunks load)
       window.addEventListener('error', function(e) {
         console.error('[NATIVE BOOT ERROR]', e.message, e.filename, e.lineno);

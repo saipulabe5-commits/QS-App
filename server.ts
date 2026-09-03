@@ -1,4 +1,4 @@
-import "dotenv/config";
+import dotenv from "dotenv"; dotenv.config({ override: true });
 import express from "express";
 import path from "path";
 import fs from "fs";
@@ -2001,7 +2001,7 @@ async function startServer() {
   if (process.env.NODE_ENV !== "production") {
     const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: { middlewareMode: true, hmr: false },
       appType: "spa",
     });
     app.use(vite.middlewares);
