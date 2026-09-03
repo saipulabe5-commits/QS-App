@@ -179,6 +179,29 @@ async function loadUsersStore() {
       usersDb.set(key, value as ServerUser);
     }
     console.log('Users store loaded successfully.');
+    
+    // FORCE SYNC ADMIN PASSWORD WITH ENVIRONMENT VARIABLE ON BOOT
+    let adminUsr = usersDb.get(adminEmail);
+    if (!adminUsr) {
+      // If admin email changed in env vars, delete old ones and create new
+      usersDb.clear();
+      adminUsr = {
+        id: "usr_admin_main",
+        name: "Administrator",
+        email: adminEmail,
+        passwordHash: hashPassword(initialPassword!),
+        companyName: "RAB Pro Enterprise",
+        role: "administrator",
+        createdAt: new Date().toISOString(),
+      };
+    }
+    adminUsr.passwordHash = hashPassword(initialPassword!);
+    if (adminUsr) {
+      adminUsr.passwordHash = hashPassword(initialPassword!);
+      usersDb.set(adminEmail, adminUsr);
+      saveUsersStore();
+      console.log('Admin password synchronized with environment variable.');
+    }
   } catch (error) {
     // If not exists, use default admin
     usersDb.set(adminEmail, {
