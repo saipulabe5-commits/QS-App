@@ -103,7 +103,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                 </span>
               )}
             </div>
-            <p className="text-xs text-slate-500 hidden sm:block">
+            <p className="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">
               Sistem Estimasi Rencana Anggaran Biaya Terstandarisasi SNI
             </p>
           </div>
@@ -152,7 +152,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                         >
                           <div className="truncate pr-2">
                             <div className="truncate font-semibold">{proj.name}</div>
-                            <div className="text-[11px] text-slate-500">{proj.documentNo}</div>
+                            <div className="text-[11px] text-slate-500 dark:text-slate-400">{proj.documentNo}</div>
                           </div>
                           <span
                             className={`text-[10px] px-1.5 py-0.5 rounded-sm font-medium ${
@@ -255,7 +255,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                         </span>
                       )}
                     </div>
-                    <p className="text-[11px] text-slate-500 truncate">
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
                       {user ? user.email : 'demo@rabpro.id'}
                     </p>
                     <div className="flex items-center justify-between mt-1 text-[10px]">

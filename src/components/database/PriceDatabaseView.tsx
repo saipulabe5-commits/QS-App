@@ -130,7 +130,7 @@ export const PriceDatabaseView: React.FC = () => {
           <h2 className="text-xl font-bold text-[var(--text-primary)] tracking-tight">
             Database Harga Material, Upah & Alat ({priceDatabase.length})
           </h2>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Katalog referensi harga satuan standar untuk estimasi cepat dan akurat
           </p>
         </div>
@@ -150,7 +150,7 @@ export const PriceDatabaseView: React.FC = () => {
             className="flex items-center space-x-1.5 px-3 py-2 bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors"
             title="Import CSV"
           >
-            <Upload className="w-3.5 h-3.5 text-slate-500" />
+            <Upload className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
             <span>Import CSV</span>
           </button>
 
@@ -159,7 +159,7 @@ export const PriceDatabaseView: React.FC = () => {
             className="flex items-center space-x-1.5 px-3 py-2 bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors"
             title="Download CSV"
           >
-            <Download className="w-3.5 h-3.5 text-slate-500" />
+            <Download className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
             <span>Export CSV</span>
           </button>
 
@@ -233,7 +233,7 @@ export const PriceDatabaseView: React.FC = () => {
         <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] p-12 text-center shadow-2xs">
           <Database className="w-12 h-12 text-slate-600 dark:text-slate-300 mx-auto mb-3" />
           <h3 className="text-base font-bold text-[var(--text-primary)]">Tidak Ada Data Harga</h3>
-          <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
             Coba sesuaikan filter pencarian atau tambahkan item harga satuan baru.
           </p>
         </div>
@@ -256,7 +256,7 @@ export const PriceDatabaseView: React.FC = () => {
               <tbody className="divide-y divide-slate-100">
                 {filteredItems.map((item) => (
                   <tr key={item.id} className="hover:bg-[var(--bg-elevated-hover)] transition-colors">
-                    <td className="px-5 py-3.5 font-mono text-slate-500 font-medium">
+                    <td className="px-5 py-3.5 font-mono text-slate-500 dark:text-slate-400 font-medium">
                       {item.code}
                     </td>
                     <td className="px-4 py-3.5 font-bold text-[var(--text-primary)] text-xs">
@@ -282,7 +282,7 @@ export const PriceDatabaseView: React.FC = () => {
                     <td className="px-4 py-3.5 text-right font-mono font-black text-blue-900 text-sm">
                       {formatRupiah(item.price)}
                     </td>
-                    <td className="px-4 py-3.5 text-[11px] text-slate-500">
+                    <td className="px-4 py-3.5 text-[11px] text-slate-500 dark:text-slate-400">
                       <div>{item.source}</div>
                       <div className="text-[10px] text-[var(--text-secondary)]">{formatDateIndo(item.updatedAt)}</div>
                     </td>
@@ -302,7 +302,7 @@ export const PriceDatabaseView: React.FC = () => {
                         )}
                         <button
                           onClick={() => handleEdit(item)}
-                          className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                          className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                           title="Edit"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
@@ -354,7 +354,7 @@ export const PriceDatabaseView: React.FC = () => {
             <h3 className="text-base font-bold text-[var(--text-primary)]">
               Masukkan ke RAB Proyek
             </h3>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Tambahkan item ini ke RAB <strong>"{selectedProject.name}"</strong>
             </p>
 

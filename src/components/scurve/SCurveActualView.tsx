@@ -173,7 +173,7 @@ export const SCurveActualView: React.FC = () => {
             <Clock className="w-7 h-7" />
           </div>
           <h3 className="text-base font-bold text-[var(--text-primary)]">Jadwal Rencana Kurva S Belum Ada</h3>
-          <p className="text-xs text-slate-500 max-w-sm mx-auto">
+          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
             Buat jadwal rencana Kurva S terlebih dahulu sebelum memasukkan progres aktual lapangan.
           </p>
           <button
@@ -189,7 +189,7 @@ export const SCurveActualView: React.FC = () => {
           {/* Status KPI Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-              <span className="text-xs text-slate-500 font-medium">Target Kumulatif (Sd. Saat Ini)</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Target Kumulatif (Sd. Saat Ini)</span>
               <div className="text-xl font-extrabold text-[var(--text-primary)] mt-1">
                 {currentPlannedCum.toFixed(2)} %
               </div>
@@ -197,7 +197,7 @@ export const SCurveActualView: React.FC = () => {
             </div>
 
             <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-              <span className="text-xs text-slate-500 font-medium">Realisasi Fisik Aktual</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Realisasi Fisik Aktual</span>
               <div className="text-xl font-extrabold text-blue-900 mt-1">
                 {currentActualCum.toFixed(2)} %
               </div>
@@ -205,7 +205,7 @@ export const SCurveActualView: React.FC = () => {
             </div>
 
             <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-              <span className="text-xs text-slate-500 font-medium">Deviasi Progres</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Deviasi Progres</span>
               <div
                 className={`text-xl font-extrabold mt-1 ${
                   currentDeviation >= 0.5
@@ -223,7 +223,7 @@ export const SCurveActualView: React.FC = () => {
             </div>
 
             <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-              <span className="text-xs text-slate-500 font-medium">Status Kesehatan Proyek</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Status Kesehatan Proyek</span>
               <div className="mt-1 flex items-center space-x-2">
                 {currentDeviation >= 0.5 ? (
                   <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-100 text-blue-800 border border-blue-300 flex items-center gap-1">
@@ -251,7 +251,7 @@ export const SCurveActualView: React.FC = () => {
                   <Activity className="w-4 h-4 text-blue-600" />
                   Daftar Laporan Capaian Progres per Periode
                 </h3>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   Klik tombol "Input / Edit Progres" pada baris periode untuk memperbarui capaian mingguan/bulanan.
                 </p>
               </div>
@@ -278,7 +278,7 @@ export const SCurveActualView: React.FC = () => {
                     const hasData = rec.status !== 'Belum ada data';
 
                     let statusBadge = (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[var(--bg-elevated-hover)] text-slate-500 border border-[var(--border-primary)]">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[var(--bg-elevated-hover)] text-slate-500 dark:text-slate-400 border border-[var(--border-primary)]">
                         Belum Diisi
                       </span>
                     );
@@ -442,7 +442,7 @@ export const SCurveActualView: React.FC = () => {
                   placeholder="Estimasi biaya dikeluarkan..."
                   className="w-full px-3.5 py-2.5 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-sm text-[var(--text-primary)] focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
-                <p className="text-[11px] text-slate-500 mt-1">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
                   Format: {formatRupiah(actualCostInput)}
                 </p>
               </div>

@@ -177,7 +177,7 @@ export const DiagnosticsModal: React.FC<DiagnosticsModalProps> = ({
                               {log.status.toUpperCase()}
                             </span>
                             <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{log.agentName}</span>
-                            <span className="text-[10px] text-slate-500">{new Date(log.timestamp).toLocaleTimeString()} ({log.durationMs}ms)</span>
+                            <span className="text-[10px] text-slate-500 dark:text-slate-400">{new Date(log.timestamp).toLocaleTimeString()} ({log.durationMs}ms)</span>
                           </div>
                           <span className="text-[10px] font-mono text-slate-400">ID: {log.targetId.slice(0,8)}...</span>
                         </div>
@@ -207,7 +207,7 @@ export const DiagnosticsModal: React.FC<DiagnosticsModalProps> = ({
                 <div className="bg-[var(--bg-elevated)] rounded-xl border border-slate-200 dark:border-[var(--border-primary)] p-3 space-y-2 font-mono text-[11px] max-h-72 overflow-y-auto">
                   {bootEvents.map((evt, idx) => (
                     <div key={idx} className="flex items-start space-x-2">
-                      <span className="text-slate-500 flex-shrink-0">
+                      <span className="text-slate-500 dark:text-slate-400 flex-shrink-0">
                         {evt.timestamp.split('T')[1]?.slice(0, 8)}
                       </span>
                       <span
@@ -314,7 +314,7 @@ export const DiagnosticsModal: React.FC<DiagnosticsModalProps> = ({
           </div>
 
           {/* Footer */}
-          <div className="px-5 py-3 bg-[var(--bg-elevated)] border-t border-slate-200 dark:border-[var(--border-primary)] flex items-center justify-between text-[11px] text-slate-500">
+          <div className="px-5 py-3 bg-[var(--bg-elevated)] border-t border-slate-200 dark:border-[var(--border-primary)] flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
             <span>RAB Pro Diagnostic Toolkit V10.0</span>
             <button
               onClick={onClose}

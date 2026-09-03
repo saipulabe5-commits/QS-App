@@ -215,7 +215,7 @@ export const ReviewApprovalModal: React.FC<ReviewApprovalModalProps> = ({
                   <button
                     type="button"
                     onClick={() => handleSelectAllItems(false)}
-                    className="text-slate-500 hover:text-[var(--text-primary)] font-semibold"
+                    className="text-slate-500 dark:text-slate-400 hover:text-[var(--text-primary)] font-semibold"
                   >
                     Batal Pilih
                   </button>
@@ -265,7 +265,7 @@ export const ReviewApprovalModal: React.FC<ReviewApprovalModalProps> = ({
 
                         <div className="grid grid-cols-3 gap-2">
                           <div>
-                            <label className="block text-[10px] text-slate-500 font-semibold mb-0.5">
+                            <label className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold mb-0.5">
                               Volume
                             </label>
                             <input
@@ -276,7 +276,7 @@ export const ReviewApprovalModal: React.FC<ReviewApprovalModalProps> = ({
                             />
                           </div>
                           <div>
-                            <label className="block text-[10px] text-slate-500 font-semibold mb-0.5">
+                            <label className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold mb-0.5">
                               Satuan
                             </label>
                             <input
@@ -287,7 +287,7 @@ export const ReviewApprovalModal: React.FC<ReviewApprovalModalProps> = ({
                             />
                           </div>
                           <div>
-                            <label className="block text-[10px] text-slate-500 font-semibold mb-0.5">
+                            <label className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold mb-0.5">
                               Harga Satuan (Rp)
                             </label>
                             <input
@@ -300,7 +300,7 @@ export const ReviewApprovalModal: React.FC<ReviewApprovalModalProps> = ({
                         </div>
 
                         {item.reason && (
-                          <p className="text-[11px] text-slate-500 italic bg-[var(--bg-elevated)]/70 p-2 rounded-lg border border-slate-100">
+                          <p className="text-[11px] text-slate-500 dark:text-slate-400 italic bg-[var(--bg-elevated)]/70 p-2 rounded-lg border border-slate-100">
                             💡 {item.reason}
                           </p>
                         )}
@@ -330,12 +330,12 @@ export const ReviewApprovalModal: React.FC<ReviewApprovalModalProps> = ({
                     />
                     <div className="flex-1 space-y-2">
                       <h4 className="text-xs font-bold text-[var(--text-primary)]">{adj.itemName}</h4>
-                      <p className="text-[11px] text-slate-500">{adj.reason}</p>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400">{adj.reason}</p>
 
                       <div className="flex items-center space-x-3 text-xs pt-1">
                         <div>
                           <span className="text-[10px] text-[var(--text-secondary)] block font-semibold">Harga Saat Ini</span>
-                          <span className="line-through text-slate-500 font-mono font-medium">
+                          <span className="line-through text-slate-500 dark:text-slate-400 font-mono font-medium">
                             {formatRupiah(adj.currentPrice)}
                           </span>
                         </div>

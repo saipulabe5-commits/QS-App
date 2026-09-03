@@ -176,7 +176,7 @@ export const ProjectSwitcherModal: React.FC<ProjectSwitcherModalProps> = ({
                         </span>
                       </div>
 
-                      <div className="flex items-center space-x-3 text-xs text-slate-500">
+                      <div className="flex items-center space-x-3 text-xs text-slate-500 dark:text-slate-400">
                         <span className="font-mono">{proj.documentNo}</span>
                         {proj.location && <span>• {proj.location}</span>}
                         {proj.buildingArea && <span>• {proj.buildingArea} m²</span>}

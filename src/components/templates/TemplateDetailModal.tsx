@@ -150,12 +150,12 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                   v{template.version}
                 </span>
                 {template.sourceFileName && (
-                  <span className="text-[10px] text-slate-500 bg-slate-200 dark:bg-slate-700/70 px-2 py-0.5 rounded-md truncate max-w-[150px]">
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 bg-slate-200 dark:bg-slate-700/70 px-2 py-0.5 rounded-md truncate max-w-[150px]">
                     Dari: {template.sourceFileName}
                   </span>
                 )}
               </div>
-              <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
                 {template.description || 'Template master pekerjaan konstruksi siap pakai.'}
               </p>
             </div>
@@ -430,7 +430,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                                   <td className="py-2.5 px-4 font-medium text-[var(--text-primary)]">
                                     <div className="font-semibold text-[var(--text-primary)] leading-snug">{item.description}</div>
                                     {item.notes && (
-                                      <span className="block text-[11px] text-slate-500 mt-0.5">
+                                      <span className="block text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
                                         <strong className="text-[var(--text-secondary)] font-semibold">Spesifikasi:</strong> {item.notes}
                                       </span>
                                     )}
@@ -467,7 +467,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
               <div className="flex items-center justify-between">
                 <div>
                   <h4 className="text-sm font-bold text-[var(--text-primary)]">Versi & Riwayat Modifikasi</h4>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     Setiap perubahan struktur atau pembaruan item dapat diabadikan dalam versi terpisah
                   </p>
                 </div>
@@ -499,7 +499,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                     </div>
 
                     {v.snapshotData && (
-                      <div className="text-xs text-slate-500 flex items-center space-x-4 pt-1">
+                      <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center space-x-4 pt-1">
                         <span>{v.snapshotData.items?.length || 0} Item Pekerjaan</span>
                         <span>&middot;</span>
                         <span className="font-mono font-bold text-[var(--text-primary)]">
@@ -566,7 +566,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
 
                 <div className="grid grid-cols-3 gap-2 pt-2">
                   <div>
-                    <label className="block text-[10px] text-slate-500 font-semibold mb-0.5">
+                    <label className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold mb-0.5">
                       Overhead (%)
                     </label>
                     <input
@@ -577,7 +577,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] text-slate-500 font-semibold mb-0.5">
+                    <label className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold mb-0.5">
                       Profit (%)
                     </label>
                     <input
@@ -588,7 +588,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] text-slate-500 font-semibold mb-0.5">
+                    <label className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold mb-0.5">
                       PPN (%)
                     </label>
                     <input
@@ -621,7 +621,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
 
         {/* Footer Actions */}
         <div className="px-6 py-4 bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)] flex items-center justify-between flex-shrink-0">
-          <div className="text-xs text-slate-500">
+          <div className="text-xs text-slate-500 dark:text-slate-400">
             Terakhir Diperbarui: <strong>{template.updatedAt.split('T')[0]}</strong>
           </div>
 
@@ -655,7 +655,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
           />
           <div className="relative bg-[var(--bg-elevated)] w-full max-w-md rounded-2xl shadow-2xl border border-[var(--border-primary)] p-6 z-10 space-y-4">
             <h4 className="text-base font-bold text-[var(--text-primary)]">Buat Versi Baru Template</h4>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Versi baru akan menaikkan nomor versi dan menyimpan snapshot kondisi template saat ini.
             </p>
 

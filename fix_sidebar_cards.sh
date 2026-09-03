@@ -1,0 +1,4 @@
+#!/bin/bash
+sed -i 's/bg-blue-950 hover:bg-blue-900 text-blue-100 border border-blue-800/bg-blue-50 dark:bg-blue-950 hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-800 dark:text-blue-100 border-blue-200 dark:border-blue-800/g' src/components/layout/Sidebar.tsx
+sed -i 's/bg-indigo-950 hover:bg-indigo-900 text-indigo-100 border border-indigo-800/bg-indigo-50 dark:bg-indigo-950 hover:bg-indigo-100 dark:hover:bg-indigo-900 text-indigo-800 dark:text-indigo-100 border-indigo-200 dark:border-indigo-800/g' src/components/layout/Sidebar.tsx
+sed -i 's/text-blue-400 hover:text-blue-300 font-semibold px-2 py-1 bg-blue-950 rounded-md border border-blue-800/text-blue-700 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold px-2 py-1 bg-blue-50 dark:bg-blue-950 rounded-md border border-blue-200 dark:border-blue-800/g' src/components/layout/Sidebar.tsx

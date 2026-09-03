@@ -311,7 +311,7 @@ export const AuthGate: React.FC = () => {
                       Alamat Email Terdaftar
                     </label>
                     <div className="relative">
-                      <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <Mail className="w-4 h-4 text-slate-500 dark:text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                       <input
                         type="email"
                         required
@@ -341,7 +341,7 @@ export const AuthGate: React.FC = () => {
                       </button>
                     </div>
                     <div className="relative">
-                      <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <Lock className="w-4 h-4 text-slate-500 dark:text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                       <input
                         type={showPassword ? 'text' : 'password'}
                         required
@@ -353,7 +353,7 @@ export const AuthGate: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-600 dark:text-slate-300"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:text-slate-300"
                       >
                         {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
@@ -385,7 +385,7 @@ export const AuthGate: React.FC = () => {
                       Alamat Email Pemilik Akun
                     </label>
                     <div className="relative">
-                      <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <Mail className="w-4 h-4 text-slate-500 dark:text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                       <input
                         type="email"
                         required
@@ -465,7 +465,7 @@ export const AuthGate: React.FC = () => {
                       Kata Sandi Baru (Minimal 6 Karakter)
                     </label>
                     <div className="relative">
-                      <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <Lock className="w-4 h-4 text-slate-500 dark:text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                       <input
                         type={showNewPassword ? 'text' : 'password'}
                         required
@@ -477,7 +477,7 @@ export const AuthGate: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setShowNewPassword(!showNewPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-600 dark:text-slate-300"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:text-slate-300"
                       >
                         {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
@@ -489,7 +489,7 @@ export const AuthGate: React.FC = () => {
                       Ulangi Kata Sandi Baru
                     </label>
                     <div className="relative">
-                      <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <Lock className="w-4 h-4 text-slate-500 dark:text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                       <input
                         type="password"
                         required
@@ -534,7 +534,7 @@ export const AuthGate: React.FC = () => {
               )}
 
               {/* Footnote */}
-              <div className="mt-5 text-center text-[11px] text-slate-500">
+              <div className="mt-5 text-center text-[11px] text-slate-500 dark:text-slate-400">
                 <span>Dilindungi Enkripsi Kriptografi & Verifikasi Zero-Mistake.</span>
               </div>
             </motion.div>
@@ -544,7 +544,7 @@ export const AuthGate: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-slate-200 dark:border-[var(--border-primary)]/60 bg-[var(--bg-elevated)]/80 px-6 py-4 text-center text-xs text-slate-500">
+      <footer className="relative z-10 border-t border-slate-200 dark:border-[var(--border-primary)]/60 bg-[var(--bg-elevated)]/80 px-6 py-4 text-center text-xs text-slate-500 dark:text-slate-400">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>&copy; {new Date().getFullYear()} RAB Pro Enterprise. Hak Cipta Dilindungi.</span>
           <div className="flex items-center space-x-4 text-[var(--text-secondary)]">

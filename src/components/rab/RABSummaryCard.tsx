@@ -69,7 +69,7 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
               Rekapitulasi Anggaran & Biaya Proyek
             </h3>
           </div>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Akumulasi biaya langsung, persentase overhead, margin profit pelaksana, dan PPN
           </p>
         </div>
@@ -122,11 +122,11 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
                   placeholder="0"
                   className="w-full pl-3 pr-8 py-2 text-xs bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-white font-mono focus:border-blue-500 focus:outline-none"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500 font-bold">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500 dark:text-slate-400 font-bold">
                   m²
                 </span>
               </div>
-              <p className="text-[10px] text-slate-500 mt-1">Digunakan untuk menghitung Harga Permeter Bangunan.</p>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1">Digunakan untuk menghitung Harga Permeter Bangunan.</p>
             </div>
             
             <div>
@@ -143,11 +143,11 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
                   placeholder="0"
                   className="w-full pl-3 pr-8 py-2 text-xs bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-white font-mono focus:border-blue-500 focus:outline-none"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500 font-bold">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500 dark:text-slate-400 font-bold">
                   %
                 </span>
               </div>
-              <p className="text-[10px] text-slate-500 mt-1">Ditambahkan pada total akhir Rekapitulasi RAB.</p>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1">Ditambahkan pada total akhir Rekapitulasi RAB.</p>
             </div>
           </div>
 
@@ -176,7 +176,7 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
             </div>
           </div>
 
-          <div className="space-y-2 text-xs text-slate-500 pt-2 border-t border-[var(--border-primary)]">
+          <div className="space-y-2 text-xs text-slate-500 dark:text-slate-400 pt-2 border-t border-[var(--border-primary)]">
             <div className="flex justify-between items-center">
               <span>Jumlah Item Pekerjaan:</span>
               <strong className="text-white">{itemCount} Pos</strong>
@@ -231,7 +231,7 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
               <div className="text-xs sm:text-sm font-black text-white uppercase tracking-tight">
                 Grand Total RAB (Nilai Kontrak)
               </div>
-              <div className="text-[11px] text-slate-500">Total Keseluruhan Termasuk Pajak</div>
+              <div className="text-[11px] text-slate-500 dark:text-slate-400">Total Keseluruhan Termasuk Pajak</div>
             </div>
             <div className="text-lg sm:text-2xl font-black text-blue-400 font-mono tracking-tight">
               {formatRupiah(calc.grandTotal)}
@@ -240,7 +240,7 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
           
           {/* HARGA PER METER */}
           <div className="flex justify-between items-center pt-2 mt-2 border-t border-[var(--border-primary)]/50">
-            <div className="text-xs text-slate-500">
+            <div className="text-xs text-slate-500 dark:text-slate-400">
               Harga Permeter Bangunan {project.buildingArea ? `(Luas: ${project.buildingArea} m²)` : '(Luas belum diisi)'}
             </div>
             <div className="font-mono font-bold text-sm text-[var(--text-secondary)]">
@@ -267,7 +267,7 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
                   <div className="text-xs font-semibold text-white truncate">
                     {idx + 1}. {cat.category}
                   </div>
-                  <div className="text-[10px] text-slate-500">{cat.itemCount} item</div>
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400">{cat.itemCount} item</div>
                 </div>
                 <div className="text-right flex-shrink-0">
                   <div className="text-xs font-bold text-slate-200 font-mono">

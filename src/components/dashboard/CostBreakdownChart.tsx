@@ -111,7 +111,7 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
               Grafik Komposisi & Struktur Biaya
             </h3>
           </div>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Rincian alokasi anggaran: Material, Tenaga Kerja, Alat, Overhead, Profit, & Pajak
           </p>
         </div>
@@ -152,7 +152,7 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
           </span>
         </div>
         <div className="text-right flex items-center justify-between sm:justify-end gap-3 text-xs">
-          <span className="text-slate-500">Grand Total RAB:</span>
+          <span className="text-slate-500 dark:text-slate-400">Grand Total RAB:</span>
           <span className="text-sm font-black text-blue-700">
             {formatRupiah(data.grandTotal)}
           </span>
@@ -221,7 +221,7 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
                   {formatRupiah(item.cost)}
                 </div>
               </div>
-              <p className="mt-2 text-[11px] text-slate-500 leading-tight">
+              <p className="mt-2 text-[11px] text-slate-500 dark:text-slate-400 leading-tight">
                 {item.description}
               </p>
             </div>

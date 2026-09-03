@@ -159,7 +159,7 @@ export const SCurvePlanView: React.FC = () => {
           </div>
           <div>
             <h3 className="text-lg font-bold text-[var(--text-primary)]">Jadwal Rencana Kurva S Belum Dibuat</h3>
-            <p className="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-md mx-auto">
               Sistem akan otomatis menghitung bobot (%) setiap item pekerjaan dari RAB dan memetakan jadwal pekerjaan berdasarkan kategori.
             </p>
           </div>
@@ -225,25 +225,25 @@ export const SCurvePlanView: React.FC = () => {
           {/* Summary Stats Row */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-              <span className="text-xs text-slate-500 font-medium">Total Anggaran (Direct Cost)</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Total Anggaran (Direct Cost)</span>
               <div className="text-base font-extrabold text-blue-900 mt-1">
                 {formatRupiah(scurve.totalBudget)}
               </div>
             </div>
             <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-              <span className="text-xs text-slate-500 font-medium">Durasi Pelaksanaan</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Durasi Pelaksanaan</span>
               <div className="text-base font-extrabold text-[var(--text-primary)] mt-1">
                 {scurve.totalPeriods} {scurve.periodType === 'weekly' ? 'Minggu' : 'Bulan'}
               </div>
             </div>
             <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-              <span className="text-xs text-slate-500 font-medium">Total Item Terjadwal</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Total Item Terjadwal</span>
               <div className="text-base font-extrabold text-[var(--text-primary)] mt-1">
                 {scurve.scheduleItems.length} Pekerjaan
               </div>
             </div>
             <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-              <span className="text-xs text-slate-500 font-medium">Target Akhir Rencana</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Target Akhir Rencana</span>
               <div className="text-base font-extrabold text-emerald-700 mt-1">
                 100.00 %
               </div>
@@ -258,7 +258,7 @@ export const SCurvePlanView: React.FC = () => {
                   <TrendingUp className="w-5 h-5 text-blue-600" />
                   Grafik Rencana Kurva S (Target Baseline)
                 </h3>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   Grafik garis kumulatif rencana (%) dan diagram batang target progres per periode.
                 </p>
               </div>
@@ -314,14 +314,14 @@ export const SCurvePlanView: React.FC = () => {
                   <Sliders className="w-4 h-4 text-blue-600" />
                   Matriks Distribusi Bobot & Periode Pekerjaan
                 </h3>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   Ubah periode mulai, selesai, dan pola distribusi (Bell Curve / Linier / Step) untuk setiap item.
                 </p>
               </div>
 
               {/* Filter Category */}
               <div className="flex items-center space-x-2">
-                <span className="text-xs text-slate-500 font-semibold">Filter:</span>
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold">Filter:</span>
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}

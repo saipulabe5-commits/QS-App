@@ -163,7 +163,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               ? 'Daftar Akun Baru'
               : 'Atur Ulang Password'}
           </h3>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             {mode === 'login'
               ? 'Akses proyek konstruksi dan estimasi anggaran Anda'
               : mode === 'register'
@@ -224,7 +224,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </button>
 
             <div className="text-center pt-2">
-              <span className="text-xs text-slate-500">Belum punya akun? </span>
+              <span className="text-xs text-slate-500 dark:text-slate-400">Belum punya akun? </span>
               <button
                 type="button"
                 onClick={() => setMode('register')}
@@ -311,7 +311,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </button>
 
             <div className="text-center pt-2">
-              <span className="text-xs text-slate-500">Sudah punya akun? </span>
+              <span className="text-xs text-slate-500 dark:text-slate-400">Sudah punya akun? </span>
               <button
                 type="button"
                 onClick={() => setMode('login')}

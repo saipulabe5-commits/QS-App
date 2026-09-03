@@ -226,7 +226,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                   <Sliders className="w-4 h-4 text-blue-600" />
                   Konfigurasi Ambang Batas Notifikasi
                 </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                   Sesuaikan sensitivitas peringatan anggaran, batas waktu proyek, dan toleransi revisi harga.
                 </p>
               </div>
@@ -236,7 +236,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="text-xs font-bold text-[var(--text-primary)]">Notifikasi Anggaran & Plafon Biaya</h4>
-                    <p className="text-[11px] text-slate-500">Kirim peringatan jika total RAB mendekati atau melebihi anggaran target.</p>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">Kirim peringatan jika total RAB mendekati atau melebihi anggaran target.</p>
                   </div>
                   <input
                     type="checkbox"
@@ -283,7 +283,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="text-xs font-bold text-[var(--text-primary)]">Pengingat Jadwal & Batas Waktu</h4>
-                    <p className="text-[11px] text-slate-500">Peringatan saat tanggal target selesai proyek semakin dekat atau terlewat.</p>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">Peringatan saat tanggal target selesai proyek semakin dekat atau terlewat.</p>
                   </div>
                   <input
                     type="checkbox"
@@ -328,7 +328,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="text-xs font-bold text-[var(--text-primary)]">Notifikasi Perubahan Revisi Signifikan</h4>
-                    <p className="text-[11px] text-slate-500">Peringatkan jika terjadi perubahan harga/volume di atas batas toleransi.</p>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">Peringatkan jika terjadi perubahan harga/volume di atas batas toleransi.</p>
                   </div>
                   <input
                     type="checkbox"
@@ -387,7 +387,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
               <div className="p-4 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] flex items-center justify-between">
                 <div>
                   <h4 className="text-xs font-bold text-[var(--text-primary)]">Notifikasi Browser Desktop</h4>
-                  <p className="text-[11px] text-slate-500">Izinkan browser menampilkan popup notifikasi saat aplikasi berada di latar belakang.</p>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">Izinkan browser menampilkan popup notifikasi saat aplikasi berada di latar belakang.</p>
                 </div>
                 <button
                   type="button"
@@ -412,7 +412,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
             /* Notification List */
             <div className="space-y-3">
               {filteredNotifications.length === 0 ? (
-                <div className="py-12 text-center text-slate-500 space-y-2">
+                <div className="py-12 text-center text-slate-500 dark:text-slate-400 space-y-2">
                   <Bell className="w-8 h-8 text-slate-600 dark:text-slate-300 mx-auto" />
                   <p className="text-xs font-semibold">Tidak ada notifikasi pada kategori ini.</p>
                   <p className="text-[11px] text-[var(--text-secondary)]">Semua aktivitas proyek dan anggaran berjalan normal.</p>
@@ -497,7 +497,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
         </div>
 
         {/* Modal Footer */}
-        <div className="bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)] px-6 py-3 flex items-center justify-between text-xs text-slate-500">
+        <div className="bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)] px-6 py-3 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
           <span>{notifications.length} Total Catatan Notifikasi</span>
           <button
             type="button"

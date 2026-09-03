@@ -204,7 +204,7 @@ export const DrawingUploadModal: React.FC<DrawingUploadModalProps> = ({
               <h4 className="text-sm font-bold text-[var(--text-primary)]">
                 Tarik & Lepas File Gambar di Sini, atau <span className="text-blue-600 underline">Pilih Berkas</span>
               </h4>
-              <p className="text-xs text-slate-500 mt-1.5 max-w-md mx-auto">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 max-w-md mx-auto">
                 Mendukung gambar Denah, Tampak, Potongan, Detail Pondasi, Kolom, Balok, & PDF (JPG, PNG, PDF maks. 15MB)
               </p>
             </div>
@@ -225,7 +225,7 @@ export const DrawingUploadModal: React.FC<DrawingUploadModalProps> = ({
                       <Check className="w-3 h-3" /> Siap
                     </span>
                   </div>
-                  <p className="text-xs text-slate-500 mt-0.5">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                     Ukuran: {fileData ? (fileData.size / (1024 * 1024)).toFixed(2) : '1.0'} MB
                   </p>
                 </div>

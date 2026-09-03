@@ -53,7 +53,7 @@ export const ImportHistoryModal: React.FC<ImportHistoryModalProps> = ({
             </div>
             <div>
               <h3 className="text-base font-bold text-[var(--text-primary)]">Riwayat Import & Berkas RAB</h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Daftar berkas yang pernah diunggah dan diekstrak ke dalam sistem
               </p>
             </div>

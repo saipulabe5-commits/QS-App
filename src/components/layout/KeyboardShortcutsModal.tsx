@@ -83,7 +83,7 @@ export const KeyboardShortcutsModal: React.FC<KeyboardShortcutsModalProps> = ({
           <div className="p-5 overflow-y-auto space-y-6 custom-scrollbar text-xs">
             {shortcutsList.map((sec) => (
               <div key={sec.category} className="space-y-2.5">
-                <h4 className="font-bold text-slate-500 uppercase tracking-wider text-[11px]">
+                <h4 className="font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px]">
                   {sec.category}
                 </h4>
                 <div className="bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)]/70 divide-y divide-slate-200/60">

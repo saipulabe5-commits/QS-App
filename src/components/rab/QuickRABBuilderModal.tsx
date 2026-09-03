@@ -415,7 +415,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                   </div>
                   <span
                     className={`text-xs font-medium hidden sm:inline ${
-                      step === s.num ? 'text-blue-900 font-bold' : 'text-slate-500'
+                      step === s.num ? 'text-blue-900 font-bold' : 'text-slate-500 dark:text-slate-400'
                     }`}
                   >
                     {s.label}
@@ -461,7 +461,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                   <Building2 className="w-4 h-4 text-blue-600" />
                   Langkah 1 dari 5: Informasi Umum & Plafon Anggaran Proyek
                 </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                   Masukkan identitas proyek, dimensi bangunan, dan parameter kalkulasi biaya overhead & profit.
                 </p>
               </div>
@@ -629,7 +629,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                   <Boxes className="w-4 h-4 text-blue-600" />
                   Langkah 2 dari 5: Pilih Metode & Template Penyusunan RAB
                 </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                   Tentukan bagaimana item RAB awal akan disusun (berdasarkan tipe bangunan, template terverifikasi, AI, atau mulai dari kosong).
                 </p>
               </div>
@@ -697,7 +697,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                         </span>
                       </div>
                       <h4 className="text-xs font-bold text-[var(--text-primary)]">{opt.title}</h4>
-                      <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">{opt.desc}</p>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">{opt.desc}</p>
                     </button>
                   );
                 })}
@@ -719,7 +719,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                         }`}
                       >
                         <div className="font-semibold text-[var(--text-primary)]">{preset.name}</div>
-                        <div className="text-[11px] text-slate-500 line-clamp-1 mt-0.5">{preset.description}</div>
+                        <div className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">{preset.description}</div>
                         <div className="text-[10px] text-blue-600 mt-1 font-medium">
                           Estimasi: ± {formatRupiah(preset.estimatedCostPerM2)} / m²
                         </div>
@@ -733,7 +733,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                 <div className="p-4 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] mt-4">
                   <h4 className="text-xs font-bold text-[var(--text-primary)] mb-2">Pilih Template Master RAB:</h4>
                   {rabTemplates.length === 0 ? (
-                    <p className="text-xs text-slate-500">Belum ada template tersimpan.</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">Belum ada template tersimpan.</p>
                   ) : (
                     <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
                       {rabTemplates.map((tpl) => (
@@ -748,7 +748,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                         >
                           <div>
                             <div className="font-semibold text-[var(--text-primary)]">{tpl.name}</div>
-                            <div className="text-[11px] text-slate-500">
+                            <div className="text-[11px] text-slate-500 dark:text-slate-400">
                               {tpl.category} • {tpl.items?.length || 0} Item Pekerjaan
                             </div>
                           </div>
@@ -803,7 +803,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                   <Layers className="w-4 h-4 text-blue-600" />
                   Langkah 3 dari 5: Pilih Kategori Pekerjaan RAB
                 </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                   Centang kategori yang berlaku untuk proyek ini. Anda juga dapat menambahkan kategori kustom.
                 </p>
               </div>
@@ -822,7 +822,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                   <span>•</span>
                   <button
                     onClick={() => setSelectedCategories([])}
-                    className="text-slate-500 hover:underline"
+                    className="text-slate-500 dark:text-slate-400 hover:underline"
                   >
                     Kosongkan
                   </button>
@@ -904,7 +904,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                     <FileSpreadsheet className="w-4 h-4 text-blue-600" />
                     Langkah 4 dari 5: Pratinjau Item RAB Ter-Generate ({draftItems.length} Item)
                   </h3>
-                  <p className="text-xs text-slate-500 mt-0.5">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                     Tinjau, edit volume/harga, atau buang item sebelum diterapkan secara resmi ke proyek.
                   </p>
                 </div>
@@ -920,7 +920,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
 
               {draftItems.length === 0 ? (
                 <div className="p-8 text-center bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)]">
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     Tidak ada item yang dihasilkan dari kombinasi metode dan kategori terpilih.
                   </p>
                 </div>
@@ -1035,7 +1035,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                   <FileCheck className="w-4 h-4 text-emerald-600" />
                   Langkah 5 dari 5: Rekapitulasi Akhir & Konfirmasi Penerapan
                 </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                   Periksa ringkasan matematis, perbandingan terhadap target anggaran, dan konfirmasi penyimpanan ke database proyek.
                 </p>
               </div>
@@ -1043,19 +1043,19 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
               {/* Summary Cards */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div className="p-3 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)]">
-                  <span className="text-[11px] text-slate-500 font-semibold">Total Item & Kategori</span>
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400 font-semibold">Total Item & Kategori</span>
                   <div className="text-sm font-bold text-[var(--text-primary)] mt-1">
                     {summary.itemCount} Item ({summary.categoryCount} Kategori)
                   </div>
                 </div>
                 <div className="p-3 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)]">
-                  <span className="text-[11px] text-slate-500 font-semibold">Biaya Langsung (Direct Cost)</span>
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400 font-semibold">Biaya Langsung (Direct Cost)</span>
                   <div className="text-sm font-bold text-[var(--text-primary)] mt-1">
                     {formatRupiah(summary.directCost)}
                   </div>
                 </div>
                 <div className="p-3 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)]">
-                  <span className="text-[11px] text-slate-500 font-semibold">Overhead + Profit ({projectData.overheadPercent + projectData.profitPercent}%)</span>
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400 font-semibold">Overhead + Profit ({projectData.overheadPercent + projectData.profitPercent}%)</span>
                   <div className="text-sm font-bold text-[var(--text-primary)] mt-1">
                     {formatRupiah(summary.overheadCost + summary.profitCost)}
                   </div>
@@ -1088,7 +1088,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                     />
                   </div>
                   <div className="flex items-center justify-between text-[11px]">
-                    <span className="text-slate-500">
+                    <span className="text-slate-500 dark:text-slate-400">
                       Penggunaan Anggaran: <span className="font-bold text-[var(--text-primary)]">{summary.budgetUsagePercent}%</span>
                     </span>
                     <span

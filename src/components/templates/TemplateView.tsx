@@ -139,7 +139,7 @@ export const TemplateView: React.FC = () => {
               {rabTemplates.length} Template
             </span>
           </div>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Pusat manajemen template konstruksi, unggah berkas Excel/CSV/PDF/Scan, dan sinkronisasi harga otomatis
           </p>
         </div>
@@ -175,7 +175,7 @@ export const TemplateView: React.FC = () => {
           <div className="text-xl font-black text-[var(--text-primary)] mt-0.5">
             {rabTemplates.length}
           </div>
-          <div className="text-[11px] text-slate-500">Siap Diterapkan ke Proyek</div>
+          <div className="text-[11px] text-slate-500 dark:text-slate-400">Siap Diterapkan ke Proyek</div>
         </div>
 
         <div className="p-3.5 bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] shadow-2xs">
@@ -305,7 +305,7 @@ export const TemplateView: React.FC = () => {
         <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] p-12 text-center shadow-2xs">
           <Boxes className="w-12 h-12 text-slate-600 dark:text-slate-300 mx-auto mb-3" />
           <h3 className="text-base font-bold text-[var(--text-primary)]">Tidak Ditemukan Template</h3>
-          <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
             Coba sesuaikan kata kunci pencarian atau unggah berkas RAB baru.
           </p>
           <button
@@ -342,7 +342,7 @@ export const TemplateView: React.FC = () => {
                     </div>
 
                     {tpl.isBuiltIn ? (
-                      <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 bg-[var(--bg-elevated-hover)] px-2 py-0.5 rounded-md">
+                      <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 dark:text-slate-400 bg-[var(--bg-elevated-hover)] px-2 py-0.5 rounded-md">
                         Standar SNI
                       </span>
                     ) : (
@@ -353,7 +353,7 @@ export const TemplateView: React.FC = () => {
                   </div>
 
                   <h3 className="text-base font-bold text-[var(--text-primary)] mt-1">{tpl.name}</h3>
-                  <p className="text-xs text-slate-500 mt-1 leading-relaxed line-clamp-2">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed line-clamp-2">
                     {tpl.description}
                   </p>
 
@@ -430,7 +430,7 @@ export const TemplateView: React.FC = () => {
                     {/* Quick Sync */}
                     <button
                       onClick={() => syncTemplateWithPriceDatabase(tpl.id)}
-                      className="p-2 text-slate-500 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors"
+                      className="p-2 text-slate-500 dark:text-slate-400 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors"
                       title="Sinkronkan Harga dengan Database Harga"
                     >
                       <RefreshCw className="w-4 h-4" />
@@ -439,7 +439,7 @@ export const TemplateView: React.FC = () => {
                     {/* Quick Excel Export */}
                     <button
                       onClick={() => exportTemplateToExcel(tpl)}
-                      className="p-2 text-slate-500 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors"
+                      className="p-2 text-slate-500 dark:text-slate-400 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors"
                       title="Export Excel .xlsx"
                     >
                       <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
@@ -448,7 +448,7 @@ export const TemplateView: React.FC = () => {
                     {/* Quick Duplicate */}
                     <button
                       onClick={() => duplicateRABTemplate(tpl.id)}
-                      className="p-2 text-slate-500 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
+                      className="p-2 text-slate-500 dark:text-slate-400 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
                       title="Duplikasi Template"
                     >
                       <Copy className="w-4 h-4" />
@@ -547,7 +547,7 @@ export const TemplateView: React.FC = () => {
             <h3 className="text-base font-bold text-[var(--text-primary)]">
               Gunakan "{templateToApply.name}"
             </h3>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Pilih bagaimana {templateToApply.items.length} item pekerjaan diterapkan:
             </p>
 
@@ -570,7 +570,7 @@ export const TemplateView: React.FC = () => {
                         <div className="font-bold text-[var(--text-primary)]">
                           Masukkan ke Proyek Aktif saat ini
                         </div>
-                        <div className="text-[11px] text-slate-500">
+                        <div className="text-[11px] text-slate-500 dark:text-slate-400">
                           Proyek: <strong>{selectedProject.name}</strong>
                         </div>
                       </div>
@@ -589,7 +589,7 @@ export const TemplateView: React.FC = () => {
                       <div className="font-bold text-[var(--text-primary)]">
                         Buat Proyek Baru dari Template ini
                       </div>
-                      <div className="text-[11px] text-slate-500">
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400">
                         Membuat proyek mandiri otomatis terisi template ini
                       </div>
                     </div>

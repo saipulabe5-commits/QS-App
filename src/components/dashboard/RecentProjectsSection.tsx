@@ -62,7 +62,7 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
             </div>
             <h3 className="text-base font-bold text-[var(--text-primary)]">Daftar Proyek Terbaru</h3>
           </div>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Status pelaksanaan, nilai anggaran RAB, dan dokumen kontrak konstruksi
           </p>
         </div>
@@ -124,7 +124,7 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
           <h4 className="text-sm font-bold text-[var(--text-primary)]">
             {projects.length === 0 ? 'Belum Ada Proyek Terdaftar' : 'Tidak Ditemukan Proyek'}
           </h4>
-          <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
             {projects.length === 0
               ? 'Mulai estimasi dengan membuat proyek baru atau pilih template standar pekerjaan.'
               : 'Coba sesuaikan kata kunci pencarian atau filter status yang dipilih.'}
@@ -197,7 +197,7 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
                       <div className="font-semibold text-[var(--text-primary)] truncate max-w-[180px]">
                         {proj.clientName}
                       </div>
-                      <div className="text-[11px] text-slate-500 truncate max-w-[180px] mt-0.5">
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400 truncate max-w-[180px] mt-0.5">
                         {proj.location}
                       </div>
                     </td>

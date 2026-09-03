@@ -337,7 +337,7 @@ export const DrawingAnalysisView: React.FC = () => {
                   <ImageIcon className="w-6 h-6" />
                 </div>
                 <h4 className="text-sm font-bold text-[var(--text-primary)]">Belum Ada Dokumen Gambar</h4>
-                <p className="text-xs text-slate-500 max-w-xs mx-auto">
+                <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs mx-auto">
                   Unggah denah arsitektur, gambar kerja, atau foto lapangan untuk dianalisis oleh AI.
                 </p>
                 <button
@@ -400,7 +400,7 @@ export const DrawingAnalysisView: React.FC = () => {
                           {drawing.title}
                         </h4>
 
-                        <div className="flex items-center space-x-2 mt-1 text-[11px] text-slate-500">
+                        <div className="flex items-center space-x-2 mt-1 text-[11px] text-slate-500 dark:text-slate-400">
                           <span>{drawing.fileSize || '1.2 MB'}</span>
                           <span>•</span>
                           <span>{drawing.uploadDate}</span>
@@ -501,11 +501,11 @@ export const DrawingAnalysisView: React.FC = () => {
                       <span className="text-xs font-extrabold text-blue-800 uppercase bg-blue-100 px-2 py-0.5 rounded-sm">
                         {activeDrawing.category}
                       </span>
-                      <span className="text-xs text-slate-500 font-medium">Skala: {activeDrawing.scale || '1:100'}</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Skala: {activeDrawing.scale || '1:100'}</span>
                     </div>
                     <h2 className="text-base font-bold text-[var(--text-primary)] mt-0.5">{activeDrawing.title}</h2>
                     {activeDrawing.description && (
-                      <p className="text-xs text-slate-500 mt-0.5">{activeDrawing.description}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{activeDrawing.description}</p>
                     )}
                   </div>
                 </div>
@@ -609,7 +609,7 @@ export const DrawingAnalysisView: React.FC = () => {
                     <Sparkles className="w-8 h-8" />
                   </div>
                   <h3 className="text-base font-bold text-[var(--text-primary)]">AI Sedang Menganalisis Dokumen Gambar...</h3>
-                  <p className="text-xs text-slate-500 max-w-md mx-auto">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto">
                     Mengekstrak teks dimensi, notasi arsitektur/struktur, serta menghitung volume pekerjaan tanpa mengarang ukuran di luar gambar.
                   </p>
                 </div>
@@ -645,14 +645,14 @@ export const DrawingAnalysisView: React.FC = () => {
                           <Info className="w-3.5 h-3.5 text-blue-600" />
                           Ringkasan Temuan AI
                         </span>
-                        <span className="text-slate-500 font-normal">Skala: {activeAnalysis.scaleDetected}</span>
+                        <span className="text-slate-500 dark:text-slate-400 font-normal">Skala: {activeAnalysis.scaleDetected}</span>
                       </div>
                       <p className="text-xs text-[var(--text-primary)] leading-relaxed">{activeAnalysis.summary}</p>
 
                       {/* Detected Elements Chips */}
                       {activeDetectedElements.length > 0 && (
                         <div className="pt-2">
-                          <span className="text-[11px] font-semibold text-slate-500 block mb-1.5">
+                          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 block mb-1.5">
                             Elemen Terdeteksi:
                           </span>
                           <div className="flex flex-wrap gap-1.5">
@@ -720,7 +720,7 @@ export const DrawingAnalysisView: React.FC = () => {
                       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                         {activeExtractedDimensions.map((dim: any, i: number) => (
                           <div key={i} className="bg-[var(--bg-elevated)] p-2.5 rounded-lg border border-[var(--border-primary)] text-xs">
-                            <span className="text-slate-500 text-[10px] block truncate">{dim.component || dim.label || 'Dimensi'}</span>
+                            <span className="text-slate-500 dark:text-slate-400 text-[10px] block truncate">{dim.component || dim.label || 'Dimensi'}</span>
                             <div className="font-bold text-[var(--text-primary)] mt-0.5">{dim.dimension || (dim.value ? `${dim.value} ${dim.unit || ''}` : '-')}</div>
                             {(dim.notes || dim.source) && <p className="text-[10px] text-[var(--text-secondary)] truncate mt-0.5">{dim.notes || dim.source}</p>}
                           </div>
@@ -739,7 +739,7 @@ export const DrawingAnalysisView: React.FC = () => {
                             {displayedEstimatedItems.length} / {activeEstimatedItems.length} Item
                           </span>
                         </h3>
-                        <p className="text-xs text-slate-500">
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
                           Tinjau rumus volume, sesuaikan angka jika perlu, setujui status, lalu klik "Masukkan ke RAB".
                         </p>
                       </div>
@@ -828,7 +828,7 @@ export const DrawingAnalysisView: React.FC = () => {
                         <tbody className="divide-y divide-slate-200">
                           {displayedEstimatedItems.length === 0 ? (
                             <tr>
-                              <td colSpan={9} className="p-6 text-center text-slate-500 text-xs">
+                              <td colSpan={9} className="p-6 text-center text-slate-500 dark:text-slate-400 text-xs">
                                 Tidak ada item pekerjaan pada filter ini.
                               </td>
                             </tr>
@@ -891,7 +891,7 @@ export const DrawingAnalysisView: React.FC = () => {
                                   </td>
                                   <td className="p-3 text-[var(--text-secondary)]">{item.category}</td>
                                   <td className="p-3 text-right font-bold text-[var(--text-primary)] font-mono">
-                                    {item.volume.toLocaleString('id-ID')} <span className="text-[10px] font-normal text-slate-500">{item.unit}</span>
+                                    {item.volume.toLocaleString('id-ID')} <span className="text-[10px] font-normal text-slate-500 dark:text-slate-400">{item.unit}</span>
                                   </td>
                                   <td className="p-3 text-right text-[var(--text-primary)] font-mono">
                                     {formatRupiah(item.unitPrice)}
@@ -899,7 +899,7 @@ export const DrawingAnalysisView: React.FC = () => {
                                   <td className="p-3 text-right font-extrabold text-blue-900 font-mono">
                                     {formatRupiah(item.totalPrice)}
                                   </td>
-                                  <td className="p-3 text-slate-500 text-[11px] max-w-xs truncate" title={item.formulaExplanation}>
+                                  <td className="p-3 text-slate-500 dark:text-slate-400 text-[11px] max-w-xs truncate" title={item.formulaExplanation}>
                                     {item.formulaExplanation || '-'}
                                   </td>
                                   <td className="p-3 text-center">{statusBadge}</td>
@@ -1002,7 +1002,7 @@ export const DrawingAnalysisView: React.FC = () => {
                     <Sparkles className="w-7 h-7 text-indigo-500" />
                   </div>
                   <h3 className="text-base font-bold text-[var(--text-primary)]">Dokumen Belum Dianalisis AI</h3>
-                  <p className="text-xs text-slate-500 max-w-md mx-auto">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto">
                     Klik tombol "Mulai Analisis AI" untuk membaca dimensi gambar dan menyusun volume pekerjaan otomatis.
                   </p>
                   
@@ -1041,7 +1041,7 @@ export const DrawingAnalysisView: React.FC = () => {
                 <ImageIcon className="w-7 h-7" />
               </div>
               <h3 className="text-base font-bold text-[var(--text-primary)]">Pilih Dokumen Gambar untuk Ditampilkan</h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Pilih gambar dari daftar di sebelah kiri atau unggah dokumen gambar baru.
               </p>
             </div>

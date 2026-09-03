@@ -138,7 +138,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
             </p>
             <div className="mt-2.5 grid grid-cols-2 gap-2 text-[10px]">
               <div className="bg-[var(--bg-elevated)]/80 p-2 rounded-lg border border-blue-100">
-                <span className="text-slate-500 block">Metode Pajak</span>
+                <span className="text-slate-500 dark:text-slate-400 block">Metode Pajak</span>
                 <span className="font-bold text-[var(--text-primary)]">PPN {taxPercent}% (SNI)</span>
               </div>
             </div>

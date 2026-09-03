@@ -65,7 +65,7 @@ export const RABTable: React.FC<RABTableProps> = ({
       <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] p-12 text-center shadow-2xs">
         <FileSpreadsheet className="w-12 h-12 text-slate-600 dark:text-slate-300 mx-auto mb-3" />
         <h3 className="text-base font-bold text-[var(--text-primary)]">Tidak Ada Item Pekerjaan</h3>
-        <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
           {searchQuery || selectedCategoryFilter !== 'all'
             ? 'Tidak ditemukan pos pekerjaan yang sesuai dengan kriteria pencarian / filter Anda.'
             : 'Mulai susun RAB dengan menambahkan uraian pekerjaan atau gunakan template standar.'}
@@ -251,7 +251,7 @@ export const RABTable: React.FC<RABTableProps> = ({
 
                               {/* Keterangan */}
                               <td
-                                className="px-3 py-3 text-[11px] text-slate-500 truncate max-w-[150px]"
+                                className="px-3 py-3 text-[11px] text-slate-500 dark:text-slate-400 truncate max-w-[150px]"
                                 title={item.notes || '-'}
                               >
                                 {item.notes || '-'}
@@ -304,7 +304,7 @@ export const RABTable: React.FC<RABTableProps> = ({
               <td className="px-3 py-2 text-right font-black text-xs text-blue-700 font-mono">
                 100,00%
               </td>
-              <td colSpan={2} className="px-3 py-2 text-[11px] text-slate-500 font-normal">
+              <td colSpan={2} className="px-3 py-2 text-[11px] text-slate-500 dark:text-slate-400 font-normal">
                 {items.length} Pos Pekerjaan
               </td>
             </tr>

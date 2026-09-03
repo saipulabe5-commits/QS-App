@@ -1,6 +1,20 @@
 <!doctype html>
 <html lang="id">
   <head>
+
+  <script>
+    // [V12 SUPER FINAL FIX] Catch Vite HMR WebSocket errors before AI Studio diagnostic overlay
+    window.addEventListener('unhandledrejection', function(e) {
+      const reasonStr = e.reason ? (e.reason.message || String(e.reason)) : '';
+      if (reasonStr.includes('WebSocket') || reasonStr.includes('closed without opened')) {
+        e.preventDefault();
+        e.stopImmediatePropagation(); // CRITICAL: Stop other listeners (like AI Studio's overlay) from catching this
+        console.warn('[VITE HMR] Suppressed benign websocket connection error in preview environment.');
+        return false;
+      }
+    }, true); // useCapture: true is essential here
+  </script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta httpquiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -86,15 +100,7 @@
       }, 45000);
 
       
-      // SUPPRESS VITE HMR WEBSOCKET ERRORS IN PREVIEW
-      const originalConsoleError = console.error;
-      console.error = function(...args) {
-        if (typeof args[0] === 'string' && args[0].includes('[vite] failed to connect to websocket')) {
-          return; // Completely silence Vite's hardcoded console.error
-        }
-        originalConsoleError.apply(console, args);
-      };
-
+      
       // PHASE 8 - NATIVE RUNTIME DIAGNOSTICS (Catch early errors before Vite chunks load)
       window.addEventListener('error', function(e) {
         console.error('[NATIVE BOOT ERROR]', e.message, e.filename, e.lineno);
@@ -106,16 +112,11 @@
         }
       });
       
+      
       window.addEventListener('unhandledrejection', function(e) {
-        // Suppress Vite HMR WebSocket errors in preview
-        const reasonStr = e.reason ? (e.reason.message || e.reason.toString()) : '';
-        if (reasonStr.includes('WebSocket') || reasonStr.includes('closed without opened')) {
-          console.warn('[VITE HMR] Suppressed benign websocket connection error in preview environment.');
-          e.preventDefault(); // Stop it from appearing as "Unhandled Rejection"
-          return;
-        }
         console.warn('[NATIVE BOOT PROMISE REJECTION]', e.reason);
       });
+
 
      </script>
     <script type="module" src="/src/main.tsx"></script>

@@ -266,7 +266,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
             className={`px-4 py-2 rounded-t-lg transition-colors border-b-2 ${
               pickerTab === 'form'
                 ? 'bg-[var(--bg-elevated)] text-blue-700 border-blue-600 shadow-2xs'
-                : 'text-slate-500 hover:text-[var(--text-primary)] border-transparent'
+                : 'text-slate-500 dark:text-slate-400 hover:text-[var(--text-primary)] border-transparent'
             }`}
           >
             Form Input RAB
@@ -277,7 +277,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
             className={`px-4 py-2 rounded-t-lg transition-colors border-b-2 flex items-center space-x-1.5 ${
               pickerTab === 'priceDb'
                 ? 'bg-[var(--bg-elevated)] text-blue-700 border-blue-600 shadow-2xs'
-                : 'text-slate-500 hover:text-[var(--text-primary)] border-transparent'
+                : 'text-slate-500 dark:text-slate-400 hover:text-[var(--text-primary)] border-transparent'
             }`}
           >
             <Database className="w-3.5 h-3.5" />
@@ -289,7 +289,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
             className={`px-4 py-2 rounded-t-lg transition-colors border-b-2 flex items-center space-x-1.5 ${
               pickerTab === 'ahsp'
                 ? 'bg-[var(--bg-elevated)] text-blue-700 border-blue-600 shadow-2xs'
-                : 'text-slate-500 hover:text-[var(--text-primary)] border-transparent'
+                : 'text-slate-500 dark:text-slate-400 hover:text-[var(--text-primary)] border-transparent'
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
@@ -689,7 +689,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                       <div className="text-xs font-bold text-[var(--text-primary)] group-hover:text-blue-900">
                         {p.name}
                       </div>
-                      <div className="text-[11px] text-slate-500 mt-0.5">
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
                         <span className="font-mono text-[var(--text-secondary)] font-semibold">{p.code}</span> &middot; {p.category} &middot;{' '}
                         <span className="capitalize">{p.type}</span>
                       </div>
@@ -782,7 +782,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                       <div className="text-xs font-bold text-[var(--text-primary)] group-hover:text-blue-900">
                         {a.name}
                       </div>
-                      <div className="text-[11px] text-slate-500 mt-0.5 flex items-center space-x-1.5">
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 flex items-center space-x-1.5">
                         <span className="font-mono text-[var(--text-secondary)] font-semibold">{a.code}</span>
                         <span>&middot;</span>
                         <span className="text-blue-600 font-medium">{a.category}</span>

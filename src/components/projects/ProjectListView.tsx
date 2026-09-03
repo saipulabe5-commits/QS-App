@@ -93,7 +93,7 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
           <h2 className="text-xl font-bold text-[var(--text-primary)] tracking-tight">
             Daftar Seluruh Proyek ({projects.length})
           </h2>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Manajemen dokumen RAB, spesifikasi kontrak, dan status pengerjaan
           </p>
         </div>
@@ -171,7 +171,7 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
         <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] p-12 text-center shadow-2xs">
           <Building2 className="w-12 h-12 text-slate-600 dark:text-slate-300 mx-auto mb-3" />
           <h3 className="text-base font-bold text-[var(--text-primary)]">Tidak Ada Proyek yang Sesuai</h3>
-          <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
             {searchQuery || statusFilter !== 'all'
               ? 'Coba sesuaikan kata kunci pencarian atau ganti filter status.'
               : 'Anda belum memiliki proyek konstruksi. Buat proyek pertama Anda sekarang!'}
@@ -198,7 +198,7 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
                 <div className="p-5">
                   {/* Status & Doc No */}
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-[11px] font-mono text-slate-500 bg-[var(--bg-elevated-hover)] px-2 py-0.5 rounded-md truncate max-w-[170px]">
+                    <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-[var(--bg-elevated-hover)] px-2 py-0.5 rounded-md truncate max-w-[170px]">
                       {proj.documentNo}
                     </span>
                     <select
@@ -396,14 +396,14 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
                           </button>
                           <button
                             onClick={() => handleEdit(proj)}
-                            className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg cursor-pointer"
+                            className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg cursor-pointer"
                             title="Edit"
                           >
                             <Edit2 className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => duplicateProject(proj.id)}
-                            className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg cursor-pointer"
+                            className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg cursor-pointer"
                             title="Duplikasi"
                           >
                             <Copy className="w-4 h-4" />

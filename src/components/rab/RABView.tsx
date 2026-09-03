@@ -91,7 +91,7 @@ export const RABView: React.FC<RABViewProps> = ({
       <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] p-12 text-center shadow-2xs">
         <Building2 className="w-12 h-12 text-slate-600 dark:text-slate-300 mx-auto mb-3" />
         <h3 className="text-base font-bold text-[var(--text-primary)]">Belum Ada Proyek Terpilih</h3>
-        <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
           Silakan pilih atau buat proyek konstruksi terlebih dahulu untuk mulai menyusun Rencana Anggaran Biaya.
         </p>
         <button
@@ -454,7 +454,7 @@ export const RABView: React.FC<RABViewProps> = ({
           />
           <div className="relative bg-[var(--bg-elevated)] w-full max-w-md rounded-2xl shadow-2xl border border-[var(--border-primary)] p-6 z-10">
             <h3 className="text-base font-bold text-[var(--text-primary)]">Gunakan Template Pekerjaan</h3>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Pilih susunan pekerjaan standar untuk mengisi RAB secara cepat.
             </p>
 
@@ -536,7 +536,7 @@ export const RABView: React.FC<RABViewProps> = ({
           />
           <div className="relative bg-[var(--bg-elevated)] w-full max-w-md rounded-2xl shadow-2xl border border-[var(--border-primary)] p-6 z-10">
             <h3 className="text-base font-bold text-[var(--text-primary)]">Simpan Sebagai Template Master</h3>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Simpan seluruh {projectRABItems.length} pos pekerjaan dari proyek ini sebagai template yang dapat digunakan berulang kali.
             </p>
 

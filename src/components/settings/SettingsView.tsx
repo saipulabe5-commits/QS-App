@@ -176,7 +176,7 @@ export const SettingsView: React.FC = () => {
         <h2 className="text-xl font-bold text-[var(--text-primary)] tracking-tight">
           Pengaturan Sistem & Profil Perusahaan
         </h2>
-        <p className="text-xs text-slate-500 mt-0.5">
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
           Atur identitas resmi kop surat, persentase default anggaran, dan konfigurasi penomoran
         </p>
       </div>
@@ -188,7 +188,7 @@ export const SettingsView: React.FC = () => {
             <Building2 className="w-5 h-5 text-blue-600" />
             <div>
               <h3 className="text-sm font-bold text-[var(--text-primary)]">Identitas Perusahaan (Kop Surat)</h3>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">
                 Informasi ini akan tercetak otomatis pada lembar dokumen dan laporan RAB
               </p>
             </div>
@@ -258,7 +258,7 @@ export const SettingsView: React.FC = () => {
               <h3 className="text-sm font-bold text-[var(--text-primary)]">
                 Nilai Persentase Default Anggaran
               </h3>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">
                 Akan otomatis diterapkan saat membuat proyek baru (dapat diubah per proyek)
               </p>
             </div>
@@ -317,7 +317,7 @@ export const SettingsView: React.FC = () => {
             <FileText className="w-5 h-5 text-blue-600" />
             <div>
               <h3 className="text-sm font-bold text-[var(--text-primary)]">Format Penomoran Dokumen</h3>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">
                 Pola penomoran otomatis untuk berkas RAB proyek baru
               </p>
             </div>
@@ -366,7 +366,7 @@ export const SettingsView: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-sm font-bold text-[var(--text-primary)]">Keamanan Akun & Ganti Kata Sandi</h3>
-                <p className="text-[11px] text-slate-500">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">
                   Perbarui kata sandi login untuk akun resmi: <span className="font-semibold text-[var(--text-primary)]">{user?.email || 'saipulabe@gmail.com'}</span>
                 </p>
               </div>
@@ -469,7 +469,7 @@ export const SettingsView: React.FC = () => {
               <h3 className="text-sm font-bold text-[var(--text-primary)]">
                 Pusat Ekspor Source Code & Cadangan Data
               </h3>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">
                 Unduh seluruh kode sumber aplikasi atau cadangan database proyek dalam format file JSON
               </p>
             </div>
@@ -540,7 +540,7 @@ export const SettingsView: React.FC = () => {
               </div>
               <div>
                 <h4 className="text-xs font-bold text-[var(--text-primary)]">Cadangan Seluruh Data Proyek & RAB (JSON)</h4>
-                <p className="text-[11px] text-slate-500">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">
                   Unduh file cadangan data proyek aktif, rekaman item RAB, daftar harga material, dan koefisien AHSP
                 </p>
               </div>

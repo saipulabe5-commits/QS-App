@@ -391,7 +391,7 @@ export const CommandBar: React.FC<CommandBarProps> = ({
                           className={`font-mono text-[11px] px-1.5 py-0.5 rounded-sm ${
                             isSelected
                               ? 'bg-blue-700 text-blue-100 border border-blue-500'
-                              : 'bg-[var(--bg-elevated-hover)] text-slate-500 border border-[var(--border-primary)]'
+                              : 'bg-[var(--bg-elevated-hover)] text-slate-500 dark:text-slate-400 border border-[var(--border-primary)]'
                           }`}
                         >
                           {cmd.shortcut}
@@ -406,7 +406,7 @@ export const CommandBar: React.FC<CommandBarProps> = ({
           </div>
 
           {/* Footer Navigation Hints */}
-          <div className="px-4 py-2.5 bg-[var(--bg-elevated-hover)]/70 border-t border-[var(--border-primary)]/60 flex items-center justify-between text-[11px] text-slate-500">
+          <div className="px-4 py-2.5 bg-[var(--bg-elevated-hover)]/70 border-t border-[var(--border-primary)]/60 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
             <div className="flex items-center space-x-3">
               <span className="flex items-center space-x-1">
                 <kbd className="px-1.5 py-0.5 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded font-mono shadow-2xs">↑</kbd>

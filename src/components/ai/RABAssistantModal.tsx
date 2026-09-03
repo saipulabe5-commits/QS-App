@@ -692,7 +692,7 @@ Saya siap membantu Anda dalam:
                   <h4 className="text-sm font-bold text-[var(--text-primary)]">
                     Pemeriksaan Pos Pekerjaan Terlewat (Missing Items)
                   </h4>
-                  <p className="text-xs text-slate-500 mt-0.5">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                     AI membandingkan {projectRABItems.length} pos pekerjaan saat ini dengan tahapan konstruksi SNI lengkap.
                   </p>
                 </div>
@@ -721,7 +721,7 @@ Saya siap membantu Anda dalam:
                   <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                     <div>
                       <span className="text-xs font-bold text-[var(--text-primary)]">Hasil Pemindaian AI</span>
-                      <p className="text-xs text-slate-500">{missingResult.summary}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">{missingResult.summary}</p>
                     </div>
                     {missingResult.missingItems.length > 0 && (
                       <button
@@ -747,7 +747,7 @@ Saya siap membantu Anda dalam:
                               {item.code}
                             </span>
                             <span className="text-xs font-bold text-[var(--text-primary)]">{item.name}</span>
-                            <span className="text-[10px] text-slate-500 font-semibold">({item.category})</span>
+                            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">({item.category})</span>
                           </div>
                           <p className="text-[11px] text-[var(--text-secondary)] italic">💡 {item.reason}</p>
                         </div>
@@ -774,7 +774,7 @@ Saya siap membantu Anda dalam:
               <div className="bg-[var(--bg-elevated)] p-5 rounded-xl border border-[var(--border-primary)] shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <h4 className="text-sm font-bold text-[var(--text-primary)]">Audit Anomali & Kesesuaian Harga Satuan</h4>
-                  <p className="text-xs text-slate-500 mt-0.5">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                     Membandingkan harga satuan tiap item terhadap acuan harga pasar dan AHSP PUPR 2024-2026.
                   </p>
                 </div>
@@ -819,7 +819,7 @@ Saya siap membantu Anda dalam:
                             {auditResult.overallVerdict}
                           </span>
                         </div>
-                        <p className="text-xs text-slate-500 mt-0.5">{auditResult.summary}</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{auditResult.summary}</p>
                       </div>
                     </div>
 
@@ -868,7 +868,7 @@ Saya siap membantu Anda dalam:
                             <td className="px-3 py-2 text-right font-mono font-medium">
                               {formatRupiah(item.currentPrice)} / {item.unit}
                             </td>
-                            <td className="px-3 py-2 text-right font-mono text-[11px] text-slate-500">
+                            <td className="px-3 py-2 text-right font-mono text-[11px] text-slate-500 dark:text-slate-400">
                               {formatRupiah(item.marketMin)} - {formatRupiah(item.marketMax)}
                             </td>
                             <td className="px-3 py-2 text-right font-mono font-bold text-blue-700">
@@ -891,7 +891,7 @@ Saya siap membantu Anda dalam:
                 <h4 className="text-sm font-bold text-[var(--text-primary)]">
                   Kalkulator Volume Berbantu AI (Natural Language Geometry Solver)
                 </h4>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   Tuliskan dimensi atau gambar denah dalam bahasa bebas. AI akan menerapkan rumus geometris sipil, menghitung potongan opening, dan menyajikan rumus step-by-step.
                 </p>
 
@@ -968,7 +968,7 @@ Saya siap membantu Anda dalam:
                         </li>
                       ))}
                     </ul>
-                    <div className="pt-2 text-[11px] text-slate-500">
+                    <div className="pt-2 text-[11px] text-slate-500 dark:text-slate-400">
                       <strong>Rumus Digunakan:</strong> {volumeResult.formulaUsed}
                     </div>
                   </div>
@@ -1007,7 +1007,7 @@ Saya siap membantu Anda dalam:
                   <h4 className="text-sm font-bold text-[var(--text-primary)]">
                     Rekomendasi Penghematan Biaya & Value Engineering
                   </h4>
-                  <p className="text-xs text-slate-500 mt-0.5">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                     AI menganalisis peluang efisiensi material, fabrikasi, dan metode kerja tanpa mengurangi mutu struktur.
                   </p>
                 </div>
@@ -1060,7 +1060,7 @@ Saya siap membantu Anda dalam:
                         </div>
                         <p className="text-xs text-[var(--text-secondary)] leading-relaxed">{strat.description}</p>
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between text-[11px] pt-2 border-t border-slate-100 gap-2">
-                          <span className="text-slate-500">
+                          <span className="text-slate-500 dark:text-slate-400">
                             <strong>Dampak Mutu:</strong> {strat.impactOnQuality}
                           </span>
                           <span className="text-blue-700 font-semibold">
@@ -1083,7 +1083,7 @@ Saya siap membantu Anda dalam:
                   <h4 className="text-sm font-bold text-[var(--text-primary)]">
                     Ringkasan Eksekutif & Struktur Pembiayaan Proyek
                   </h4>
-                  <p className="text-xs text-slate-500 mt-0.5">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                     Menyusun narasi laporan formal, analisis Pareto biaya dominan, dan mitigasi risiko finansial.
                   </p>
                 </div>
@@ -1157,7 +1157,7 @@ Saya siap membantu Anda dalam:
                 <h4 className="text-sm font-bold text-[var(--text-primary)]">
                   Generator RAB Otomatis Berdasarkan Spesifikasi Proyek
                 </h4>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   AI menyusun daftar uraian pekerjaan lengkap mulai dari persiapan, struktur, dinding, finishing hingga instalasi ME.
                 </p>
 
@@ -1251,7 +1251,7 @@ Saya siap membantu Anda dalam:
                       <tbody className="divide-y divide-slate-100">
                         {suggestedEstimateItems.map((item, idx) => (
                           <tr key={idx} className="hover:bg-[var(--bg-elevated-hover)]">
-                            <td className="px-3 py-2 font-mono text-[11px] text-slate-500">{item.code}</td>
+                            <td className="px-3 py-2 font-mono text-[11px] text-slate-500 dark:text-slate-400">{item.code}</td>
                             <td className="px-3 py-2 font-medium text-[var(--text-primary)]">
                               <div>{item.name}</div>
                               <div className="text-[10px] text-blue-600">{item.category}</div>
@@ -1283,13 +1283,13 @@ Saya siap membantu Anda dalam:
                       <TrendingUp className="w-4 h-4 text-blue-600" />
                       <span>AI Predictive Cost Escalation & Inflasi Material</span>
                     </h4>
-                    <p className="text-xs text-slate-500 mt-0.5">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                       Prediksi pergerakan harga material, fluktuasi kurs, dan penyesuaian upah kerja pasar Indonesia 2025-2026.
                     </p>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="flex items-center space-x-1.5 bg-[var(--bg-elevated-hover)] p-1 rounded-xl border border-[var(--border-primary)] text-xs">
-                      <Clock className="w-3.5 h-3.5 text-slate-500 ml-1.5" />
+                      <Clock className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 ml-1.5" />
                       <span className="text-[var(--text-secondary)] font-medium text-[11px]">Periode:</span>
                       {[3, 6, 12].map((months) => (
                         <button
@@ -1335,7 +1335,7 @@ Saya siap membantu Anda dalam:
                     <TrendingUp className="w-6 h-6" />
                   </div>
                   <h5 className="text-sm font-bold text-[var(--text-primary)]">Mulai Analisis Prediktif Eskalasi Biaya</h5>
-                  <p className="text-xs text-slate-500 max-w-md mx-auto mt-1 mb-4">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto mt-1 mb-4">
                     AI menganalisis seluruh pos pekerjaan dalam RAB Anda terhadap proyeksi inflasi komoditas baja, semen, pasir, kurs valuta asing, dan upah tenaga kerja konstruksi Indonesia.
                   </p>
                   <button
@@ -1355,7 +1355,7 @@ Saya siap membantu Anda dalam:
                 <div className="p-12 text-center bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] shadow-2xs">
                   <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-3" />
                   <h5 className="text-xs font-bold text-[var(--text-primary)]">Menghubungkan ke Engine Ekonometri Konstruksi...</h5>
-                  <p className="text-[11px] text-slate-500 mt-1">
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
                     Mengkalkulasi bobot material, indeks harga produsen semen/baja, dan simulasi dampak penundaan pengadaan.
                   </p>
                 </div>
@@ -1367,7 +1367,7 @@ Saya siap membantu Anda dalam:
                   {/* Top KPI Cards */}
                   <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
                     <div className="p-3.5 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] shadow-2xs">
-                      <div className="text-[11px] text-slate-500 font-medium">Estimasi Kenaikan Total</div>
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Estimasi Kenaikan Total</div>
                       <div className="text-xl font-bold text-rose-600 mt-0.5">
                         +{escalationResult.overallEscalationRate.toFixed(1)}%
                       </div>
@@ -1377,7 +1377,7 @@ Saya siap membantu Anda dalam:
                     </div>
 
                     <div className="p-3.5 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] shadow-2xs">
-                      <div className="text-[11px] text-slate-500 font-medium">Kondisi Pasar Prediksi</div>
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Kondisi Pasar Prediksi</div>
                       <div className="text-sm font-bold text-[var(--text-primary)] mt-1 flex items-center space-x-1.5">
                         <span
                           className={`inline-block w-2.5 h-2.5 rounded-full ${
@@ -1394,7 +1394,7 @@ Saya siap membantu Anda dalam:
                     </div>
 
                     <div className="p-3.5 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] shadow-2xs">
-                      <div className="text-[11px] text-slate-500 font-medium">Total Anggaran Saat Ini</div>
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Total Anggaran Saat Ini</div>
                       <div className="text-sm font-mono font-bold text-[var(--text-primary)] mt-1">
                         {formatRupiah(escalationResult.totalCurrentBudget || calc.grandTotal)}
                       </div>
@@ -1479,7 +1479,7 @@ Saya siap membantu Anda dalam:
                         <span className="text-xs font-bold text-[var(--text-primary)]">
                           Dampak Eskalasi per Divisi Pekerjaan
                         </span>
-                        <span className="text-[11px] text-slate-500">
+                        <span className="text-[11px] text-slate-500 dark:text-slate-400">
                           {escalationResult.categoryEscalations.length} Kategori Terdampak
                         </span>
                       </div>
@@ -1508,7 +1508,7 @@ Saya siap membantu Anda dalam:
                                 <td className="px-3 py-2.5 text-right font-mono font-bold text-[var(--text-primary)]">
                                   {formatRupiah(cat.projectedCost)}
                                 </td>
-                                <td className="px-3 py-2.5 text-[11px] text-slate-500">
+                                <td className="px-3 py-2.5 text-[11px] text-slate-500 dark:text-slate-400">
                                   {cat.mainDrivers?.join(', ') || '-'}
                                 </td>
                                 <td className="px-2.5 py-2.5 text-center">
@@ -1557,7 +1557,7 @@ Saya siap membantu Anda dalam:
 
         {/* Modal Footer */}
         <div className="px-6 py-3 bg-[var(--bg-elevated)] border-t border-[var(--border-primary)] flex items-center justify-between flex-shrink-0">
-          <div className="flex items-center space-x-2 text-[11px] text-slate-500">
+          <div className="flex items-center space-x-2 text-[11px] text-slate-500 dark:text-slate-400">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
             <span>AI Advisor: Semua data aman dan memerlukan konfirmasi pengguna sebelum diaplikasikan.</span>
           </div>

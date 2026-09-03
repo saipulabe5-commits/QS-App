@@ -294,7 +294,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
             <div className="text-lg font-black text-[var(--text-primary)] mt-0.5">
               {parsedItems.length} Item
             </div>
-            <div className="text-[11px] text-slate-500">
+            <div className="text-[11px] text-slate-500 dark:text-slate-400">
               {categoriesInJob.length} Kategori Pekerjaan
             </div>
           </div>
@@ -316,7 +316,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                 </span>
               )}
             </div>
-            <div className="text-[11px] text-slate-500">
+            <div className="text-[11px] text-slate-500 dark:text-slate-400">
               {needsVerificationItems.length === 0
                 ? 'Semua data lengkap & valid'
                 : 'Harap periksa baris bertanda kuning'}
@@ -331,7 +331,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
             <div className="text-base font-black text-blue-900 font-mono mt-0.5">
               {formatRupiah(systemCalculatedTotal)}
             </div>
-            <div className="text-[11px] text-slate-500">
+            <div className="text-[11px] text-slate-500 dark:text-slate-400">
               Σ (Volume × Harga Satuan)
             </div>
           </div>
@@ -657,7 +657,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
 
         {/* Footer Actions */}
         <div className="px-6 py-4 bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)] flex flex-col sm:flex-row items-center justify-between gap-3 flex-shrink-0">
-          <div className="flex items-center space-x-3 text-xs text-slate-500">
+          <div className="flex items-center space-x-3 text-xs text-slate-500 dark:text-slate-400">
             <span className="font-semibold text-[var(--text-primary)]">Total Validasi:</span>
             <span>{parsedItems.length} Pos Pekerjaan</span>
             <span>&middot;</span>
@@ -715,7 +715,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                   <h3 className="text-base font-bold text-[var(--text-primary)]">
                     Simpan Template Master RAB
                   </h3>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     Menyimpan {parsedItems.length} item pekerjaan ke perpustakaan template pribadi Anda
                   </p>
                 </div>
@@ -786,7 +786,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                 </div>
                 <div className="grid grid-cols-3 gap-2">
                   <div>
-                    <label className="block text-[10px] text-slate-500 font-semibold mb-0.5">
+                    <label className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold mb-0.5">
                       Overhead (%)
                     </label>
                     <input
@@ -797,7 +797,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] text-slate-500 font-semibold mb-0.5">
+                    <label className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold mb-0.5">
                       Profit (%)
                     </label>
                     <input
@@ -808,7 +808,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] text-slate-500 font-semibold mb-0.5">
+                    <label className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold mb-0.5">
                       PPN (%)
                     </label>
                     <input
@@ -895,7 +895,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
             <h3 className="text-base font-bold text-[var(--text-primary)]">
               Terapkan Hasil Import ke Proyek
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Pilih tujuan penerapan {parsedItems.length} item pekerjaan hasil import:
             </p>
 
@@ -947,7 +947,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                 <div className="font-bold text-[var(--text-primary)]">
                   Buat Proyek Baru Mandiri
                 </div>
-                <div className="text-[11px] text-slate-500">
+                <div className="text-[11px] text-slate-500 dark:text-slate-400">
                   Membuat proyek baru yang langsung terisi semua item hasil import ini.
                 </div>
                 <button
@@ -964,7 +964,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
               <button
                 type="button"
                 onClick={() => setShowApplyProjectDialog(false)}
-                className="px-4 py-1.5 text-xs text-slate-500 hover:bg-[var(--bg-elevated-hover)] rounded-xl font-medium"
+                className="px-4 py-1.5 text-xs text-slate-500 dark:text-slate-400 hover:bg-[var(--bg-elevated-hover)] rounded-xl font-medium"
               >
                 Batal
               </button>

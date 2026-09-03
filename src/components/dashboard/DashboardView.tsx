@@ -100,7 +100,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <AlertTriangle className="w-6 h-6" />
         </div>
         <h3 className="text-base font-bold text-[var(--text-primary)]">Gagal Memuat Data Dashboard</h3>
-        <p className="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-md mx-auto">
           Terjadi kendala saat membaca data penyimpanan atau menghitung rekapitulasi.
         </p>
         <div className="mt-4 flex items-center justify-center gap-3">
@@ -149,11 +149,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 sm:p-7 relative border border-slate-200 dark:border-[var(--border-primary)] shadow-sm">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-blue-950 border border-blue-800 text-blue-300 text-xs font-bold mb-3">
-              <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-blue-50 border border-blue-200 text-blue-800 dark:bg-blue-950 dark:border-blue-800 dark:text-blue-300 text-xs font-bold mb-3">
+              <Sparkles className="w-3.5 h-3.5 text-blue-700 dark:text-blue-400" />
               <span>Sistem Estimasi RAB Terstandarisasi SNI</span>
             </div>
-            <h2 className="text-xl sm:text-2xl font-black tracking-tight text-white">
+            <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[var(--text-primary)] dark:text-white">
               Dashboard Estimasi & Anggaran Biaya
             </h2>
             <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
@@ -178,23 +178,23 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 onClick={() => {
                   if (onOpenAIModal) onOpenAIModal();
                 }}
-                className="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-blue-300 hover:text-white border border-[var(--border-primary)] text-xs font-semibold rounded-xl transition-colors"
+                className="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-100 dark:hover:bg-slate-700 text-blue-700 hover:text-blue-800 dark:text-blue-300 dark:hover:text-white border border-[var(--border-primary)] text-xs font-semibold rounded-xl transition-colors"
               >
-                <Sparkles className="w-4 h-4 text-blue-400" />
+                <Sparkles className="w-4 h-4 text-blue-700 dark:text-blue-400" />
                 <span>AI Estimator Cepat</span>
               </button>
 
               <button
                 onClick={() => setActiveTab('drawings')}
-                className="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-white border border-[var(--border-primary)] text-xs font-semibold rounded-xl transition-colors"
+                className="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-[var(--border-primary)] text-xs font-semibold rounded-xl transition-colors"
               >
-                <Boxes className="w-4 h-4 text-blue-400" />
+                <Boxes className="w-4 h-4 text-blue-700 dark:text-blue-400" />
                 <span>Analisis Gambar (AI)</span>
               </button>
 
               <button
                 onClick={() => setActiveTab('scurve-plan')}
-                className="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-white border border-[var(--border-primary)] text-xs font-semibold rounded-xl transition-colors"
+                className="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-[var(--border-primary)] text-xs font-semibold rounded-xl transition-colors"
               >
                 <Calendar className="w-4 h-4 text-emerald-400" />
                 <span>Jadwal Kurva S</span>
@@ -202,7 +202,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
               <button
                 onClick={() => setActiveTab('calculator')}
-                className="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-white border border-[var(--border-primary)] text-xs font-semibold rounded-xl transition-colors"
+                className="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-[var(--border-primary)] text-xs font-semibold rounded-xl transition-colors"
               >
                 <Ruler className="w-4 h-4" />
                 <span>Kalkulator Volume</span>
@@ -210,7 +210,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
               <button
                 onClick={handleRefreshData}
-                className="inline-flex items-center space-x-1.5 px-3 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-[var(--text-secondary)] hover:text-white border border-[var(--border-primary)] text-xs font-medium rounded-xl transition-colors ml-auto sm:ml-0"
+                className="inline-flex items-center space-x-1.5 px-3 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-100 dark:hover:bg-slate-700 text-[var(--text-secondary)] hover:text-slate-900 dark:hover:text-white border border-[var(--border-primary)] text-xs font-medium rounded-xl transition-colors ml-auto sm:ml-0"
                 title="Refresh Perhitungan"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
@@ -223,23 +223,23 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           {selectedProject && activeCalc && (
             <div className="bg-[var(--bg-elevated-hover)]/90 border border-[var(--border-primary)] p-4 rounded-xl max-w-sm w-full">
               <div className="flex items-center justify-between text-xs text-[var(--text-secondary)]">
-                <span className="flex items-center gap-1 font-semibold text-blue-400">
+                <span className="flex items-center gap-1 font-semibold text-blue-700 dark:text-blue-400">
                   <Building2 className="w-3.5 h-3.5" />
                   Proyek Terpilih Saat Ini
                 </span>
                 <span
                   className={`px-2 py-0.5 rounded-sm font-bold text-[10px] ${
                     selectedProject.status === 'Berjalan'
-                      ? 'bg-emerald-950 text-emerald-300 border border-emerald-800/60'
+                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800/60'
                       : selectedProject.status === 'Selesai'
-                      ? 'bg-blue-950 text-blue-300 border border-blue-800/60'
-                      : 'bg-slate-700 text-slate-600 dark:text-slate-300'
+                      ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800/60'
+                      : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
                   }`}
                 >
                   {selectedProject.status}
                 </span>
               </div>
-              <h4 className="text-sm font-bold text-white mt-2 truncate" title={selectedProject.name}>
+              <h4 className="text-sm font-bold text-[var(--text-primary)] mt-2 truncate" title={selectedProject.name}>
                 {selectedProject.name}
               </h4>
               <p className="text-[11px] text-[var(--text-secondary)] font-mono mt-0.5">
@@ -297,9 +297,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <span
                   className={`text-xs font-bold px-2 py-0.5 rounded-sm ${
                     selectedProject.status === 'Berjalan'
-                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 dark:bg-emerald-500/20 dark:text-emerald-300 dark:border-emerald-500/30'
                       : selectedProject.status === 'Selesai'
-                      ? 'bg-blue-50 text-blue-800 border border-blue-200'
+                      ? 'bg-blue-50 text-blue-800 border border-blue-200 dark:bg-blue-500/20 dark:text-blue-300 dark:border-blue-500/30'
                       : 'bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] border border-[var(--border-primary)]'
                   }`}
                 >
@@ -310,7 +310,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <h3 className="text-base font-bold text-[var(--text-primary)] mt-4 leading-snug">
                 {selectedProject.name}
               </h3>
-              <p className="text-xs text-slate-500 mt-1 font-mono">{selectedProject.documentNo}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-mono">{selectedProject.documentNo}</p>
 
               <div className="mt-4 space-y-2.5 text-xs text-[var(--text-secondary)]">
                 <div className="flex items-center space-x-2">
@@ -423,7 +423,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <h4 className="text-sm font-bold text-[var(--text-primary)] group-hover:text-blue-700 transition-colors">
               Analisis Harga Satuan (AHSP)
             </h4>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Koefisien tenaga kerja, bahan baku, dan alat sesuai formula SNI PUPR.
             </p>
           </div>
@@ -445,7 +445,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <h4 className="text-sm font-bold text-[var(--text-primary)] group-hover:text-blue-700 transition-colors">
               Database Harga & Upah
             </h4>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Master harga material, standar upah tukang/mandor, dan tarif sewa alat.
             </p>
           </div>
@@ -467,7 +467,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <h4 className="text-sm font-bold text-[var(--text-primary)] group-hover:text-purple-700 transition-colors">
               Template RAB Siap Pakai
             </h4>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Template rumah tinggal tipe 36/45/70, ruko 2 lantai, saluran, dan renovasi.
             </p>
           </div>
@@ -489,7 +489,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <h4 className="text-sm font-bold text-[var(--text-primary)] group-hover:text-emerald-700 transition-colors">
               Kalkulator Volume Cepat
             </h4>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Hitung kubikasi beton, luas dinding, galian tanah, dan langsung masukkan ke RAB.
             </p>
           </div>

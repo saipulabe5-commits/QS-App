@@ -177,7 +177,7 @@ export const VolumeCalculatorView: React.FC = () => {
         <h2 className="text-xl font-bold text-[var(--text-primary)] tracking-tight">
           Kalkulator Volume & Kubikasi Konstruksi
         </h2>
-        <p className="text-xs text-slate-500 mt-0.5">
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
           Hitung volume luasan, pengecoran beton, dinding, galian, dan tulangan dengan rumus SNI, lalu masukkan langsung ke RAB
         </p>
       </div>
@@ -660,7 +660,7 @@ export const VolumeCalculatorView: React.FC = () => {
 
             {selectedProject ? (
               <form onSubmit={handleDirectInsertToRAB} className="mt-4 space-y-3.5">
-                <div className="text-xs text-slate-500">
+                <div className="text-xs text-slate-500 dark:text-slate-400">
                   Target Proyek:{' '}
                   <strong className="text-[var(--text-primary)]">{selectedProject.name}</strong>
                 </div>

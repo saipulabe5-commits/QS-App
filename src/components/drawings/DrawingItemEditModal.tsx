@@ -179,7 +179,7 @@ export const DrawingItemEditModal: React.FC<DrawingItemEditModalProps> = ({
                 <span className="text-xs text-blue-700 font-medium">Subtotal Biaya Item:</span>
                 <div className="text-base font-extrabold text-blue-900">{formatRupiah(totalCost)}</div>
               </div>
-              <div className="text-xs text-slate-500">
+              <div className="text-xs text-slate-500 dark:text-slate-400">
                 {volume} {unit} × {formatRupiah(unitPrice)}
               </div>
             </div>

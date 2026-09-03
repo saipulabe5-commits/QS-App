@@ -35,7 +35,19 @@ export const SCurveComparisonView: React.FC = () => {
   const scurve = projectSCurve;
 
   const handlePrint = () => {
-    window.print();
+    try {
+      if (window.self !== window.top) {
+        showToast(
+          'Fitur Terblokir di Preview',
+          'Sistem keamanan pratinjau memblokir fitur cetak. Buka aplikasi di Tab Baru (tombol pojok kanan atas) untuk mencetak/simpan PDF.',
+          'warning'
+        );
+        return;
+      }
+      window.print();
+    } catch (e) {
+      window.print(); // Fallback if cross-origin check throws error
+    }
   };
 
   const handleExportCSV = () => {
@@ -59,7 +71,7 @@ export const SCurveComparisonView: React.FC = () => {
           <TrendingUp className="w-7 h-7" />
         </div>
         <h3 className="text-base font-bold text-[var(--text-primary)]">Kurva S Belum Tersedia</h3>
-        <p className="text-xs text-slate-500 max-w-sm mx-auto">
+        <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
           Silakan buat jadwal rencana Kurva S terlebih dahulu pada menu Rencana Kurva S.
         </p>
       </div>
@@ -135,7 +147,7 @@ export const SCurveComparisonView: React.FC = () => {
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-          <span className="text-xs text-slate-500 font-medium">Rencana Kumulatif Saat Ini</span>
+          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Rencana Kumulatif Saat Ini</span>
           <div className="text-xl font-extrabold text-[var(--text-primary)] mt-1">
             {currentPlanned.toFixed(2)} %
           </div>
@@ -143,7 +155,7 @@ export const SCurveComparisonView: React.FC = () => {
         </div>
 
         <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-          <span className="text-xs text-slate-500 font-medium">Realisasi Aktual Kumulatif</span>
+          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Realisasi Aktual Kumulatif</span>
           <div className="text-xl font-extrabold text-blue-900 mt-1">
             {currentActual.toFixed(2)} %
           </div>
@@ -151,7 +163,7 @@ export const SCurveComparisonView: React.FC = () => {
         </div>
 
         <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-          <span className="text-xs text-slate-500 font-medium">Deviasi Kumulatif</span>
+          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Deviasi Kumulatif</span>
           <div
             className={`text-xl font-extrabold mt-1 flex items-center gap-1 ${
               currentDev >= 0.5
@@ -176,7 +188,7 @@ export const SCurveComparisonView: React.FC = () => {
         </div>
 
         <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-          <span className="text-xs text-slate-500 font-medium">Status Pengendalian</span>
+          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Status Pengendalian</span>
           <div className="mt-1">
             {currentDev >= 0.5 ? (
               <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-100 text-blue-800 border border-blue-300 inline-flex items-center gap-1">
@@ -204,7 +216,7 @@ export const SCurveComparisonView: React.FC = () => {
               <TrendingUp className="w-5 h-5 text-blue-600" />
               Kurva S Komparasi (Rencana vs Aktual Lapangan)
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Garis biru menandakan target rencana, garis hijau/merah menandakan realisasi fisik aktual.
             </p>
           </div>
@@ -220,11 +232,11 @@ export const SCurveComparisonView: React.FC = () => {
             </div>
             <div className="flex items-center space-x-1.5">
               <span className="w-3 h-3 bg-blue-200 rounded-xs inline-block" />
-              <span className="text-slate-500">Rencana Mingguan</span>
+              <span className="text-slate-500 dark:text-slate-400">Rencana Mingguan</span>
             </div>
             <div className="flex items-center space-x-1.5">
               <span className="w-3 h-3 bg-emerald-200 rounded-xs inline-block" />
-              <span className="text-slate-500">Aktual Mingguan</span>
+              <span className="text-slate-500 dark:text-slate-400">Aktual Mingguan</span>
             </div>
           </div>
         </div>
@@ -282,7 +294,7 @@ export const SCurveComparisonView: React.FC = () => {
               <FileSpreadsheet className="w-4 h-4 text-blue-600" />
               Tabel Rekapitulasi Rencana vs Realisasi Progres
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Rincian deviasi mingguan dan kumulatif secara mendalam.
             </p>
           </div>

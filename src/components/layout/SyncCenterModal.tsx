@@ -124,7 +124,7 @@ export const SyncCenterModal: React.FC<SyncCenterModalProps> = ({
         <div className="p-6 bg-[var(--bg-elevated-hover)] border-b border-[var(--border-primary)]">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div className="p-3 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)]">
-              <span className="text-[11px] text-slate-500 font-semibold">Status Jaringan</span>
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 font-semibold">Status Jaringan</span>
               <div className="flex items-center gap-1.5 mt-1">
                 {status.isOnline ? (
                   <>
@@ -141,14 +141,14 @@ export const SyncCenterModal: React.FC<SyncCenterModalProps> = ({
             </div>
 
             <div className="p-3 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)]">
-              <span className="text-[11px] text-slate-500 font-semibold">Antrian Pending</span>
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 font-semibold">Antrian Pending</span>
               <div className="text-xs font-bold text-[var(--text-primary)] mt-1">
                 {status.pendingCount} Operasi
               </div>
             </div>
 
             <div className="p-3 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)]">
-              <span className="text-[11px] text-slate-500 font-semibold">Konflik Data</span>
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 font-semibold">Konflik Data</span>
               <div className="text-xs font-bold text-[var(--text-primary)] mt-1">
                 {status.conflictCount > 0 ? (
                   <span className="text-rose-600 font-bold">{status.conflictCount} Perlu Ditinjau</span>
@@ -159,7 +159,7 @@ export const SyncCenterModal: React.FC<SyncCenterModalProps> = ({
             </div>
 
             <div className="p-3 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)]">
-              <span className="text-[11px] text-slate-500 font-semibold">Terakhir Sinkron</span>
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 font-semibold">Terakhir Sinkron</span>
               <div className="text-[11px] font-semibold text-[var(--text-primary)] mt-1 truncate">
                 {status.lastSyncTime
                   ? new Date(status.lastSyncTime).toLocaleTimeString('id-ID', {
@@ -173,7 +173,7 @@ export const SyncCenterModal: React.FC<SyncCenterModalProps> = ({
           </div>
 
           <div className="flex items-center justify-between mt-4">
-            <div className="flex items-center gap-1 text-[11px] text-slate-500">
+            <div className="flex items-center gap-1 text-[11px] text-slate-500 dark:text-slate-400">
               <ShieldCheck className="w-4 h-4 text-emerald-600" />
               <span>Data otomatis tersimpan di IndexedDB browser saat offline tanpa kehilangan data.</span>
             </div>
@@ -267,7 +267,7 @@ export const SyncCenterModal: React.FC<SyncCenterModalProps> = ({
             </h4>
 
             {queue.length === 0 ? (
-              <div className="p-8 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] text-center text-xs text-slate-500">
+              <div className="p-8 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] text-center text-xs text-slate-500 dark:text-slate-400">
                 <CheckCircle2 className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
                 <p className="font-semibold">Semua antrian sinkronisasi telah bersih.</p>
                 <p className="text-[11px] text-[var(--text-secondary)]">Tidak ada delta perubahan lokal yang tertunda.</p>
@@ -294,7 +294,7 @@ export const SyncCenterModal: React.FC<SyncCenterModalProps> = ({
                           <td className="p-2.5 font-semibold capitalize text-[var(--text-primary)]">
                             {op.operation}
                           </td>
-                          <td className="p-2.5 text-slate-500 text-[11px]">
+                          <td className="p-2.5 text-slate-500 dark:text-slate-400 text-[11px]">
                             {new Date(op.createdAt).toLocaleTimeString('id-ID')}
                           </td>
                           <td className="p-2.5">
@@ -345,7 +345,7 @@ export const SyncCenterModal: React.FC<SyncCenterModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)] px-6 py-3 flex items-center justify-between text-xs text-slate-500">
+        <div className="bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)] px-6 py-3 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
           <span>Engine: IndexedDB (Store IDB v1.0) • ServiceWorker Active</span>
           <button
             type="button"

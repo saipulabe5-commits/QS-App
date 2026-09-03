@@ -206,7 +206,7 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
               <h3 className="text-lg font-bold text-[var(--text-primary)] tracking-tight">
                 {itemToEdit ? 'Edit Analisa Harga Satuan' : 'Formulasi AHSP Baru'}
               </h3>
-              <p className="text-xs text-slate-500 mt-0.5 font-medium">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-medium">
                 Penyusunan koefisien bahan, upah, dan alat berdasarkan standar baku
               </p>
             </div>
@@ -245,7 +245,7 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
                   ))}
                 </select>
                 {currentCategoryDef && (
-                  <p className="text-[10px] text-slate-500 mt-1.5">
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1.5">
                     {currentCategoryDef.description}
                   </p>
                 )}
@@ -355,7 +355,7 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
               </div>
               
               {/* Tooltip Interaktif Bawaan untuk QS Baru */}
-              <div className="group relative flex items-center space-x-1.5 text-xs text-slate-500 cursor-help bg-[var(--bg-elevated-hover)] px-3 py-1.5 rounded-lg border border-[var(--border-primary)]">
+              <div className="group relative flex items-center space-x-1.5 text-xs text-slate-500 dark:text-slate-400 cursor-help bg-[var(--bg-elevated-hover)] px-3 py-1.5 rounded-lg border border-[var(--border-primary)]">
                 <HelpCircle className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
                 <span className="font-medium">Apa itu Koefisien?</span>
                 
@@ -369,7 +369,7 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
             {/* Cepat dari DB */}
             <div className="flex items-center space-x-1.5 text-[11px] overflow-x-auto pb-1">
               <Sparkles className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" />
-              <span className="text-slate-500 font-medium flex-shrink-0">Cepat dari Database:</span>
+              <span className="text-slate-500 dark:text-slate-400 font-medium flex-shrink-0">Cepat dari Database:</span>
               {priceDatabase.slice(0, 5).map((p) => (
                 <button
                   key={p.id}
@@ -445,7 +445,7 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
             {/* TABEL KOMPONEN: Visual lebih bersih dengan padding longgar */}
             <div className="overflow-x-auto rounded-xl border border-[var(--border-primary)]">
               <table className="w-full text-left text-xs bg-[var(--bg-elevated)]">
-                <thead className="bg-[var(--bg-elevated-hover)] text-slate-500 uppercase tracking-wider text-[10px]">
+                <thead className="bg-[var(--bg-elevated-hover)] text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[10px]">
                   <tr>
                     <th className="px-5 py-3 font-bold">Unsur</th>
                     <th className="px-5 py-3 font-bold">Uraian Komponen</th>
@@ -511,7 +511,7 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
                           </span>
                         </td>
                         <td className="px-5 py-3 font-medium text-[var(--text-primary)]">Biaya Overhead</td>
-                        <td className="px-5 py-3 text-center text-slate-500">ls</td>
+                        <td className="px-5 py-3 text-center text-slate-500 dark:text-slate-400">ls</td>
                         <td className="px-5 py-3 text-right font-mono font-medium text-[var(--text-secondary)]">{formatNumber(overheadPercent / 100, 4)}</td>
                         <td className="px-5 py-3 text-right font-mono text-[var(--text-secondary)]">{formatRupiah(subtotal)}</td>
                         <td className="px-5 py-3 text-right font-mono font-bold text-[var(--text-primary)]">
@@ -526,7 +526,7 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
                           </span>
                         </td>
                         <td className="px-5 py-3 font-medium text-[var(--text-primary)]">Keuntungan Pelaksana / Profit</td>
-                        <td className="px-5 py-3 text-center text-slate-500">ls</td>
+                        <td className="px-5 py-3 text-center text-slate-500 dark:text-slate-400">ls</td>
                         <td className="px-5 py-3 text-right font-mono font-medium text-[var(--text-secondary)]">{formatNumber(profitPercent / 100, 4)}</td>
                         <td className="px-5 py-3 text-right font-mono text-[var(--text-secondary)]">{formatRupiah(subtotal)}</td>
                         <td className="px-5 py-3 text-right font-mono font-bold text-[var(--text-primary)]">

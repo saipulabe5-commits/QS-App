@@ -30,7 +30,7 @@ export const ReportView: React.FC = () => {
       <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] p-12 text-center shadow-2xs">
         <FileText className="w-12 h-12 text-slate-600 dark:text-slate-300 mx-auto mb-3" />
         <h3 className="text-base font-bold text-[var(--text-primary)]">Belum Ada Proyek Terpilih</h3>
-        <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
           Silakan pilih proyek konstruksi terlebih dahulu untuk menghasilkan laporan RAB.
         </p>
         <button
@@ -51,7 +51,19 @@ export const ReportView: React.FC = () => {
   );
 
   const handlePrint = () => {
-    window.print();
+    try {
+      if (window.self !== window.top) {
+        showToast(
+          'Fitur Terblokir di Preview',
+          'Sistem keamanan pratinjau memblokir fitur cetak. Buka aplikasi di Tab Baru (tombol pojok kanan atas) untuk mencetak/simpan PDF.',
+          'warning'
+        );
+        return;
+      }
+      window.print();
+    } catch (e) {
+      window.print(); // Fallback if cross-origin check throws error
+    }
   };
 
   const handleExportCSV = () => {
@@ -74,7 +86,7 @@ export const ReportView: React.FC = () => {
           <h2 className="text-lg font-bold text-[var(--text-primary)] tracking-tight">
             Laporan Resmi Rencana Anggaran Biaya (RAB)
           </h2>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Dokumen cetak berstandar konstruksi Indonesia lengkap dengan Kop Surat, Rekapitulasi & Lembar Pengesahan
           </p>
         </div>
@@ -108,7 +120,7 @@ export const ReportView: React.FC = () => {
             onClick={handleExportCSV}
             className="flex items-center space-x-1.5 px-3 py-2 bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors"
           >
-            <Download className="w-4 h-4 text-slate-500" />
+            <Download className="w-4 h-4 text-slate-500 dark:text-slate-400" />
             <span>Export Excel</span>
           </button>
 
@@ -138,7 +150,7 @@ export const ReportView: React.FC = () => {
                   {settings.companyName || 'PT. CITRA KUSUMA DEVELOPMENT'}
                 </h1>
                 <p className="text-xs text-[var(--text-secondary)] mt-0.5">{settings.companyAddress}</p>
-                <p className="text-[11px] text-slate-500 mt-0.5">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
                   Telp: {settings.companyPhone} &middot; Email: {settings.companyEmail}
                 </p>
               </div>
@@ -150,7 +162,7 @@ export const ReportView: React.FC = () => {
               <div className="text-xs font-mono font-bold text-[var(--text-primary)] mt-1">
                 {selectedProject.documentNo}
               </div>
-              <div className="text-[11px] text-slate-500">
+              <div className="text-[11px] text-slate-500 dark:text-slate-400">
                 Tanggal: {formatDateIndo(reportDate)}
               </div>
             </div>
@@ -169,29 +181,29 @@ export const ReportView: React.FC = () => {
           {/* Project Identity Box */}
           <div className="bg-[var(--bg-elevated-hover)] p-4 rounded-xl border border-[var(--border-primary)] mb-6 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
             <div>
-              <span className="text-slate-500">Pemilik / Klien:</span>{' '}
+              <span className="text-slate-500 dark:text-slate-400">Pemilik / Klien:</span>{' '}
               <strong className="text-[var(--text-primary)]">{selectedProject.clientName}</strong>
             </div>
             <div>
-              <span className="text-slate-500">Lokasi Proyek:</span>{' '}
+              <span className="text-slate-500 dark:text-slate-400">Lokasi Proyek:</span>{' '}
               <strong className="text-[var(--text-primary)]">{selectedProject.location}</strong>
             </div>
             <div>
-              <span className="text-slate-500">Pelaksana Kontraktor:</span>{' '}
+              <span className="text-slate-500 dark:text-slate-400">Pelaksana Kontraktor:</span>{' '}
               <strong className="text-[var(--text-primary)]">{selectedProject.contractor || settings.companyName}</strong>
             </div>
             <div>
-              <span className="text-slate-500">Konsultan Perencana:</span>{' '}
+              <span className="text-slate-500 dark:text-slate-400">Konsultan Perencana:</span>{' '}
               <strong className="text-[var(--text-primary)]">{selectedProject.consultant}</strong>
             </div>
             <div>
-              <span className="text-slate-500">Tanggal Pelaksanaan:</span>{' '}
+              <span className="text-slate-500 dark:text-slate-400">Tanggal Pelaksanaan:</span>{' '}
               <strong className="text-[var(--text-primary)]">
                 {formatDateIndo(selectedProject.startDate)} s.d. {formatDateIndo(selectedProject.endDate)}
               </strong>
             </div>
             <div>
-              <span className="text-slate-500">Tahun Anggaran:</span>{' '}
+              <span className="text-slate-500 dark:text-slate-400">Tahun Anggaran:</span>{' '}
               <strong className="text-[var(--text-primary)]">{new Date().getFullYear()}</strong>
             </div>
           </div>
@@ -268,7 +280,7 @@ export const ReportView: React.FC = () => {
                               )}
 
                               <tr className="border-b border-[var(--border-primary)] hover:bg-[var(--bg-elevated-hover)]">
-                                <td className="p-2 border-r border-[var(--border-primary)] text-center text-slate-500 font-mono text-xs">
+                                <td className="p-2 border-r border-[var(--border-primary)] text-center text-slate-500 dark:text-slate-400 font-mono text-xs">
                                   {itemIdx + 1}
                                 </td>
                                 <td className="p-2 border-r border-[var(--border-primary)] font-mono text-[var(--text-secondary)] text-xs">
@@ -277,7 +289,7 @@ export const ReportView: React.FC = () => {
                                 <td className="p-2 border-r border-[var(--border-primary)] font-medium">
                                   <div className="text-[var(--text-primary)]">{item.name}</div>
                                   {item.notes && (
-                                    <div className="text-[10px] text-slate-500">{item.notes}</div>
+                                    <div className="text-[10px] text-slate-500 dark:text-slate-400">{item.notes}</div>
                                   )}
                                 </td>
                                 <td className="p-2 border-r border-[var(--border-primary)] text-center">
@@ -414,7 +426,7 @@ export const ReportView: React.FC = () => {
 
           {/* Terbilang Box */}
           <div className="p-4 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl mb-8">
-            <div className="text-[10px] font-bold uppercase text-slate-500">Terbilang:</div>
+            <div className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400">Terbilang:</div>
             <div className="text-xs font-semibold text-[var(--text-primary)] italic mt-0.5">
               "{numberToWordsIndo(calc.grandTotal)} Rupiah"
             </div>
@@ -431,34 +443,34 @@ export const ReportView: React.FC = () => {
                 {/* 1. Pemilik */}
                 <div>
                   <div className="font-semibold text-[var(--text-primary)]">Disetujui Oleh,</div>
-                  <div className="text-slate-500">Pemilik Proyek / Klien</div>
+                  <div className="text-slate-500 dark:text-slate-400">Pemilik Proyek / Klien</div>
                   <div className="h-20" />
                   <div className="font-bold text-[var(--text-primary)] underline">
                     {selectedProject.clientName || '................................'}
                   </div>
-                  <div className="text-[10px] text-slate-500">Owner / Pemberi Tugas</div>
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400">Owner / Pemberi Tugas</div>
                 </div>
 
                 {/* 2. Konsultan */}
                 <div>
                   <div className="font-semibold text-[var(--text-primary)]">Diperiksa Oleh,</div>
-                  <div className="text-slate-500">Konsultan Pengawas / Perencana</div>
+                  <div className="text-slate-500 dark:text-slate-400">Konsultan Pengawas / Perencana</div>
                   <div className="h-20" />
                   <div className="font-bold text-[var(--text-primary)] underline">
                     {selectedProject.consultant || '................................'}
                   </div>
-                  <div className="text-[10px] text-slate-500">Site Engineer / Estimator</div>
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400">Site Engineer / Estimator</div>
                 </div>
 
                 {/* 3. Kontraktor */}
                 <div>
                   <div className="font-semibold text-[var(--text-primary)]">Dibuat Oleh,</div>
-                  <div className="text-slate-500">Kontraktor Pelaksana</div>
+                  <div className="text-slate-500 dark:text-slate-400">Kontraktor Pelaksana</div>
                   <div className="h-20" />
                   <div className="font-bold text-[var(--text-primary)] underline">
                     {selectedProject.contractor || settings.companyName || '................................'}
                   </div>
-                  <div className="text-[10px] text-slate-500">Direktur Utama / Project Manager</div>
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400">Direktur Utama / Project Manager</div>
                 </div>
               </div>
             </div>

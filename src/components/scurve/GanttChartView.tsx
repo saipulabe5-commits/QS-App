@@ -214,7 +214,7 @@ export const GanttChartView: React.FC = () => {
             <Calendar className="w-8 h-8" />
           </div>
           <h3 className="text-base font-bold text-[var(--text-primary)]">Jadwal Kurva S Belum Dibuat</h3>
-          <p className="text-xs text-slate-500 max-w-sm mx-auto">
+          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
             Buat jadwal rencana Kurva S terlebih dahulu dari item RAB untuk menampilkan Gantt Chart interaktif.
           </p>
           <div className="flex items-center justify-center gap-3">
@@ -298,9 +298,9 @@ export const GanttChartView: React.FC = () => {
       {/* ── KPI Summary Cards ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="bg-[var(--bg-elevated)] p-3.5 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-          <div className="text-[11px] font-medium text-slate-500">Total Durasi Proyek</div>
+          <div className="text-[11px] font-medium text-slate-500 dark:text-slate-400">Total Durasi Proyek</div>
           <div className="text-lg font-bold text-[var(--text-primary)] mt-0.5">
-            {scurve.totalPeriods} <span className="text-xs font-normal text-slate-500">{scurve.periodType === 'weekly' ? 'Minggu' : 'Bulan'}</span>
+            {scurve.totalPeriods} <span className="text-xs font-normal text-slate-500 dark:text-slate-400">{scurve.periodType === 'weekly' ? 'Minggu' : 'Bulan'}</span>
           </div>
           <div className="text-[10px] text-[var(--text-secondary)] mt-0.5">
             {scurve.startDate ? `${scurve.startDate} s/d ${scurve.endDate}` : 'Time Schedule Aktif'}
@@ -308,7 +308,7 @@ export const GanttChartView: React.FC = () => {
         </div>
 
         <div className="bg-[var(--bg-elevated)] p-3.5 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-          <div className="text-[11px] font-medium text-slate-500">Rencana Kumulatif Saat Ini</div>
+          <div className="text-[11px] font-medium text-slate-500 dark:text-slate-400">Rencana Kumulatif Saat Ini</div>
           <div className="text-lg font-bold text-blue-600 mt-0.5">
             {latestActualRecord ? `${latestActualRecord.plannedCumulative.toFixed(2)}%` : '0.00%'}
           </div>
@@ -318,7 +318,7 @@ export const GanttChartView: React.FC = () => {
         </div>
 
         <div className="bg-[var(--bg-elevated)] p-3.5 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-          <div className="text-[11px] font-medium text-slate-500">Aktual Kumulatif</div>
+          <div className="text-[11px] font-medium text-slate-500 dark:text-slate-400">Aktual Kumulatif</div>
           <div className="text-lg font-bold text-emerald-600 mt-0.5">
             {latestActualRecord ? `${latestActualRecord.actualCumulative.toFixed(2)}%` : '0.00%'}
           </div>
@@ -328,7 +328,7 @@ export const GanttChartView: React.FC = () => {
         </div>
 
         <div className="bg-[var(--bg-elevated)] p-3.5 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-          <div className="text-[11px] font-medium text-slate-500">Status Deviasi Jadwal</div>
+          <div className="text-[11px] font-medium text-slate-500 dark:text-slate-400">Status Deviasi Jadwal</div>
           <div className="text-sm font-bold mt-1 flex items-center space-x-1.5">
             {latestActualRecord ? (
               latestActualRecord.deviation >= 0 ? (
@@ -360,7 +360,7 @@ export const GanttChartView: React.FC = () => {
         <div className="flex items-center flex-wrap gap-2">
           {/* Category Filter */}
           <div className="flex items-center space-x-1.5">
-            <Filter className="w-3.5 h-3.5 text-slate-500" />
+            <Filter className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
@@ -415,7 +415,7 @@ export const GanttChartView: React.FC = () => {
 
         {/* Zoom Controls */}
         <div className="flex items-center space-x-1.5">
-          <span className="text-[11px] font-medium text-slate-500">Skala Kolom:</span>
+          <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">Skala Kolom:</span>
           <div className="flex items-center bg-[var(--bg-elevated-hover)] p-0.5 rounded-lg border border-[var(--border-primary)] text-xs">
             {(['compact', 'normal', 'wide'] as ZoomLevel[]).map((lvl) => (
               <button
@@ -466,7 +466,7 @@ export const GanttChartView: React.FC = () => {
                       <span className="text-[11px] font-bold">
                         {getPeriodShortLabel(p)}
                       </span>
-                      <span className="text-[9px] text-slate-500 font-mono">
+                      <span className="text-[9px] text-slate-500 dark:text-slate-400 font-mono">
                         {rec ? `${rec.plannedProgress.toFixed(1)}%` : '-'}
                       </span>
                     </div>
@@ -585,7 +585,7 @@ export const GanttChartView: React.FC = () => {
                                         ? 'bg-emerald-100 text-emerald-800'
                                         : actualPercent > 0
                                         ? 'bg-blue-100 text-blue-800'
-                                        : 'bg-[var(--bg-elevated-hover)] text-slate-500'
+                                        : 'bg-[var(--bg-elevated-hover)] text-slate-500 dark:text-slate-400'
                                     }`}
                                   >
                                     {actualPercent}%
@@ -654,7 +654,7 @@ export const GanttChartView: React.FC = () => {
         </div>
 
         {/* Chart Footer Info */}
-        <div className="p-3 bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)] flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
+        <div className="p-3 bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)] flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
           <div className="flex items-center flex-wrap gap-4">
             <div className="flex items-center space-x-1.5">
               <span className="w-3 h-3 rounded-sm bg-blue-600 inline-block" />
@@ -693,7 +693,7 @@ export const GanttChartView: React.FC = () => {
                     {selectedItem.category}
                   </span>
                 </h4>
-                <p className="text-[11px] text-slate-500 mt-0.5">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
                   Periode Aktif: <strong>{getPeriodLabel(selectedItem.startPeriod)}</strong> s/d <strong>{getPeriodLabel(selectedItem.endPeriod)}</strong> ({selectedItem.duration} periode)
                 </p>
               </div>
@@ -708,19 +708,19 @@ export const GanttChartView: React.FC = () => {
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs bg-[var(--bg-elevated-hover)] p-3 rounded-xl border border-[var(--border-primary)]">
             <div>
-              <span className="text-slate-500 text-[11px]">Bobot terhadap Proyek:</span>
+              <span className="text-slate-500 dark:text-slate-400 text-[11px]">Bobot terhadap Proyek:</span>
               <div className="font-bold text-[var(--text-primary)] text-sm mt-0.5">{selectedItem.weight.toFixed(2)}%</div>
             </div>
             <div>
-              <span className="text-slate-500 text-[11px]">Estimasi Biaya Rencana:</span>
+              <span className="text-slate-500 dark:text-slate-400 text-[11px]">Estimasi Biaya Rencana:</span>
               <div className="font-bold text-[var(--text-primary)] text-sm mt-0.5">{formatRupiah(selectedItem.plannedCost || 0)}</div>
             </div>
             <div>
-              <span className="text-slate-500 text-[11px]">Pola Distribusi Bobot:</span>
+              <span className="text-slate-500 dark:text-slate-400 text-[11px]">Pola Distribusi Bobot:</span>
               <div className="font-bold text-blue-700 text-sm mt-0.5 capitalize">{selectedItem.distributionType || 'Bell Curve'}</div>
             </div>
             <div>
-              <span className="text-slate-500 text-[11px]">Realisasi Aktual Saat Ini:</span>
+              <span className="text-slate-500 dark:text-slate-400 text-[11px]">Realisasi Aktual Saat Ini:</span>
               <div className="font-bold text-emerald-700 text-sm mt-0.5">{getItemActualPercent(selectedItem.id)}%</div>
             </div>
           </div>

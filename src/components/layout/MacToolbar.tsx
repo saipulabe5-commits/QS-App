@@ -170,7 +170,7 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
           </button>
 
           {/* Breadcrumbs */}
-          <div className="flex items-center space-x-1.5 text-xs text-slate-500">
+          <div className="flex items-center space-x-1.5 text-xs text-slate-500 dark:text-slate-400">
             <span className="font-bold text-[var(--text-primary)]">RAB Pro 10.0</span>
             <span>›</span>
             {selectedProject ? (
@@ -197,9 +197,9 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
           >
             <div className="flex items-center space-x-2">
               <Search className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
-              <span className="font-medium text-slate-500">Cari modul, aksi, proyek...</span>
+              <span className="font-medium text-slate-500 dark:text-slate-400">Cari modul, aksi, proyek...</span>
             </div>
-            <kbd className="px-1.5 py-0.5 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded text-[10px] font-mono text-slate-500">
+            <kbd className="px-1.5 py-0.5 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded text-[10px] font-mono text-slate-500 dark:text-slate-400">
               ⌘K
             </kbd>
           </button>
@@ -291,7 +291,7 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
                         {user?.role || 'Admin'}
                       </span>
                     </div>
-                    <p className="text-[11px] text-slate-500 truncate">
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
                       {user ? user.email : 'saipulabe@gmail.com'}
                     </p>
                   </div>

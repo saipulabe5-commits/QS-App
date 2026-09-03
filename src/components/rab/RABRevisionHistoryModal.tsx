@@ -261,7 +261,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
         {/* Filter Bar */}
         <div className="bg-[var(--bg-elevated-hover)] border-b border-[var(--border-primary)] px-6 py-2.5 flex items-center justify-between">
           <div className="flex items-center space-x-2 text-xs">
-            <Filter className="w-3.5 h-3.5 text-slate-500" />
+            <Filter className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
             <span className="font-semibold text-[var(--text-primary)]">Filter Aksi:</span>
             {['all', 'create', 'update', 'delete', 'bulk_apply'].map((act) => (
               <button
@@ -277,7 +277,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
               </button>
             ))}
           </div>
-          <span className="text-xs text-slate-500 font-medium">
+          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
             {filteredRevisions.length} Versi Tercatat
           </span>
         </div>
@@ -287,7 +287,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
           {/* Left Column: Revision Timeline List */}
           <div className="md:col-span-5 overflow-y-auto p-4 custom-scrollbar max-h-[40vh] md:max-h-full space-y-2 bg-[var(--bg-elevated-hover)]">
             {filteredRevisions.length === 0 ? (
-              <div className="py-12 text-center text-slate-500">
+              <div className="py-12 text-center text-slate-500 dark:text-slate-400">
                 <p className="text-xs font-semibold">Belum ada riwayat revisi yang tercatat.</p>
                 <p className="text-[11px] text-[var(--text-secondary)] mt-1">
                   Setiap penambahan, pengeditan, atau penghapusan item akan tercatat di sini secara otomatis.
@@ -324,7 +324,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
                       {rev.reason || `Perubahan RAB #${rev.id.slice(-6)}`}
                     </div>
 
-                    <div className="flex items-center justify-between mt-2 text-[10px] text-slate-500 border-t border-slate-100 pt-1.5">
+                    <div className="flex items-center justify-between mt-2 text-[10px] text-slate-500 dark:text-slate-400 border-t border-slate-100 pt-1.5">
                       <span>
                         {new Date(rev.timestamp).toLocaleDateString('id-ID', {
                           day: 'numeric',
@@ -368,7 +368,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
                       </h3>
                       {getActionBadge(selectedRevision.action, selectedRevision.isRollback)}
                     </div>
-                    <p className="text-xs text-slate-500 mt-1">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                       Dicatat pada {new Date(selectedRevision.timestamp).toLocaleString('id-ID')} oleh{' '}
                       <span className="font-semibold text-[var(--text-primary)]">
                         {selectedRevision.actorName} ({selectedRevision.actorType})
@@ -395,7 +395,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
                   </div>
                   {selectedRevision.reason && (
                     <div className="text-[var(--text-primary)] pt-1 border-t border-[var(--border-primary)]">
-                      <span className="font-semibold text-slate-500">Catatan / Alasan: </span>
+                      <span className="font-semibold text-slate-500 dark:text-slate-400">Catatan / Alasan: </span>
                       <span>{selectedRevision.reason}</span>
                     </div>
                   )}
@@ -472,7 +472,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
                       </table>
                     </div>
                   ) : (
-                    <div className="p-4 bg-[var(--bg-elevated-hover)] rounded-xl text-center text-xs text-slate-500">
+                    <div className="p-4 bg-[var(--bg-elevated-hover)] rounded-xl text-center text-xs text-slate-500 dark:text-slate-400">
                       Tidak ada detail field yang dimodifikasi secara spesifik.
                     </div>
                   )}
@@ -487,7 +487,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
         </div>
 
         {/* Footer */}
-        <div className="bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)] px-6 py-3 flex items-center justify-between text-xs text-slate-500">
+        <div className="bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)] px-6 py-3 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
           <div className="flex items-center gap-1.5">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
             <span>Audit log terproteksi checksum SHA-hash &amp; pencegahan manipulasi data</span>

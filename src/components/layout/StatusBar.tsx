@@ -83,11 +83,11 @@ export const StatusBar: React.FC<StatusBarProps> = ({
       <div className="hidden lg:flex items-center space-x-2 text-slate-600 dark:text-slate-300">
         {selectedProject ? (
           <div className="flex items-center space-x-1.5 font-mono text-[10px]">
-            <span className="text-slate-500">Subtotal:</span>
+            <span className="text-slate-500 dark:text-slate-400">Subtotal:</span>
             <span className="font-bold text-emerald-400 tabular-nums">{formatCurrency(directCost)}</span>
           </div>
         ) : (
-          <span className="text-slate-500">RAB Pro macOS Desktop Edition V10.0</span>
+          <span className="text-slate-500 dark:text-slate-400">RAB Pro macOS Desktop Edition V10.0</span>
         )}
       </div>
 

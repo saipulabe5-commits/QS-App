@@ -42,7 +42,7 @@ export const CategoryBreakdownCard: React.FC<CategoryBreakdownCardProps> = ({
                 Ringkasan Biaya per Kategori
               </h3>
             </div>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               {selectedProjectName ? `Proyek: ${selectedProjectName}` : 'Distribusi anggaran divisi pekerjaan'}
             </p>
           </div>
@@ -74,7 +74,7 @@ export const CategoryBreakdownCard: React.FC<CategoryBreakdownCardProps> = ({
             className="flex items-center space-x-1 px-2.5 py-1.5 text-xs bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] rounded-lg border border-[var(--border-primary)] font-medium transition-colors"
             title="Ubah Urutan"
           >
-            <ArrowUpDown className="w-3 h-3 text-slate-500" />
+            <ArrowUpDown className="w-3 h-3 text-slate-500 dark:text-slate-400" />
             <span className="hidden sm:inline">
               {sortBy === 'cost' ? 'Biaya Tertinggi' : 'Nama A-Z'}
             </span>
@@ -132,7 +132,7 @@ export const CategoryBreakdownCard: React.FC<CategoryBreakdownCardProps> = ({
       {/* Subtotal Summary Footer */}
       {categorySummaries.length > 0 && (
         <div className="mt-5 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs">
-          <span className="text-slate-500 font-medium">
+          <span className="text-slate-500 dark:text-slate-400 font-medium">
             Total Biaya Langsung ({categorySummaries.length} Divisi):
           </span>
           <span className="font-bold text-[var(--text-primary)] text-sm">

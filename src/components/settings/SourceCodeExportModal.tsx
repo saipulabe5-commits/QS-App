@@ -187,7 +187,7 @@ export const SourceCodeExportModal: React.FC<SourceCodeExportModalProps> = ({
                   JSON Bundle v1.0
                 </span>
               </div>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                 Struktur dan seluruh kode sumber aplikasi dikemas rapi dalam satu file JSON standar
               </p>
             </div>
@@ -197,7 +197,7 @@ export const SourceCodeExportModal: React.FC<SourceCodeExportModalProps> = ({
             <button
               onClick={fetchSourceCode}
               disabled={loading}
-              className="p-2 text-slate-500 hover:text-[var(--text-primary)] hover:bg-slate-200 dark:bg-slate-700/60 rounded-xl transition-colors"
+              className="p-2 text-slate-500 dark:text-slate-400 hover:text-[var(--text-primary)] hover:bg-slate-200 dark:bg-slate-700/60 rounded-xl transition-colors"
               title="Refresh Data"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-blue-600' : ''}`} />
@@ -407,7 +407,7 @@ export const SourceCodeExportModal: React.FC<SourceCodeExportModalProps> = ({
                     </div>
                   </>
                 ) : (
-                  <div className="flex-1 flex items-center justify-center text-slate-500 text-xs">
+                  <div className="flex-1 flex items-center justify-center text-slate-500 dark:text-slate-400 text-xs">
                     Pilih salah satu berkas di sebelah kiri untuk melihat isi kode
                   </div>
                 )}
@@ -444,7 +444,7 @@ export const SourceCodeExportModal: React.FC<SourceCodeExportModalProps> = ({
 
         {/* Footer Actions */}
         <div className="px-6 py-4 border-t border-[var(--border-primary)] bg-[var(--bg-elevated-hover)] flex flex-col sm:flex-row items-center justify-between gap-3 flex-shrink-0">
-          <div className="flex items-center space-x-2 text-xs text-slate-500">
+          <div className="flex items-center space-x-2 text-xs text-slate-500 dark:text-slate-400">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
             <span>Format berkas JSON terstandarisasi, mudah dibaca, di-backup, atau diimpor ke sistem lain.</span>
           </div>

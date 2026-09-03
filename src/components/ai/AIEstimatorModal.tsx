@@ -357,7 +357,7 @@ export const AIEstimatorModal: React.FC<AIEstimatorModalProps> = ({
                   <tbody className="divide-y divide-slate-100">
                     {suggestedItems.map((item, idx) => (
                       <tr key={idx} className="hover:bg-[var(--bg-elevated-hover)]">
-                        <td className="px-3 py-2 font-mono text-[11px] text-slate-500">{item.code}</td>
+                        <td className="px-3 py-2 font-mono text-[11px] text-slate-500 dark:text-slate-400">{item.code}</td>
                         <td className="px-3 py-2 font-medium text-[var(--text-primary)]">
                           <div>{item.name}</div>
                           <div className="text-[10px] text-blue-600">{item.category}</div>

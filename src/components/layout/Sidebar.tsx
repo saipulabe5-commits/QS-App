@@ -131,8 +131,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-extrabold text-lg text-white tracking-tight">RAB Pro</span>
-                <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-sm bg-blue-950 text-blue-300 border border-blue-800">
+                <span className="font-extrabold text-lg text-[var(--text-primary)] tracking-tight">RAB Pro</span>
+                <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-sm bg-blue-50 text-blue-800 border border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800">
                   SNI
                 </span>
               </div>
@@ -173,9 +173,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <span
                   className={`px-1.5 py-0.5 rounded-sm font-medium ${
                     selectedProject.status === 'Berjalan'
-                      ? 'bg-emerald-950 text-emerald-300 border border-emerald-800/40'
+                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800/40'
                       : selectedProject.status === 'Selesai'
-                      ? 'bg-blue-950 text-blue-300 border border-blue-800/40'
+                      ? 'bg-blue-50 text-blue-800 border border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800/40'
                       : 'bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)]'
                   }`}
                 >
@@ -205,18 +205,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
             onClick={() => {
               if (handleOpenAI) handleOpenAI();
             }}
-            className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-blue-950 hover:bg-blue-900 text-blue-100 border border-blue-800 transition-colors group"
+            className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-blue-50 dark:bg-blue-950 hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-800 dark:text-blue-100 border-blue-200 dark:border-blue-800 transition-colors group"
           >
             <div className="flex items-center space-x-2.5">
-              <div className="w-6 h-6 rounded-md bg-blue-900 text-blue-300 flex items-center justify-center group-hover:scale-105 transition-transform">
+              <div className="w-6 h-6 rounded-md bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 flex items-center justify-center group-hover:scale-105 transition-transform">
                 <Sparkles className="w-3.5 h-3.5 text-blue-400" />
               </div>
               <div className="text-left">
-                <div className="text-xs font-bold text-white flex items-center gap-1">
+                <div className="text-xs font-bold text-[var(--text-primary)] dark:text-white flex items-center gap-1">
                   AI Estimator
                   <span className="text-[9px] bg-mac-blue text-white font-bold px-1 rounded-xs">GEMINI</span>
                 </div>
-                <div className="text-[10px] text-blue-300/80">Otomasi & Analisis RAB</div>
+                <div className="text-[10px] text-blue-600/80 dark:text-blue-300/80">Otomasi & Analisis RAB</div>
               </div>
             </div>
             <ChevronRight className="w-4 h-4 text-blue-400 group-hover:translate-x-0.5 transition-transform" />
@@ -225,18 +225,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {onOpenQuickBuilder && (
             <button
               onClick={onOpenQuickBuilder}
-              className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-indigo-950 hover:bg-indigo-900 text-indigo-100 border border-indigo-800 transition-colors group"
+              className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950 hover:bg-indigo-100 dark:hover:bg-indigo-900 text-indigo-800 dark:text-indigo-100 border-indigo-200 dark:border-indigo-800 transition-colors group"
             >
               <div className="flex items-center space-x-2.5">
                 <div className="w-6 h-6 rounded-md bg-indigo-900 text-amber-300 flex items-center justify-center group-hover:scale-105 transition-transform">
                   <Zap className="w-3.5 h-3.5 text-amber-400" />
                 </div>
                 <div className="text-left">
-                  <div className="text-xs font-bold text-white flex items-center gap-1">
+                  <div className="text-xs font-bold text-[var(--text-primary)] dark:text-white flex items-center gap-1">
                     Quick RAB Builder
                     <span className="text-[9px] bg-indigo-600 text-white font-bold px-1 rounded-xs">&lt;5 Mnt</span>
                   </div>
-                  <div className="text-[10px] text-indigo-300/80">Wizard Instan</div>
+                  <div className="text-[10px] text-indigo-600/80 dark:text-indigo-300/80">Wizard Instan</div>
                 </div>
               </div>
               <ChevronRight className="w-4 h-4 text-indigo-400 group-hover:translate-x-0.5 transition-transform" />
@@ -248,7 +248,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <nav className="flex-1 px-3 py-1 space-y-4 overflow-y-auto custom-scrollbar">
           {navigationSections.map((section, sIdx) => (
             <div key={sIdx}>
-              <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider px-3 mb-1">
+              <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider px-3 mb-1">
                 {section.title}
               </div>
               <div className="space-y-0.5">
@@ -319,7 +319,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           ) : (
             <button
               onClick={onOpenAuthModal}
-              className="text-xs text-blue-400 hover:text-blue-300 font-semibold px-2 py-1 bg-blue-950 rounded-md border border-blue-800"
+              className="text-xs text-blue-700 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold px-2 py-1 bg-blue-50 dark:bg-blue-950 rounded-md border border-blue-200 dark:border-blue-800"
             >
               Login
             </button>

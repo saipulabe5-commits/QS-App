@@ -62,7 +62,7 @@ export const FinancialReviewModal: React.FC<FinancialReviewModalProps> = ({
             </div>
             <div>
               <h2 className="text-lg font-bold text-[var(--text-primary)]">Financial Audit & Review</h2>
-              <p className="text-xs text-slate-500">Zero-Mistake Engine (Deterministik & AI)</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Zero-Mistake Engine (Deterministik & AI)</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700 rounded-full transition-colors">
@@ -127,7 +127,7 @@ export const FinancialReviewModal: React.FC<FinancialReviewModalProps> = ({
               <div className="bg-[var(--bg-elevated-hover)] border border-slate-100 rounded-xl p-8 flex flex-col items-center justify-center text-center">
                 <Loader2 className="w-8 h-8 text-indigo-500 animate-spin mb-3" />
                 <p className="text-sm font-medium text-[var(--text-primary)]">Menganalisis komposisi anggaran proyek...</p>
-                <p className="text-xs text-slate-500 mt-1">Menggunakan AI Zero-Cost Safeguard</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Menggunakan AI Zero-Cost Safeguard</p>
               </div>
             ) : aiReviewResult ? (
               <div className="bg-[var(--bg-elevated)] border border-indigo-100 rounded-xl p-5 shadow-sm">
@@ -137,7 +137,7 @@ export const FinancialReviewModal: React.FC<FinancialReviewModalProps> = ({
               </div>
             ) : (
               <div className="bg-[var(--bg-elevated-hover)] border border-slate-100 rounded-xl p-6 text-center">
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-slate-500 dark:text-slate-400">
                   AI akan mengevaluasi kewajaran komposisi biaya material/pekerja dan kelengkapan kategori untuk skala proyek ini.
                 </p>
               </div>

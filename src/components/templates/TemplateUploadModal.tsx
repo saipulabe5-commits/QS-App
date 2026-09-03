@@ -148,7 +148,7 @@ export const TemplateUploadModal: React.FC<TemplateUploadModalProps> = ({
             </div>
             <div>
               <h2 className="text-base font-bold text-[var(--text-primary)]">Unggah File RAB & Template</h2>
-              <p className="text-xs text-slate-500">Mendukung Excel (.xlsx/.xls), CSV, PDF, dan Gambar Cetak</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Mendukung Excel (.xlsx/.xls), CSV, PDF, dan Gambar Cetak</p>
             </div>
           </div>
           <button
@@ -202,7 +202,7 @@ export const TemplateUploadModal: React.FC<TemplateUploadModalProps> = ({
                   )}
                 </div>
                 <div className="text-sm font-semibold text-[var(--text-primary)]">{selectedFile.name}</div>
-                <div className="text-xs text-slate-500">
+                <div className="text-xs text-slate-500 dark:text-slate-400">
                   {(selectedFile.size / 1024).toFixed(1)} KB • Klik atau tarik untuk mengganti file
                 </div>
                 {filePreview && (
