@@ -18,7 +18,7 @@ function requireEnv(name, minLength = 1) {
 }
 
 // Validate and load JWT Secret safely
-const JWT_SECRET = requireEnv("JWT_SECRET", 6);
+const JWT_SECRET = requireEnv("JWT_SECRET", 32);
 
 const app = express();
 
@@ -2013,35 +2013,47 @@ async function startServer() {
     });
   }
 
-  const server = app.listen(PORT, "0.0.0.0", () => {
-    console.log(`RAB Pro Server running on port ${PORT}`);
-  });
+async function startServerWithRetry(port: number, maxRetries = 5, delayMs = 1500) {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const server = await new Promise<any>((resolve, reject) => {
+          const srv = app.listen(port, "0.0.0.0", () => resolve(srv));
+          srv.on('error', reject);
+        });
+        
+        console.log(`RAB Pro Server running on port ${port} (percobaan ke-${attempt})`);
 
-  server.on('error', (err: NodeJS.ErrnoException) => {
-    if (err.code === 'EADDRINUSE') {
-      console.error(`[FATAL] Port ${PORT} sudah dipakai proses lain. Hentikan proses lama terlebih dahulu (cek dengan: lsof -i :${PORT} atau netstat), atau ganti PORT di environment.`);
-      process.exit(1);
-    } else {
-      console.error('[FATAL] Server error tak terduga:', err);
-      process.exit(1);
+        function gracefulShutdown(signal: string) {
+          console.log(`\n[SHUTDOWN] Menerima sinyal ${signal}, menutup server...`);
+          server.close(() => {
+            console.log('[SHUTDOWN] Server ditutup bersih, port dilepas.');
+            process.exit(0);
+          });
+          // Paksa keluar jika masih menggantung setelah 10 detik
+          setTimeout(() => {
+            console.error('[SHUTDOWN] Timeout — force exit.');
+            process.exit(1);
+          }, 10000);
+        }
+        
+        process.removeAllListeners('SIGTERM');
+        process.removeAllListeners('SIGINT');
+        process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+        process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+        return;
+      } catch (err: any) {
+        if (err.code === 'EADDRINUSE' && attempt < maxRetries) {
+          console.warn(`[STARTUP RETRY] Port ${port} masih terpakai, mencoba lagi dalam ${delayMs}ms... (${attempt}/${maxRetries})`);
+          await new Promise((r) => setTimeout(r, delayMs));
+        } else {
+          console.error(`[FATAL] Gagal listen di port ${port} setelah ${attempt} percobaan:`, err);
+          process.exit(1);
+        }
+      }
     }
-  });
-
-  function gracefulShutdown(signal: string) {
-    console.log(`\n[SHUTDOWN] Menerima sinyal ${signal}, menutup server...`);
-    server.close(() => {
-      console.log('[SHUTDOWN] Server ditutup bersih, port dilepas.');
-      process.exit(0);
-    });
-    // Paksa keluar jika masih menggantung setelah 10 detik
-    setTimeout(() => {
-      console.error('[SHUTDOWN] Timeout — force exit.');
-      process.exit(1);
-    }, 10000);
   }
-  
-  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
-  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
+  await startServerWithRetry(PORT);
 }
 
 startServer();

@@ -69,3 +69,21 @@ Aplikasi ini dirancang dengan prinsip **Zero-Cost Local-First**, yang berarti:
 - **Gratis Selamanya**: Seluruh fitur utama (kalkulasi RAB, IndexedDB lokal, S-Curve, laporan, export Excel/PDF, dan manajemen proyek) memproses data secara lokal di browser atau server Anda tanpa memakan biaya pihak ketiga.
 - **Batasan Kuota AI (Gemini)**: Fitur kecerdasan buatan (RAB Assistant, Parse Dokumen OCR, Analisis Harga) menggunakan kunci API Gemini. Untuk mencegah tagihan membengkak akibat _abuse_ atau _overusage_, aplikasi ini memiliki **Global AI Rate Limiter** bawaan yang membatasi hingga **1.000 request per hari**. Jika kuota habis, fitur AI akan dinonaktifkan sementara hingga hari berikutnya, sedangkan fitur manual tetap dapat digunakan 100% tanpa hambatan.
 - **Cloud Run Deployment**: Jika Anda menggunakan Google Cloud Run, pastikan mengkonfigurasi `min-instances = 0` dan `max-instances = 1` agar server ini masuk ke dalam _Free Tier_ Google Cloud, dan tidak menimbulkan biaya saat tidak ada pengguna aktif (idle).
+
+## 7. Arsitektur Deployment & Lingkungan Eksekusi
+
+Aplikasi ini menggunakan dua lingkungan eksekusi yang berbeda secara topologi:
+
+### A. Lingkungan Preview (Google AI Studio)
+- **Tujuan**: Hot-reloading dan iterasi kode langsung (Dev Mode).
+- **Perintah Jalankan**: `npm run dev` (`tsx server.ts`).
+- **Mekanisme**: Menjalankan Vite dalam *middleware mode* bersama Express. 
+- **Karakteristik**: File sistem bersifat ephemeral, dan proses sering di-restart ulang (*hot-reload*) yang dapat menyebabkan port conflict (`EADDRINUSE`) jika *graceful shutdown* tidak dieksekusi tepat waktu oleh sandbox. Telah dimitigasi dengan mekanisme `startServerWithRetry` dan mematikan Vite HMR WebSocket secara penuh.
+
+### B. Lingkungan Produksi (Render.com / Cloud Run)
+- **Tujuan**: Hosting publik untuk pengguna akhir.
+- **Perintah Jalankan**: `npm run build` dilanjutkan dengan `npm run start` (`node dist/server.cjs`).
+- **Mekanisme**: Menyajikan file statis dari folder `dist/` tanpa melibatkan *dev server* Vite.
+- **Karakteristik**: 
+  - Render menggunakan *ephemeral filesystem*. Folder `.data/` akan hilang pada setiap proses deploy/restart kecuali Anda menggunakan fitur **Persistent Disk**.
+  - Sangat krusial untuk mengatur semua Environment Variables (`JWT_SECRET`, `ADMIN_INITIAL_PASSWORD`, dll) secara ketat di Dashboard Render. Kegagalan mematuhi panjang minimum (misal `JWT_SECRET` minimal 32 karakter) akan membuat proses build/start digagalkan otomatis demi keamanan.
