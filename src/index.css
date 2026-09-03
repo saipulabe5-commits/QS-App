@@ -1,4 +1,11 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+@theme {
+  --color-mac-blue: #007AFF;
+  --color-mac-blue-dark: #0A84FF;
+}
 
 @layer base {
   :root {
@@ -11,7 +18,13 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: #f1f5f9;
-    color: #0f172a;
+    color: #1D1D1F;
+    letter-spacing: -0.015em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    letter-spacing: -0.025em;
   }
 
   /* Universal Financial & Numeric Tabular Alignment */
@@ -49,4 +62,92 @@
 .mac-card {
   border: 1px solid rgba(226, 232, 240, 0.8);
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
+}
+
+@layer base {
+  body, .bg-white, .bg-slate-50, .bg-slate-100, .bg-slate-900, .bg-slate-950, .bg-indigo-600, .bg-blue-600, .text-slate-900, .text-slate-800, .text-slate-200, .text-white, .border-slate-200, .border-slate-800, .border-slate-300, .border-slate-700 {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+  }
+}
+
+
+:root[data-theme="dark"], .dark {
+  --bg-window: #1E1E1E;
+  --bg-sidebar: rgba(40, 40, 40, 0.85);
+  --bg-elevated: #2C2C2E;
+  --bg-elevated-hover: #3A3A3C;
+  --bg-input: #1C1C1E;
+  --bg-titlebar: rgba(30, 30, 30, 0.72);
+
+  --text-primary: rgba(255, 255, 255, 0.92);
+  --text-secondary: rgba(235, 235, 245, 0.60);
+  --text-tertiary: rgba(235, 235, 245, 0.38);
+  --text-disabled: rgba(235, 235, 245, 0.25);
+
+  --border-primary: rgba(255, 255, 255, 0.10);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+
+  --accent-blue: #0A84FF;
+  --accent-blue-hover: #409CFF;
+  --system-red: #FF453A;
+  --system-green: #32D74B;
+  --system-yellow: #FFD60A;
+  --system-orange: #FF9F0A;
+  --system-purple: #BF5AF2;
+
+  --sidebar-selected-bg: rgba(10, 132, 255, 0.22);
+  --sidebar-selected-text: #FFFFFF;
+  --sidebar-selected-border: rgba(10, 132, 255, 0.5);
+
+  --traffic-red: #FF5F57;
+  --traffic-yellow: #FEBC2E;
+  --traffic-green: #28C840;
+
+  --shadow-elevated: 0 0 0 0.5px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-modal: 0 0 0 0.5px rgba(255,255,255,0.08), 0 25px 50px rgba(0,0,0,0.55);
+}
+
+:root[data-theme="light"], :root:not(.dark) {
+  --bg-window: #F5F5F7;
+  --bg-sidebar: rgba(246, 246, 246, 0.85);
+  --bg-elevated: #FFFFFF;
+  --bg-elevated-hover: #F2F2F2;
+  --bg-input: #FFFFFF;
+  --bg-titlebar: rgba(246, 246, 246, 0.72);
+
+  --text-primary: rgba(0, 0, 0, 0.90);
+  --text-secondary: rgba(60, 60, 67, 0.60);
+  --text-tertiary: rgba(60, 60, 67, 0.38);
+  --text-disabled: rgba(60, 60, 67, 0.25);
+
+  --border-primary: rgba(0, 0, 0, 0.10);
+  --border-subtle: rgba(0, 0, 0, 0.06);
+
+  --accent-blue: #007AFF;
+  --accent-blue-hover: #0063CC;
+  --system-red: #FF3B30;
+  --system-green: #34C759;
+  --system-yellow: #FFCC00;
+  --system-orange: #FF9500;
+  --system-purple: #AF52DE;
+
+  --sidebar-selected-bg: rgba(0, 122, 255, 0.12);
+  --sidebar-selected-text: #007AFF;
+  --sidebar-selected-border: rgba(0, 122, 255, 0.35);
+
+  --traffic-red: #FF5F57;
+  --traffic-yellow: #FEBC2E;
+  --traffic-green: #28C840;
+
+  --shadow-elevated: 0 0 0 0.5px rgba(0,0,0,0.05), 0 8px 24px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-modal: 0 0 0 0.5px rgba(0,0,0,0.05), 0 25px 50px rgba(0,0,0,0.25);
+}
+
+@layer base {
+  body {
+    background-color: var(--bg-window) !important;
+    color: var(--text-primary) !important;
+  }
 }

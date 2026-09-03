@@ -79,14 +79,14 @@ export const Topbar: React.FC<TopbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-white/70 backdrop-blur-xl border-b border-slate-200/50 shadow-[0_1px_3px_0_rgba(0,0,0,0.02)] transition-all">
+    <header className="sticky top-0 z-30 bg-[var(--bg-elevated)]/70 backdrop-blur-xl border-b border-[var(--border-primary)]/50 shadow-[0_1px_3px_0_rgba(0,0,0,0.02)] transition-all">
       <div className="px-4 sm:px-6 py-3 flex items-center justify-between">
         {/* Left: Mobile Toggle & Page Title */}
         <div className="flex items-center space-x-3 sm:space-x-4">
           <button
             type="button"
             onClick={() => setIsMobileSidebarOpen(true)}
-            className="lg:hidden p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+            className="lg:hidden p-2 rounded-xl text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated-hover)] transition-colors"
             aria-label="Buka Menu"
           >
             <Menu className="w-5 h-5" />
@@ -94,7 +94,7 @@ export const Topbar: React.FC<TopbarProps> = ({
 
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
+              <h1 className="text-base sm:text-lg font-bold text-[var(--text-primary)] tracking-tight">
                 {getPageTitle()}
               </h1>
               {selectedProject && activeTab === 'rab' && (
@@ -119,13 +119,13 @@ export const Topbar: React.FC<TopbarProps> = ({
                   setIsProjectDropdownOpen(!isProjectDropdownOpen);
                   setIsUserMenuOpen(false);
                 }}
-                className="flex items-center space-x-2 px-3 py-2 text-xs sm:text-sm font-medium text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl transition-colors max-w-[150px] sm:max-w-[220px]"
+                className="flex items-center space-x-2 px-3 py-2 text-xs sm:text-sm font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl transition-colors max-w-[150px] sm:max-w-[220px]"
               >
                 <Building2 className="w-4 h-4 text-blue-600 flex-shrink-0" />
                 <span className="truncate text-left font-medium">
                   {selectedProject ? selectedProject.name : 'Pilih Proyek'}
                 </span>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                <ChevronDown className="w-3.5 h-3.5 text-[var(--text-secondary)] flex-shrink-0" />
               </button>
 
               {isProjectDropdownOpen && (
@@ -134,8 +134,8 @@ export const Topbar: React.FC<TopbarProps> = ({
                     className="fixed inset-0 z-40"
                     onClick={() => setIsProjectDropdownOpen(false)}
                   />
-                  <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50 animate-in fade-in zoom-in-95 duration-100">
-                    <div className="px-3 py-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                  <div className="absolute right-0 mt-2 w-72 bg-[var(--bg-elevated)] rounded-xl shadow-xl border border-[var(--border-primary)] py-2 z-50 animate-in fade-in zoom-in-95 duration-100">
+                    <div className="px-3 py-1.5 text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wider">
                       Daftar Proyek Anda ({projects.length})
                     </div>
                     <div className="max-h-60 overflow-y-auto custom-scrollbar">
@@ -146,8 +146,8 @@ export const Topbar: React.FC<TopbarProps> = ({
                             setActiveProjectId(proj.id);
                             setIsProjectDropdownOpen(false);
                           }}
-                          className={`w-full text-left px-3.5 py-2.5 text-xs hover:bg-slate-50 flex items-start justify-between ${
-                            proj.id === activeProjectId ? 'bg-blue-50/80 font-bold text-blue-900' : 'text-slate-700'
+                          className={`w-full text-left px-3.5 py-2.5 text-xs hover:bg-[var(--bg-elevated-hover)] flex items-start justify-between ${
+                            proj.id === activeProjectId ? 'bg-blue-50/80 font-bold text-blue-900' : 'text-[var(--text-primary)]'
                           }`}
                         >
                           <div className="truncate pr-2">
@@ -160,7 +160,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                                 ? 'bg-emerald-100 text-emerald-800'
                                 : proj.status === 'Selesai'
                                 ? 'bg-blue-100 text-blue-800'
-                                : 'bg-slate-100 text-slate-700'
+                                : 'bg-[var(--bg-elevated-hover)] text-[var(--text-primary)]'
                             }`}
                           >
                             {proj.status}
@@ -219,10 +219,10 @@ export const Topbar: React.FC<TopbarProps> = ({
           {/* Quick Report Print Trigger */}
           <button
             onClick={() => setActiveTab('reports')}
-            className="hidden sm:flex items-center space-x-1.5 px-3 py-2 text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl transition-colors"
+            className="hidden sm:flex items-center space-x-1.5 px-3 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl transition-colors"
             title="Buka Halaman Cetak Laporan"
           >
-            <Printer className="w-3.5 h-3.5 text-slate-600" />
+            <Printer className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
             <span>Cetak</span>
           </button>
 
@@ -233,9 +233,9 @@ export const Topbar: React.FC<TopbarProps> = ({
                 setIsUserMenuOpen(!isUserMenuOpen);
                 setIsProjectDropdownOpen(false);
               }}
-              className="flex items-center space-x-2 p-1.5 rounded-xl hover:bg-slate-100 transition-colors"
+              className="flex items-center space-x-2 p-1.5 rounded-xl hover:bg-[var(--bg-elevated-hover)] transition-colors"
             >
-              <div className="w-8 h-8 rounded-full bg-slate-900 text-white font-bold flex items-center justify-center text-xs">
+              <div className="w-8 h-8 rounded-full bg-[var(--bg-elevated)] text-[var(--text-primary)] font-bold flex items-center justify-center text-xs">
                 {user ? user.name.charAt(0).toUpperCase() : <UserIcon className="w-4 h-4" />}
               </div>
             </button>
@@ -243,10 +243,10 @@ export const Topbar: React.FC<TopbarProps> = ({
             {isUserMenuOpen && (
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setIsUserMenuOpen(false)} />
-                <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50">
+                <div className="absolute right-0 mt-2 w-56 bg-[var(--bg-elevated)] rounded-xl shadow-xl border border-[var(--border-primary)] py-2 z-50">
                   <div className="px-4 py-2 border-b border-slate-100">
                     <div className="flex items-center justify-between gap-1">
-                      <p className="text-xs font-bold text-slate-900 truncate">
+                      <p className="text-xs font-bold text-[var(--text-primary)] truncate">
                         {user ? user.name : 'Pengguna Demo'}
                       </p>
                       {user?.role === 'administrator' && (
@@ -263,7 +263,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                         {user ? user.companyName : 'PT. Citra Kusuma Development'}
                       </span>
                       {user?.permissions && (
-                        <span className="text-slate-400 font-mono text-[9px]">
+                        <span className="text-[var(--text-secondary)] font-mono text-[9px]">
                           {user.permissions.length} Izin
                         </span>
                       )}
@@ -275,9 +275,9 @@ export const Topbar: React.FC<TopbarProps> = ({
                         setActiveTab('projects');
                         setIsUserMenuOpen(false);
                       }}
-                      className="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 flex items-center space-x-2"
+                      className="w-full text-left px-4 py-2 text-xs text-[var(--text-primary)] hover:bg-[var(--bg-elevated-hover)] flex items-center space-x-2"
                     >
-                      <FolderOpen className="w-4 h-4 text-slate-400" />
+                      <FolderOpen className="w-4 h-4 text-[var(--text-secondary)]" />
                       <span>Semua Proyek</span>
                     </button>
                     <button
@@ -285,9 +285,9 @@ export const Topbar: React.FC<TopbarProps> = ({
                         setActiveTab('settings');
                         setIsUserMenuOpen(false);
                       }}
-                      className="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 flex items-center space-x-2"
+                      className="w-full text-left px-4 py-2 text-xs text-[var(--text-primary)] hover:bg-[var(--bg-elevated-hover)] flex items-center space-x-2"
                     >
-                      <Building2 className="w-4 h-4 text-slate-400" />
+                      <Building2 className="w-4 h-4 text-[var(--text-secondary)]" />
                       <span>Profil Perusahaan</span>
                     </button>
                   </div>

@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import path from "path";
 import fs from "fs";
@@ -6,10 +7,34 @@ import { GoogleGenAI } from "@google/genai";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 
+
+function requireEnv(name, minLength = 1) {
+  const value = process.env[name];
+  if (!value || value.trim().length < minLength) {
+    console.error(`FATAL: Environment variable ${name} tidak diset atau tidak valid (min ${minLength} karakter). Server dihentikan demi keamanan.`);
+    process.exit(1);
+  }
+  return value;
+}
+
 // Validate and load JWT Secret safely
-const JWT_SECRET = process.env.JWT_SECRET || "rab-pro-local-first-enterprise-secret-key-987654321";
+const JWT_SECRET = requireEnv("JWT_SECRET", 6);
 
 const app = express();
+
+// Security Middleware
+app.use(helmet({
+  contentSecurityPolicy: false, // Disable CSP for local dev/vite support unless configured carefully
+  crossOriginEmbedderPolicy: false,
+}));
+app.use(cors({
+  origin: process.env.NODE_ENV === "production" ? ["https://your-production-domain.com"] : "*",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+}));
+
+import helmet from "helmet";
+import cors from "cors";
+
 const PORT = 3000;
 
 // Security Headers Middleware
@@ -20,8 +45,20 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.json({ limit: "100mb" }));
-app.use(express.urlencoded({ limit: "100mb", extended: true }));
+app.use((req, res, next) => {
+  if (req.path.startsWith("/api/ai/") || req.path.startsWith("/api/rab/") || req.path.startsWith("/api/export/")) {
+    express.json({ limit: "30mb" })(req, res, next);
+  } else {
+    express.json({ limit: "1mb" })(req, res, next);
+  }
+});
+app.use((req, res, next) => {
+  if (req.path.startsWith("/api/ai/") || req.path.startsWith("/api/rab/") || req.path.startsWith("/api/export/")) {
+    express.urlencoded({ limit: "30mb", extended: true })(req, res, next);
+  } else {
+    express.urlencoded({ limit: "1mb", extended: true })(req, res, next);
+  }
+});
 
 app.get("/favicon.ico", (req, res) => {
   res.sendFile(path.join(process.cwd(), "public", "icon.svg"));
@@ -118,32 +155,47 @@ interface ServerUser {
 const usersDb = new Map<string, ServerUser>();
 
 // Security Protocol V14: Seed admin from environment variables, no hardcoded credentials.
-const adminEmail = (process.env.ADMIN_EMAIL || "saipulabe@gmail.com").trim().toLowerCase();
-const initialPassword = process.env.ADMIN_INITIAL_PASSWORD || "Bismillah_01"; // Fallback only if env not provided
+const adminEmail = requireEnv("ADMIN_EMAIL", 5).trim().toLowerCase();
+const initialPassword = requireEnv("ADMIN_INITIAL_PASSWORD", 8);
 
-usersDb.set(adminEmail, {
-  id: "usr_admin_main",
-  name: "Administrator",
-  email: adminEmail,
-  passwordHash: hashPassword(initialPassword),
-  companyName: "RAB Pro Enterprise",
-  role: "administrator",
-  createdAt: new Date().toISOString(),
-});
+const USERS_STORE_PATH = path.join(process.cwd(), '.data', 'users_store.json');
 
-// Also support the secondary saipulabe5@gmail.com for this specific user if not overridden by env
-const aliasEmail = "saipulabe5@gmail.com";
-if (adminEmail === "saipulabe@gmail.com") {
-  usersDb.set(aliasEmail, {
-    id: "usr_admin_alias",
-    name: "Administrator",
-    email: aliasEmail,
-    passwordHash: hashPassword(initialPassword),
-    companyName: "RAB Pro Enterprise",
-    role: "administrator",
-    createdAt: new Date().toISOString(),
-  });
+async function saveUsersStore() {
+  try {
+    const data = JSON.stringify(Array.from(usersDb.entries()));
+    const dir = path.dirname(USERS_STORE_PATH);
+    await fs.promises.mkdir(dir, { recursive: true });
+    await fs.promises.writeFile(USERS_STORE_PATH, data, 'utf-8');
+  } catch (error) {
+    console.error('Failed to save users store:', error);
+  }
 }
+
+async function loadUsersStore() {
+  try {
+    const data = await fs.promises.readFile(USERS_STORE_PATH, 'utf-8');
+    const entries = JSON.parse(data);
+    for (const [key, value] of entries) {
+      usersDb.set(key, value as ServerUser);
+    }
+    console.log('Users store loaded successfully.');
+  } catch (error) {
+    // If not exists, use default admin
+    usersDb.set(adminEmail, {
+      id: "usr_admin_main",
+      name: "Administrator",
+      email: adminEmail,
+      passwordHash: hashPassword(initialPassword!),
+      companyName: "RAB Pro Enterprise",
+      role: "administrator",
+      createdAt: new Date().toISOString(),
+    });
+    saveUsersStore();
+  }
+}
+
+loadUsersStore();
+
 
 // ==========================================
 // AUTHENTICATION & RBAC MIDDLEWARE
@@ -219,9 +271,9 @@ app.post("/api/auth/login", authRateLimit, (req, res) => {
     const normalizedEmail = email.trim().toLowerCase();
 
     // STRICT SINGLE-ACCOUNT LOCKDOWN
-    if (normalizedEmail !== "saipulabe@gmail.com" && normalizedEmail !== "saipulabe5@gmail.com") {
+    if (normalizedEmail !== adminEmail) {
       return res.status(403).json({
-        error: "Akses Ditolak: Hanya satu akun tunggal resmi (saipulabe@gmail.com) yang diizinkan masuk ke sistem ini.",
+        error: "Akses Ditolak: Hanya akun resmi yang diizinkan masuk ke sistem ini.",
         success: false,
       });
     }
@@ -252,7 +304,7 @@ app.post("/api/auth/login", authRateLimit, (req, res) => {
         companyName: existingUser.companyName,
       },
       JWT_SECRET,
-      { expiresIn: "30d" }
+      { expiresIn: "7d" }
     );
 
     return res.json({
@@ -313,6 +365,8 @@ app.post("/api/auth/change-password", requireAuth, (req: any, res) => {
       const alias2 = usersDb.get("saipulabe5@gmail.com");
       if (alias2) alias2.passwordHash = newHash;
     }
+    
+    saveUsersStore();
 
     return res.json({
       message: "Kata sandi berhasil diubah. Silakan gunakan kata sandi baru untuk login berikutnya.",
@@ -324,7 +378,36 @@ app.post("/api/auth/change-password", requireAuth, (req: any, res) => {
 });
 
 // Memory storage for password reset tokens
-const passwordResetStore = new Map<string, { code: string; expiresAt: number }>();
+const passwordResetStore = new Map<string, { code: string; expiresAt: number; failedAttempts: number }>();
+
+const SECURITY_STORE_PATH = path.join(process.cwd(), '.data', 'security_store.json');
+
+async function saveSecurityStore() {
+  try {
+    const data = JSON.stringify(Array.from(passwordResetStore.entries()));
+    const dir = path.dirname(SECURITY_STORE_PATH);
+    await fs.promises.mkdir(dir, { recursive: true });
+    await fs.promises.writeFile(SECURITY_STORE_PATH, data, 'utf-8');
+  } catch (error) {
+    console.error('Failed to save security store:', error);
+  }
+}
+
+async function loadSecurityStore() {
+  try {
+    const data = await fs.promises.readFile(SECURITY_STORE_PATH, 'utf-8');
+    const entries = JSON.parse(data);
+    for (const [key, value] of entries) {
+      passwordResetStore.set(key, value as { code: string; expiresAt: number; failedAttempts: number });
+    }
+    console.log('Security store loaded successfully.');
+  } catch (error) {
+    // File might not exist yet, ignore
+  }
+}
+
+// Call loadSecurityStore on startup
+loadSecurityStore();
 
 // Email Transporter for Password Recovery (Zero-Cost / Native)
 async function sendPasswordRecoveryEmail(toEmail: string, code: string): Promise<{ success: boolean; error?: string; isAuthError?: boolean }> {
@@ -442,9 +525,10 @@ app.post("/api/auth/forgot-password", authRateLimit, async (req, res) => {
     }
 
     // Generate 6-digit secure recovery code
-    const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const resetCode = crypto.randomInt(100000, 1000000).toString();
     const expiresAt = Date.now() + 15 * 60 * 1000; // 15 minutes validity
-    passwordResetStore.set(normalizedEmail, { code: resetCode, expiresAt });
+    passwordResetStore.set(normalizedEmail, { code: resetCode, expiresAt, failedAttempts: 0 });
+    saveSecurityStore(); // Async, don't await to avoid blocking event loop
 
     // Send email to the user's inbox
     const emailResult = await sendPasswordRecoveryEmail(normalizedEmail, resetCode);
@@ -496,11 +580,30 @@ app.post("/api/auth/reset-password", authRateLimit, (req, res) => {
     }
 
     const resetData = passwordResetStore.get(normalizedEmail);
-    const isCodeValid = resetData && resetData.code === resetCode.trim() && resetData.expiresAt > Date.now();
-
-    if (!isCodeValid) {
+    if (!resetData) {
       return res.status(400).json({
         error: "Kode pemulihan tidak valid atau sudah kadaluarsa. Silakan minta kode baru.",
+        success: false,
+      });
+    }
+
+    if (resetData.failedAttempts >= 5) {
+      passwordResetStore.delete(normalizedEmail);
+      saveSecurityStore();
+      return res.status(429).json({
+        error: "Terlalu banyak percobaan gagal. Silakan minta kode pemulihan baru.",
+        success: false,
+      });
+    }
+
+    const isCodeValid = resetData.code === resetCode.trim() && resetData.expiresAt > Date.now();
+
+    if (!isCodeValid) {
+      resetData.failedAttempts += 1;
+      passwordResetStore.set(normalizedEmail, resetData);
+      saveSecurityStore();
+      return res.status(400).json({
+        error: "Kode pemulihan tidak valid atau sudah kadaluarsa.",
         success: false,
       });
     }
@@ -529,8 +632,11 @@ app.post("/api/auth/reset-password", authRateLimit, (req, res) => {
     const alias2 = usersDb.get("saipulabe5@gmail.com");
     if (alias2) alias2.passwordHash = newHash;
 
+    saveUsersStore();
+
     // Invalidate reset code
     passwordResetStore.delete(normalizedEmail);
+    saveSecurityStore(); // Async, don't await to avoid blocking event loop
 
     // Create session token
     const token = jwt.sign(
@@ -542,7 +648,7 @@ app.post("/api/auth/reset-password", authRateLimit, (req, res) => {
         companyName: user.companyName,
       },
       JWT_SECRET,
-      { expiresIn: "30d" }
+      { expiresIn: "7d" }
     );
 
     return res.json({
@@ -592,6 +698,121 @@ app.get("/api/health", (req, res) => {
 });
 
 // 1. AI Interactive QS Assistant Chat
+
+// ==========================================
+// ZERO-COST SAFEGUARD: GLOBAL AI RATE LIMITER
+// ==========================================
+const AI_QUOTA_FILE = path.join(process.cwd(), '.data', 'ai_usage.json');
+const MAX_DAILY_REQUESTS = 1000; // Free tier buffer (Gemini Flash free tier is 1500/day)
+
+async function checkAndIncrementAIQuota() {
+  const today = new Date().toISOString().split('T')[0];
+  let usage = { date: today, count: 0 };
+  
+  try {
+    if (fs.existsSync(AI_QUOTA_FILE)) {
+      const data = JSON.parse(await fs.promises.readFile(AI_QUOTA_FILE, 'utf8'));
+      if (data.date === today) {
+        usage = data;
+      }
+    }
+  } catch (e) {
+    console.error('Error reading AI quota:', e);
+  }
+  
+  if (usage.count >= MAX_DAILY_REQUESTS) {
+    return { allowed: false, remaining: 0 };
+  }
+  
+  usage.count += 1;
+  
+  try {
+    const dir = path.dirname(AI_QUOTA_FILE);
+    if (!fs.existsSync(dir)) await fs.promises.mkdir(dir, { recursive: true });
+    await fs.promises.writeFile(AI_QUOTA_FILE, JSON.stringify(usage));
+  } catch (e) {
+    console.error('Error writing AI quota:', e);
+  }
+  
+  return { allowed: true, remaining: MAX_DAILY_REQUESTS - usage.count };
+}
+
+const aiZeroCostGuard = async (req, res, next) => {
+  const quota = await checkAndIncrementAIQuota();
+  if (!quota.allowed) {
+    return res.status(429).json({
+      error: "Batas pemakaian AI gratis harian (Zero-Cost Safeguard) telah tercapai. Silakan coba lagi besok.",
+      success: false
+    });
+  }
+  res.setHeader('X-AI-Quota-Remaining', quota.remaining);
+  next();
+};
+
+app.use('/api/ai/*', aiZeroCostGuard);
+
+
+
+// ==========================================
+// AI AGENT #1: FINANCIAL REVIEW
+// ==========================================
+app.post("/api/ai/financial-review", requireAuth, async (req, res) => {
+  try {
+    const { project, items, calc, anomalies } = req.body;
+    
+    const ai = getGeminiClient();
+    if (!ai) {
+      return res.status(503).json({ error: "Kunci API Gemini belum dikonfigurasi." });
+    }
+
+    const categoryBreakdown = (calc?.categoryTotals || []).map((c) =>
+      `- ${c.category}: Rp ${Number(c.subtotal).toLocaleString('id-ID')} (${c.percentage.toFixed(1)}%)`
+    ).join("\n");
+
+    const anomaliesText = anomalies && anomalies.length > 0 
+      ? `ANOMALI DETERMINISTIK YANG DITEMUKAN:\n${anomalies.map(a => `- [${a.severity.toUpperCase()}] ${a.itemName ? a.itemName + ': ' : ''}${a.message}`).join('\n')}`
+      : "Tidak ada anomali matematis/deterministik.";
+
+    const systemPrompt = `Anda adalah Senior Cost Control Reviewer untuk proyek konstruksi di Indonesia.
+Tugas Anda: Berikan 'narrative sanity check' terhadap struktur anggaran (RAB) ini.
+Fokus pada:
+1. Apakah rasio kategori (komposisi biaya) masuk akal secara industri untuk proyek ${project?.type || 'Bangunan'} skala ${project?.budget_range || 'standar'}?
+2. Apakah ada kategori pekerjaan esensial yang biasanya ada di proyek ini tapi terlewat?
+3. Evaluasi anomali deterministik yang ditemukan (jika ada).
+Keluarkan analisis dalam 3-4 paragraf yang profesional, tajam, dan langsung ke intinya. Gunakan bahasa Indonesia. Jangan berikan tabel, cukup narasi.`;
+
+    const prompt = `
+Data Proyek:
+- Nama: ${project?.name}
+- Tipe: ${project?.type}
+- Luas: ${project?.area_sqm} m2
+- Total Anggaran: Rp ${Number(calc?.grandTotal).toLocaleString('id-ID')}
+
+Distribusi Kategori:
+${categoryBreakdown}
+
+${anomaliesText}
+`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: [
+        { role: "user", parts: [{ text: systemPrompt + "\n\n" + prompt }] }
+      ],
+      config: {
+        temperature: 0.3,
+      }
+    });
+
+    const text = response.text;
+    res.json({ result: text, success: true });
+
+  } catch (error) {
+    console.error("AI Financial Review error:", error);
+    res.status(500).json({ error: "Gagal melakukan verifikasi finansial via AI." });
+  }
+});
+
 app.post("/api/ai/chat", async (req, res) => {
   try {
     const { message, project, items, history } = req.body;
@@ -1125,442 +1346,129 @@ Berikan analisis profesional dalam format JSON dengan struktur:
 });
 
 // 9. AI Multimodal Construction Drawing & Document Analysis Endpoint
+
 app.post("/api/ai/analyze-drawing", async (req, res) => {
   try {
     const {
-      drawingId,
-      fileName,
-      drawingTitle,
-      fileType,
-      category,
-      drawingCategory,
-      description,
-      imageData, // base64 data string (e.g. data:image/png;base64,...)
-      projectName,
-      existingRABSummary,
+      drawingId, fileName, drawingTitle, fileType, category, drawingCategory, description,
+      imageData, projectName, existingRABSummary, forceTwoPass
     } = req.body;
 
     const actualTitle = drawingTitle || fileName || "Gambar Konstruksi";
-    const actualCategory = drawingCategory || category || "Umum";
-    const actualDescription = description || "Tidak ada keterangan";
-    const actualProjectName = projectName || "Proyek Konstruksi";
-
     const ai = getGeminiClient();
 
-    // If Gemini client is active and image base64 is supplied, call Gemini Multimodal with inlineData
     if (ai && imageData && imageData.includes("base64,")) {
       try {
         const base64Data = imageData.split("base64,")[1];
         const mimeType = imageData.split(";")[0].replace("data:", "") || fileType || "image/png";
 
-        const systemInstruction = `V16 MASTER DRAWING INTELLIGENCE ENGINE - ZERO HALLUCINATION POLICY
-
-Anda adalah AI Spesialis Analisis Gambar Konstruksi & Senior Quantity Surveyor (QS) Indonesia tingkat ahli.
-Tugas Anda adalah membaca gambar kerja dan mengekstrak informasi dengan integritas data absolut.
-
+        const systemInstruction = `V17 MASTER DRAWING INTELLIGENCE ENGINE - TWO PASS
+Anda adalah AI Spesialis Analisis Gambar Konstruksi.
 ATURAN KETAT INTEGRITAS DATA (ANTI-HALUSINASI & GEOMETRY LOCKING):
-1. ZERO HALLUCINATION: JANGAN MENGARANG DIMENSI. Hanya ekstrak angka yang secara nyata terbaca.
-2. GEOMETRY LOCKING: Jika Anda mengekstrak panjang 4m dan lebar 3m, luas harus terkunci mutlak di 12m2.
-3. BATASAN SKALA LOGIS: Validasi total luasan lahan dan bangunan. Pastikan akumulasi dimensi ruang masuk akal.
-4. SPESIFIKASI MATERIAL PRESISI: Perhatikan anomali dan detail notasi material pada gambar.
-5. NO GUESSING: Jika buram atau terpotong, JANGAN MENEBAK. Kosongkan nilai, isi 'missingInformation'.
-6. EVIDENCE-FIRST: Setiap item yang diekstrak wajib menyertakan bukti visual (location/evidence).
-7. QS TAKEOFF: Hasilkan volume quantities murni sebagai AI_SUGGESTED, dengan method (DIRECT_COUNT, DIMENSION_BASED, AREA_BASED).
-
-Anda WAJIB mengembalikan output HANYA dalam format JSON valid mengikuti skema berikut:
+1. ZERO HALLUCINATION: JANGAN MENGARANG DIMENSI.
+2. GEOMETRY LOCKING: Evaluasi relasi matematis.
+3. NO GUESSING: Jika buram, kosongi.
+4. MULTI-PAGE PROCESSING: Jika dokumen terdiri dari beberapa halaman (seperti PDF), ANDA WAJIB memproses, menganalisa, dan mengekstrak informasi dari SETIAP HALAMAN tanpa terkecuali. Sebutkan secara spesifik temuan dari halaman 1, halaman 2, dst dalam summary Anda.
+Kembalikan HANYA format JSON (tanpa markdown).
+Skema:
 {
-  "analysisId": "string",
-  "documentId": "string",
-  "sheetId": "string",
-  "drawingTitle": "string",
-  "drawingTypeDetected": "string",
-  "classificationConfidence": 95,
   "summary": "string",
-  "qualityWarning": "string",
   "confidenceScore": 95,
-  "assumptions": ["string"],
-  "dimensions": [
-    {
-      "dimensionValue": 0,
-      "unit": "string",
-      "rawText": "string",
-      "sourceLocation": "string",
-      "evidence": "string",
-      "confidence": 95,
-      "status": "OBSERVED | INFERRED | CALCULATED"
-    }
-  ],
-  "objects": [
-    {
-      "category": "string",
-      "name": "string",
-      "location": "string",
-      "dimensionsText": "string",
-      "confidence": 95
-    }
-  ],
-  "materials": [
-    {
-      "material": "string",
-      "evidence": "string",
-      "sourceLocation": "string",
-      "confidence": 95
-    }
-  ],
-  "tables": ["string"],
-  "anomalies": [
-    {
-      "severity": "INFO | LOW | MEDIUM | HIGH | CRITICAL",
-      "description": "string",
-      "location": "string"
-    }
-  ],
-  "missingInformation": [
-    {
-      "field": "string",
-      "reason": "string",
-      "severity": "HIGH",
-      "requiresUserInput": true
-    }
-  ],
-  "crossSheetConflicts": [],
-  "estimatedItems": [
-    {
-      "workCode": "string",
-      "workName": "string",
-      "category": "string",
-      "unit": "string",
-      "volume": 0,
-      
-      "formulaExplanation": "string",
-      "confidenceScore": 95,
-      "method": "DIRECT_COUNT | DIMENSION_BASED | AREA_BASED | LENGTH_BASED | VOLUME_BASED | FORMULA_BASED",
-      "status": "AI_SUGGESTED",
-      "evidence": "string"
-    }
-  ]
+  "dimensions": [{"dimensionValue": 0, "unit": "m", "rawText": "str", "evidence": "str"}],
+  "objects": [{"category": "str", "name": "str", "dimensionsText": "str"}],
+  "materials": [{"material": "str", "evidence": "str"}],
+  "rabItems": [{"category": "str", "name": "str", "volume": 0, "unit": "str"}],
+  "missingInformation": ["str"],
+  "anomalies": ["str"],
+  "crossSheetConflicts": ["str"]
 }`;
 
-        const promptText = `Analisis gambar konstruksi berikut secara mendetail.
-Nama File: ${actualTitle}
-Kategori Yang Ditandai: ${actualCategory}
-Keterangan Tambahan: ${actualDescription}
-Proyek: ${actualProjectName}
+        const promptText = `Analisis gambar "${actualTitle}" dari proyek "${projectName || 'Proyek'}".`;
 
-Ekstrak seluruh elemen arsitektural dan struktural, lakukan take-off volume, dan petakan ke Pos RAB standar SNI.
-${existingRABSummary ? `\nPos RAB yang sudah ada:\n${existingRABSummary}` : ""}`;
-
-        // Attempt generation with zero temperature and anti-hallucination prompt
-        const geminiResponse = await ai.models.generateContent({
+        // PASS 1: Extraction
+        const response1 = await ai.models.generateContent({
           model: "gemini-2.5-flash",
-          contents: [
-            {
+          contents: [{
+            role: "user",
+            parts: [
+              { inlineData: { data: base64Data, mimeType } },
+              { text: promptText }
+            ]
+          }],
+          config: {
+            temperature: 0.1,
+            systemInstruction: { parts: [{ text: systemInstruction }] },
+            responseMimeType: "application/json"
+          }
+        });
+
+        let pass1Text = response1.text;
+        pass1Text = pass1Text.replace(/\n/g, "").replace(/\r/g, "");
+        let resultObj = JSON.parse(pass1Text);
+        
+        const confidence = resultObj.confidenceScore || 100;
+        const needsPass2 = forceTwoPass || confidence < 85;
+
+        // PASS 2: Self-Critique (If needed)
+        if (needsPass2) {
+          const critiquePrompt = `Anda adalah QC Reviewer kedua.
+Periksa ulang hasil ekstraksi Pass 1 berikut terhadap gambar asli.
+Tandai temuan yang: (a) tidak konsisten dengan gambar, (b) dimensi bertentangan, (c) confidence rendah.
+Kembalikan HANYA daftar koreksi dalam format JSON:
+{
+  "criticalCorrections": ["string"],
+  "downgradedConfidence": 70
+}
+
+Hasil Pass 1:
+${JSON.stringify(resultObj, null, 2)}`;
+
+          const response2 = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: [{
               role: "user",
               parts: [
-                {
-                  inlineData: {
-                    data: base64Data,
-                    mimeType: mimeType.startsWith("image/") ? mimeType : "image/jpeg",
-                  },
-                },
-                { text: promptText },
-              ],
-            },
-          ],
-          config: {
-            systemInstruction,
-            temperature: 0.0,
-            responseMimeType: "application/json",
-          },
-        });
-
-        const rawText = geminiResponse.text || "{}";
-        let parsed: any = {};
-        try {
-          parsed = JSON.parse(rawText);
-        } catch {
-          const cleaned = rawText.replace(/```json/g, "").replace(/```/g, "").trim();
-          parsed = JSON.parse(cleaned);
+                { inlineData: { data: base64Data, mimeType } },
+                { text: critiquePrompt }
+              ]
+            }],
+            config: {
+              temperature: 0.1,
+              responseMimeType: "application/json"
+            }
+          });
+          
+          try {
+            const critiqueObj = JSON.parse(response2.text);
+            if (critiqueObj.criticalCorrections && critiqueObj.criticalCorrections.length > 0) {
+              resultObj.anomalies = resultObj.anomalies || [];
+              resultObj.anomalies.push(...critiqueObj.criticalCorrections.map(c => "[QC Pass 2] " + c));
+              if (critiqueObj.downgradedConfidence) {
+                resultObj.confidenceScore = critiqueObj.downgradedConfidence;
+              }
+            }
+          } catch(e) {
+            console.error("QC Pass 2 failed to parse:", e);
+          }
         }
 
-        return res.json({
-          success: true,
-          source: "gemini_multimodal",
-          data: parsed,
-          analysis: parsed,
-        });
-      } catch (geminiError: any) {
-        console.warn("Gemini Multimodal failed, falling back to smart QS estimator:", geminiError?.message);
+        res.json({ result: resultObj, success: true, twoPassUsed: needsPass2 });
+      } catch (geminiError) {
+        console.error("Gemini API Error in analyze-drawing:", geminiError);
+        res.status(500).json({ error: "Gagal memproses analisis gambar via Gemini API. " + (geminiError.message || String(geminiError)) });
       }
-    }
-
-    // Smart QS Fallback Estimator based on category & file metadata
-    const categoryLower = (actualCategory || "").toLowerCase();
-    const fileNameLower = (actualTitle || "").toLowerCase();
-    const isDenah = categoryLower.includes("denah") || fileNameLower.includes("denah") || fileNameLower.includes("plan");
-    const isStruktur = categoryLower.includes("struktur") || categoryLower.includes("pondasi") || categoryLower.includes("kolom") || fileNameLower.includes("struktur") || fileNameLower.includes("kolom");
-    const isAtap = categoryLower.includes("atap") || fileNameLower.includes("atap") || fileNameLower.includes("roof");
-    const isTampak = categoryLower.includes("tampak") || categoryLower.includes("potongan") || fileNameLower.includes("section");
-
-    let drawingTypeDetected = "Denah Arsitektur & Tata Ruang";
-    let detectedElements: any[] = [];
-    let extractedDimensions: any[] = [];
-    let estimatedVolumes: any[] = [];
-    let assumptions: string[] = [];
-    let qualityWarning = "";
-
-    if (isStruktur || categoryLower.includes("pondasi")) {
-      drawingTypeDetected = "Detail Struktur & Pondasi Bangunan";
-      assumptions = [
-        "Kedalaman galian pondasi diasumsikan 1.00 m dari muka tanah asli.",
-        "Mutu beton struktur bertulang diasumsikan f'c 19.3 MPa (K-225) standar SNI.",
-        "Koefisien pembesian dihitung dengan rasio 120 kg/m³ beton bertulang.",
-      ];
-      detectedElements = [
-        { id: "el_1", category: "Pekerjaan Pondasi", name: "Pondasi Batu Kali Belah Trapesium", location: "Sepanjang Garis As Dinding Utama", dimensionsText: "P: 48m, Lebar Bawah: 0.70m, Atas: 0.30m, T: 0.80m", confidence: 92 },
-        { id: "el_2", category: "Pekerjaan Struktur", name: "Sloof Beton Bertulang 15/20 cm", location: "Di atas pasangan pondasi batu kali", dimensionsText: "P: 48m, L: 0.15m, T: 0.20m", confidence: 95 },
-        { id: "el_3", category: "Pekerjaan Struktur", name: "Kolom Praktis K1 15/15 cm", location: "16 Titik Pertemuan Dinding & Sudut", dimensionsText: "16 Titik x Tinggi 3.60m", confidence: 90 },
-        { id: "el_4", category: "Pekerjaan Struktur", name: "Ringbalk Beton Bertulang 15/20 cm", location: "Keliling Atas Pasangan Dinding", dimensionsText: "P: 48m, L: 0.15m, T: 0.20m", confidence: 92 },
-      ];
-      extractedDimensions = [
-        { label: "Total Panjang As Pondasi", value: 48.0, unit: "m¹", source: "Aksis Garis As Grid A-D & 1-5" },
-        { label: "Jumlah Kolom Struktur & Praktis", value: 16, unit: "titik", source: "Simbol Kolom K1 pada Gambar" },
-        { label: "Tinggi Bangunan Muka Lantai ke Ringbalk", value: 3.6, unit: "m", source: "Elevasi Notasi Potongan +3.60" },
-      ];
-      estimatedVolumes = [
-        {
-          id: "est_1",
-          workCode: "TNH-01",
-          workName: "Galian Tanah Pondasi Batu Belah Kedalaman 1m",
-          category: "Pekerjaan Tanah",
-          unit: "m³",
-          volume: 43.2,
-          
-          formulaExplanation: "Volume = 48m x 0.9m x 1.0m",
-          confidenceScore: 92,
-        },
-        {
-          id: "est_2",
-          workCode: "PND-01",
-          workName: "Pasangan Pondasi Batu Belah Campuran 1:4",
-          category: "Pekerjaan Pondasi",
-          unit: "m³",
-          volume: 19.2,
-          
-          formulaExplanation: "Volume = Luas trapesium 0.40 m² x Panjang 48m",
-          confidenceScore: 95,
-        },
-        {
-          id: "est_3",
-          workCode: "STR-01",
-          workName: "Pekerjaan Beton Bertulang Sloof 15/20 cm (Beton K-225 + Besi + Bekisting)",
-          category: "Pekerjaan Struktur",
-          unit: "m³",
-          volume: 1.44,
-          
-          formulaExplanation: "Volume = 48m x 0.15m x 0.20m",
-          confidenceScore: 94,
-        },
-        {
-          id: "est_4",
-          workCode: "STR-02",
-          workName: "Pekerjaan Beton Bertulang Kolom Praktis 15/15 cm",
-          category: "Pekerjaan Struktur",
-          unit: "m³",
-          volume: 1.3,
-          
-          formulaExplanation: "Volume = 16 unit x 3.6m x 0.0225m² penampang",
-          confidenceScore: 90,
-        },
-      ];
-    } else if (isAtap) {
-      drawingTypeDetected = "Rencana Rangka Atap & Penutup Atap";
-      assumptions = [
-        "Kemiringan sudut atap teridentifikasi 30 derajat.",
-        "Faktor pengali bidang miring kemiringan 30° adalah 1 / cos(30°) = 1.155.",
-        "Overstek keliling atap diasumsikan 0.80 m dari as dinding terluar.",
-      ];
-      detectedElements = [
-        { id: "el_1", category: "Pekerjaan Atap", name: "Rangka Kuda-Kuda Baja Ringan C75.75", location: "Bidang Atap Utama", dimensionsText: "Luas Datar 120 m² + Overstek 24 m²", confidence: 93 },
-        { id: "el_2", category: "Pekerjaan Atap", name: "Penutup Genteng Keramik Berglazur", location: "Seluruh Permukaan Bidang Miring", dimensionsText: "Luas Miring = 144 m² x 1.155 = 166.3 m²", confidence: 91 },
-        { id: "el_3", category: "Pekerjaan Atap", name: "Bubungan / Nok Genteng Keramik", location: "Garis Puncak dan Jurai Atap", dimensionsText: "Panjang Nok Utama = 14.5 m¹", confidence: 88 },
-        { id: "el_4", category: "Pekerjaan Atap", name: "Lisplang GRC Board 2/20 cm", location: "Keliling Tepi Bawah Atap", dimensionsText: "Keliling = 46.0 m¹", confidence: 90 },
-      ];
-      extractedDimensions = [
-        { label: "Luas Bangunan Datar Proyeksi", value: 120.0, unit: "m²", source: "Ukuran Garis Denah Luar 10m x 12m" },
-        { label: "Sudut Kemiringan Atap", value: 30.0, unit: "derajat", source: "Notasi Sudut Potongan Atap" },
-        { label: "Panjang Garis Bubungan Nok", value: 14.5, unit: "m¹", source: "Garis Nok Tengah" },
-      ];
-      estimatedVolumes = [
-        {
-          id: "est_1",
-          workCode: "ATP-01",
-          workName: "Pasang Rangka Atap Baja Ringan Truss C75.75 Standar SNI",
-          category: "Pekerjaan Atap",
-          unit: "m²",
-          volume: 166.3,
-          
-          formulaExplanation: "Luas datar 144 m² / cos(30°) = 166.32 m²",
-          confidenceScore: 92,
-        },
-        {
-          id: "est_2",
-          workCode: "ATP-02",
-          workName: "Pasang Penutup Atap Genteng Keramik Berglazur",
-          category: "Pekerjaan Atap",
-          unit: "m²",
-          volume: 166.3,
-          
-          formulaExplanation: "Sama dengan luasan bidang rangka atap terpasang",
-          confidenceScore: 91,
-        },
-        {
-          id: "est_3",
-          workCode: "ATP-03",
-          workName: "Pasang Nok Genteng Keramik Termasuk Mortar Warna",
-          category: "Pekerjaan Atap",
-          unit: "m¹",
-          volume: 14.5,
-          
-          formulaExplanation: "Panjang garis bentang nok utama",
-          confidenceScore: 90,
-        },
-        {
-          id: "est_4",
-          workCode: "ATP-04",
-          workName: "Pasang Lisplang GRC Board Tipe Serat Kayu Lebar 20cm",
-          category: "Pekerjaan Atap",
-          unit: "m¹",
-          volume: 46.0,
-          
-          formulaExplanation: "Keliling total overstek atap luar",
-          confidenceScore: 89,
-        },
-      ];
     } else {
-      // Default: Denah Arsitektur & Tata Ruang
-      drawingTypeDetected = "Denah Arsitektur & Tata Ruang Lantai";
-      assumptions = [
-        "Tinggi bersih dinding (floor-to-ceiling) diasumsikan 3.20 meter.",
-        "Pengurangan luas bukaan pintu & jendela (deduction) telah dihitung sebesar 18.5 m².",
-        "Kusen diasumsikan aluminium 4 inch warna hitam / putih powder coating.",
-      ];
-      detectedElements = [
-        { id: "el_1", category: "Pekerjaan Dinding", name: "Dinding Pasangan Bata Ringan (Hebel 10cm)", location: "Seluruh Sekat Ruangan & Dinding Luar", dimensionsText: "P. Total Dinding: 74m, T: 3.20m - Bukaan 18.5m²", confidence: 94 },
-        { id: "el_2", category: "Pekerjaan Lantai", name: "Lantai Homogeneous Tile Granit 60x60 cm", location: "R. Tamu, R. Keluarga, R. Makan, 3 Kamar Tidur", dimensionsText: "Luas Bersih Ruangan = 96.5 m²", confidence: 96 },
-        { id: "el_3", category: "Pekerjaan Plafon", name: "Plafon Gypsum Board 9mm Rangka Hollow", location: "Seluruh Ruangan Lantai", dimensionsText: "Luas Plafon = 96.5 m²", confidence: 95 },
-        { id: "el_4", category: "Pekerjaan Pintu dan Jendela", name: "Pintu Utama PJ1 & Pintu Kamar P1 (Kayu/Aluminium)", location: "Pintu Masuk & Pintu Kamar (5 Unit)", dimensionsText: "1 Unit Utama PJ1 (1.6x2.4m) + 4 Unit P1 (0.9x2.1m)", confidence: 92 },
-        { id: "el_5", category: "Pekerjaan Pengecatan", name: "Pengecatan Dinding Interior & Eksterior", location: "2 Sisi Permukaan Dinding Bata Ringan", dimensionsText: "Luas Netto 2 Sisi = 436.6 m²", confidence: 91 },
-      ];
-      extractedDimensions = [
-        { label: "Luas Total Lantai Bersih", value: 96.5, unit: "m²", source: "Kalkulasi Luas Penjumlahan Poligon Ruang" },
-        { label: "Panjang Total Garis Dinding", value: 74.0, unit: "m¹", source: "Garis Dinding As Interior & Eksterior" },
-        { label: "Jumlah Daun Pintu & Jendela", value: 9, unit: "unit", source: "Simbol P1, P2, J1, J2 pada Denah" },
-      ];
-      estimatedVolumes = [
-        {
-          id: "est_1",
-          workCode: "DND-01",
-          workName: "Pasangan Dinding Bata Ringan (Hebel 10cm) Mortar Perekat",
-          category: "Pekerjaan Dinding",
-          unit: "m²",
-          volume: 218.3,
-          
-          formulaExplanation: "Luas kotor 236.8 m² dikurangi luas bukaan pintu/jendela 18.5 m² = 218.3 m² netto",
-          confidenceScore: 94,
-        },
-        {
-          id: "est_2",
-          workCode: "DND-02",
-          workName: "Plesteran Dinding & Acian Halus Mortar 2 Sisi",
-          category: "Pekerjaan Dinding",
-          unit: "m²",
-          volume: 436.6,
-          
-          formulaExplanation: "Dua sisi pasangan dinding bata ringan netto",
-          confidenceScore: 93,
-        },
-        {
-          id: "est_3",
-          workCode: "LNT-01",
-          workName: "Pasang Lantai Granit Tile 60x60 cm Polished Homogeneous",
-          category: "Pekerjaan Lantai",
-          unit: "m²",
-          volume: 101.3,
-          
-          formulaExplanation: "Luas bersih 96.5 m² ditambah allowance pemotongan/waste 5%",
-          confidenceScore: 96,
-        },
-        {
-          id: "est_4",
-          workCode: "PLF-01",
-          workName: "Pasang Plafon Gypsum Board 9 mm Rangka Hollow Galvalum 2x4 & 4x4",
-          category: "Pekerjaan Plafon",
-          unit: "m²",
-          volume: 96.5,
-          
-          formulaExplanation: "Luas horizontal bidang plafon ruangan",
-          confidenceScore: 95,
-        },
-        {
-          id: "est_5",
-          workCode: "PNT-01",
-          workName: "Pemasangan Kusen Aluminium 4 inch & Daun Pintu/Jendela Kaca",
-          category: "Pekerjaan Pintu dan Jendela",
-          unit: "unit",
-          volume: 9.0,
-          
-          formulaExplanation: "Penghitungan unit kusen dan bukaan pada denah arsitektur",
-          confidenceScore: 92,
-        },
-        {
-          id: "est_6",
-          workCode: "CAT-01",
-          workName: "Pengecatan Dinding Interior Catylac / Setara 3 Lapis",
-          category: "Pekerjaan Pengecatan",
-          unit: "m²",
-          volume: 320.0,
-          
-          formulaExplanation: "Luas permukaan dinding dalam yang sudah diaci",
-          confidenceScore: 90,
-        },
-      ];
+      res.status(400).json({ error: "Data gambar tidak valid atau Gemini client tidak aktif." });
     }
-
-    // Check if filename contains warnings or cues
-    if (fileNameLower.includes("blur") || fileNameLower.includes("buram") || fileNameLower.includes("draft")) {
-      qualityWarning = "Gambar memiliki resolusi rendah atau teks dimensi buram. Hasil take-off volume bertanda 'Perlu verifikasi' disarankan untuk dicek ulang terhadap gambar kerja as-built.";
-    }
-
-    const fallbackAnalysis = {
-      drawingTitle: actualTitle,
-      drawingTypeDetected,
-      qualityWarning,
-      confidenceScore: 92,
-      assumptions,
-      detectedElements,
-      extractedDimensions,
-      estimatedVolumes,
-      estimatedItems: estimatedVolumes,
-    };
-
-    return res.json({
-      success: true,
-      source: "qs_engine",
-      data: fallbackAnalysis,
-      analysis: fallbackAnalysis,
-    });
-  } catch (error: any) {
-    console.error("AI Drawing Analysis Error:", error);
-    return res.status(500).json({
-      error: "Gagal memproses analisis gambar: " + (error?.message || "Terjadi kesalahan"),
-    });
+  } catch (error) {
+    console.error("Analyze drawing error:", error);
+    res.status(500).json({ error: "Terjadi kesalahan sistem saat menganalisis gambar." });
   }
 });
 
 
 // 10. AI Document OCR Extractor for RAB Tables (PDF, JPG, PNG)
-app.post("/api/rab/parse-document-ocr", async (req, res) => {
+app.post("/api/rab/parse-document-ocr", aiZeroCostGuard, async (req, res) => {
   try {
     const { fileName, fileType, prompt: userPrompt } = req.body;
     const rawImage = req.body.imageData || req.body.fileBase64 || req.body.data;
@@ -1996,11 +1904,22 @@ app.get("/api/export/source-code", requireAdmin, exportRateLimit, async (req, re
     let totalSize = 0;
 
     scannedFiles.forEach((file) => {
+      let content = file.content;
+      // Redact environment variables if it's the .env file
+      if (file.path === '.env' || file.path === '.env.local') {
+        content = content.replace(/^(.*=)(.*)$/gm, '$1***REDACTED***');
+      }
+      
+      // Redact known secrets patterns across all files
+      content = content.replace(/(process\.env\.JWT_SECRET\s*\|\|\s*["'])[^"']+["']/g, '$1***REDACTED***"');
+      content = content.replace(/(process\.env\.ADMIN_INITIAL_PASSWORD\s*\|\|\s*["'])[^"']+["']/g, '$1***REDACTED***"');
+      content = content.replace(/(process\.env\.GEMINI_API_KEY\s*\|\|\s*["'])[^"']+["']/g, '$1***REDACTED***"');
+
       filesDict[file.path] = {
         size: file.sizeBytes,
         lines: file.lineCount,
         extension: file.extension,
-        content: file.content,
+        content: content,
         modified: file.lastModified,
       };
       totalLines += file.lineCount;
@@ -2070,7 +1989,7 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   if (err) {
     console.error("Server uncaught middleware error:", err);
     return res.status(err.status || 500).json({
-      error: err.message || "Terjadi kesalahan pada server.",
+      error: process.env.NODE_ENV === "production" ? "Terjadi kesalahan sistem." : (err.message || "Terjadi kesalahan pada server."),
       success: false,
     });
   }
@@ -2094,9 +2013,35 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
+  const server = app.listen(PORT, "0.0.0.0", () => {
     console.log(`RAB Pro Server running on port ${PORT}`);
   });
+
+  server.on('error', (err: NodeJS.ErrnoException) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`[FATAL] Port ${PORT} sudah dipakai proses lain. Hentikan proses lama terlebih dahulu (cek dengan: lsof -i :${PORT} atau netstat), atau ganti PORT di environment.`);
+      process.exit(1);
+    } else {
+      console.error('[FATAL] Server error tak terduga:', err);
+      process.exit(1);
+    }
+  });
+
+  function gracefulShutdown(signal: string) {
+    console.log(`\n[SHUTDOWN] Menerima sinyal ${signal}, menutup server...`);
+    server.close(() => {
+      console.log('[SHUTDOWN] Server ditutup bersih, port dilepas.');
+      process.exit(0);
+    });
+    // Paksa keluar jika masih menggantung setelah 10 detik
+    setTimeout(() => {
+      console.error('[SHUTDOWN] Timeout — force exit.');
+      process.exit(1);
+    }, 10000);
+  }
+  
+  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 }
 
 startServer();

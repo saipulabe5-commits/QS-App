@@ -65,22 +65,22 @@ export const DrawingItemEditModal: React.FC<DrawingItemEditModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-xs overflow-y-auto">
-      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-xl overflow-hidden my-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--bg-elevated)]/70 backdrop-blur-xs overflow-y-auto">
+      <div className="bg-[var(--bg-elevated)] rounded-2xl shadow-2xl border border-[var(--border-primary)] w-full max-w-xl overflow-hidden my-6">
         {/* Header */}
-        <div className="p-5 bg-slate-900 text-white flex items-center justify-between">
+        <div className="p-5 bg-[var(--bg-elevated)] text-[var(--text-primary)] flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white">
               <Edit3 className="w-5 h-5" />
             </div>
             <div>
               <h3 className="text-base font-bold text-white">Edit Estimasi Item Pekerjaan AI</h3>
-              <p className="text-xs text-slate-300">Sesuaikan volume atau harga sebelum masuk ke RAB</p>
+              <p className="text-xs text-slate-600 dark:text-slate-300">Sesuaikan volume atau harga sebelum masuk ke RAB</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
+            className="text-[var(--text-secondary)] hover:text-white p-1 rounded-lg hover:bg-[var(--bg-elevated-hover)] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -90,25 +90,25 @@ export const DrawingItemEditModal: React.FC<DrawingItemEditModalProps> = ({
         <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-1">
                 Kode Pekerjaan
               </label>
               <input
                 type="text"
                 value={workCode}
                 onChange={(e) => setWorkCode(e.target.value)}
-                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-900"
+                className="w-full px-3 py-2 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-[var(--text-primary)]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-1">
                 Kategori Pekerjaan
               </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as RABCategory)}
-                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-900"
+                className="w-full px-3 py-2 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-[var(--text-primary)]"
               >
                 {RAB_CATEGORIES.map((cat) => (
                   <option key={cat} value={cat}>
@@ -119,7 +119,7 @@ export const DrawingItemEditModal: React.FC<DrawingItemEditModalProps> = ({
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-1">
                 Uraian / Nama Pekerjaan *
               </label>
               <input
@@ -127,12 +127,12 @@ export const DrawingItemEditModal: React.FC<DrawingItemEditModalProps> = ({
                 required
                 value={workName}
                 onChange={(e) => setWorkName(e.target.value)}
-                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-900"
+                className="w-full px-3 py-2 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-[var(--text-primary)]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-1">
                 Volume Pekerjaan *
               </label>
               <input
@@ -142,24 +142,24 @@ export const DrawingItemEditModal: React.FC<DrawingItemEditModalProps> = ({
                 required
                 value={volume}
                 onChange={(e) => setVolume(parseFloat(e.target.value) || 0)}
-                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-900"
+                className="w-full px-3 py-2 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-[var(--text-primary)]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-1">
                 Satuan (m, m2, m3, kg, dll)
               </label>
               <input
                 type="text"
                 value={unit}
                 onChange={(e) => setUnit(e.target.value)}
-                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-900"
+                className="w-full px-3 py-2 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-[var(--text-primary)]"
               />
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-1">
                 Harga Satuan (Rp) *
               </label>
               <input
@@ -169,7 +169,7 @@ export const DrawingItemEditModal: React.FC<DrawingItemEditModalProps> = ({
                 required
                 value={unitPrice}
                 onChange={(e) => setUnitPrice(parseFloat(e.target.value) || 0)}
-                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-900"
+                className="w-full px-3 py-2 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-[var(--text-primary)]"
               />
             </div>
 
@@ -185,19 +185,19 @@ export const DrawingItemEditModal: React.FC<DrawingItemEditModalProps> = ({
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-1">
                 Penjelasan Rumus / Dimensi AI
               </label>
               <input
                 type="text"
                 value={formulaExplanation}
                 onChange={(e) => setFormulaExplanation(e.target.value)}
-                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-900"
+                className="w-full px-3 py-2 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-[var(--text-primary)]"
               />
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-1">
                 Catatan Verifikasi Anda
               </label>
               <textarea
@@ -205,12 +205,12 @@ export const DrawingItemEditModal: React.FC<DrawingItemEditModalProps> = ({
                 value={userNotes}
                 onChange={(e) => setUserNotes(e.target.value)}
                 placeholder="Contoh: 'Telah diverifikasi sesuai addendum spesifikasi teknis'..."
-                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-900 resize-none"
+                className="w-full px-3 py-2 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none text-[var(--text-primary)] resize-none"
               />
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-1">
                 Status Verifikasi Item
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -227,7 +227,7 @@ export const DrawingItemEditModal: React.FC<DrawingItemEditModalProps> = ({
                     className={`py-2 px-3 text-xs font-bold rounded-xl border transition-all text-center ${
                       verificationStatus === s.value
                         ? `${s.color} ring-2 ring-blue-500`
-                        : 'border-slate-300 text-slate-600 hover:bg-slate-50'
+                        : 'border-[var(--border-primary)] text-[var(--text-secondary)] hover:bg-[var(--bg-elevated-hover)]'
                     }`}
                   >
                     {s.label}
@@ -238,11 +238,11 @@ export const DrawingItemEditModal: React.FC<DrawingItemEditModalProps> = ({
           </div>
 
           {/* Footer Buttons */}
-          <div className="pt-4 border-t border-slate-200 flex items-center justify-end space-x-3">
+          <div className="pt-4 border-t border-[var(--border-primary)] flex items-center justify-end space-x-3">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
+              className="px-4 py-2 text-sm font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-elevated-hover)] rounded-xl transition-colors"
             >
               Batal
             </button>

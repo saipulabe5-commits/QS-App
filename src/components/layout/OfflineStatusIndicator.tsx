@@ -27,7 +27,7 @@ export const OfflineStatusIndicator: React.FC = () => {
   const getStatusBadge = () => {
     if (!status.isOnline) {
       return {
-        bg: 'bg-amber-500/10 text-amber-700 border-amber-300',
+        bg: 'bg-[var(--traffic-yellow)]/10 text-amber-700 border-amber-300',
         icon: WifiOff,
         text: 'Mode Offline (PWA Aktif)',
         count: status.pendingCount > 0 ? `${status.pendingCount} antrian` : null,
@@ -79,7 +79,7 @@ export const OfflineStatusIndicator: React.FC = () => {
         <Icon className={`w-3.5 h-3.5 ${badge.iconClass || ''}`} />
         <span className="hidden sm:inline">{badge.text}</span>
         {badge.count && (
-          <span className="px-1.5 py-0.2 text-[10px] font-bold rounded-full bg-white/80 border shadow-2xs">
+          <span className="px-1.5 py-0.2 text-[10px] font-bold rounded-full bg-[var(--bg-elevated)]/80 border shadow-2xs">
             {badge.count}
           </span>
         )}

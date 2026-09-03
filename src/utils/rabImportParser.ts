@@ -1,4 +1,4 @@
-import ExcelJS from 'exceljs';
+
 import { RAB_CATEGORIES, RABCategory } from '../types/rab';
 import {
   RABTemplateItem,
@@ -230,7 +230,7 @@ export async function parseSpreadsheetData(
     ? 'xls'
     : 'xlsx';
 
-  const workbook = new ExcelJS.Workbook();
+  const ExcelJS = (await import("exceljs")).default; const workbook = new ExcelJS.Workbook();
   let rawMatrix: any[][] = [];
   if (isCSV) {
     // Basic CSV parsing for now (or could use workbook.csv.load)
@@ -593,7 +593,7 @@ export function normalizeOCRResult(
  * Generates an Excel (.xlsx) file download from a RABTemplate
  */
 export async function exportTemplateToExcel(template: RABTemplate) {
-  const workbook = new ExcelJS.Workbook();
+  const ExcelJS = (await import("exceljs")).default; const workbook = new ExcelJS.Workbook();
   const ws = workbook.addWorksheet('Template RAB');
 
   const headerData = [

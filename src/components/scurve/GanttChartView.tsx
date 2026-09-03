@@ -28,8 +28,8 @@ type GroupByMode = 'category' | 'none';
 type ZoomLevel = 'compact' | 'normal' | 'wide';
 
 const CATEGORY_COLORS: Record<string, { bar: string; fill: string; header: string; text: string; badge: string }> = {
-  'Pekerjaan Persiapan':        { bar: 'bg-slate-500',   fill: '#64748b', header: 'bg-slate-100',   text: 'text-slate-700', badge: 'bg-slate-100 text-slate-700 border-slate-300' },
-  'Pekerjaan Tanah':            { bar: 'bg-amber-500',   fill: '#f59e0b', header: 'bg-amber-50',    text: 'text-amber-800', badge: 'bg-amber-100 text-amber-800 border-amber-300' },
+  'Pekerjaan Persiapan':        { bar: 'bg-[var(--bg-elevated-hover)]0',   fill: '#64748b', header: 'bg-[var(--bg-elevated-hover)]',   text: 'text-[var(--text-primary)]', badge: 'bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] border-[var(--border-primary)]' },
+  'Pekerjaan Tanah':            { bar: 'bg-[var(--traffic-yellow)]',   fill: '#f59e0b', header: 'bg-amber-50',    text: 'text-amber-800', badge: 'bg-amber-100 text-amber-800 border-amber-300' },
   'Pekerjaan Pondasi':          { bar: 'bg-orange-500',  fill: '#f97316', header: 'bg-orange-50',   text: 'text-orange-800', badge: 'bg-orange-100 text-orange-800 border-orange-300' },
   'Pekerjaan Struktur':         { bar: 'bg-blue-600',    fill: '#2563eb', header: 'bg-blue-50',     text: 'text-blue-800', badge: 'bg-blue-100 text-blue-800 border-blue-300' },
   'Pekerjaan Dinding':          { bar: 'bg-cyan-500',    fill: '#06b6d4', header: 'bg-cyan-50',     text: 'text-cyan-800', badge: 'bg-cyan-100 text-cyan-800 border-cyan-300' },
@@ -37,7 +37,7 @@ const CATEGORY_COLORS: Record<string, { bar: string; fill: string; header: strin
   'Pekerjaan Atap':             { bar: 'bg-indigo-500',  fill: '#6366f1', header: 'bg-indigo-50',   text: 'text-indigo-800', badge: 'bg-indigo-100 text-indigo-800 border-indigo-300' },
   'Pekerjaan Plafon':           { bar: 'bg-violet-500',  fill: '#8b5cf6', header: 'bg-violet-50',   text: 'text-violet-800', badge: 'bg-violet-100 text-violet-800 border-violet-300' },
   'Pekerjaan Pintu dan Jendela':{ bar: 'bg-purple-500',  fill: '#a855f7', header: 'bg-purple-50',   text: 'text-purple-800', badge: 'bg-purple-100 text-purple-800 border-purple-300' },
-  'Pekerjaan Instalasi Listrik':{ bar: 'bg-yellow-500',  fill: '#eab308', header: 'bg-yellow-50',   text: 'text-yellow-800', badge: 'bg-yellow-100 text-yellow-800 border-yellow-300' },
+  'Pekerjaan Instalasi Listrik':{ bar: 'bg-[var(--traffic-yellow)]',  fill: '#eab308', header: 'bg-yellow-50',   text: 'text-yellow-800', badge: 'bg-yellow-100 text-yellow-800 border-yellow-300' },
   'Pekerjaan Sanitasi':         { bar: 'bg-sky-500',     fill: '#0ea5e9', header: 'bg-sky-50',      text: 'text-sky-800', badge: 'bg-sky-100 text-sky-800 border-sky-300' },
   'Pekerjaan Pengecatan':       { bar: 'bg-pink-500',    fill: '#ec4899', header: 'bg-pink-50',     text: 'text-pink-800', badge: 'bg-pink-100 text-pink-800 border-pink-300' },
   'Pekerjaan Akhir':            { bar: 'bg-rose-500',    fill: '#f43f5e', header: 'bg-rose-50',     text: 'text-rose-800', badge: 'bg-rose-100 text-rose-800 border-rose-300' },
@@ -196,24 +196,24 @@ export const GanttChartView: React.FC = () => {
     return (
       <div className="space-y-6">
         {/* Header */}
-        <div className="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800">
+        <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 border border-slate-200 dark:border-[var(--border-primary)]">
           <div className="flex items-center space-x-2.5 mb-1.5">
             <span className="p-1.5 bg-blue-600 rounded-lg">
               <BarChart2 className="w-5 h-5" />
             </span>
             <h1 className="text-xl font-bold">Gantt Chart Jadwal Pekerjaan</h1>
           </div>
-          <p className="text-xs text-slate-300 max-w-2xl">
+          <p className="text-xs text-slate-600 dark:text-slate-300 max-w-2xl">
             Visualisasi interaktif jadwal pekerjaan berbasis data Kurva S — bar plan vs aktual per periode.
           </p>
         </div>
 
         {/* Empty State */}
-        <div className="bg-white rounded-2xl p-12 border border-slate-200 text-center space-y-4 max-w-xl mx-auto shadow-2xs">
+        <div className="bg-[var(--bg-elevated)] rounded-2xl p-12 border border-[var(--border-primary)] text-center space-y-4 max-w-xl mx-auto shadow-2xs">
           <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto">
             <Calendar className="w-8 h-8" />
           </div>
-          <h3 className="text-base font-bold text-slate-900">Jadwal Kurva S Belum Dibuat</h3>
+          <h3 className="text-base font-bold text-[var(--text-primary)]">Jadwal Kurva S Belum Dibuat</h3>
           <p className="text-xs text-slate-500 max-w-sm mx-auto">
             Buat jadwal rencana Kurva S terlebih dahulu dari item RAB untuk menampilkan Gantt Chart interaktif.
           </p>
@@ -228,7 +228,7 @@ export const GanttChartView: React.FC = () => {
             </button>
             <button
               onClick={() => setActiveTab('scurve-plan')}
-              className="px-5 py-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-semibold text-xs rounded-xl transition-colors"
+              className="px-5 py-2.5 bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] border border-[var(--border-primary)] font-semibold text-xs rounded-xl transition-colors"
             >
               Buka Rencana Kurva S
             </button>
@@ -246,7 +246,7 @@ export const GanttChartView: React.FC = () => {
   return (
     <div className="space-y-5">
       {/* ── Top Banner ── */}
-      <div className="bg-slate-900 text-white rounded-2xl p-5 border border-slate-800 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+      <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-5 border border-slate-200 dark:border-[var(--border-primary)] flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
           <div className="flex items-center space-x-2.5 mb-1">
             <span className="p-1.5 bg-blue-600 rounded-lg">
@@ -254,10 +254,10 @@ export const GanttChartView: React.FC = () => {
             </span>
             <h1 className="text-lg font-bold tracking-tight">Gantt Chart Jadwal Pekerjaan (Interaktif)</h1>
           </div>
-          <p className="text-xs text-slate-300 max-w-2xl">
+          <p className="text-xs text-slate-600 dark:text-slate-300 max-w-2xl">
             Visualisasi bar chart jadwal item pekerjaan berdasarkan rencana Kurva S. Klik item untuk melihat rincian alokasi periode.
           </p>
-          <div className="flex items-center flex-wrap gap-x-3 gap-y-1 mt-2 text-xs text-slate-400">
+          <div className="flex items-center flex-wrap gap-x-3 gap-y-1 mt-2 text-xs text-[var(--text-secondary)]">
             <span>
               Proyek: <strong className="text-white">{selectedProject?.name || '—'}</strong>
             </span>
@@ -277,7 +277,7 @@ export const GanttChartView: React.FC = () => {
           <button
             onClick={handleSync}
             disabled={isGenerating}
-            className="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition-colors flex items-center space-x-1.5"
+            className="px-3.5 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-[var(--border-primary)] transition-colors flex items-center space-x-1.5"
             title="Sinkronkan dengan item RAB terbaru"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isGenerating ? 'animate-spin' : ''}`} />
@@ -297,37 +297,37 @@ export const GanttChartView: React.FC = () => {
 
       {/* ── KPI Summary Cards ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs">
+        <div className="bg-[var(--bg-elevated)] p-3.5 rounded-xl border border-[var(--border-primary)] shadow-2xs">
           <div className="text-[11px] font-medium text-slate-500">Total Durasi Proyek</div>
-          <div className="text-lg font-bold text-slate-900 mt-0.5">
+          <div className="text-lg font-bold text-[var(--text-primary)] mt-0.5">
             {scurve.totalPeriods} <span className="text-xs font-normal text-slate-500">{scurve.periodType === 'weekly' ? 'Minggu' : 'Bulan'}</span>
           </div>
-          <div className="text-[10px] text-slate-400 mt-0.5">
+          <div className="text-[10px] text-[var(--text-secondary)] mt-0.5">
             {scurve.startDate ? `${scurve.startDate} s/d ${scurve.endDate}` : 'Time Schedule Aktif'}
           </div>
         </div>
 
-        <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs">
+        <div className="bg-[var(--bg-elevated)] p-3.5 rounded-xl border border-[var(--border-primary)] shadow-2xs">
           <div className="text-[11px] font-medium text-slate-500">Rencana Kumulatif Saat Ini</div>
           <div className="text-lg font-bold text-blue-600 mt-0.5">
             {latestActualRecord ? `${latestActualRecord.plannedCumulative.toFixed(2)}%` : '0.00%'}
           </div>
-          <div className="text-[10px] text-slate-400 mt-0.5">
+          <div className="text-[10px] text-[var(--text-secondary)] mt-0.5">
             Target per {latestActualRecord ? latestActualRecord.periodLabel : 'Periode 1'}
           </div>
         </div>
 
-        <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs">
+        <div className="bg-[var(--bg-elevated)] p-3.5 rounded-xl border border-[var(--border-primary)] shadow-2xs">
           <div className="text-[11px] font-medium text-slate-500">Aktual Kumulatif</div>
           <div className="text-lg font-bold text-emerald-600 mt-0.5">
             {latestActualRecord ? `${latestActualRecord.actualCumulative.toFixed(2)}%` : '0.00%'}
           </div>
-          <div className="text-[10px] text-slate-400 mt-0.5">
+          <div className="text-[10px] text-[var(--text-secondary)] mt-0.5">
             Realisasi Fisik Lapangan
           </div>
         </div>
 
-        <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs">
+        <div className="bg-[var(--bg-elevated)] p-3.5 rounded-xl border border-[var(--border-primary)] shadow-2xs">
           <div className="text-[11px] font-medium text-slate-500">Status Deviasi Jadwal</div>
           <div className="text-sm font-bold mt-1 flex items-center space-x-1.5">
             {latestActualRecord ? (
@@ -345,18 +345,18 @@ export const GanttChartView: React.FC = () => {
             ) : (
               <>
                 <span className="w-2.5 h-2.5 rounded-full bg-slate-400 shrink-0" />
-                <span className="text-slate-600">Belum Ada Progres</span>
+                <span className="text-[var(--text-secondary)]">Belum Ada Progres</span>
               </>
             )}
           </div>
-          <div className="text-[10px] text-slate-400 mt-0.5">
+          <div className="text-[10px] text-[var(--text-secondary)] mt-0.5">
             {latestActualRecord ? latestActualRecord.status : 'Menunggu input aktual'}
           </div>
         </div>
       </div>
 
       {/* ── Toolbar & Control Panel ── */}
-      <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs flex flex-wrap items-center justify-between gap-3">
+      <div className="bg-[var(--bg-elevated)] p-3.5 rounded-xl border border-[var(--border-primary)] shadow-2xs flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center flex-wrap gap-2">
           {/* Category Filter */}
           <div className="flex items-center space-x-1.5">
@@ -364,7 +364,7 @@ export const GanttChartView: React.FC = () => {
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-600"
+              className="px-2.5 py-1.5 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-600"
             >
               <option value="all">Semua Kategori ({scurve.scheduleItems.length})</option>
               {categories.map((cat) => (
@@ -376,13 +376,13 @@ export const GanttChartView: React.FC = () => {
           </div>
 
           {/* Group By Toggle */}
-          <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs">
+          <div className="flex items-center bg-[var(--bg-elevated-hover)] p-0.5 rounded-lg border border-[var(--border-primary)] text-xs">
             <button
               onClick={() => setGroupBy('category')}
               className={`px-2.5 py-1 rounded-md font-medium transition-colors ${
                 groupBy === 'category'
-                  ? 'bg-white text-slate-900 shadow-2xs font-bold'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-[var(--bg-elevated)] text-[var(--text-primary)] shadow-2xs font-bold'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
               Grup Kategori
@@ -391,8 +391,8 @@ export const GanttChartView: React.FC = () => {
               onClick={() => setGroupBy('none')}
               className={`px-2.5 py-1 rounded-md font-medium transition-colors ${
                 groupBy === 'none'
-                  ? 'bg-white text-slate-900 shadow-2xs font-bold'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-[var(--bg-elevated)] text-[var(--text-primary)] shadow-2xs font-bold'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
               Daftar Rata
@@ -405,10 +405,10 @@ export const GanttChartView: React.FC = () => {
             className={`px-2.5 py-1.5 text-xs rounded-lg border font-medium flex items-center space-x-1.5 transition-colors ${
               showActual
                 ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
-                : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+                : 'bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)] border-[var(--border-primary)] hover:bg-[var(--bg-elevated-hover)]'
             }`}
           >
-            <Check className={`w-3.5 h-3.5 ${showActual ? 'text-emerald-600' : 'text-slate-400'}`} />
+            <Check className={`w-3.5 h-3.5 ${showActual ? 'text-emerald-600' : 'text-[var(--text-secondary)]'}`} />
             <span>Tampilkan Progres Aktual Lapangan</span>
           </button>
         </div>
@@ -416,15 +416,15 @@ export const GanttChartView: React.FC = () => {
         {/* Zoom Controls */}
         <div className="flex items-center space-x-1.5">
           <span className="text-[11px] font-medium text-slate-500">Skala Kolom:</span>
-          <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs">
+          <div className="flex items-center bg-[var(--bg-elevated-hover)] p-0.5 rounded-lg border border-[var(--border-primary)] text-xs">
             {(['compact', 'normal', 'wide'] as ZoomLevel[]).map((lvl) => (
               <button
                 key={lvl}
                 onClick={() => setZoom(lvl)}
                 className={`px-2 py-1 rounded-md text-xs font-medium transition-colors ${
                   zoom === lvl
-                    ? 'bg-white text-blue-700 font-bold shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-[var(--bg-elevated)] text-blue-700 font-bold shadow-2xs'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
               >
                 {ZOOM_CONFIG[lvl].label}
@@ -435,13 +435,13 @@ export const GanttChartView: React.FC = () => {
       </div>
 
       {/* ── Main Gantt Chart Table / Canvas ── */}
-      <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs flex flex-col">
+      <div className="bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] overflow-hidden shadow-2xs flex flex-col">
         <div ref={scrollRef} className="overflow-x-auto custom-scrollbar">
           <div className="min-w-full inline-block align-middle">
             {/* Header Row */}
-            <div className="flex border-b border-slate-200 bg-slate-100 text-slate-700 font-semibold text-[11px] uppercase tracking-wider sticky top-0 z-20">
+            <div className="flex border-b border-[var(--border-primary)] bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] font-semibold text-[11px] uppercase tracking-wider sticky top-0 z-20">
               {/* Left Fixed Header Columns */}
-              <div className="flex items-center shrink-0 bg-slate-100 border-r border-slate-300 z-30 sticky left-0 shadow-xs">
+              <div className="flex items-center shrink-0 bg-[var(--bg-elevated-hover)] border-r border-[var(--border-primary)] z-30 sticky left-0 shadow-xs">
                 <div className="w-10 px-2 py-2.5 text-center font-bold">No</div>
                 <div className="w-20 px-2.5 py-2.5">Kode</div>
                 <div className="w-64 px-3 py-2.5">Uraian Pekerjaan</div>
@@ -459,7 +459,7 @@ export const GanttChartView: React.FC = () => {
                     <div
                       key={p}
                       style={{ width: colWidth }}
-                      className={`text-center py-1.5 px-1 border-r border-slate-200 flex flex-col justify-between shrink-0 ${
+                      className={`text-center py-1.5 px-1 border-r border-[var(--border-primary)] flex flex-col justify-between shrink-0 ${
                         isCurrent ? 'bg-blue-100/70 border-b-2 border-b-blue-600 font-bold text-blue-900' : ''
                       }`}
                     >
@@ -488,27 +488,28 @@ export const GanttChartView: React.FC = () => {
                     {group.category && (
                       <div
                         onClick={() => toggleCategory(group.category!)}
-                        className={`flex items-center cursor-pointer select-none hover:bg-slate-200/70 transition-colors ${catColor.header} border-y border-slate-200`}
+                        className={`flex items-center cursor-pointer select-none hover:bg-slate-200 dark:bg-slate-700/70 transition-colors ${catColor.header} border-y border-[var(--border-primary)]`}
                       >
                         {/* Left Group Header */}
                         <div
-                          className={`flex items-center shrink-0 px-3 py-2 border-r border-slate-300 sticky left-0 z-10 ${catColor.header}`}
+                          className={`flex items-center shrink-0 px-3 py-2 border-r border-[var(--border-primary)] sticky left-0 z-10 ${catColor.header}`}
                           style={{ width: showActual ? 400 : 336 }}
                         >
-                          <button
-                            type="button"
-                            className="mr-2 text-slate-600 hover:text-slate-900 focus:outline-none"
-                          >
+                          <div
+                      aria-hidden="true"
+                      className="mr-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] focus:outline-none"
+                          
+                    >
                             {isCollapsed ? (
                               <ChevronRight className="w-4 h-4" />
                             ) : (
                               <ChevronDown className="w-4 h-4" />
                             )}
-                          </button>
+                          </div>
                           <span className={`font-bold text-xs ${catColor.text} truncate`}>
                             {group.category} ({group.items.length} item)
                           </span>
-                          <span className="ml-auto font-mono text-[11px] font-bold text-slate-700">
+                          <span className="ml-auto font-mono text-[11px] font-bold text-[var(--text-primary)]">
                             {formatNumber(groupWeight, 2)}%
                           </span>
                         </div>
@@ -556,24 +557,24 @@ export const GanttChartView: React.FC = () => {
                             onMouseLeave={() => setHoveredItemId(null)}
                             onClick={() => setSelectedItemId(isSelected ? null : item.id)}
                             className={`flex items-center hover:bg-blue-50/50 transition-colors cursor-pointer ${
-                              isSelected ? 'bg-blue-50/80 ring-1 ring-inset ring-blue-500' : isHovered ? 'bg-slate-50' : ''
+                              isSelected ? 'bg-blue-50/80 ring-1 ring-inset ring-blue-500' : isHovered ? 'bg-[var(--bg-elevated-hover)]' : ''
                             }`}
                           >
                             {/* Left Fixed Columns */}
-                            <div className="flex items-center shrink-0 bg-white border-r border-slate-200 sticky left-0 z-10 shadow-xs">
-                              <div className="w-10 px-2 py-2 text-center text-slate-400 font-mono text-[11px]">
+                            <div className="flex items-center shrink-0 bg-[var(--bg-elevated)] border-r border-[var(--border-primary)] sticky left-0 z-10 shadow-xs">
+                              <div className="w-10 px-2 py-2 text-center text-[var(--text-secondary)] font-mono text-[11px]">
                                 {itemIdx + 1}
                               </div>
-                              <div className="w-20 px-2.5 py-2 font-mono text-[11px] text-slate-600 font-semibold truncate">
+                              <div className="w-20 px-2.5 py-2 font-mono text-[11px] text-[var(--text-secondary)] font-semibold truncate">
                                 {item.workCode || '-'}
                               </div>
-                              <div className="w-64 px-3 py-2 text-slate-800 font-medium truncate" title={item.description}>
+                              <div className="w-64 px-3 py-2 text-[var(--text-primary)] font-medium truncate" title={item.description}>
                                 {item.description}
                               </div>
-                              <div className="w-16 px-2 py-2 text-right font-mono text-slate-700 font-bold text-[11px]">
+                              <div className="w-16 px-2 py-2 text-right font-mono text-[var(--text-primary)] font-bold text-[11px]">
                                 {formatNumber(item.weight, 2)}%
                               </div>
-                              <div className="w-14 px-2 py-2 text-center font-mono text-slate-600 text-[11px]">
+                              <div className="w-14 px-2 py-2 text-center font-mono text-[var(--text-secondary)] text-[11px]">
                                 {item.duration} {scurve.periodType === 'weekly' ? 'M' : 'B'}
                               </div>
                               {showActual && (
@@ -584,7 +585,7 @@ export const GanttChartView: React.FC = () => {
                                         ? 'bg-emerald-100 text-emerald-800'
                                         : actualPercent > 0
                                         ? 'bg-blue-100 text-blue-800'
-                                        : 'bg-slate-100 text-slate-500'
+                                        : 'bg-[var(--bg-elevated-hover)] text-slate-500'
                                     }`}
                                   >
                                     {actualPercent}%
@@ -653,7 +654,7 @@ export const GanttChartView: React.FC = () => {
         </div>
 
         {/* Chart Footer Info */}
-        <div className="p-3 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
+        <div className="p-3 bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)] flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
           <div className="flex items-center flex-wrap gap-4">
             <div className="flex items-center space-x-1.5">
               <span className="w-3 h-3 rounded-sm bg-blue-600 inline-block" />
@@ -661,7 +662,7 @@ export const GanttChartView: React.FC = () => {
             </div>
             {showActual && (
               <div className="flex items-center space-x-1.5">
-                <span className="w-3 h-3 rounded-sm bg-slate-800/60 inline-block" />
+                <span className="w-3 h-3 rounded-sm bg-[var(--bg-elevated-hover)]/60 inline-block" />
                 <span>Overlay Progres Aktual</span>
               </div>
             )}
@@ -671,7 +672,7 @@ export const GanttChartView: React.FC = () => {
             </div>
           </div>
 
-          <div className="text-[11px] text-slate-400">
+          <div className="text-[11px] text-[var(--text-secondary)]">
             Total {scheduleItems.length} pos pekerjaan • Klik bar pekerjaan untuk rincian bobot per periode
           </div>
         </div>
@@ -679,14 +680,14 @@ export const GanttChartView: React.FC = () => {
 
       {/* ── Selected Item Detail Drawer / Panel ── */}
       {selectedItem && (
-        <div className="bg-white rounded-xl border border-blue-200 p-4 shadow-sm space-y-3 transition-all">
+        <div className="bg-[var(--bg-elevated)] rounded-xl border border-blue-200 p-4 shadow-sm space-y-3 transition-all">
           <div className="flex items-start justify-between">
             <div className="flex items-center space-x-2">
               <span className="p-1.5 bg-blue-50 text-blue-700 rounded-lg">
                 <Info className="w-4 h-4" />
               </span>
               <div>
-                <h4 className="text-xs font-bold text-slate-900 flex items-center space-x-2">
+                <h4 className="text-xs font-bold text-[var(--text-primary)] flex items-center space-x-2">
                   <span>{selectedItem.workCode} - {selectedItem.description}</span>
                   <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${(CATEGORY_COLORS[selectedItem.category] || DEFAULT_COLOR).badge}`}>
                     {selectedItem.category}
@@ -699,20 +700,20 @@ export const GanttChartView: React.FC = () => {
             </div>
             <button
               onClick={() => setSelectedItemId(null)}
-              className="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100"
+              className="text-[var(--text-secondary)] hover:text-[var(--text-secondary)] p-1 rounded-lg hover:bg-[var(--bg-elevated-hover)]"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs bg-slate-50 p-3 rounded-xl border border-slate-200">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs bg-[var(--bg-elevated-hover)] p-3 rounded-xl border border-[var(--border-primary)]">
             <div>
               <span className="text-slate-500 text-[11px]">Bobot terhadap Proyek:</span>
-              <div className="font-bold text-slate-900 text-sm mt-0.5">{selectedItem.weight.toFixed(2)}%</div>
+              <div className="font-bold text-[var(--text-primary)] text-sm mt-0.5">{selectedItem.weight.toFixed(2)}%</div>
             </div>
             <div>
               <span className="text-slate-500 text-[11px]">Estimasi Biaya Rencana:</span>
-              <div className="font-bold text-slate-900 text-sm mt-0.5">{formatRupiah(selectedItem.plannedCost || 0)}</div>
+              <div className="font-bold text-[var(--text-primary)] text-sm mt-0.5">{formatRupiah(selectedItem.plannedCost || 0)}</div>
             </div>
             <div>
               <span className="text-slate-500 text-[11px]">Pola Distribusi Bobot:</span>
@@ -726,8 +727,8 @@ export const GanttChartView: React.FC = () => {
 
           {/* Planned Period Value Distribution Table */}
           <div className="overflow-x-auto custom-scrollbar">
-            <div className="text-[11px] font-bold text-slate-700 mb-1.5">Distribusi Bobot per Periode:</div>
-            <div className="flex border border-slate-200 rounded-lg overflow-hidden text-xs text-center divide-x divide-slate-200">
+            <div className="text-[11px] font-bold text-[var(--text-primary)] mb-1.5">Distribusi Bobot per Periode:</div>
+            <div className="flex border border-[var(--border-primary)] rounded-lg overflow-hidden text-xs text-center divide-x divide-slate-200">
               {Array.from({ length: totalPeriods }, (_, i) => i + 1).map((p) => {
                 const inRange = p >= selectedItem.startPeriod && p <= selectedItem.endPeriod;
                 const val = selectedItem.plannedPeriodValues?.[p - 1] || 0;
@@ -735,7 +736,7 @@ export const GanttChartView: React.FC = () => {
                   <div
                     key={p}
                     className={`flex-1 py-1.5 px-2 min-w-[50px] ${
-                      inRange ? 'bg-blue-50 font-bold text-blue-900' : 'bg-slate-50 text-slate-400'
+                      inRange ? 'bg-blue-50 font-bold text-blue-900' : 'bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)]'
                     }`}
                   >
                     <div className="text-[10px] font-semibold">{getPeriodShortLabel(p)}</div>

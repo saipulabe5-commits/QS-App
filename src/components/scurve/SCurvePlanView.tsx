@@ -96,7 +96,7 @@ export const SCurvePlanView: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 border border-slate-200 dark:border-[var(--border-primary)] shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <div className="flex items-center space-x-2.5 mb-1.5">
             <span className="p-1.5 bg-blue-600 rounded-lg text-white">
@@ -104,10 +104,10 @@ export const SCurvePlanView: React.FC = () => {
             </span>
             <h1 className="text-xl font-bold tracking-tight">Rencana Jadwal & Kurva S (Time Schedule)</h1>
           </div>
-          <p className="text-xs text-slate-300 max-w-2xl">
+          <p className="text-xs text-slate-600 dark:text-slate-300 max-w-2xl">
             Distribusi bobot pekerjaan RAB secara proporsional sepanjang durasi proyek dengan kurva distribusi normal (Bell Curve) atau linier untuk membentuk target Kurva S standar konstruksi.
           </p>
-          <div className="flex items-center space-x-3 mt-3 text-xs text-slate-400">
+          <div className="flex items-center space-x-3 mt-3 text-xs text-[var(--text-secondary)]">
             <span>
               Proyek: <strong className="text-white">{selectedProject?.name || 'Belum Dipilih'}</strong>
             </span>
@@ -126,7 +126,7 @@ export const SCurvePlanView: React.FC = () => {
               <button
                 onClick={handleSyncFromRAB}
                 disabled={isRegenerating}
-                className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition-colors flex items-center space-x-1.5"
+                className="px-4 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-[var(--border-primary)] transition-colors flex items-center space-x-1.5"
               >
                 <RefreshCw className={`w-4 h-4 ${isRegenerating ? 'animate-spin' : ''}`} />
                 <span>Sinkronkan Ulang dari RAB</span>
@@ -134,7 +134,7 @@ export const SCurvePlanView: React.FC = () => {
 
               <button
                 onClick={() => setActiveTab('scurve-gantt')}
-                className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition-colors flex items-center space-x-1.5"
+                className="px-4 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-[var(--border-primary)] transition-colors flex items-center space-x-1.5"
               >
                 <BarChart2 className="w-4 h-4 text-blue-400" />
                 <span>Gantt Chart</span>
@@ -153,20 +153,20 @@ export const SCurvePlanView: React.FC = () => {
       </div>
 
       {!scurve ? (
-        <div className="bg-white rounded-2xl p-12 border border-slate-200 text-center space-y-5 max-w-2xl mx-auto shadow-xs">
+        <div className="bg-[var(--bg-elevated)] rounded-2xl p-12 border border-[var(--border-primary)] text-center space-y-5 max-w-2xl mx-auto shadow-xs">
           <div className="w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto">
             <Calendar className="w-8 h-8" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-slate-900">Jadwal Rencana Kurva S Belum Dibuat</h3>
+            <h3 className="text-lg font-bold text-[var(--text-primary)]">Jadwal Rencana Kurva S Belum Dibuat</h3>
             <p className="text-xs text-slate-500 mt-1 max-w-md mx-auto">
               Sistem akan otomatis menghitung bobot (%) setiap item pekerjaan dari RAB dan memetakan jadwal pekerjaan berdasarkan kategori.
             </p>
           </div>
 
-          <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 max-w-md mx-auto text-left space-y-3">
+          <div className="p-4 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] max-w-md mx-auto text-left space-y-3">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Pilihan Periode Jadwal:</label>
+              <label className="block text-xs font-bold text-[var(--text-primary)] mb-1">Pilihan Periode Jadwal:</label>
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
@@ -174,7 +174,7 @@ export const SCurvePlanView: React.FC = () => {
                   className={`py-2 px-3 text-xs font-bold rounded-lg border transition-all text-center ${
                     periodType === 'weekly'
                       ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
-                      : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'
+                      : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border-[var(--border-primary)] hover:bg-[var(--bg-elevated-hover)]'
                   }`}
                 >
                   Mingguan (Weekly)
@@ -185,7 +185,7 @@ export const SCurvePlanView: React.FC = () => {
                   className={`py-2 px-3 text-xs font-bold rounded-lg border transition-all text-center ${
                     periodType === 'monthly'
                       ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
-                      : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'
+                      : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border-[var(--border-primary)] hover:bg-[var(--bg-elevated-hover)]'
                   }`}
                 >
                   Bulanan (Monthly)
@@ -194,13 +194,13 @@ export const SCurvePlanView: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-[var(--text-primary)] mb-1">
                 Total Durasi Proyek ({periodType === 'weekly' ? 'Minggu' : 'Bulan'}):
               </label>
               <select
                 value={totalPeriods}
                 onChange={(e) => setTotalPeriods(Number(e.target.value))}
-                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 text-slate-900"
+                className="w-full px-3 py-2 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg text-xs focus:ring-2 focus:ring-blue-500 text-[var(--text-primary)]"
               >
                 {[4, 6, 8, 10, 12, 14, 16, 20, 24, 32, 48, 52].map((num) => (
                   <option key={num} value={num}>
@@ -224,25 +224,25 @@ export const SCurvePlanView: React.FC = () => {
         <div className="space-y-6">
           {/* Summary Stats Row */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
+            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
               <span className="text-xs text-slate-500 font-medium">Total Anggaran (Direct Cost)</span>
               <div className="text-base font-extrabold text-blue-900 mt-1">
                 {formatRupiah(scurve.totalBudget)}
               </div>
             </div>
-            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
+            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
               <span className="text-xs text-slate-500 font-medium">Durasi Pelaksanaan</span>
-              <div className="text-base font-extrabold text-slate-900 mt-1">
+              <div className="text-base font-extrabold text-[var(--text-primary)] mt-1">
                 {scurve.totalPeriods} {scurve.periodType === 'weekly' ? 'Minggu' : 'Bulan'}
               </div>
             </div>
-            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
+            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
               <span className="text-xs text-slate-500 font-medium">Total Item Terjadwal</span>
-              <div className="text-base font-extrabold text-slate-900 mt-1">
+              <div className="text-base font-extrabold text-[var(--text-primary)] mt-1">
                 {scurve.scheduleItems.length} Pekerjaan
               </div>
             </div>
-            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
+            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
               <span className="text-xs text-slate-500 font-medium">Target Akhir Rencana</span>
               <div className="text-base font-extrabold text-emerald-700 mt-1">
                 100.00 %
@@ -251,10 +251,10 @@ export const SCurvePlanView: React.FC = () => {
           </div>
 
           {/* S-Curve Chart (Visual S-Curve Target) */}
-          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-4">
+          <div className="bg-[var(--bg-elevated)] rounded-2xl p-6 border border-[var(--border-primary)] shadow-xs space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
               <div>
-                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                <h3 className="text-base font-bold text-[var(--text-primary)] flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-blue-600" />
                   Grafik Rencana Kurva S (Target Baseline)
                 </h3>
@@ -266,11 +266,11 @@ export const SCurvePlanView: React.FC = () => {
               <div className="flex items-center space-x-4 text-xs">
                 <div className="flex items-center space-x-1.5">
                   <span className="w-3 h-3 bg-blue-600 rounded-xs inline-block" />
-                  <span className="text-slate-700 font-semibold">Rencana Kumulatif (%)</span>
+                  <span className="text-[var(--text-primary)] font-semibold">Rencana Kumulatif (%)</span>
                 </div>
                 <div className="flex items-center space-x-1.5">
                   <span className="w-3 h-3 bg-blue-200 rounded-xs inline-block" />
-                  <span className="text-slate-700 font-semibold">Rencana Periode (%)</span>
+                  <span className="text-[var(--text-primary)] font-semibold">Rencana Periode (%)</span>
                 </div>
               </div>
             </div>
@@ -307,10 +307,10 @@ export const SCurvePlanView: React.FC = () => {
           </div>
 
           {/* Schedule Breakdown Table */}
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-            <div className="p-4 border-b border-slate-200 bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] shadow-xs overflow-hidden">
+            <div className="p-4 border-b border-[var(--border-primary)] bg-[var(--bg-elevated-hover)] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <h3 className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-2">
                   <Sliders className="w-4 h-4 text-blue-600" />
                   Matriks Distribusi Bobot & Periode Pekerjaan
                 </h3>
@@ -325,7 +325,7 @@ export const SCurvePlanView: React.FC = () => {
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-blue-500 text-slate-800"
+                  className="px-2.5 py-1.5 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg text-xs font-semibold focus:ring-2 focus:ring-blue-500 text-[var(--text-primary)]"
                 >
                   <option value="all">Semua Kategori ({scurve.scheduleItems.length})</option>
                   {categories.map((c) => (
@@ -339,7 +339,7 @@ export const SCurvePlanView: React.FC = () => {
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-100 text-slate-700 font-bold border-b border-slate-200 uppercase tracking-wider">
+                <thead className="bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] font-bold border-b border-[var(--border-primary)] uppercase tracking-wider">
                   <tr>
                     <th className="p-3 w-12 text-center">No</th>
                     <th className="p-3">Uraian Pekerjaan</th>
@@ -352,7 +352,7 @@ export const SCurvePlanView: React.FC = () => {
                     <th className="p-3 text-center">Pola Distribusi</th>
                     {/* Period Columns */}
                     {scurve.periodRecords.map((rec) => (
-                      <th key={rec.period} className="p-2 text-center text-[10px] w-12 bg-slate-50 border-l border-slate-200">
+                      <th key={rec.period} className="p-2 text-center text-[10px] w-12 bg-[var(--bg-elevated-hover)] border-l border-[var(--border-primary)]">
                         {scurve.periodType === 'weekly' ? 'M' : 'B'}-{rec.period}
                       </th>
                     ))}
@@ -360,16 +360,16 @@ export const SCurvePlanView: React.FC = () => {
                 </thead>
                 <tbody className="divide-y divide-slate-200">
                   {filteredScheduleItems.map((item, idx) => (
-                    <tr key={item.id} className="hover:bg-slate-50/80 transition-colors">
-                      <td className="p-3 text-center text-slate-400">{idx + 1}</td>
-                      <td className="p-3 font-semibold text-slate-900">
+                    <tr key={item.id} className="hover:bg-[var(--bg-elevated-hover)] transition-colors">
+                      <td className="p-3 text-center text-[var(--text-secondary)]">{idx + 1}</td>
+                      <td className="p-3 font-semibold text-[var(--text-primary)]">
                         <div className="flex items-center space-x-1.5">
-                          <span className="text-[10px] text-slate-400 font-mono">{item.workCode}</span>
+                          <span className="text-[10px] text-[var(--text-secondary)] font-mono">{item.workCode}</span>
                           <span>{item.description}</span>
                         </div>
                       </td>
-                      <td className="p-3 text-slate-600">{item.category}</td>
-                      <td className="p-3 text-right font-mono text-slate-700">
+                      <td className="p-3 text-[var(--text-secondary)]">{item.category}</td>
+                      <td className="p-3 text-right font-mono text-[var(--text-primary)]">
                         {formatRupiah(item.plannedCost)}
                       </td>
                       <td className="p-3 text-right font-mono font-bold text-blue-900">
@@ -386,7 +386,7 @@ export const SCurvePlanView: React.FC = () => {
                               endPeriod: newEnd,
                             });
                           }}
-                          className="px-1.5 py-1 bg-white border border-slate-300 rounded text-[11px] font-bold text-slate-800"
+                          className="px-1.5 py-1 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded text-[11px] font-bold text-[var(--text-primary)]"
                         >
                           {Array.from({ length: scurve.totalPeriods }, (_, i) => i + 1).map((p) => (
                             <option key={p} value={p}>
@@ -406,7 +406,7 @@ export const SCurvePlanView: React.FC = () => {
                               endPeriod: newEnd,
                             });
                           }}
-                          className="px-1.5 py-1 bg-white border border-slate-300 rounded text-[11px] font-bold text-slate-800"
+                          className="px-1.5 py-1 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded text-[11px] font-bold text-[var(--text-primary)]"
                         >
                           {Array.from({ length: scurve.totalPeriods }, (_, i) => i + 1).map((p) => (
                             <option key={p} value={p}>
@@ -415,7 +415,7 @@ export const SCurvePlanView: React.FC = () => {
                           ))}
                         </select>
                       </td>
-                      <td className="p-3 text-center font-bold text-slate-700">
+                      <td className="p-3 text-center font-bold text-[var(--text-primary)]">
                         {item.endPeriod - item.startPeriod + 1} {scurve.periodType === 'weekly' ? 'mg' : 'bln'}
                       </td>
                       <td className="p-2 text-center">
@@ -428,7 +428,7 @@ export const SCurvePlanView: React.FC = () => {
                               e.target.value as DistributionPattern
                             )
                           }
-                          className="px-2 py-1 bg-white border border-slate-300 rounded-md text-[11px] font-semibold text-slate-800"
+                          className="px-2 py-1 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-md text-[11px] font-semibold text-[var(--text-primary)]"
                         >
                           <option value="bell-curve">Bell Curve (Normal)</option>
                           <option value="linear">Linier (Rata)</option>
@@ -446,7 +446,7 @@ export const SCurvePlanView: React.FC = () => {
                             className={`p-2 text-center font-mono text-[10px] border-l border-slate-100 ${
                               isWorking && val > 0
                                 ? 'bg-blue-50/70 text-blue-900 font-bold'
-                                : 'text-slate-300'
+                                : 'text-slate-600 dark:text-slate-300'
                             }`}
                           >
                             {val > 0 ? val.toFixed(2) : '-'}
@@ -457,7 +457,7 @@ export const SCurvePlanView: React.FC = () => {
                   ))}
                 </tbody>
                 {/* Total Period Row */}
-                <tfoot className="bg-slate-100 font-bold text-slate-900 border-t-2 border-slate-300">
+                <tfoot className="bg-[var(--bg-elevated-hover)] font-bold text-[var(--text-primary)] border-t-2 border-[var(--border-primary)]">
                   <tr>
                     <td colSpan={4} className="p-3 text-right">
                       Jumlah Bobot Rencana Periode (%)
@@ -467,7 +467,7 @@ export const SCurvePlanView: React.FC = () => {
                     </td>
                     <td colSpan={4}></td>
                     {scurve.periodRecords.map((rec) => (
-                      <td key={rec.period} className="p-2 text-center font-mono text-[10px] border-l border-slate-300 text-blue-900">
+                      <td key={rec.period} className="p-2 text-center font-mono text-[10px] border-l border-[var(--border-primary)] text-blue-900">
                         {rec.plannedProgress.toFixed(2)}
                       </td>
                     ))}

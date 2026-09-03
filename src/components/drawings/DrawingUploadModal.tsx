@@ -57,7 +57,7 @@ export const DrawingUploadModal: React.FC<DrawingUploadModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handleFile = (file: File) => {
+  const handleFile = async (file: File) => {
     // Validate format (JPG, JPEG, PNG, PDF, WEBP)
     const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
     const maxSizeBytes = 15 * 1024 * 1024; // 15MB
@@ -154,24 +154,24 @@ export const DrawingUploadModal: React.FC<DrawingUploadModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-xs overflow-y-auto">
-      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-2xl overflow-hidden my-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--bg-elevated)]/70 backdrop-blur-xs overflow-y-auto">
+      <div className="bg-[var(--bg-elevated)] rounded-2xl shadow-2xl border border-[var(--border-primary)] w-full max-w-2xl overflow-hidden my-6">
         {/* Header */}
-        <div className="p-5 bg-slate-900 text-white flex items-center justify-between">
+        <div className="p-5 bg-[var(--bg-elevated)] text-[var(--text-primary)] flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white">
               <UploadCloud className="w-5 h-5" />
             </div>
             <div>
               <h3 className="text-base font-bold text-white">Unggah Dokumen Gambar Konstruksi</h3>
-              <p className="text-xs text-slate-300">
+              <p className="text-xs text-slate-600 dark:text-slate-300">
                 Proyek: <span className="text-blue-400 font-semibold">{selectedProject?.name || 'Tidak Ada'}</span>
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
+            className="text-[var(--text-secondary)] hover:text-white p-1 rounded-lg hover:bg-[var(--bg-elevated-hover)] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -189,24 +189,19 @@ export const DrawingUploadModal: React.FC<DrawingUploadModalProps> = ({
               className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all ${
                 isDragging
                   ? 'border-blue-500 bg-blue-50/60 scale-[0.99]'
-                  : 'border-slate-300 hover:border-blue-400 hover:bg-slate-50'
+                  : 'border-[var(--border-primary)] hover:border-blue-400 hover:bg-[var(--bg-elevated-hover)]'
               }`}
             >
               <input
                 ref={fileInputRef}
-                type="file"
-                accept="image/jpeg,image/png,image/webp,application/pdf"
-                className="hidden"
-                onChange={(e) => {
-                  if (e.target.files && e.target.files.length > 0) {
-                    handleFile(e.target.files[0]);
-                  }
+                type="file" multiple accept="image/jpeg,image/png,image/webp,application/pdf" className="hidden" onChange={(e) => {
+                  if (e.target.files && e.target.files.length > 0) { Array.from(e.target.files).forEach((f: any) => handleFile(f)); }
                 }}
               />
               <div className="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
                 <UploadCloud className="w-7 h-7" />
               </div>
-              <h4 className="text-sm font-bold text-slate-800">
+              <h4 className="text-sm font-bold text-[var(--text-primary)]">
                 Tarik & Lepas File Gambar di Sini, atau <span className="text-blue-600 underline">Pilih Berkas</span>
               </h4>
               <p className="text-xs text-slate-500 mt-1.5 max-w-md mx-auto">
@@ -214,9 +209,9 @@ export const DrawingUploadModal: React.FC<DrawingUploadModalProps> = ({
               </p>
             </div>
           ) : (
-            <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between">
+            <div className="p-4 bg-[var(--bg-elevated-hover)] rounded-2xl border border-[var(--border-primary)] flex items-center justify-between">
               <div className="flex items-center space-x-3.5 overflow-hidden">
-                <div className="w-16 h-16 rounded-xl border border-slate-300 overflow-hidden bg-white flex-shrink-0 flex items-center justify-center">
+                <div className="w-16 h-16 rounded-xl border border-[var(--border-primary)] overflow-hidden bg-[var(--bg-elevated)] flex-shrink-0 flex items-center justify-center">
                   {fileData?.type.includes('pdf') ? (
                     <FileText className="w-8 h-8 text-rose-500" />
                   ) : (
@@ -225,7 +220,7 @@ export const DrawingUploadModal: React.FC<DrawingUploadModalProps> = ({
                 </div>
                 <div className="overflow-hidden">
                   <div className="flex items-center space-x-2">
-                    <span className="text-xs font-bold text-slate-900 truncate max-w-xs">{fileData?.name}</span>
+                    <span className="text-xs font-bold text-[var(--text-primary)] truncate max-w-xs">{fileData?.name}</span>
                     <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-sm font-semibold flex items-center gap-0.5">
                       <Check className="w-3 h-3" /> Siap
                     </span>
@@ -252,11 +247,11 @@ export const DrawingUploadModal: React.FC<DrawingUploadModalProps> = ({
           {/* Upload Progress */}
           {isUploading && (
             <div className="space-y-1.5">
-              <div className="flex justify-between text-xs text-slate-600">
+              <div className="flex justify-between text-xs text-[var(--text-secondary)]">
                 <span>Memproses dan mengompres dokumen gambar...</span>
                 <span>{uploadProgress}%</span>
               </div>
-              <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+              <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-blue-600 rounded-full transition-all duration-300"
                   style={{ width: `${uploadProgress}%` }}
@@ -268,7 +263,7 @@ export const DrawingUploadModal: React.FC<DrawingUploadModalProps> = ({
           {/* Form Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="md:col-span-2">
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-1.5">
                 Judul Dokumen / Nama Gambar *
               </label>
               <input
@@ -277,18 +272,18 @@ export const DrawingUploadModal: React.FC<DrawingUploadModalProps> = ({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Contoh: Denah Lantai 1 & Grid Kolom K1-K2"
-                className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900"
+                className="w-full px-3.5 py-2.5 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-[var(--text-primary)]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-1.5">
                 Kategori Dokumen *
               </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as DrawingCategory)}
-                className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900"
+                className="w-full px-3.5 py-2.5 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-[var(--text-primary)]"
               >
                 {CATEGORIES.map((cat) => (
                   <option key={cat.value} value={cat.value}>
@@ -299,7 +294,7 @@ export const DrawingUploadModal: React.FC<DrawingUploadModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-1.5">
                 Skala Gambar (Opsional)
               </label>
               <input
@@ -307,12 +302,12 @@ export const DrawingUploadModal: React.FC<DrawingUploadModalProps> = ({
                 value={scale}
                 onChange={(e) => setScale(e.target.value)}
                 placeholder="1:100 / 1:50 / 1:20"
-                className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900"
+                className="w-full px-3.5 py-2.5 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-[var(--text-primary)]"
               />
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-1.5">
                 Catatan / Keterangan Tambahan
               </label>
               <textarea
@@ -320,18 +315,18 @@ export const DrawingUploadModal: React.FC<DrawingUploadModalProps> = ({
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Tambahkan catatan khusus untuk AI (contoh: 'Tinggi plafon 3.5m, dinding bata ringan tebal 10cm')..."
-                className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 resize-none"
+                className="w-full px-3.5 py-2 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-[var(--text-primary)] resize-none"
               />
             </div>
           </div>
 
           {/* Footer Buttons */}
-          <div className="pt-4 border-t border-slate-200 flex items-center justify-end space-x-3">
+          <div className="pt-4 border-t border-[var(--border-primary)] flex items-center justify-end space-x-3">
             <button
               type="button"
               onClick={onClose}
               disabled={isUploading}
-              className="px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
+              className="px-4 py-2.5 text-sm font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-elevated-hover)] rounded-xl transition-colors"
             >
               Batal
             </button>

@@ -295,22 +295,22 @@ export const CommandBar: React.FC<CommandBarProps> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
-          className="fixed inset-0 bg-slate-950/60 backdrop-blur-md"
+          className="fixed inset-0 bg-[var(--bg-elevated)]/60 backdrop-blur-md"
           onClick={onClose}
         />
 
         {/* Command Palette Surface */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.96, y: -10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.96, y: -10 }}
-          transition={{ type: 'spring', stiffness: 450, damping: 30 }}
-          className="relative w-full max-w-2xl bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-200/80 overflow-hidden flex flex-col max-h-[75vh]"
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.98 }}
+          transition={{ type: 'spring', stiffness: 500, damping: 40 }}
+          className="relative w-full max-w-2xl bg-[var(--bg-elevated)]/70 backdrop-blur-3xl rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-white/50 overflow-hidden flex flex-col max-h-[75vh]"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header & Search Input */}
-          <div className="flex items-center px-4 py-3.5 border-b border-slate-200/60 bg-slate-50/50">
-            <Search className="w-5 h-5 text-slate-400 mr-3 flex-shrink-0" />
+          <div className="flex items-center px-5 py-4 border-b border-[var(--border-primary)]/50 bg-transparent">
+            <Search className="w-6 h-6 text-[var(--text-secondary)] mr-3 flex-shrink-0" />
             <input
               ref={inputRef}
               type="text"
@@ -320,13 +320,13 @@ export const CommandBar: React.FC<CommandBarProps> = ({
                 setSelectedIndex(0);
               }}
               onKeyDown={handleKeyDown}
-              placeholder="Ketik perintah, nama modul, atau nama proyek... (ESC untuk keluar)"
-              className="w-full bg-transparent border-none outline-none text-slate-900 placeholder-slate-400 text-sm sm:text-base font-medium"
+              placeholder="Cari fitur, buka modul, atau buat RAB..."
+              className="w-full bg-transparent border-none outline-none text-[var(--text-primary)] placeholder-slate-500 dark:placeholder-slate-400 text-xl font-medium"
             />
             {query && (
               <button
                 onClick={() => setQuery('')}
-                className="text-xs text-slate-400 hover:text-slate-600 px-2 py-1 rounded-md bg-slate-200/60"
+                className="text-xs text-[var(--text-secondary)] hover:text-[var(--text-secondary)] px-2 py-1 rounded-md bg-slate-200 dark:bg-slate-700/60"
               >
                 Clear
               </button>
@@ -336,7 +336,7 @@ export const CommandBar: React.FC<CommandBarProps> = ({
           {/* Results List */}
           <div className="overflow-y-auto p-2 custom-scrollbar flex-1 space-y-1">
             {filteredCommands.length === 0 ? (
-              <div className="p-8 text-center text-slate-400 text-sm">
+              <div className="p-8 text-center text-[var(--text-secondary)] text-sm">
                 Tidak ada perintah yang sesuai dengan "{query}"
               </div>
             ) : (
@@ -350,14 +350,14 @@ export const CommandBar: React.FC<CommandBarProps> = ({
                     onMouseEnter={() => setSelectedIndex(idx)}
                     className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left text-xs sm:text-sm transition-all ${
                       isSelected
-                        ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
-                        : 'text-slate-700 hover:bg-slate-100/70'
+                        ? 'bg-mac-blue text-white shadow-md shadow-blue-500/20'
+                        : 'text-[var(--text-primary)] hover:bg-[var(--bg-elevated-hover)]/70'
                     }`}
                   >
                     <div className="flex items-center space-x-3 min-w-0 pr-2">
                       <div
                         className={`p-1.5 rounded-lg flex items-center justify-center ${
-                          isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
+                          isSelected ? 'bg-[var(--bg-elevated)]/20 text-white' : 'bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)]'
                         }`}
                       >
                         <Icon className="w-4 h-4" />
@@ -366,7 +366,7 @@ export const CommandBar: React.FC<CommandBarProps> = ({
                         <span className="font-semibold block truncate">{cmd.title}</span>
                         <span
                           className={`text-[11px] block truncate ${
-                            isSelected ? 'text-blue-100' : 'text-slate-400'
+                            isSelected ? 'text-blue-100' : 'text-[var(--text-secondary)]'
                           }`}
                         >
                           {cmd.category}
@@ -379,7 +379,7 @@ export const CommandBar: React.FC<CommandBarProps> = ({
                         <span
                           className={`px-2 py-0.5 rounded-md text-[10px] font-bold ${
                             isSelected
-                              ? 'bg-white/20 text-white'
+                              ? 'bg-[var(--bg-elevated)]/20 text-white'
                               : 'bg-blue-50 text-blue-700 border border-blue-200'
                           }`}
                         >
@@ -391,7 +391,7 @@ export const CommandBar: React.FC<CommandBarProps> = ({
                           className={`font-mono text-[11px] px-1.5 py-0.5 rounded-sm ${
                             isSelected
                               ? 'bg-blue-700 text-blue-100 border border-blue-500'
-                              : 'bg-slate-100 text-slate-500 border border-slate-200'
+                              : 'bg-[var(--bg-elevated-hover)] text-slate-500 border border-[var(--border-primary)]'
                           }`}
                         >
                           {cmd.shortcut}
@@ -406,23 +406,23 @@ export const CommandBar: React.FC<CommandBarProps> = ({
           </div>
 
           {/* Footer Navigation Hints */}
-          <div className="px-4 py-2.5 bg-slate-100/70 border-t border-slate-200/60 flex items-center justify-between text-[11px] text-slate-500">
+          <div className="px-4 py-2.5 bg-[var(--bg-elevated-hover)]/70 border-t border-[var(--border-primary)]/60 flex items-center justify-between text-[11px] text-slate-500">
             <div className="flex items-center space-x-3">
               <span className="flex items-center space-x-1">
-                <kbd className="px-1.5 py-0.5 bg-white border border-slate-200 rounded font-mono shadow-2xs">↑</kbd>
-                <kbd className="px-1.5 py-0.5 bg-white border border-slate-200 rounded font-mono shadow-2xs">↓</kbd>
+                <kbd className="px-1.5 py-0.5 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded font-mono shadow-2xs">↑</kbd>
+                <kbd className="px-1.5 py-0.5 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded font-mono shadow-2xs">↓</kbd>
                 <span>Navigasi</span>
               </span>
               <span className="flex items-center space-x-1">
-                <kbd className="px-1.5 py-0.5 bg-white border border-slate-200 rounded font-mono shadow-2xs">↵</kbd>
+                <kbd className="px-1.5 py-0.5 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded font-mono shadow-2xs">↵</kbd>
                 <span>Pilih</span>
               </span>
               <span className="flex items-center space-x-1">
-                <kbd className="px-1.5 py-0.5 bg-white border border-slate-200 rounded font-mono shadow-2xs">ESC</kbd>
+                <kbd className="px-1.5 py-0.5 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded font-mono shadow-2xs">ESC</kbd>
                 <span>Tutup</span>
               </span>
             </div>
-            <div className="hidden sm:flex items-center space-x-1 text-slate-400 font-medium">
+            <div className="hidden sm:flex items-center space-x-1 text-[var(--text-secondary)] font-medium">
               <Command className="w-3 h-3" />
               <span>RAB Pro Mac Desktop Command Engine</span>
             </div>

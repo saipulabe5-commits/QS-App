@@ -127,7 +127,7 @@ export const PriceDatabaseView: React.FC = () => {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-slate-900 tracking-tight">
+          <h2 className="text-xl font-bold text-[var(--text-primary)] tracking-tight">
             Database Harga Material, Upah & Alat ({priceDatabase.length})
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -147,7 +147,7 @@ export const PriceDatabaseView: React.FC = () => {
 
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="flex items-center space-x-1.5 px-3 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors"
+            className="flex items-center space-x-1.5 px-3 py-2 bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors"
             title="Import CSV"
           >
             <Upload className="w-3.5 h-3.5 text-slate-500" />
@@ -156,7 +156,7 @@ export const PriceDatabaseView: React.FC = () => {
 
           <button
             onClick={handleExportCSV}
-            className="flex items-center space-x-1.5 px-3 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors"
+            className="flex items-center space-x-1.5 px-3 py-2 bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors"
             title="Download CSV"
           >
             <Download className="w-3.5 h-3.5 text-slate-500" />
@@ -177,21 +177,21 @@ export const PriceDatabaseView: React.FC = () => {
       </div>
 
       {/* Toolbar & Filters */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="bg-[var(--bg-elevated)] p-4 rounded-2xl border border-[var(--border-primary)] shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3">
         <div className="relative w-full md:w-80">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[var(--text-secondary)] absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Cari item, kode, atau sumber..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
+            className="w-full pl-9 pr-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
           />
         </div>
 
         <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
           {/* Type Filter */}
-          <div className="flex items-center space-x-1 bg-slate-100 p-1 rounded-xl">
+          <div className="flex items-center space-x-1 bg-[var(--bg-elevated-hover)] p-1 rounded-xl">
             {[
               { id: 'all', label: 'Semua' },
               { id: 'material', label: 'Material' },
@@ -203,8 +203,8 @@ export const PriceDatabaseView: React.FC = () => {
                 onClick={() => setSelectedType(t.id)}
                 className={`px-3 py-1 text-xs rounded-lg font-medium transition-colors ${
                   selectedType === t.id
-                    ? 'bg-white text-blue-700 font-bold shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-[var(--bg-elevated)] text-blue-700 font-bold shadow-2xs'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
               >
                 {t.label}
@@ -216,7 +216,7 @@ export const PriceDatabaseView: React.FC = () => {
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-700 focus:bg-white"
+            className="px-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl text-[var(--text-primary)] focus:bg-[var(--bg-elevated)]"
           >
             <option value="all">Semua Kategori</option>
             {categories.map((c) => (
@@ -230,18 +230,18 @@ export const PriceDatabaseView: React.FC = () => {
 
       {/* Database Table */}
       {filteredItems.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center shadow-2xs">
-          <Database className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-          <h3 className="text-base font-bold text-slate-800">Tidak Ada Data Harga</h3>
+        <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] p-12 text-center shadow-2xs">
+          <Database className="w-12 h-12 text-slate-600 dark:text-slate-300 mx-auto mb-3" />
+          <h3 className="text-base font-bold text-[var(--text-primary)]">Tidak Ada Data Harga</h3>
           <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
             Coba sesuaikan filter pencarian atau tambahkan item harga satuan baru.
           </p>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
+        <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] shadow-2xs overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-600">
-              <thead className="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200 uppercase text-[11px] tracking-wider">
+            <table className="w-full text-left text-xs text-[var(--text-secondary)]">
+              <thead className="bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] font-semibold border-b border-[var(--border-primary)] uppercase text-[11px] tracking-wider">
                 <tr>
                   <th className="px-5 py-3.5">Kode</th>
                   <th className="px-4 py-3.5">Nama Item Bahan / Upah / Alat</th>
@@ -255,11 +255,11 @@ export const PriceDatabaseView: React.FC = () => {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredItems.map((item) => (
-                  <tr key={item.id} className="hover:bg-slate-50 transition-colors">
+                  <tr key={item.id} className="hover:bg-[var(--bg-elevated-hover)] transition-colors">
                     <td className="px-5 py-3.5 font-mono text-slate-500 font-medium">
                       {item.code}
                     </td>
-                    <td className="px-4 py-3.5 font-bold text-slate-900 text-xs">
+                    <td className="px-4 py-3.5 font-bold text-[var(--text-primary)] text-xs">
                       {item.name}
                     </td>
                     <td className="px-3 py-3.5">
@@ -275,8 +275,8 @@ export const PriceDatabaseView: React.FC = () => {
                         {item.type === 'material' ? 'Material' : item.type === 'labor' ? 'Upah' : 'Alat'}
                       </span>
                     </td>
-                    <td className="px-3 py-3.5 text-slate-600">{item.category}</td>
-                    <td className="px-3 py-3.5 text-center font-medium text-slate-700">
+                    <td className="px-3 py-3.5 text-[var(--text-secondary)]">{item.category}</td>
+                    <td className="px-3 py-3.5 text-center font-medium text-[var(--text-primary)]">
                       {item.unit}
                     </td>
                     <td className="px-4 py-3.5 text-right font-mono font-black text-blue-900 text-sm">
@@ -284,7 +284,7 @@ export const PriceDatabaseView: React.FC = () => {
                     </td>
                     <td className="px-4 py-3.5 text-[11px] text-slate-500">
                       <div>{item.source}</div>
-                      <div className="text-[10px] text-slate-400">{formatDateIndo(item.updatedAt)}</div>
+                      <div className="text-[10px] text-[var(--text-secondary)]">{formatDateIndo(item.updatedAt)}</div>
                     </td>
                     <td className="px-5 py-3.5 text-right">
                       <div className="flex items-center justify-end space-x-1">
@@ -309,7 +309,7 @@ export const PriceDatabaseView: React.FC = () => {
                         </button>
                         <button
                           onClick={() => setItemToDelete(item)}
-                          className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                          className="p-1.5 text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
                           title="Hapus"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -347,11 +347,11 @@ export const PriceDatabaseView: React.FC = () => {
       {itemToInsert && selectedProject && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs"
+            className="fixed inset-0 bg-[var(--bg-elevated)]/60 backdrop-blur-xs"
             onClick={() => setItemToInsert(null)}
           />
-          <div className="relative bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 p-6 z-10">
-            <h3 className="text-base font-bold text-slate-900">
+          <div className="relative bg-[var(--bg-elevated)] w-full max-w-md rounded-2xl shadow-2xl border border-[var(--border-primary)] p-6 z-10">
+            <h3 className="text-base font-bold text-[var(--text-primary)]">
               Masukkan ke RAB Proyek
             </h3>
             <p className="text-xs text-slate-500 mt-1">
@@ -359,15 +359,15 @@ export const PriceDatabaseView: React.FC = () => {
             </p>
 
             <form onSubmit={handleInsertToRAB} className="mt-4 space-y-3">
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                <div className="text-xs font-bold text-slate-800">{itemToInsert.name}</div>
+              <div className="p-3 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)]">
+                <div className="text-xs font-bold text-[var(--text-primary)]">{itemToInsert.name}</div>
                 <div className="text-xs text-blue-700 font-mono mt-1">
                   Harga Satuan: {formatRupiah(itemToInsert.price)} / {itemToInsert.unit}
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                   Volume Kebutuhan ({itemToInsert.unit}) <span className="text-rose-500">*</span>
                 </label>
                 <input
@@ -377,7 +377,7 @@ export const PriceDatabaseView: React.FC = () => {
                   autoFocus
                   value={insertVolume}
                   onChange={(e) => setInsertVolume(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl font-mono text-right font-bold focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full px-3.5 py-2.5 text-sm bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl font-mono text-right font-bold focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
                 />
               </div>
 
@@ -392,7 +392,7 @@ export const PriceDatabaseView: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setItemToInsert(null)}
-                  className="px-4 py-2 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl"
+                  className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl"
                 >
                   Batal
                 </button>

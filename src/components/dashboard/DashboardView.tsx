@@ -95,11 +95,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   // State: Error
   if (hasError) {
     return (
-      <div className="bg-white p-8 rounded-2xl border border-rose-200 shadow-2xs text-center my-8">
+      <div className="bg-[var(--bg-elevated)] p-8 rounded-2xl border border-rose-200 shadow-2xs text-center my-8">
         <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center mx-auto mb-3">
           <AlertTriangle className="w-6 h-6" />
         </div>
-        <h3 className="text-base font-bold text-slate-900">Gagal Memuat Data Dashboard</h3>
+        <h3 className="text-base font-bold text-[var(--text-primary)]">Gagal Memuat Data Dashboard</h3>
         <p className="text-xs text-slate-500 mt-1 max-w-md mx-auto">
           Terjadi kendala saat membaca data penyimpanan atau menghitung rekapitulasi.
         </p>
@@ -112,7 +112,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </button>
           <button
             onClick={resetToDemoData}
-            className="px-4 py-2 bg-slate-100 text-slate-700 text-xs font-bold rounded-xl hover:bg-slate-200 transition-colors border border-slate-200"
+            className="px-4 py-2 bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] text-xs font-bold rounded-xl hover:bg-slate-200 dark:bg-slate-700 transition-colors border border-[var(--border-primary)]"
           >
             Reset Data Awal
           </button>
@@ -126,18 +126,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
     return (
       <div className="space-y-6 animate-pulse">
         {/* Welcome Skeleton */}
-        <div className="bg-slate-800 h-44 rounded-2xl" />
+        <div className="bg-[var(--bg-elevated-hover)] h-44 rounded-2xl" />
         {/* 4 Cards Skeleton */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white h-28 rounded-2xl border border-slate-200" />
-          <div className="bg-white h-28 rounded-2xl border border-slate-200" />
-          <div className="bg-white h-28 rounded-2xl border border-slate-200" />
-          <div className="bg-white h-28 rounded-2xl border border-slate-200" />
+          <div className="bg-[var(--bg-elevated)] h-28 rounded-2xl border border-[var(--border-primary)]" />
+          <div className="bg-[var(--bg-elevated)] h-28 rounded-2xl border border-[var(--border-primary)]" />
+          <div className="bg-[var(--bg-elevated)] h-28 rounded-2xl border border-[var(--border-primary)]" />
+          <div className="bg-[var(--bg-elevated)] h-28 rounded-2xl border border-[var(--border-primary)]" />
         </div>
         {/* Charts Skeleton */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-white h-80 rounded-2xl border border-slate-200" />
-          <div className="bg-white h-80 rounded-2xl border border-slate-200" />
+          <div className="bg-[var(--bg-elevated)] h-80 rounded-2xl border border-[var(--border-primary)]" />
+          <div className="bg-[var(--bg-elevated)] h-80 rounded-2xl border border-[var(--border-primary)]" />
         </div>
       </div>
     );
@@ -146,7 +146,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   return (
     <div className="space-y-6">
       {/* 1. Header Banner */}
-      <div className="bg-slate-900 text-white rounded-2xl p-6 sm:p-7 relative border border-slate-800 shadow-sm">
+      <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 sm:p-7 relative border border-slate-200 dark:border-[var(--border-primary)] shadow-sm">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="max-w-2xl">
             <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-blue-950 border border-blue-800 text-blue-300 text-xs font-bold mb-3">
@@ -156,7 +156,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <h2 className="text-xl sm:text-2xl font-black tracking-tight text-white">
               Dashboard Estimasi & Anggaran Biaya
             </h2>
-            <p className="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed">
+            <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
               Pantau rekapitulasi nilai proyek, komposisi upah, bahan, peralatan, serta distribusi
               anggaran per divisi konstruksi secara real-time.
             </p>
@@ -178,7 +178,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 onClick={() => {
                   if (onOpenAIModal) onOpenAIModal();
                 }}
-                className="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-blue-300 hover:text-white border border-slate-700 text-xs font-semibold rounded-xl transition-colors"
+                className="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-blue-300 hover:text-white border border-[var(--border-primary)] text-xs font-semibold rounded-xl transition-colors"
               >
                 <Sparkles className="w-4 h-4 text-blue-400" />
                 <span>AI Estimator Cepat</span>
@@ -186,7 +186,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
               <button
                 onClick={() => setActiveTab('drawings')}
-                className="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-semibold rounded-xl transition-colors"
+                className="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-white border border-[var(--border-primary)] text-xs font-semibold rounded-xl transition-colors"
               >
                 <Boxes className="w-4 h-4 text-blue-400" />
                 <span>Analisis Gambar (AI)</span>
@@ -194,7 +194,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
               <button
                 onClick={() => setActiveTab('scurve-plan')}
-                className="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-semibold rounded-xl transition-colors"
+                className="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-white border border-[var(--border-primary)] text-xs font-semibold rounded-xl transition-colors"
               >
                 <Calendar className="w-4 h-4 text-emerald-400" />
                 <span>Jadwal Kurva S</span>
@@ -202,7 +202,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
               <button
                 onClick={() => setActiveTab('calculator')}
-                className="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-semibold rounded-xl transition-colors"
+                className="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-white border border-[var(--border-primary)] text-xs font-semibold rounded-xl transition-colors"
               >
                 <Ruler className="w-4 h-4" />
                 <span>Kalkulator Volume</span>
@@ -210,7 +210,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
               <button
                 onClick={handleRefreshData}
-                className="inline-flex items-center space-x-1.5 px-3 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white border border-slate-700 text-xs font-medium rounded-xl transition-colors ml-auto sm:ml-0"
+                className="inline-flex items-center space-x-1.5 px-3 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-[var(--text-secondary)] hover:text-white border border-[var(--border-primary)] text-xs font-medium rounded-xl transition-colors ml-auto sm:ml-0"
                 title="Refresh Perhitungan"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
@@ -221,8 +221,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           {/* Quick Active Project Card in Banner */}
           {selectedProject && activeCalc && (
-            <div className="bg-slate-800/90 border border-slate-700 p-4 rounded-xl max-w-sm w-full">
-              <div className="flex items-center justify-between text-xs text-slate-400">
+            <div className="bg-[var(--bg-elevated-hover)]/90 border border-[var(--border-primary)] p-4 rounded-xl max-w-sm w-full">
+              <div className="flex items-center justify-between text-xs text-[var(--text-secondary)]">
                 <span className="flex items-center gap-1 font-semibold text-blue-400">
                   <Building2 className="w-3.5 h-3.5" />
                   Proyek Terpilih Saat Ini
@@ -233,7 +233,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       ? 'bg-emerald-950 text-emerald-300 border border-emerald-800/60'
                       : selectedProject.status === 'Selesai'
                       ? 'bg-blue-950 text-blue-300 border border-blue-800/60'
-                      : 'bg-slate-700 text-slate-300'
+                      : 'bg-slate-700 text-slate-600 dark:text-slate-300'
                   }`}
                 >
                   {selectedProject.status}
@@ -242,12 +242,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <h4 className="text-sm font-bold text-white mt-2 truncate" title={selectedProject.name}>
                 {selectedProject.name}
               </h4>
-              <p className="text-[11px] text-slate-400 font-mono mt-0.5">
+              <p className="text-[11px] text-[var(--text-secondary)] font-mono mt-0.5">
                 {selectedProject.documentNo}
               </p>
 
-              <div className="mt-3 pt-3 border-t border-slate-700/80 flex items-center justify-between text-xs">
-                <span className="text-slate-400">Nilai Grand Total:</span>
+              <div className="mt-3 pt-3 border-t border-[var(--border-primary)]/80 flex items-center justify-between text-xs">
+                <span className="text-[var(--text-secondary)]">Nilai Grand Total:</span>
                 <span className="font-bold text-blue-300 text-sm">
                   {formatRupiah(activeCalc.grandTotal)}
                 </span>
@@ -288,7 +288,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       {selectedProject && activeCalc && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Active Project Details Card */}
-          <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs lg:col-span-1 flex flex-col justify-between">
+          <div className="bg-[var(--bg-elevated)] p-5 sm:p-6 rounded-2xl border border-[var(--border-primary)] shadow-2xs lg:col-span-1 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                 <span className="text-xs font-bold uppercase tracking-wider text-blue-800 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200">
@@ -300,31 +300,31 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                       : selectedProject.status === 'Selesai'
                       ? 'bg-blue-50 text-blue-800 border border-blue-200'
-                      : 'bg-slate-100 text-slate-700 border border-slate-200'
+                      : 'bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] border border-[var(--border-primary)]'
                   }`}
                 >
                   {selectedProject.status}
                 </span>
               </div>
 
-              <h3 className="text-base font-bold text-slate-900 mt-4 leading-snug">
+              <h3 className="text-base font-bold text-[var(--text-primary)] mt-4 leading-snug">
                 {selectedProject.name}
               </h3>
               <p className="text-xs text-slate-500 mt-1 font-mono">{selectedProject.documentNo}</p>
 
-              <div className="mt-4 space-y-2.5 text-xs text-slate-600">
+              <div className="mt-4 space-y-2.5 text-xs text-[var(--text-secondary)]">
                 <div className="flex items-center space-x-2">
-                  <Building2 className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                  <Building2 className="w-4 h-4 text-[var(--text-secondary)] flex-shrink-0" />
                   <span className="truncate">
                     Klien: <strong>{selectedProject.clientName}</strong>
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <MapPin className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                  <MapPin className="w-4 h-4 text-[var(--text-secondary)] flex-shrink-0" />
                   <span className="truncate">{selectedProject.location}</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Calendar className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                  <Calendar className="w-4 h-4 text-[var(--text-secondary)] flex-shrink-0" />
                   <span>
                     Durasi: {formatDateIndo(selectedProject.startDate)} s.d.{' '}
                     {formatDateIndo(selectedProject.endDate)}
@@ -334,17 +334,17 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
               {/* Financial Summary */}
               <div className="mt-5 pt-4 border-t border-slate-100 space-y-2 text-xs">
-                <div className="flex justify-between text-slate-600">
+                <div className="flex justify-between text-[var(--text-secondary)]">
                   <span>Biaya Pekerjaan ({activeProjectItems.length} item)</span>
-                  <span className="font-bold text-slate-800">
+                  <span className="font-bold text-[var(--text-primary)]">
                     {formatRupiah(activeCalc.directCost)}
                   </span>
                 </div>
-                <div className="flex justify-between text-slate-600">
+                <div className="flex justify-between text-[var(--text-secondary)]">
                   <span>PPN / Pajak ({selectedProject.taxPercent}%)</span>
                   <span>{formatRupiah(activeCalc.taxCost)}</span>
                 </div>
-                <div className="flex justify-between text-sm font-black text-slate-900 pt-2 border-t border-slate-200">
+                <div className="flex justify-between text-sm font-black text-[var(--text-primary)] pt-2 border-t border-[var(--border-primary)]">
                   <span>Grand Total RAB</span>
                   <span className="text-blue-700 text-base">
                     {formatRupiah(activeCalc.grandTotal)}
@@ -363,7 +363,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </button>
               <button
                 onClick={() => setActiveTab('reports')}
-                className="py-2.5 px-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl text-center transition-colors border border-slate-200"
+                className="py-2.5 px-3.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-bold rounded-xl text-center transition-colors border border-[var(--border-primary)]"
               >
                 Laporan
               </button>
@@ -414,13 +414,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         {/* AHSP */}
         <div
           onClick={() => setActiveTab('ahsp')}
-          className="bg-white p-5 rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-xs transition-all cursor-pointer group flex flex-col justify-between"
+          className="bg-[var(--bg-elevated)] p-5 rounded-2xl border border-[var(--border-primary)] hover:border-blue-400 hover:shadow-xs transition-all cursor-pointer group flex flex-col justify-between"
         >
           <div>
             <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center mb-3 border border-blue-100 group-hover:bg-blue-600 group-hover:text-white transition-colors">
               <Layers className="w-5 h-5" />
             </div>
-            <h4 className="text-sm font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
+            <h4 className="text-sm font-bold text-[var(--text-primary)] group-hover:text-blue-700 transition-colors">
               Analisis Harga Satuan (AHSP)
             </h4>
             <p className="text-xs text-slate-500 mt-1">
@@ -436,13 +436,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         {/* Database Harga */}
         <div
           onClick={() => setActiveTab('database')}
-          className="bg-white p-5 rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-xs transition-all cursor-pointer group flex flex-col justify-between"
+          className="bg-[var(--bg-elevated)] p-5 rounded-2xl border border-[var(--border-primary)] hover:border-blue-400 hover:shadow-xs transition-all cursor-pointer group flex flex-col justify-between"
         >
           <div>
-            <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center mb-3 border border-slate-200 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+            <div className="w-10 h-10 rounded-xl bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] flex items-center justify-center mb-3 border border-[var(--border-primary)] group-hover:bg-blue-600 group-hover:text-white transition-colors">
               <Database className="w-5 h-5" />
             </div>
-            <h4 className="text-sm font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
+            <h4 className="text-sm font-bold text-[var(--text-primary)] group-hover:text-blue-700 transition-colors">
               Database Harga & Upah
             </h4>
             <p className="text-xs text-slate-500 mt-1">
@@ -458,13 +458,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         {/* Template Pekerjaan */}
         <div
           onClick={() => setActiveTab('templates')}
-          className="bg-white p-5 rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-xs transition-all cursor-pointer group flex flex-col justify-between"
+          className="bg-[var(--bg-elevated)] p-5 rounded-2xl border border-[var(--border-primary)] hover:border-blue-400 hover:shadow-xs transition-all cursor-pointer group flex flex-col justify-between"
         >
           <div>
             <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center mb-3 border border-purple-100 group-hover:bg-purple-600 group-hover:text-white transition-colors">
               <Boxes className="w-5 h-5" />
             </div>
-            <h4 className="text-sm font-bold text-slate-900 group-hover:text-purple-700 transition-colors">
+            <h4 className="text-sm font-bold text-[var(--text-primary)] group-hover:text-purple-700 transition-colors">
               Template RAB Siap Pakai
             </h4>
             <p className="text-xs text-slate-500 mt-1">
@@ -480,13 +480,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         {/* Kalkulator Volume */}
         <div
           onClick={() => setActiveTab('calculator')}
-          className="bg-white p-5 rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-xs transition-all cursor-pointer group flex flex-col justify-between"
+          className="bg-[var(--bg-elevated)] p-5 rounded-2xl border border-[var(--border-primary)] hover:border-blue-400 hover:shadow-xs transition-all cursor-pointer group flex flex-col justify-between"
         >
           <div>
             <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-3 border border-emerald-100 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
               <Ruler className="w-5 h-5" />
             </div>
-            <h4 className="text-sm font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
+            <h4 className="text-sm font-bold text-[var(--text-primary)] group-hover:text-emerald-700 transition-colors">
               Kalkulator Volume Cepat
             </h4>
             <p className="text-xs text-slate-500 mt-1">

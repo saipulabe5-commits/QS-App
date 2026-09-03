@@ -236,7 +236,7 @@ export const AHSPView: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-md border border-slate-800 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-md border border-slate-200 dark:border-[var(--border-primary)] relative overflow-hidden">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2 max-w-2xl">
             <div className="inline-flex items-center space-x-2 px-3 py-1 bg-blue-500/20 border border-blue-400/30 rounded-full text-blue-300 text-xs font-semibold">
@@ -246,14 +246,14 @@ export const AHSPView: React.FC = () => {
             <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
               Analisis Harga Satuan Pekerjaan (AHSP)
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
               Katalog lengkap {ahspItems.length} rincian koefisien bahan, upah tenaga kerja (OH), dan alat berat yang dikelompokkan secara terstruktur berdasarkan 13 kategori divisi pekerjaan konstruksi termasuk pekerjaan infrastruktur jalan perumahan.
             </p>
           </div>
 
           <div className="flex flex-row md:flex-col items-center md:items-end justify-between gap-3 flex-shrink-0">
             <div className="text-left md:text-right">
-              <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+              <div className="text-[11px] font-semibold text-[var(--text-secondary)] uppercase tracking-wider">
                 Total Koleksi AHSP
               </div>
               <div className="text-2xl sm:text-3xl font-black text-white font-mono">
@@ -274,7 +274,7 @@ export const AHSPView: React.FC = () => {
                 }}
                 disabled={isSyncing}
                 title="Perbarui seluruh harga satuan komponen AHSP mengikuti harga terbaru di Database Harga"
-                className="flex items-center space-x-1.5 px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-semibold rounded-xl border border-slate-700 transition-all active:scale-95 disabled:opacity-50"
+                className="flex items-center space-x-1.5 px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-semibold rounded-xl border border-[var(--border-primary)] transition-all active:scale-95 disabled:opacity-50"
               >
                 <RefreshCw className={`w-3.5 h-3.5 text-emerald-400 ${isSyncing ? 'animate-spin' : ''}`} />
                 <span>Sinkron Database</span>
@@ -285,7 +285,7 @@ export const AHSPView: React.FC = () => {
                   exportAHSPComponentsToPriceDatabase();
                 }}
                 title="Salin seluruh komponen bahan/upah/alat dari AHSP yang belum terdaftar ke Database Harga"
-                className="flex items-center space-x-1.5 px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-semibold rounded-xl border border-slate-700 transition-all active:scale-95"
+                className="flex items-center space-x-1.5 px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-semibold rounded-xl border border-[var(--border-primary)] transition-all active:scale-95"
               >
                 <Database className="w-3.5 h-3.5 text-blue-400" />
                 <span>Ekspor ke DB</span>
@@ -307,16 +307,16 @@ export const AHSPView: React.FC = () => {
       </div>
 
       {/* Category Pills Slider / Quick Navigator */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs space-y-3">
+      <div className="bg-[var(--bg-elevated)] p-4 rounded-2xl border border-[var(--border-primary)] shadow-2xs space-y-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2 text-xs font-bold text-slate-800">
+          <div className="flex items-center space-x-2 text-xs font-bold text-[var(--text-primary)]">
             <FolderTree className="w-4 h-4 text-blue-600" />
             <span>Kategori Pekerjaan Konstruksi ({AHSP_CATEGORIES.length})</span>
           </div>
           <div className="flex items-center space-x-2 text-xs">
             <button
               onClick={() => setViewMode(viewMode === 'grouped' ? 'list' : 'grouped')}
-              className="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium flex items-center space-x-1.5 transition-colors"
+              className="px-2.5 py-1.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] rounded-lg font-medium flex items-center space-x-1.5 transition-colors"
             >
               {viewMode === 'grouped' ? (
                 <>
@@ -335,14 +335,14 @@ export const AHSPView: React.FC = () => {
               <div className="hidden sm:flex items-center space-x-1">
                 <button
                   onClick={handleExpandAll}
-                  className="px-2 py-1 text-[11px] text-slate-500 hover:text-blue-600 hover:bg-slate-50 rounded"
+                  className="px-2 py-1 text-[11px] text-slate-500 hover:text-blue-600 hover:bg-[var(--bg-elevated-hover)] rounded"
                 >
                   Buka Semua
                 </button>
-                <span className="text-slate-300">&bull;</span>
+                <span className="text-slate-600 dark:text-slate-300">&bull;</span>
                 <button
                   onClick={handleCollapseAll}
-                  className="px-2 py-1 text-[11px] text-slate-500 hover:text-blue-600 hover:bg-slate-50 rounded"
+                  className="px-2 py-1 text-[11px] text-slate-500 hover:text-blue-600 hover:bg-[var(--bg-elevated-hover)] rounded"
                 >
                   Tutup Semua
                 </button>
@@ -361,7 +361,7 @@ export const AHSPView: React.FC = () => {
                 setSelectedCategory(e.target.value);
                 setSelectedSubCategory('all');
               }}
-              className="w-full appearance-none pl-4 pr-10 py-2.5 bg-white border-2 border-blue-500 rounded-xl text-slate-700 font-medium text-sm focus:outline-hidden focus:ring-4 focus:ring-blue-500/20 transition-all cursor-pointer shadow-sm hover:border-blue-600"
+              className="w-full appearance-none pl-4 pr-10 py-2.5 bg-[var(--bg-elevated)] border-2 border-blue-500 rounded-xl text-[var(--text-primary)] font-medium text-sm focus:outline-hidden focus:ring-4 focus:ring-blue-500/20 transition-all cursor-pointer shadow-sm hover:border-blue-600"
             >
               <option value="all">Semua Kategori Pekerjaan</option>
               {AHSP_CATEGORIES.map((cat) => (
@@ -383,7 +383,7 @@ export const AHSPView: React.FC = () => {
               <select
                 value={selectedSubCategory}
                 onChange={(e) => setSelectedSubCategory(e.target.value)}
-                className="w-full appearance-none pl-4 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-600 font-medium text-sm focus:outline-hidden focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all cursor-pointer hover:border-slate-300"
+                className="w-full appearance-none pl-4 pr-10 py-2.5 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl text-[var(--text-secondary)] font-medium text-sm focus:outline-hidden focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-[var(--bg-elevated)] transition-all cursor-pointer hover:border-[var(--border-primary)]"
               >
                 <option value="all">Semua Sub-pekerjaan</option>
                 {currentSubCategories.map((sub) => (
@@ -393,7 +393,7 @@ export const AHSPView: React.FC = () => {
                 ))}
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none">
-                <Filter className="w-3.5 h-3.5 text-slate-400" />
+                <Filter className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
               </div>
             </div>
           )}
@@ -401,15 +401,15 @@ export const AHSPView: React.FC = () => {
       </div>
 
       {/* Search & Filter Toolbar */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="bg-[var(--bg-elevated)] p-4 rounded-2xl border border-[var(--border-primary)] shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3">
         <div className="relative w-full md:w-96">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[var(--text-secondary)] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Cari analisis (misal: Pondasi, Beton K225, Plesteran, Granit, Pipa)..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
+            className="w-full pl-9 pr-3.5 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
           />
         </div>
 
@@ -433,9 +433,9 @@ export const AHSPView: React.FC = () => {
 
       {/* Main Content: Grouped by Category OR List View */}
       {filteredItems.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center shadow-2xs">
-          <Layers className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-          <h3 className="text-base font-bold text-slate-800">Tidak Ditemukan Analisis AHSP</h3>
+        <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] p-12 text-center shadow-2xs">
+          <Layers className="w-12 h-12 text-slate-600 dark:text-slate-300 mx-auto mb-3" />
+          <h3 className="text-base font-bold text-[var(--text-primary)]">Tidak Ditemukan Analisis AHSP</h3>
           <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
             Coba ganti kata kunci pencarian atau pilih kategori pekerjaan lainnya.
           </p>
@@ -451,12 +451,12 @@ export const AHSPView: React.FC = () => {
             return (
               <div
                 key={group.category}
-                className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden transition-all"
+                className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] shadow-2xs overflow-hidden transition-all"
               >
                 {/* Category Header Bar */}
                 <div
                   onClick={() => toggleCategoryExpand(group.category)}
-                  className="p-4 sm:p-5 bg-gradient-to-r from-slate-50 via-slate-50/80 to-white hover:bg-slate-100/80 border-b border-slate-200/80 flex items-center justify-between cursor-pointer select-none transition-colors"
+                  className="p-4 sm:p-5 bg-gradient-to-r from-slate-50 via-slate-50/80 to-white hover:bg-[var(--bg-elevated-hover)]/80 border-b border-[var(--border-primary)]/80 flex items-center justify-between cursor-pointer select-none transition-colors"
                 >
                   <div className="flex items-center space-x-3.5">
                     <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-sm shadow-xs flex-shrink-0">
@@ -467,7 +467,7 @@ export const AHSPView: React.FC = () => {
                         <span className="text-[11px] font-mono font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
                           {def?.codePrefix || `DIVISI 0${groupIdx + 1}`}
                         </span>
-                        <h3 className="text-base font-bold text-slate-900">
+                        <h3 className="text-base font-bold text-[var(--text-primary)]">
                           {group.category}
                         </h3>
                       </div>
@@ -480,19 +480,20 @@ export const AHSPView: React.FC = () => {
                   </div>
 
                   <div className="flex items-center space-x-3">
-                    <span className="px-2.5 py-1 bg-slate-200/80 text-slate-700 rounded-lg text-xs font-bold font-mono">
+                    <span className="px-2.5 py-1 bg-slate-200 dark:bg-slate-700/80 text-[var(--text-primary)] rounded-lg text-xs font-bold font-mono">
                       {group.items.length} Item
                     </span>
-                    <button
-                      type="button"
-                      className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg transition-colors"
+                    <div
+                      aria-hidden="true"
+                      className="p-1.5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-lg transition-colors"
+                    
                     >
                       {isCatExpanded ? (
                         <ChevronUp className="w-5 h-5" />
                       ) : (
                         <ChevronDown className="w-5 h-5" />
                       )}
-                    </button>
+                    </div>
                   </div>
                 </div>
 
@@ -528,7 +529,7 @@ export const AHSPView: React.FC = () => {
         /* ================= FLAT LIST VIEW ================= */
         <div className="space-y-3">
           {filteredItems.map((item) => (
-            <div key={item.id} className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
+            <div key={item.id} className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] shadow-2xs overflow-hidden">
               <AHSPItemCard
                 item={item}
                 isExpanded={expandedId === item.id}
@@ -571,11 +572,11 @@ export const AHSPView: React.FC = () => {
       {itemToInsert && selectedProject && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs"
+            className="fixed inset-0 bg-[var(--bg-elevated)]/60 backdrop-blur-xs"
             onClick={() => setItemToInsert(null)}
           />
-          <div className="relative bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 p-6 z-10 animate-in fade-in zoom-in-95 duration-150">
-            <h3 className="text-base font-bold text-slate-900">
+          <div className="relative bg-[var(--bg-elevated)] w-full max-w-md rounded-2xl shadow-2xl border border-[var(--border-primary)] p-6 z-10 animate-in fade-in zoom-in-95 duration-150">
+            <h3 className="text-base font-bold text-[var(--text-primary)]">
               Masukkan ke RAB Proyek
             </h3>
             <p className="text-xs text-slate-500 mt-1">
@@ -583,7 +584,7 @@ export const AHSPView: React.FC = () => {
             </p>
 
             <form onSubmit={handleInsertToRAB} className="mt-4 space-y-3">
-              <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+              <div className="p-3.5 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] space-y-1">
                 <div className="flex items-center space-x-2">
                   <span className="text-[10px] font-mono font-bold bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded">
                     {itemToInsert.code}
@@ -592,14 +593,14 @@ export const AHSPView: React.FC = () => {
                     {itemToInsert.category}
                   </span>
                 </div>
-                <div className="text-xs font-bold text-slate-800">{itemToInsert.name}</div>
+                <div className="text-xs font-bold text-[var(--text-primary)]">{itemToInsert.name}</div>
                 <div className="text-xs text-blue-700 font-mono font-semibold pt-1">
                   Harga Satuan: {formatRupiah(itemToInsert.unitPrice)} / {itemToInsert.unit}
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                   Volume Pekerjaan ({itemToInsert.unit}) <span className="text-rose-500">*</span>
                 </label>
                 <input
@@ -609,7 +610,7 @@ export const AHSPView: React.FC = () => {
                   autoFocus
                   value={insertVolume}
                   onChange={(e) => setInsertVolume(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl font-mono text-right font-bold focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full px-3.5 py-2.5 text-sm bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl font-mono text-right font-bold focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
                 />
               </div>
 
@@ -624,7 +625,7 @@ export const AHSPView: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setItemToInsert(null)}
-                  className="px-4 py-2 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl"
+                  className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl"
                 >
                   Batal
                 </button>
@@ -679,7 +680,7 @@ const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
   const computedProfit = subtotal * (actualProfitPercent / 100);
 
   return (
-    <div className="rounded-xl border border-slate-100 hover:border-blue-200 bg-white overflow-hidden transition-all">
+    <div className="rounded-xl border border-slate-100 hover:border-blue-200 bg-[var(--bg-elevated)] overflow-hidden transition-all">
       {/* Header Row */}
       <div className="p-4 sm:p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div className="flex items-start space-x-3">
@@ -688,30 +689,30 @@ const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
           </div>
           <div>
             <div className="flex items-center space-x-2 flex-wrap gap-y-1">
-              <span className="font-mono text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md">
+              <span className="font-mono text-xs font-bold text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] px-2 py-0.5 rounded-md">
                 {item.code}
               </span>
               <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md">
                 {item.category}
               </span>
               {item.subCategory && (
-                <span className="text-[10px] font-medium text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">
+                <span className="text-[10px] font-medium text-slate-500 bg-[var(--bg-elevated-hover)] px-1.5 py-0.5 rounded">
                   {item.subCategory}
                 </span>
               )}
             </div>
-            <h3 className="text-xs sm:text-sm font-bold text-slate-900 mt-1 leading-snug">
+            <h3 className="text-xs sm:text-sm font-bold text-[var(--text-primary)] mt-1 leading-snug">
               {item.name}
             </h3>
             {item.notes && (
-              <p className="text-[11px] text-slate-400 mt-0.5">{item.notes}</p>
+              <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">{item.notes}</p>
             )}
           </div>
         </div>
 
         <div className="flex items-center justify-between md:justify-end space-x-4 pt-2 md:pt-0 border-t md:border-t-0 border-slate-100">
           <div className="text-left md:text-right">
-            <div className="text-[10px] text-slate-400 uppercase font-semibold">
+            <div className="text-[10px] text-[var(--text-secondary)] uppercase font-semibold">
               Harga Satuan Pekerjaan
             </div>
             <div className="text-sm sm:text-base font-black text-blue-900 font-mono">
@@ -742,7 +743,7 @@ const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
 
             <button
               onClick={onDelete}
-              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+              className="p-1.5 text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
               title="Hapus"
             >
               <Trash2 className="w-3.5 h-3.5" />
@@ -750,7 +751,7 @@ const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
 
             <button
               onClick={onToggleExpand}
-              className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+              className="p-1.5 text-slate-500 hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated-hover)] rounded-lg transition-colors"
               title={isExpanded ? 'Tutup Rincian Koefisien' : 'Lihat Rincian Koefisien'}
             >
               {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -761,10 +762,10 @@ const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
 
       {/* Expanded Components Details */}
       {isExpanded && (
-        <div className="bg-slate-50/70 p-4 border-t border-slate-100 space-y-4 animate-in fade-in duration-150">
+        <div className="bg-[var(--bg-elevated-hover)] p-4 border-t border-slate-100 space-y-4 animate-in fade-in duration-150">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-600 bg-white rounded-xl border border-slate-200 overflow-hidden">
-              <thead className="bg-slate-100 text-slate-700 font-semibold uppercase text-[10px]">
+            <table className="w-full text-left text-xs text-[var(--text-secondary)] bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] overflow-hidden">
+              <thead className="bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] font-semibold uppercase text-[10px]">
                 <tr>
                   <th className="px-4 py-2">Unsur / Komponen</th>
                   <th className="px-3 py-2">Nama Bahan / Upah / Alat</th>
@@ -778,22 +779,22 @@ const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
                 {/* A. Tenaga Kerja */}
                 {laborComps.length > 0 && (
                   <>
-                    <tr className="bg-slate-50/90 font-bold text-slate-800">
+                    <tr className="bg-[var(--bg-elevated-hover)] font-bold text-[var(--text-primary)]">
                       <td colSpan={5} className="px-4 py-1.5 text-[11px]">
                         A. TENAGA KERJA (UPAH)
                       </td>
-                      <td className="px-4 py-1.5 text-right font-mono text-slate-900">
+                      <td className="px-4 py-1.5 text-right font-mono text-[var(--text-primary)]">
                         {formatRupiah(totalLab)}
                       </td>
                     </tr>
                     {laborComps.map((c) => (
-                      <tr key={c.id} className="hover:bg-slate-50/60">
-                        <td className="px-4 py-1 text-slate-400 pl-8">&bull; Tenaga</td>
-                        <td className="px-3 py-1 font-medium text-slate-800">{c.name}</td>
+                      <tr key={c.id} className="hover:bg-[var(--bg-elevated-hover)]">
+                        <td className="px-4 py-1 text-[var(--text-secondary)] pl-8">&bull; Tenaga</td>
+                        <td className="px-3 py-1 font-medium text-[var(--text-primary)]">{c.name}</td>
                         <td className="px-2 py-1 text-center">{c.unit}</td>
                         <td className="px-3 py-1 text-right font-mono">{formatNumber(c.coefficient, 4)}</td>
                         <td className="px-4 py-1 text-right font-mono">{formatRupiah(c.unitPrice)}</td>
-                        <td className="px-4 py-1 text-right font-mono font-semibold text-slate-800">{formatRupiah(c.totalCost)}</td>
+                        <td className="px-4 py-1 text-right font-mono font-semibold text-[var(--text-primary)]">{formatRupiah(c.totalCost)}</td>
                       </tr>
                     ))}
                   </>
@@ -802,22 +803,22 @@ const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
                 {/* B. Bahan / Material */}
                 {matComps.length > 0 && (
                   <>
-                    <tr className="bg-slate-50/90 font-bold text-slate-800">
+                    <tr className="bg-[var(--bg-elevated-hover)] font-bold text-[var(--text-primary)]">
                       <td colSpan={5} className="px-4 py-1.5 text-[11px]">
                         B. BAHAN / MATERIAL
                       </td>
-                      <td className="px-4 py-1.5 text-right font-mono text-slate-900">
+                      <td className="px-4 py-1.5 text-right font-mono text-[var(--text-primary)]">
                         {formatRupiah(totalMat)}
                       </td>
                     </tr>
                     {matComps.map((c) => (
-                      <tr key={c.id} className="hover:bg-slate-50/60">
-                        <td className="px-4 py-1 text-slate-400 pl-8">&bull; Bahan</td>
-                        <td className="px-3 py-1 font-medium text-slate-800">{c.name}</td>
+                      <tr key={c.id} className="hover:bg-[var(--bg-elevated-hover)]">
+                        <td className="px-4 py-1 text-[var(--text-secondary)] pl-8">&bull; Bahan</td>
+                        <td className="px-3 py-1 font-medium text-[var(--text-primary)]">{c.name}</td>
                         <td className="px-2 py-1 text-center">{c.unit}</td>
                         <td className="px-3 py-1 text-right font-mono">{formatNumber(c.coefficient, 4)}</td>
                         <td className="px-4 py-1 text-right font-mono">{formatRupiah(c.unitPrice)}</td>
-                        <td className="px-4 py-1 text-right font-mono font-semibold text-slate-800">{formatRupiah(c.totalCost)}</td>
+                        <td className="px-4 py-1 text-right font-mono font-semibold text-[var(--text-primary)]">{formatRupiah(c.totalCost)}</td>
                       </tr>
                     ))}
                   </>
@@ -826,59 +827,59 @@ const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
                 {/* C. Peralatan */}
                 {eqComps.length > 0 && (
                   <>
-                    <tr className="bg-slate-50/90 font-bold text-slate-800">
+                    <tr className="bg-[var(--bg-elevated-hover)] font-bold text-[var(--text-primary)]">
                       <td colSpan={5} className="px-4 py-1.5 text-[11px]">
                         C. PERALATAN
                       </td>
-                      <td className="px-4 py-1.5 text-right font-mono text-slate-900">
+                      <td className="px-4 py-1.5 text-right font-mono text-[var(--text-primary)]">
                         {formatRupiah(totalEq)}
                       </td>
                     </tr>
                     {eqComps.map((c) => (
-                      <tr key={c.id} className="hover:bg-slate-50/60">
-                        <td className="px-4 py-1 text-slate-400 pl-8">&bull; Alat</td>
-                        <td className="px-3 py-1 font-medium text-slate-800">{c.name}</td>
+                      <tr key={c.id} className="hover:bg-[var(--bg-elevated-hover)]">
+                        <td className="px-4 py-1 text-[var(--text-secondary)] pl-8">&bull; Alat</td>
+                        <td className="px-3 py-1 font-medium text-[var(--text-primary)]">{c.name}</td>
                         <td className="px-2 py-1 text-center">{c.unit}</td>
                         <td className="px-3 py-1 text-right font-mono">{formatNumber(c.coefficient, 4)}</td>
                         <td className="px-4 py-1 text-right font-mono">{formatRupiah(c.unitPrice)}</td>
-                        <td className="px-4 py-1 text-right font-mono font-semibold text-slate-800">{formatRupiah(c.totalCost)}</td>
+                        <td className="px-4 py-1 text-right font-mono font-semibold text-[var(--text-primary)]">{formatRupiah(c.totalCost)}</td>
                       </tr>
                     ))}
                   </>
                 )}
 
                 {/* Subtotal Biaya Langsung */}
-                <tr className="bg-slate-200 text-slate-800 font-bold text-xs border-t-2 border-slate-300">
+                <tr className="bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] font-bold text-xs border-t-2 border-[var(--border-primary)]">
                   <td colSpan={5} className="px-4 py-2 uppercase tracking-wide">
                     D. SUBTOTAL BIAYA LANGSUNG (A + B + C)
                   </td>
-                  <td className="px-4 py-2 text-right font-mono text-slate-900 font-black">
+                  <td className="px-4 py-2 text-right font-mono text-[var(--text-primary)] font-black">
                     {formatRupiah(subtotal)}
                   </td>
                 </tr>
 
                 {/* Overhead */}
-                <tr className="hover:bg-slate-50/60">
-                  <td className="px-4 py-1 text-slate-400 pl-8">&bull; Overhead</td>
-                  <td className="px-3 py-1 font-medium text-slate-800">Biaya Overhead</td>
+                <tr className="hover:bg-[var(--bg-elevated-hover)]">
+                  <td className="px-4 py-1 text-[var(--text-secondary)] pl-8">&bull; Overhead</td>
+                  <td className="px-3 py-1 font-medium text-[var(--text-primary)]">Biaya Overhead</td>
                   <td className="px-2 py-1 text-center text-slate-500">ls</td>
-                  <td className="px-3 py-1 text-right font-mono text-slate-600">{formatNumber(actualOverheadPercent / 100, 4)}</td>
-                  <td className="px-4 py-1 text-right font-mono text-slate-600">{formatRupiah(subtotal)}</td>
-                  <td className="px-4 py-1 text-right font-mono font-semibold text-slate-800">{formatRupiah(computedOverhead)}</td>
+                  <td className="px-3 py-1 text-right font-mono text-[var(--text-secondary)]">{formatNumber(actualOverheadPercent / 100, 4)}</td>
+                  <td className="px-4 py-1 text-right font-mono text-[var(--text-secondary)]">{formatRupiah(subtotal)}</td>
+                  <td className="px-4 py-1 text-right font-mono font-semibold text-[var(--text-primary)]">{formatRupiah(computedOverhead)}</td>
                 </tr>
 
                 {/* Profit */}
-                <tr className="hover:bg-slate-50/60 border-b border-slate-200">
-                  <td className="px-4 py-1 text-slate-400 pl-8">&bull; Profit</td>
-                  <td className="px-3 py-1 font-medium text-slate-800">Keuntungan Pelaksana</td>
+                <tr className="hover:bg-[var(--bg-elevated-hover)] border-b border-[var(--border-primary)]">
+                  <td className="px-4 py-1 text-[var(--text-secondary)] pl-8">&bull; Profit</td>
+                  <td className="px-3 py-1 font-medium text-[var(--text-primary)]">Keuntungan Pelaksana</td>
                   <td className="px-2 py-1 text-center text-slate-500">ls</td>
-                  <td className="px-3 py-1 text-right font-mono text-slate-600">{formatNumber(actualProfitPercent / 100, 4)}</td>
-                  <td className="px-4 py-1 text-right font-mono text-slate-600">{formatRupiah(subtotal)}</td>
-                  <td className="px-4 py-1 text-right font-mono font-semibold text-slate-800">{formatRupiah(computedProfit)}</td>
+                  <td className="px-3 py-1 text-right font-mono text-[var(--text-secondary)]">{formatNumber(actualProfitPercent / 100, 4)}</td>
+                  <td className="px-4 py-1 text-right font-mono text-[var(--text-secondary)]">{formatRupiah(subtotal)}</td>
+                  <td className="px-4 py-1 text-right font-mono font-semibold text-[var(--text-primary)]">{formatRupiah(computedProfit)}</td>
                 </tr>
 
                 {/* Grand Total Row */}
-                <tr className="bg-slate-900 text-white font-bold text-xs border-t-2 border-blue-500">
+                <tr className="bg-[var(--bg-elevated)] text-[var(--text-primary)] font-bold text-xs border-t-2 border-blue-500">
                   <td colSpan={5} className="px-4 py-2 uppercase tracking-wide">
                     TOTAL HARGA SATUAN PEKERJAAN (D + E + F)
                   </td>

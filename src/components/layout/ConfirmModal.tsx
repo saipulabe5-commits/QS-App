@@ -34,7 +34,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onCancel}
-          className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs"
+          className="fixed inset-0 bg-[var(--bg-elevated)]/60 backdrop-blur-xs"
         />
 
         {/* Modal Box */}
@@ -42,7 +42,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           initial={{ opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 10 }}
-          className="relative bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-10"
+          className="relative bg-[var(--bg-elevated)] w-full max-w-md rounded-2xl shadow-2xl border border-[var(--border-primary)] overflow-hidden z-10"
         >
           <div className="p-6">
             <div className="flex items-start justify-between">
@@ -54,23 +54,23 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
                 >
                   <AlertTriangle className="w-5 h-5" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-900">{title}</h3>
+                <h3 className="text-lg font-bold text-[var(--text-primary)]">{title}</h3>
               </div>
               <button
                 onClick={onCancel}
-                className="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+                className="text-[var(--text-secondary)] hover:text-[var(--text-secondary)] p-1.5 rounded-lg hover:bg-[var(--bg-elevated-hover)] transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <p className="mt-3 text-sm text-slate-600 leading-relaxed">{message}</p>
+            <p className="mt-3 text-sm text-[var(--text-secondary)] leading-relaxed">{message}</p>
 
             <div className="mt-6 flex items-center justify-end space-x-3">
               <button
                 type="button"
                 onClick={onCancel}
-                className="px-4 py-2.5 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+                className="px-4 py-2.5 text-sm font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl transition-colors"
               >
                 {cancelLabel}
               </button>

@@ -54,11 +54,11 @@ export const SCurveComparisonView: React.FC = () => {
 
   if (!scurve) {
     return (
-      <div className="bg-white rounded-2xl p-12 border border-slate-200 text-center space-y-4 max-w-xl mx-auto shadow-xs">
+      <div className="bg-[var(--bg-elevated)] rounded-2xl p-12 border border-[var(--border-primary)] text-center space-y-4 max-w-xl mx-auto shadow-xs">
         <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto">
           <TrendingUp className="w-7 h-7" />
         </div>
-        <h3 className="text-base font-bold text-slate-900">Kurva S Belum Tersedia</h3>
+        <h3 className="text-base font-bold text-[var(--text-primary)]">Kurva S Belum Tersedia</h3>
         <p className="text-xs text-slate-500 max-w-sm mx-auto">
           Silakan buat jadwal rencana Kurva S terlebih dahulu pada menu Rencana Kurva S.
         </p>
@@ -90,7 +90,7 @@ export const SCurveComparisonView: React.FC = () => {
   return (
     <div className="space-y-6" ref={printRef}>
       {/* Header Banner */}
-      <div className="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4 print:bg-white print:text-slate-900 print:border-none print:p-0">
+      <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 border border-slate-200 dark:border-[var(--border-primary)] shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4 print:bg-[var(--bg-elevated)] print:text-[var(--text-primary)] print:border-none print:p-0">
         <div>
           <div className="flex items-center space-x-2.5 mb-1.5">
             <span className="p-1.5 bg-blue-600 rounded-lg text-white print:hidden">
@@ -98,13 +98,13 @@ export const SCurveComparisonView: React.FC = () => {
             </span>
             <h1 className="text-xl font-bold tracking-tight">Evaluasi & Perbandingan Kurva S (Rencana vs Realisasi)</h1>
           </div>
-          <p className="text-xs text-slate-300 print:text-slate-600 max-w-2xl">
+          <p className="text-xs text-slate-600 dark:text-slate-300 print:text-[var(--text-secondary)] max-w-2xl">
             Laporan visual komparasi progres fisik konstruksi mingguan & kumulatif untuk pelaporan owner, konsultan manajemen konstruksi, dan kontraktor.
           </p>
-          <div className="flex items-center space-x-3 mt-3 text-xs text-slate-400 print:text-slate-700">
+          <div className="flex items-center space-x-3 mt-3 text-xs text-[var(--text-secondary)] print:text-[var(--text-primary)]">
             <span className="flex items-center gap-1.5">
               <Building2 className="w-3.5 h-3.5 text-blue-400" />
-              Proyek: <strong className="text-white print:text-slate-900">{selectedProject?.name}</strong>
+              Proyek: <strong className="text-white print:text-[var(--text-primary)]">{selectedProject?.name}</strong>
             </span>
             <span>•</span>
             <span>No. Dok: {selectedProject?.documentNumber || 'PRJ-2025-001'}</span>
@@ -116,7 +116,7 @@ export const SCurveComparisonView: React.FC = () => {
         <div className="flex items-center space-x-3 flex-wrap print:hidden">
           <button
             onClick={handleExportCSV}
-            className="px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition-colors flex items-center space-x-1.5"
+            className="px-3.5 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-[var(--border-primary)] transition-colors flex items-center space-x-1.5"
           >
             <Download className="w-4 h-4" />
             <span>Ekspor CSV</span>
@@ -134,23 +134,23 @@ export const SCurveComparisonView: React.FC = () => {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
+        <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
           <span className="text-xs text-slate-500 font-medium">Rencana Kumulatif Saat Ini</span>
-          <div className="text-xl font-extrabold text-slate-800 mt-1">
+          <div className="text-xl font-extrabold text-[var(--text-primary)] mt-1">
             {currentPlanned.toFixed(2)} %
           </div>
-          <p className="text-[11px] text-slate-400 mt-0.5">Target schedule baseline</p>
+          <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">Target schedule baseline</p>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
+        <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
           <span className="text-xs text-slate-500 font-medium">Realisasi Aktual Kumulatif</span>
           <div className="text-xl font-extrabold text-blue-900 mt-1">
             {currentActual.toFixed(2)} %
           </div>
-          <p className="text-[11px] text-slate-400 mt-0.5">Fisik lapangan tercapai</p>
+          <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">Fisik lapangan tercapai</p>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
+        <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
           <span className="text-xs text-slate-500 font-medium">Deviasi Kumulatif</span>
           <div
             className={`text-xl font-extrabold mt-1 flex items-center gap-1 ${
@@ -170,12 +170,12 @@ export const SCurveComparisonView: React.FC = () => {
             )}
             <span>{currentDev >= 0 ? `+${currentDev.toFixed(2)} %` : `${currentDev.toFixed(2)} %`}</span>
           </div>
-          <p className="text-[11px] text-slate-400 mt-0.5">
+          <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">
             {currentDev >= 0.5 ? 'Surplus / Ahead' : currentDev <= -2.0 ? 'Defisit / Delay' : 'On Track'}
           </p>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
+        <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
           <span className="text-xs text-slate-500 font-medium">Status Pengendalian</span>
           <div className="mt-1">
             {currentDev >= 0.5 ? (
@@ -192,15 +192,15 @@ export const SCurveComparisonView: React.FC = () => {
               </span>
             )}
           </div>
-          <p className="text-[11px] text-slate-400 mt-1">Periode terakhir terlapor</p>
+          <p className="text-[11px] text-[var(--text-secondary)] mt-1">Periode terakhir terlapor</p>
         </div>
       </div>
 
       {/* Multi-Series S-Curve Interactive Recharts */}
-      <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-4">
+      <div className="bg-[var(--bg-elevated)] rounded-2xl p-6 border border-[var(--border-primary)] shadow-xs space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
           <div>
-            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+            <h3 className="text-base font-bold text-[var(--text-primary)] flex items-center gap-2">
               <TrendingUp className="w-5 h-5 text-blue-600" />
               Kurva S Komparasi (Rencana vs Aktual Lapangan)
             </h3>
@@ -212,11 +212,11 @@ export const SCurveComparisonView: React.FC = () => {
           <div className="flex items-center space-x-4 text-xs">
             <div className="flex items-center space-x-1.5">
               <span className="w-3 h-3 bg-blue-600 rounded-xs inline-block" />
-              <span className="text-slate-700 font-semibold">Rencana Kum. (%)</span>
+              <span className="text-[var(--text-primary)] font-semibold">Rencana Kum. (%)</span>
             </div>
             <div className="flex items-center space-x-1.5">
               <span className="w-3 h-3 bg-emerald-600 rounded-xs inline-block" />
-              <span className="text-slate-700 font-semibold">Aktual Kum. (%)</span>
+              <span className="text-[var(--text-primary)] font-semibold">Aktual Kum. (%)</span>
             </div>
             <div className="flex items-center space-x-1.5">
               <span className="w-3 h-3 bg-blue-200 rounded-xs inline-block" />
@@ -275,10 +275,10 @@ export const SCurveComparisonView: React.FC = () => {
       </div>
 
       {/* Comparison Matrix Table */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-        <div className="p-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+      <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] shadow-xs overflow-hidden">
+        <div className="p-4 border-b border-[var(--border-primary)] bg-[var(--bg-elevated-hover)] flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <h3 className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-2">
               <FileSpreadsheet className="w-4 h-4 text-blue-600" />
               Tabel Rekapitulasi Rencana vs Realisasi Progres
             </h3>
@@ -290,7 +290,7 @@ export const SCurveComparisonView: React.FC = () => {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-100 text-slate-700 font-bold border-b border-slate-200 uppercase tracking-wider">
+            <thead className="bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] font-bold border-b border-[var(--border-primary)] uppercase tracking-wider">
               <tr>
                 <th className="p-3 w-14 text-center">Periode</th>
                 <th className="p-3">Rentang Waktu</th>
@@ -308,7 +308,7 @@ export const SCurveComparisonView: React.FC = () => {
                 const hasData = rec.status !== 'Belum ada data';
 
                 let statusBadge = (
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-400">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)]">
                     Belum Lapor
                   </span>
                 );
@@ -333,15 +333,15 @@ export const SCurveComparisonView: React.FC = () => {
                 }
 
                 return (
-                  <tr key={rec.period} className="hover:bg-slate-50 transition-colors">
-                    <td className="p-3 text-center font-bold text-slate-800">
+                  <tr key={rec.period} className="hover:bg-[var(--bg-elevated-hover)] transition-colors">
+                    <td className="p-3 text-center font-bold text-[var(--text-primary)]">
                       {scurve.periodType === 'weekly' ? 'M' : 'B'}-{rec.period}
                     </td>
-                    <td className="p-3 text-slate-600 font-medium">{rec.periodLabel}</td>
-                    <td className="p-3 text-right font-mono text-slate-700">
+                    <td className="p-3 text-[var(--text-secondary)] font-medium">{rec.periodLabel}</td>
+                    <td className="p-3 text-right font-mono text-[var(--text-primary)]">
                       {rec.plannedProgress.toFixed(2)} %
                     </td>
-                    <td className="p-3 text-right font-mono font-bold text-slate-800">
+                    <td className="p-3 text-right font-mono font-bold text-[var(--text-primary)]">
                       {hasData ? `${rec.actualProgress.toFixed(2)} %` : '-'}
                     </td>
                     <td className="p-3 text-right font-mono font-semibold text-blue-900">
@@ -353,7 +353,7 @@ export const SCurveComparisonView: React.FC = () => {
                     <td
                       className={`p-3 text-right font-mono font-extrabold ${
                         !hasData
-                          ? 'text-slate-400'
+                          ? 'text-[var(--text-secondary)]'
                           : rec.deviation >= 0.5
                           ? 'text-blue-600'
                           : rec.deviation <= -2.0
@@ -368,7 +368,7 @@ export const SCurveComparisonView: React.FC = () => {
                         : '-'}
                     </td>
                     <td className="p-3 text-center">{statusBadge}</td>
-                    <td className="p-3 text-right font-mono text-slate-700">
+                    <td className="p-3 text-right font-mono text-[var(--text-primary)]">
                       {hasData && rec.actualCost ? formatRupiah(rec.actualCost) : '-'}
                     </td>
                   </tr>

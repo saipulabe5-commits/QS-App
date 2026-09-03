@@ -158,7 +158,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm"
+        className="fixed inset-0 bg-[var(--bg-elevated)]/40 backdrop-blur-sm"
       />
 
       {/* Modal Card */}
@@ -167,10 +167,10 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
         transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
-        className="relative w-full max-w-2xl rounded-[20px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden z-10 flex flex-col max-h-[90vh] border border-white/40 bg-white/70 backdrop-blur-2xl"
+        className="relative w-full max-w-2xl rounded-[20px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden z-10 flex flex-col max-h-[90vh] border border-white/40 bg-[var(--bg-elevated)]/70 backdrop-blur-2xl"
       >
         {/* HEADER MAC OS STYLE */}
-        <div className="px-4 py-3 flex items-center justify-between bg-white/40 border-b border-slate-200/50 sticky top-0 z-20">
+        <div className="px-4 py-3 flex items-center justify-between bg-[var(--bg-elevated)]/40 border-b border-[var(--border-primary)]/50 sticky top-0 z-20">
           {/* Traffic Lights */}
           <div className="flex items-center space-x-2 w-20">
             <button 
@@ -178,15 +178,15 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
               onClick={onClose}
               className="w-3.5 h-3.5 rounded-full bg-[#FF5F56] border border-[#E0443E] shadow-inner hover:bg-[#FF5F56]/80 flex items-center justify-center group"
             >
-              <X className="w-2.5 h-2.5 text-black/50 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <X className="w-2.5 h-2.5 text-[var(--text-secondary)] opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
-            <button type="button" className="w-3.5 h-3.5 rounded-full bg-[#FFBD2E] border border-[#DEA123] shadow-inner"></button>
-            <button type="button" className="w-3.5 h-3.5 rounded-full bg-[#27C93F] border border-[#1AAB29] shadow-inner"></button>
+            <div className="w-3.5 h-3.5 rounded-full bg-[#FFBD2E] border border-[#DEA123] shadow-inner"></div>
+            <div className="w-3.5 h-3.5 rounded-full bg-[#27C93F] border border-[#1AAB29] shadow-inner"></div>
           </div>
 
           {/* Judul Window di Tengah */}
           <div className="flex-1 text-center">
-            <h3 className="text-sm font-semibold text-slate-700 tracking-wide">
+            <h3 className="text-sm font-semibold text-[var(--text-primary)] tracking-wide">
               {projectToEdit ? 'Edit Data Proyek' : 'Tambah Proyek Konstruksi Baru'}
             </h3>
           </div>
@@ -196,11 +196,11 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto custom-scrollbar p-6 bg-white/60 space-y-4">
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto custom-scrollbar p-6 bg-[var(--bg-elevated)]/60 space-y-4">
           {/* Row 1: Nama & Dokumen */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="sm:col-span-2">
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                 Nama Proyek <span className="text-rose-500">*</span>
               </label>
               <input
@@ -208,15 +208,15 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="Contoh: Pembangunan Rumah Tinggal 2 Lantai Minimalis"
-                className={`w-full px-3.5 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all ${
-                  errors.name ? 'border-rose-400' : 'border-slate-200'
+                className={`w-full px-3.5 py-2.5 text-sm bg-[var(--bg-elevated-hover)] border rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all ${
+                  errors.name ? 'border-rose-400' : 'border-[var(--border-primary)]'
                 }`}
               />
               {errors.name && <p className="text-[11px] text-rose-600 mt-1 font-medium">{errors.name}</p>}
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                 Nomor Dokumen Kontrak / RAB <span className="text-rose-500">*</span>
               </label>
               <input
@@ -224,21 +224,21 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                 value={formData.documentNo}
                 onChange={(e) => setFormData({ ...formData, documentNo: e.target.value })}
                 placeholder="RAB/2026/VIII/001"
-                className={`w-full px-3.5 py-2.5 text-sm bg-slate-50 border rounded-xl font-mono focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all ${
-                  errors.documentNo ? 'border-rose-400' : 'border-slate-200'
+                className={`w-full px-3.5 py-2.5 text-sm bg-[var(--bg-elevated-hover)] border rounded-xl font-mono focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all ${
+                  errors.documentNo ? 'border-rose-400' : 'border-[var(--border-primary)]'
                 }`}
               />
               {errors.documentNo && <p className="text-[11px] text-rose-600 mt-1 font-medium">{errors.documentNo}</p>}
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                 Status Pelaksanaan Proyek
               </label>
               <select
                 value={formData.status}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value as ProjectStatus })}
-                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
+                className="w-full px-3.5 py-2.5 text-sm bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
               >
                 <option value="Draft">Draft (Perencanaan)</option>
                 <option value="Berjalan">Berjalan (Sedang Dikerjakan)</option>
@@ -250,7 +250,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
           {/* Row 2: Klien, Lokasi, dan Luas */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                 Nama Pemilik / Klien
               </label>
               <input
@@ -258,12 +258,12 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                 value={formData.clientName}
                 onChange={(e) => setFormData({ ...formData, clientName: e.target.value })}
                 placeholder="Bpk. Hendra Gunawan / PT. Klien"
-                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
+                className="w-full px-3.5 py-2.5 text-sm bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                 Lokasi Pekerjaan Proyek
               </label>
               <input
@@ -271,12 +271,12 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                 value={formData.location}
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                 placeholder="BSD City, Tangerang Selatan"
-                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
+                className="w-full px-3.5 py-2.5 text-sm bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                 Luas Bangunan (m²)
               </label>
               <input
@@ -284,7 +284,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                 value={formData.buildingArea || ''}
                 onChange={(e) => setFormData({ ...formData, buildingArea: Number(e.target.value) })}
                 placeholder="100"
-                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
+                className="w-full px-3.5 py-2.5 text-sm bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
               />
             </div>
           </div>
@@ -292,7 +292,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
           {/* Row 3: Kontraktor & Konsultan */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                 Pelaksana Kontraktor
               </label>
               <input
@@ -300,12 +300,12 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                 value={formData.contractor}
                 onChange={(e) => setFormData({ ...formData, contractor: e.target.value })}
                 placeholder={settings.companyName}
-                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
+                className="w-full px-3.5 py-2.5 text-sm bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                 Konsultan Perencana / Pengawas
               </label>
               <input
@@ -313,7 +313,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                 value={formData.consultant}
                 onChange={(e) => setFormData({ ...formData, consultant: e.target.value })}
                 placeholder="Studio Arsitek Mandiri"
-                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
+                className="w-full px-3.5 py-2.5 text-sm bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
               />
             </div>
           </div>
@@ -321,70 +321,40 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
           {/* Row 4: Jadwal Pelaksanaan */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                 Tanggal Mulai Pekerjaan
               </label>
               <input
                 type="date"
                 value={formData.startDate}
                 onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
+                className="w-full px-3.5 py-2.5 text-sm bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                 Estimasi Tanggal Selesai
               </label>
               <input
                 type="date"
                 value={formData.endDate}
                 onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
+                className="w-full px-3.5 py-2.5 text-sm bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
               />
             </div>
           </div>
 
           {/* Row 5: Parameter Finansial (Overhead, Profit, Pajak) */}
-          <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-            <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center space-x-1.5">
+          <div className="p-4 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] space-y-3">
+            <h4 className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider flex items-center space-x-1.5">
               <Percent className="w-3.5 h-3.5 text-blue-600" />
               <span>Parameter Finansial & Markup Anggaran (%)</span>
             </h4>
 
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 gap-3">
               <div>
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Overhead (%)
-                </label>
-                <input
-                  type="number"
-                  step="0.1"
-                  min="0"
-                  max="100"
-                  value={formData.overheadPercent}
-                  onChange={(e) => setFormData({ ...formData, overheadPercent: parseFloat(e.target.value) || 0 })}
-                  className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg text-right font-medium"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Profit Kontraktor (%)
-                </label>
-                <input
-                  type="number"
-                  step="0.1"
-                  min="0"
-                  max="100"
-                  value={formData.profitPercent}
-                  onChange={(e) => setFormData({ ...formData, profitPercent: parseFloat(e.target.value) || 0 })}
-                  className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg text-right font-medium"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                <label className="block text-[11px] font-semibold text-[var(--text-secondary)] mb-1">
                   Pajak PPN (%)
                 </label>
                 <input
@@ -394,7 +364,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                   max="100"
                   value={formData.taxPercent}
                   onChange={(e) => setFormData({ ...formData, taxPercent: parseFloat(e.target.value) || 0 })}
-                  className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg text-right font-medium"
+                  className="w-full px-3 py-2 text-sm bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg text-right font-medium"
                 />
               </div>
             </div>
@@ -410,7 +380,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
               <select
                 value={formData.selectedTemplateId}
                 onChange={(e) => setFormData({ ...formData, selectedTemplateId: e.target.value })}
-                className="w-full px-3 py-2 text-xs bg-white border border-blue-200 rounded-lg text-slate-700 focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
+                className="w-full px-3 py-2 text-xs bg-[var(--bg-elevated)] border border-blue-200 rounded-lg text-[var(--text-primary)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
               >
                 <option value="">-- Mulai dengan RAB Kosong --</option>
                 {rabTemplates.map((tpl) => (
@@ -427,7 +397,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
 
           {/* Catatan Proyek */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
               Catatan & Spesifikasi Khusus
             </label>
             <textarea
@@ -435,7 +405,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
               placeholder="Spesifikasi teknis, batasan pekerjaan, atau asumsi anggaran..."
-              className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
+              className="w-full px-3.5 py-2.5 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
             />
           </div>
 
@@ -444,7 +414,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+              className="px-4 py-2.5 text-sm font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl transition-colors"
             >
               Batal
             </button>

@@ -83,18 +83,18 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
       if (props && props.isViewLevel) {
         return (
-          <div className="p-8 bg-white border border-rose-200 rounded-2xl shadow-sm my-4 text-center max-w-2xl mx-auto">
+          <div className="p-8 bg-white dark:bg-slate-900 border border-rose-200 rounded-2xl shadow-sm my-4 text-center max-w-2xl mx-auto">
             <div className="w-12 h-12 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <AlertTriangle className="w-6 h-6" />
             </div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
               {props.fallbackTitle || 'Gagal Memuat Modul'}
             </h3>
-            <p className="text-sm text-slate-600 mb-4 max-w-md mx-auto">
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 max-w-md mx-auto">
               {sanitizedMessage}
             </p>
-            <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-left font-mono text-xs text-slate-700 mb-6 overflow-x-auto max-h-32">
-              <span className="text-slate-400">ID Insiden: {state.errorId}</span>
+            <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg p-3 text-left font-mono text-xs text-slate-700 dark:text-slate-300 mb-6 overflow-x-auto max-h-32">
+              <span className="text-slate-500 dark:text-slate-400">ID Insiden: {state.errorId}</span>
               <div className="mt-1 text-rose-700">{sanitizedMessage}</div>
             </div>
             <div className="flex flex-wrap justify-center gap-3">
@@ -111,19 +111,19 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       }
 
       return (
-        <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4">
-          <div className="max-w-xl w-full bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
+        <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-100 flex items-center justify-center p-4">
+          <div className="max-w-xl w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-300 dark:border-slate-700 rounded-2xl p-6 sm:p-8 shadow-2xl">
             <div className="w-14 h-14 bg-rose-500/20 border border-rose-500/30 text-rose-400 rounded-2xl flex items-center justify-center mb-6">
               <ShieldAlert className="w-8 h-8" />
             </div>
             <h1 className="text-2xl font-bold text-white mb-2">
               Pemulihan Runtime RAB Pro V11
             </h1>
-            <p className="text-slate-400 text-sm mb-6 leading-relaxed">
+            <p className="text-slate-500 dark:text-slate-400 text-sm mb-6 leading-relaxed">
               Sistem mendeteksi kendala pada rendering komponen frontend. Data proyek Anda tersimpan secara aman di database lokal/server.
             </p>
 
-            <div className="bg-slate-950 border border-slate-800 rounded-xl p-4 mb-6 font-mono text-xs text-slate-300 overflow-x-auto max-h-44">
+            <div className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-300 dark:border-slate-700 rounded-xl p-4 mb-6 font-mono text-xs text-slate-600 dark:text-slate-300 overflow-x-auto max-h-44">
               <div className="text-slate-500 mb-1">
                 Ref ID: <span className="text-blue-400 font-bold">{state.errorId}</span> | Waktu: {new Date().toISOString()}
               </div>
@@ -143,7 +143,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               </button>
               <button
                 onClick={this.handleHardReset}
-                className="w-full px-4 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-sm flex items-center justify-center space-x-2 transition-colors border border-slate-700 cursor-pointer"
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-sm flex items-center justify-center space-x-2 transition-colors border border-slate-300 dark:border-slate-700 cursor-pointer"
               >
                 <Database className="w-4 h-4" />
                 <span>Bersihkan Cache & Boot Ulang</span>

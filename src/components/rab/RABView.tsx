@@ -10,6 +10,7 @@ import { RABSummaryCard } from './RABSummaryCard';
 import { ConfirmModal } from '../layout/ConfirmModal';
 import { RABRevisionHistoryModal } from './RABRevisionHistoryModal';
 import { QuickRABBuilderModal } from './QuickRABBuilderModal';
+import { FinancialReviewModal } from '../ai/FinancialReviewModal';
 import {
   Plus,
   Search,
@@ -29,7 +30,7 @@ import {
   User,
   HardHat,
   History,
-  Zap,
+  Zap, ShieldCheck,
 } from 'lucide-react';
 
 interface RABViewProps {
@@ -82,13 +83,14 @@ export const RABView: React.FC<RABViewProps> = ({
   // Revision History & Quick Builder Modals
   const [isRevisionHistoryOpen, setIsRevisionHistoryOpen] = useState(false);
   const [isQuickBuilderOpen, setIsQuickBuilderOpen] = useState(false);
+  const [isFinancialReviewOpen, setIsFinancialReviewOpen] = useState(false);
 
   // If no project selected
   if (!selectedProject) {
     return (
-      <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center shadow-2xs">
-        <Building2 className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-        <h3 className="text-base font-bold text-slate-800">Belum Ada Proyek Terpilih</h3>
+      <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] p-12 text-center shadow-2xs">
+        <Building2 className="w-12 h-12 text-slate-600 dark:text-slate-300 mx-auto mb-3" />
+        <h3 className="text-base font-bold text-[var(--text-primary)]">Belum Ada Proyek Terpilih</h3>
         <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
           Silakan pilih atau buat proyek konstruksi terlebih dahulu untuk mulai menyusun Rencana Anggaran Biaya.
         </p>
@@ -194,7 +196,7 @@ export const RABView: React.FC<RABViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Project Identity Banner */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-2xs">
+      <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] p-6 shadow-2xs">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
@@ -207,35 +209,35 @@ export const RABView: React.FC<RABViewProps> = ({
                     ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                     : selectedProject.status === 'Selesai'
                     ? 'bg-blue-50 text-blue-700 border-blue-200'
-                    : 'bg-slate-100 text-slate-700 border-slate-200'
+                    : 'bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] border-[var(--border-primary)]'
                 }`}
               >
                 {selectedProject.status}
               </span>
-              <span className="text-xs text-slate-400 font-medium">
+              <span className="text-xs text-[var(--text-secondary)] font-medium">
                 Dibuat: {selectedProject.createdAt}
               </span>
             </div>
 
-            <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-black text-[var(--text-primary)] tracking-tight">
               {selectedProject.name}
             </h1>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs text-slate-600 pt-1">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs text-[var(--text-secondary)] pt-1">
               <div className="flex items-center space-x-1.5">
-                <MapPin className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                <MapPin className="w-3.5 h-3.5 text-[var(--text-secondary)] flex-shrink-0" />
                 <span className="truncate">{selectedProject.location || 'Lokasi Belum Diatur'}</span>
               </div>
               <div className="flex items-center space-x-1.5">
-                <User className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                <User className="w-3.5 h-3.5 text-[var(--text-secondary)] flex-shrink-0" />
                 <span className="truncate">Pemilik: {selectedProject.ownerName || '-'}</span>
               </div>
               <div className="flex items-center space-x-1.5">
-                <HardHat className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                <HardHat className="w-3.5 h-3.5 text-[var(--text-secondary)] flex-shrink-0" />
                 <span className="truncate">Kontraktor: {selectedProject.contractorName || '-'}</span>
               </div>
               <div className="flex items-center space-x-1.5">
-                <Calendar className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                <Calendar className="w-3.5 h-3.5 text-[var(--text-secondary)] flex-shrink-0" />
                 <span className="truncate">
                   {selectedProject.startDate ? `${selectedProject.startDate} s/d ${selectedProject.endDate || '-'}` : 'Waktu Belum Diatur'}
                 </span>
@@ -244,14 +246,14 @@ export const RABView: React.FC<RABViewProps> = ({
           </div>
 
           {/* Quick Grand Total Badge */}
-          <div className="bg-slate-900 text-white p-4 sm:p-5 rounded-xl border border-slate-800 flex-shrink-0 min-w-[240px] text-right">
+          <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] p-4 sm:p-5 rounded-xl border border-slate-200 dark:border-[var(--border-primary)] flex-shrink-0 min-w-[240px] text-right">
             <span className="text-[10px] text-blue-400 uppercase font-extrabold tracking-wider block">
               Nilai Kontrak RAB (Grand Total)
             </span>
             <div className="text-xl sm:text-2xl font-black text-white font-mono mt-0.5">
               {formatRupiah(calc.grandTotal)}
             </div>
-            <div className="text-[11px] text-slate-400 mt-1">
+            <div className="text-[11px] text-[var(--text-secondary)] mt-1">
               {projectRABItems.length} Pos Pekerjaan Terhitung
             </div>
           </div>
@@ -259,17 +261,17 @@ export const RABView: React.FC<RABViewProps> = ({
       </div>
 
       {/* Action Toolbar */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] p-4 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Left: Search & Filter */}
         <div className="flex flex-col sm:flex-row items-center gap-3 flex-1">
           <div className="relative w-full sm:w-64">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-[var(--text-secondary)] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Cari kode, uraian, spesifikasi..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
+              className="w-full pl-9 pr-3.5 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
             />
           </div>
 
@@ -277,7 +279,7 @@ export const RABView: React.FC<RABViewProps> = ({
             <select
               value={selectedCategoryFilter}
               onChange={(e) => setSelectedCategoryFilter(e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 text-slate-700"
+              className="w-full px-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 text-[var(--text-primary)]"
             >
               <option value="all">Semua Kategori Pekerjaan</option>
               {RAB_CATEGORIES.map((cat) => (
@@ -303,7 +305,7 @@ export const RABView: React.FC<RABViewProps> = ({
           {onOpenAIModal && (
             <button
               onClick={onOpenAIModal}
-              className="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-blue-400 text-xs font-bold rounded-xl shadow-2xs flex items-center space-x-1.5 transition-colors border border-blue-900"
+              className="px-3.5 py-2 bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] text-blue-400 text-xs font-bold rounded-xl shadow-2xs flex items-center space-x-1.5 transition-colors border border-blue-900"
               title="Buka AI Asisten Quantity Surveyor (QS)"
             >
               <Sparkles className="w-4 h-4 text-blue-400" />
@@ -321,53 +323,61 @@ export const RABView: React.FC<RABViewProps> = ({
 
           <button
             onClick={() => setIsRevisionHistoryOpen(true)}
-            className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
+            className="px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
             title="Lihat riwayat revisi dan audit perubahan data RAB"
           >
-            <History className="w-3.5 h-3.5 text-slate-600" />
+            <History className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
             <span className="hidden lg:inline">Riwayat Revisi</span>
           </button>
 
           <button
             onClick={() => setIsApplyTemplateOpen(true)}
-            className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
+            className="px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
             title="Gunakan template pekerjaan siap pakai"
           >
-            <FileSpreadsheet className="w-3.5 h-3.5 text-slate-600" />
+            <FileSpreadsheet className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
             <span>Gunakan Template</span>
           </button>
 
           <button
             onClick={onOpenCalculator}
-            className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
+            className="px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
             title="Buka kalkulator volume pekerjaan"
           >
-            <Ruler className="w-3.5 h-3.5 text-slate-600" />
+            <Ruler className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
             <span className="hidden sm:inline">Kalkulator</span>
           </button>
 
+                    <button
+            onClick={() => setIsFinancialReviewOpen(true)}
+            className="px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
+            title="Review Kewajaran Anggaran via AI"
+          >
+            <ShieldCheck className="w-3.5 h-3.5 text-indigo-600" />
+            <span className="hidden md:inline">AI Review</span>
+          </button>
           <button
             onClick={handleExportCSV}
-            className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
+            className="px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
             title="Ekspor ke CSV / Excel"
           >
-            <Download className="w-3.5 h-3.5 text-slate-600" />
+            <Download className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
             <span className="hidden md:inline">Ekspor CSV</span>
           </button>
 
           <button
             onClick={() => setActiveTab('reports')}
-            className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
+            className="px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
             title="Lihat dan cetak dokumen laporan RAB"
           >
-            <Printer className="w-3.5 h-3.5 text-slate-600" />
+            <Printer className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
             <span className="hidden md:inline">Laporan</span>
           </button>
 
           {projectRABItems.length > 0 && (
             <button
               onClick={() => setIsClearConfirmOpen(true)}
-              className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
+              className="p-2 text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
               title="Kosongkan seluruh item RAB pada proyek ini"
             >
               <Trash2 className="w-4 h-4" />
@@ -439,24 +449,24 @@ export const RABView: React.FC<RABViewProps> = ({
       {isApplyTemplateOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
           <div
-            className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs"
+            className="fixed inset-0 bg-[var(--bg-elevated)]/60 backdrop-blur-xs"
             onClick={() => setIsApplyTemplateOpen(false)}
           />
-          <div className="relative bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 p-6 z-10">
-            <h3 className="text-base font-bold text-slate-900">Gunakan Template Pekerjaan</h3>
+          <div className="relative bg-[var(--bg-elevated)] w-full max-w-md rounded-2xl shadow-2xl border border-[var(--border-primary)] p-6 z-10">
+            <h3 className="text-base font-bold text-[var(--text-primary)]">Gunakan Template Pekerjaan</h3>
             <p className="text-xs text-slate-500 mt-1">
               Pilih susunan pekerjaan standar untuk mengisi RAB secara cepat.
             </p>
 
             <div className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                   Pilih Template Master
                 </label>
                 <select
                   value={selectedTemplateToApply}
                   onChange={(e) => setSelectedTemplateToApply(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl"
+                  className="w-full px-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl"
                 >
                   <option value="">-- Pilih Template --</option>
                   {rabTemplates.map((tpl) => (
@@ -468,7 +478,7 @@ export const RABView: React.FC<RABViewProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                   Metode Pengisian
                 </label>
                 <div className="grid grid-cols-2 gap-2 text-xs">
@@ -478,7 +488,7 @@ export const RABView: React.FC<RABViewProps> = ({
                     className={`p-2.5 rounded-xl border text-center font-medium ${
                       templateApplyMode === 'append'
                         ? 'bg-blue-50 border-blue-500 text-blue-700 font-bold'
-                        : 'bg-slate-50 border-slate-200 text-slate-600'
+                        : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]'
                     }`}
                   >
                     Tambahkan ke RAB
@@ -489,7 +499,7 @@ export const RABView: React.FC<RABViewProps> = ({
                     className={`p-2.5 rounded-xl border text-center font-medium ${
                       templateApplyMode === 'replace'
                         ? 'bg-rose-50 border-rose-500 text-rose-700 font-bold'
-                        : 'bg-slate-50 border-slate-200 text-slate-600'
+                        : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]'
                     }`}
                   >
                     Timpa (Ganti Total)
@@ -501,7 +511,7 @@ export const RABView: React.FC<RABViewProps> = ({
             <div className="mt-6 flex items-center justify-end space-x-2">
               <button
                 onClick={() => setIsApplyTemplateOpen(false)}
-                className="px-4 py-2 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl"
+                className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl"
               >
                 Batal
               </button>
@@ -521,18 +531,18 @@ export const RABView: React.FC<RABViewProps> = ({
       {isSaveTemplateOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
           <div
-            className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs"
+            className="fixed inset-0 bg-[var(--bg-elevated)]/60 backdrop-blur-xs"
             onClick={() => setIsSaveTemplateOpen(false)}
           />
-          <div className="relative bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 p-6 z-10">
-            <h3 className="text-base font-bold text-slate-900">Simpan Sebagai Template Master</h3>
+          <div className="relative bg-[var(--bg-elevated)] w-full max-w-md rounded-2xl shadow-2xl border border-[var(--border-primary)] p-6 z-10">
+            <h3 className="text-base font-bold text-[var(--text-primary)]">Simpan Sebagai Template Master</h3>
             <p className="text-xs text-slate-500 mt-1">
               Simpan seluruh {projectRABItems.length} pos pekerjaan dari proyek ini sebagai template yang dapat digunakan berulang kali.
             </p>
 
             <div className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                   Nama Template <span className="text-rose-500">*</span>
                 </label>
                 <input
@@ -540,18 +550,18 @@ export const RABView: React.FC<RABViewProps> = ({
                   value={newTemplateName}
                   onChange={(e) => setNewTemplateName(e.target.value)}
                   placeholder="Contoh: Template Rumah Minimalis 2 Lantai"
-                  className="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl"
+                  className="w-full px-3.5 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                   Kategori Template
                 </label>
                 <select
                   value={newTemplateCategory}
                   onChange={(e) => setNewTemplateCategory(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl"
+                  className="w-full px-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl"
                 >
                   <option value="Rumah Tinggal">Rumah Tinggal</option>
                   <option value="Gedung & Ruko">Gedung & Ruko</option>
@@ -562,7 +572,7 @@ export const RABView: React.FC<RABViewProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                   Deskripsi Singkat
                 </label>
                 <textarea
@@ -570,7 +580,7 @@ export const RABView: React.FC<RABViewProps> = ({
                   value={newTemplateDesc}
                   onChange={(e) => setNewTemplateDesc(e.target.value)}
                   placeholder="Deskripsi spesifikasi template..."
-                  className="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl"
+                  className="w-full px-3.5 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl"
                 />
               </div>
             </div>
@@ -578,7 +588,7 @@ export const RABView: React.FC<RABViewProps> = ({
             <div className="mt-6 flex items-center justify-end space-x-2">
               <button
                 onClick={() => setIsSaveTemplateOpen(false)}
-                className="px-4 py-2 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl"
+                className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl"
               >
                 Batal
               </button>
@@ -607,6 +617,16 @@ export const RABView: React.FC<RABViewProps> = ({
         <QuickRABBuilderModal
           isOpen={isQuickBuilderOpen}
           onClose={() => setIsQuickBuilderOpen(false)}
+        />
+      )}
+      {/* Financial Review Modal */}
+      {isFinancialReviewOpen && (
+        <FinancialReviewModal
+          isOpen={isFinancialReviewOpen}
+          onClose={() => setIsFinancialReviewOpen(false)}
+          project={selectedProject}
+          items={projectRABItems}
+          calculation={calc}
         />
       )}
     </div>

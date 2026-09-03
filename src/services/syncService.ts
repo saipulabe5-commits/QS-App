@@ -146,64 +146,15 @@ export class SyncService {
       }
 
       // Sync backend disabled for Local-First zero-cost architecture
-      return;
-      const response = await fetch('/api/sync/push', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          deviceId: this.deviceId,
-          userId: pendingOps[0].userId,
-          operations: pendingOps,
-        }),
-      });
-
-      if (response.ok) {
-        const result: SyncPushResponse = await response.json();
-        
-        // Update status operasi yang diterima
-        for (const opId of result.accepted) {
-          const op = pendingOps.find((o) => o.id === opId);
-          if (op) {
-            op.status = 'synced';
-            await idbStorage.delete(DB_STORES.SYNC_QUEUE, opId);
-          }
-        }
-
-        // Simpan konflik jika ada
-        if (result.conflicts && result.conflicts.length > 0) {
-          for (const conflict of result.conflicts) {
-            await idbStorage.put(DB_STORES.SYNC_CONFLICTS, conflict);
-            const relatedOp = pendingOps.find((o) => o.id === conflict.syncOpId);
-            if (relatedOp) {
-              relatedOp.status = 'conflict';
-              await idbStorage.put(DB_STORES.SYNC_QUEUE, relatedOp);
-            }
-          }
-        }
-
-        // Tandai failed jika ditolak
-        if (result.rejected && result.rejected.length > 0) {
-          for (const rej of result.rejected) {
-            const op = pendingOps.find((o) => o.id === rej.id);
-            if (op) {
-              op.status = 'failed';
-              op.error = rej.reason;
-              op.retryCount += 1;
-              await idbStorage.put(DB_STORES.SYNC_QUEUE, op);
-            }
-          }
-        }
-
-        this.lastSyncTime = new Date().toISOString();
-      } else {
-        // Gagal terhubung ke API backend
-        for (const op of pendingOps) {
-          op.status = 'failed';
-          op.error = `HTTP Error ${response.status}: Server backend tidak merespons.`;
-          op.retryCount += 1;
-          await idbStorage.put(DB_STORES.SYNC_QUEUE, op);
-        }
+      // Instead of leaving them in processing, we'll mark them as skipped or delete them
+      for (const op of pendingOps) {
+        op.status = 'cancelled';
+        op.error = 'Sinkronisasi cloud dinonaktifkan (Mode Local-Only)';
+        await idbStorage.put(DB_STORES.SYNC_QUEUE, op);
       }
+      this.isSyncing = false;
+      this.notifyListeners();
+      return;
     } catch (error: any) {
       console.warn('[OfflineSyncEngine] Proses sinkronisasi ditunda (koneksi terputus/offline):', error);
       for (const op of pendingOps) {

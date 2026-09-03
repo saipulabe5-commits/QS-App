@@ -95,16 +95,16 @@ export const PriceItemModal: React.FC<PriceItemModalProps> = ({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs"
+        className="fixed inset-0 bg-[var(--bg-elevated)]/60 backdrop-blur-xs"
       />
 
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 15 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 15 }}
-        className="relative bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-10 my-8"
+        className="relative bg-[var(--bg-elevated)] w-full max-w-lg rounded-2xl shadow-2xl border border-[var(--border-primary)] overflow-hidden z-10 my-8"
       >
-        <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+        <div className="px-6 py-4 bg-[var(--bg-elevated)] text-[var(--text-primary)] flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Database className="w-5 h-5 text-blue-400" />
             <h3 className="text-base font-bold">
@@ -113,7 +113,7 @@ export const PriceItemModal: React.FC<PriceItemModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
+            className="text-[var(--text-secondary)] hover:text-white p-1 rounded-lg hover:bg-[var(--bg-elevated-hover)] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -122,7 +122,7 @@ export const PriceItemModal: React.FC<PriceItemModalProps> = ({
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                 Jenis Unsur <span className="text-rose-500">*</span>
               </label>
               <select
@@ -141,7 +141,7 @@ export const PriceItemModal: React.FC<PriceItemModalProps> = ({
                     setUnit('kg');
                   }
                 }}
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl"
+                className="w-full px-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl"
               >
                 <option value="material">Material (Bahan Baku)</option>
                 <option value="labor">Tenaga Kerja (Upah Tukang)</option>
@@ -150,7 +150,7 @@ export const PriceItemModal: React.FC<PriceItemModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                 Kode Item <span className="text-rose-500">*</span>
               </label>
               <input
@@ -158,14 +158,14 @@ export const PriceItemModal: React.FC<PriceItemModalProps> = ({
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 placeholder="MAT-01 / UPH-01"
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl font-mono"
+                className="w-full px-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl font-mono"
               />
               {errors.code && <p className="text-[10px] text-rose-600 mt-0.5">{errors.code}</p>}
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
               Nama Item Bahan / Upah / Alat <span className="text-rose-500">*</span>
             </label>
             <input
@@ -173,14 +173,14 @@ export const PriceItemModal: React.FC<PriceItemModalProps> = ({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Contoh: Semen Portland Gresik 50kg / Tukang Batu Terampil"
-              className="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl"
+              className="w-full px-3.5 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl"
             />
             {errors.name && <p className="text-[10px] text-rose-600 mt-0.5">{errors.name}</p>}
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                 Kategori
               </label>
               <input
@@ -188,12 +188,12 @@ export const PriceItemModal: React.FC<PriceItemModalProps> = ({
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 placeholder="Semen, Besi & Baja, Kayu, Upah..."
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl"
+                className="w-full px-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                 Satuan (Unit)
               </label>
               <input
@@ -201,14 +201,14 @@ export const PriceItemModal: React.FC<PriceItemModalProps> = ({
                 value={unit}
                 onChange={(e) => setUnit(e.target.value)}
                 placeholder="sak, kg, m³, OH, hari, bh..."
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl"
+                className="w-full px-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                 Harga Satuan (Rp) <span className="text-rose-500">*</span>
               </label>
               <input
@@ -217,13 +217,13 @@ export const PriceItemModal: React.FC<PriceItemModalProps> = ({
                 step="any"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl font-mono text-right font-bold"
+                className="w-full px-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl font-mono text-right font-bold"
               />
               {errors.price && <p className="text-[10px] text-rose-600 mt-0.5">{errors.price}</p>}
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                 Sumber Referensi Harga
               </label>
               <input
@@ -231,7 +231,7 @@ export const PriceItemModal: React.FC<PriceItemModalProps> = ({
                 value={source}
                 onChange={(e) => setSource(e.target.value)}
                 placeholder="Standar Pemda / Toko Mitra"
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl"
+                className="w-full px-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl"
               />
             </div>
           </div>
@@ -247,7 +247,7 @@ export const PriceItemModal: React.FC<PriceItemModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl"
+              className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl"
             >
               Batal
             </button>

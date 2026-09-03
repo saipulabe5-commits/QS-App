@@ -91,15 +91,15 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
       cost: data.taxCost,
       percent: data.taxPercent,
       color: 'bg-slate-700',
-      textColor: 'text-slate-800',
-      badgeBg: 'bg-slate-100 border-slate-300',
+      textColor: 'text-[var(--text-primary)]',
+      badgeBg: 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)]',
       icon: Receipt,
       description: 'Pajak Pertambahan Nilai (PPN) resmi negara.',
     },
   ].filter(c => c.cost > 0);
 
   return (
-    <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs">
+    <div className="bg-[var(--bg-elevated)] p-5 sm:p-6 rounded-2xl border border-[var(--border-primary)] shadow-2xs">
       {/* Header & Toggle Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
         <div>
@@ -107,7 +107,7 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
             <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center border border-blue-100">
               <PieChart className="w-4 h-4" />
             </div>
-            <h3 className="text-base font-bold text-slate-900">
+            <h3 className="text-base font-bold text-[var(--text-primary)]">
               Grafik Komposisi & Struktur Biaya
             </h3>
           </div>
@@ -117,14 +117,14 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
         </div>
 
         {/* Scope Selector Button Group */}
-        <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold">
+        <div className="flex items-center bg-[var(--bg-elevated-hover)] p-1 rounded-xl border border-[var(--border-primary)] text-xs font-semibold">
           {selectedProjectBreakdown && (
             <button
               onClick={() => setScope('selected')}
               className={`px-3 py-1.5 rounded-lg transition-all ${
                 scope === 'selected'
-                  ? 'bg-white text-blue-700 shadow-2xs font-bold'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-[var(--bg-elevated)] text-blue-700 shadow-2xs font-bold'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
               Proyek Terpilih
@@ -134,8 +134,8 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
             onClick={() => setScope('portfolio')}
             className={`px-3 py-1.5 rounded-lg transition-all ${
               scope === 'portfolio'
-                ? 'bg-white text-blue-700 shadow-2xs font-bold'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-[var(--bg-elevated)] text-blue-700 shadow-2xs font-bold'
+                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
             }`}
           >
             Semua Proyek
@@ -144,11 +144,11 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
       </div>
 
       {/* Target Project Label & Total Value Indicator */}
-      <div className="mt-4 p-3.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div className="mt-4 p-3.5 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div className="flex items-center space-x-2">
           <Info className="w-4 h-4 text-blue-600 flex-shrink-0" />
-          <span className="text-xs font-medium text-slate-700 truncate max-w-md">
-            Menganalisis: <strong className="text-slate-900">{titleScope}</strong>
+          <span className="text-xs font-medium text-[var(--text-primary)] truncate max-w-md">
+            Menganalisis: <strong className="text-[var(--text-primary)]">{titleScope}</strong>
           </span>
         </div>
         <div className="text-right flex items-center justify-between sm:justify-end gap-3 text-xs">
@@ -161,13 +161,13 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
 
       {/* Segmented Cost Bar Graph */}
       <div className="mt-5">
-        <div className="flex items-center justify-between text-xs text-slate-600 font-semibold mb-2">
+        <div className="flex items-center justify-between text-xs text-[var(--text-secondary)] font-semibold mb-2">
           <span>Distribusi Proporsi Visual</span>
           <span>100% Anggaran</span>
         </div>
 
         {/* Progress Bar Container */}
-        <div className="w-full h-5 rounded-lg bg-slate-100 p-0.5 border border-slate-200 flex overflow-hidden">
+        <div className="w-full h-5 rounded-lg bg-[var(--bg-elevated-hover)] p-0.5 border border-[var(--border-primary)] flex overflow-hidden">
           {costItems.map((item) => {
             const widthPct = Math.max(0, item.percent);
             if (widthPct === 0) return null;
@@ -183,12 +183,12 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
         </div>
 
         {/* Mini Legend Row below the bar */}
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-3 text-[11px] text-slate-600 font-medium">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-3 text-[11px] text-[var(--text-secondary)] font-medium">
           {costItems.map((item) => (
             <div key={item.id} className="flex items-center space-x-1.5">
               <span className={`w-2.5 h-2.5 rounded-xs ${item.color}`} />
               <span>{item.name}</span>
-              <span className="font-bold text-slate-900">
+              <span className="font-bold text-[var(--text-primary)]">
                 ({formatNumber(item.percent, 1)}%)
               </span>
             </div>
@@ -211,13 +211,13 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
                     <div className={`w-7 h-7 rounded-lg ${item.color} text-white flex items-center justify-center`}>
                       <Icon className="w-4 h-4" />
                     </div>
-                    <span className="text-xs font-bold text-slate-900">{item.name}</span>
+                    <span className="text-xs font-bold text-[var(--text-primary)]">{item.name}</span>
                   </div>
                   <span className={`text-xs font-black ${item.textColor}`}>
                     {formatNumber(item.percent, 1)}%
                   </span>
                 </div>
-                <div className="mt-3 text-sm sm:text-base font-black text-slate-900">
+                <div className="mt-3 text-sm sm:text-base font-black text-[var(--text-primary)]">
                   {formatRupiah(item.cost)}
                 </div>
               </div>

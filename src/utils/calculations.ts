@@ -53,6 +53,16 @@ export function roundHalfUp(value: number, decimals: number = 0): number {
 }
 
 /**
+ * High precision financial rounding using Number.EPSILON and integer manipulation.
+ * Avoids floating-point precision issues like 1.005 -> 1.00 (instead of 1.01).
+ */
+export function safeRound(value: number, decimals: number = 2): number {
+  if (!isFinite(value) || isNaN(value)) return 0;
+  const p = Math.pow(10, decimals);
+  return Math.round((value + Number.EPSILON) * p) / p;
+}
+
+/**
  * Currency rounding: Indonesian Rupiah (IDR) is rounded to 0 decimal places (Integer).
  */
 export function roundCurrency(amount: number): number {
@@ -537,7 +547,10 @@ export function calculateProjectFinancials(
   const directDiscrepancy = Math.abs(itemSum - directCost);
   const componentsSum = directCost + overheadCost + profitCost + (taxConfig.mode === 'TAX_EXCLUSIVE' ? taxCost : 0);
   const totalDiscrepancy = Math.abs(componentsSum - grandTotal);
-  const isReconciled = directDiscrepancy <= 1.0 && totalDiscrepancy <= 1.0;
+  
+  // Option A Invariant: Project-level OH&P must be 0, all markup is in AHSP
+  const isMarkupCompliant = overheadCost === 0 && profitCost === 0;
+  const isReconciled = directDiscrepancy <= 1.0 && totalDiscrepancy <= 1.0 && isMarkupCompliant;
 
   const reconciliation: CanonicalReconciliation = {
     isReconciled,
@@ -550,7 +563,9 @@ export function calculateProjectFinancials(
     validationStatus: isReconciled ? 'VALID' : 'WARNING',
     message: isReconciled
       ? 'Struktur biaya dan rekonsiliasi total 100% konsisten tanpa selisih matematis.'
-      : `Terdapat selisih matematis Rp ${Math.max(directDiscrepancy, totalDiscrepancy).toLocaleString('id-ID')}.`,
+      : !isMarkupCompliant 
+        ? 'Ditemukan markup tingkat proyek. Opsi A mensyaratkan OH&P di tingkat AHSP.' 
+        : `Terdapat selisih matematis Rp ${Math.max(directDiscrepancy, totalDiscrepancy).toLocaleString('id-ID')}.`,
   };
 
   // 15. Immutable Deterministic Checksum Generation
@@ -686,7 +701,9 @@ export function reconcileFinancialTotals(calc: RABCalculationResult): CanonicalR
   const componentsSum = calc.directCost + calc.overheadCost + calc.profitCost + calc.taxCost;
   const totalDiscrepancy = Math.abs(componentsSum - calc.grandTotal);
 
-  const isReconciled = directDiscrepancy <= 1.0 && totalDiscrepancy <= 1.0;
+  // Option A Invariant
+  const isMarkupCompliant = calc.overheadCost === 0 && calc.profitCost === 0;
+  const isReconciled = directDiscrepancy <= 1.0 && totalDiscrepancy <= 1.0 && isMarkupCompliant;
 
   return {
     isReconciled,
@@ -699,7 +716,9 @@ export function reconcileFinancialTotals(calc: RABCalculationResult): CanonicalR
     validationStatus: isReconciled ? 'VALID' : 'WARNING',
     message: isReconciled
       ? 'Struktur biaya dan rekonsiliasi total 100% konsisten tanpa selisih matematis.'
-      : `Terdapat selisih pembulatan Rp ${Math.max(directDiscrepancy, totalDiscrepancy).toLocaleString('id-ID')}.`,
+      : !isMarkupCompliant 
+        ? 'Ditemukan markup tingkat proyek. Opsi A mensyaratkan OH&P di tingkat AHSP.' 
+        : `Terdapat selisih pembulatan Rp ${Math.max(directDiscrepancy, totalDiscrepancy).toLocaleString('id-ID')}.`,
   };
 }
 

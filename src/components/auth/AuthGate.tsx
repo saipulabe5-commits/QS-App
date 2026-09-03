@@ -141,14 +141,14 @@ export const AuthGate: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-blue-600 selection:text-white relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-[var(--bg-elevated)] text-slate-100 flex flex-col justify-between selection:bg-blue-600 selection:text-white relative overflow-hidden font-sans">
       {/* Background Decorative Gradient Spheres */}
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-blue-600/10 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-indigo-600/10 blur-[140px] pointer-events-none" />
       <div className="absolute top-[40%] right-[20%] w-[350px] h-[350px] rounded-full bg-sky-500/5 blur-[100px] pointer-events-none" />
 
       {/* Top Header */}
-      <header className="relative z-10 border-b border-slate-800/60 bg-slate-950/70 backdrop-blur-md px-6 py-4">
+      <header className="relative z-10 border-b border-slate-200 dark:border-[var(--border-primary)]/60 bg-[var(--bg-elevated)]/70 backdrop-blur-md px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-blue-600/30">
@@ -164,14 +164,14 @@ export const AuthGate: React.FC = () => {
                   Single Authorized User
                 </span>
               </div>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[var(--text-secondary)]">
                 Sistem Manajemen Anggaran Biaya & Konstruksi Terpadu
               </p>
             </div>
           </div>
 
           <div className="flex items-center space-x-3">
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs text-slate-300">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--bg-elevated)] border border-slate-200 dark:border-[var(--border-primary)] text-xs text-slate-600 dark:text-slate-300">
               <ShieldCheck className="w-4 h-4 text-emerald-400" />
               <span className="font-medium">Akses Terproteksi Khusus</span>
             </div>
@@ -194,41 +194,41 @@ export const AuthGate: React.FC = () => {
               Akses Eksklusif Administrator RAB Pro
             </h2>
 
-            <p className="text-sm text-slate-400 leading-relaxed">
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
               Workspace ini dikunci secara privat untuk satu akun resmi terverifikasi. Masukkan kata sandi terenkripsi Anda untuk membuka akses penuh ke seluruh proyek, database AHSP, Kurva S, dan audit forensik zero-mistake.
             </p>
 
             {/* Feature List */}
             <div className="grid grid-cols-2 gap-3 pt-2">
-              <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-start space-x-3">
+              <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)]/60 border border-slate-200 dark:border-[var(--border-primary)] flex items-start space-x-3">
                 <FileSpreadsheet className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
                 <div>
                   <h4 className="text-xs font-bold text-slate-200">Database SNI & AHSP</h4>
-                  <p className="text-[11px] text-slate-400 mt-0.5">Ratusan analisis koefisien tenaga, bahan, & alat resmi.</p>
+                  <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">Ratusan analisis koefisien tenaga, bahan, & alat resmi.</p>
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-start space-x-3">
+              <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)]/60 border border-slate-200 dark:border-[var(--border-primary)] flex items-start space-x-3">
                 <Activity className="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" />
                 <div>
                   <h4 className="text-xs font-bold text-slate-200">Kurva S Rencana vs Real</h4>
-                  <p className="text-[11px] text-slate-400 mt-0.5">Monitoring deviasi bobot progres rencana vs aktual.</p>
+                  <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">Monitoring deviasi bobot progres rencana vs aktual.</p>
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-start space-x-3">
+              <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)]/60 border border-slate-200 dark:border-[var(--border-primary)] flex items-start space-x-3">
                 <ShieldCheck className="w-5 h-5 text-purple-400 mt-0.5 flex-shrink-0" />
                 <div>
                   <h4 className="text-xs font-bold text-slate-200">Zero-Cost Offline</h4>
-                  <p className="text-[11px] text-slate-400 mt-0.5">IndexedDB lokal, terenkripsi, tanpa biaya langganan.</p>
+                  <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">IndexedDB lokal, terenkripsi, tanpa biaya langganan.</p>
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-start space-x-3">
+              <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)]/60 border border-slate-200 dark:border-[var(--border-primary)] flex items-start space-x-3">
                 <UserCheck className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
                 <div>
                   <h4 className="text-xs font-bold text-slate-200">Single Account Auth</h4>
-                  <p className="text-[11px] text-slate-400 mt-0.5">Hanya saipulabe@gmail.com dengan password terverifikasi.</p>
+                  <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">Hanya saipulabe@gmail.com dengan password terverifikasi.</p>
                 </div>
               </div>
             </div>
@@ -246,22 +246,22 @@ export const AuthGate: React.FC = () => {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, ease: 'easeOut' }}
-              className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl shadow-black/50 backdrop-blur-xl relative"
+              className="bg-[var(--bg-elevated)]/90 border border-slate-200 dark:border-[var(--border-primary)] rounded-2xl p-6 sm:p-8 shadow-2xl shadow-black/50 backdrop-blur-xl relative"
             >
               {/* Authorized Account Badge */}
-              <div className="mb-6 p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
+              <div className="mb-6 p-3 rounded-xl bg-[var(--bg-elevated)]/80 border border-slate-200 dark:border-[var(--border-primary)] flex items-center justify-between">
                 <div className="flex items-center space-x-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-xs">
+                  <div className="w-8 h-8 rounded-lg bg-[var(--traffic-yellow)]/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-xs">
                     SA
                   </div>
                   <div>
                     <div className="text-xs font-bold text-white flex items-center gap-1.5">
                       <span>Saipul Abe</span>
-                      <span className="text-[9px] px-1.5 py-0.2 rounded-sm bg-amber-500/20 text-amber-300 border border-amber-500/40 uppercase font-extrabold">
+                      <span className="text-[9px] px-1.5 py-0.2 rounded-sm bg-[var(--traffic-yellow)]/20 text-amber-300 border border-amber-500/40 uppercase font-extrabold">
                         Owner / Admin
                       </span>
                     </div>
-                    <div className="text-[10px] text-slate-400 font-mono">saipulabe@gmail.com</div>
+                    <div className="text-[10px] text-[var(--text-secondary)] font-mono">saipulabe@gmail.com</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-1 text-[10px] text-emerald-400 font-medium px-2 py-0.5 rounded-full bg-emerald-950/50 border border-emerald-800/40">
@@ -280,7 +280,7 @@ export const AuthGate: React.FC = () => {
                     {authMode === 'reset-code' && 'Buat Kata Sandi Baru'}
                   </span>
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-[var(--text-secondary)] mt-1">
                   {authMode === 'login' && 'Masukkan kata sandi akun untuk membuka seluruh modul dan database RAB Pro.'}
                   {authMode === 'forgot' && 'Dapatkan kode verifikasi keamanan untuk mengatur ulang kata sandi Anda.'}
                   {authMode === 'reset-code' && 'Masukkan kode pemulihan dan tetapkan kata sandi baru Anda.'}
@@ -307,7 +307,7 @@ export const AuthGate: React.FC = () => {
               {authMode === 'login' && (
                 <form onSubmit={handleLoginSubmit} className="space-y-4 text-left">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5">
                       Alamat Email Terdaftar
                     </label>
                     <div className="relative">
@@ -318,14 +318,14 @@ export const AuthGate: React.FC = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="saipulabe@gmail.com"
-                        className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-hidden focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                        className="w-full pl-10 pr-4 py-2.5 bg-[var(--bg-elevated)] border border-slate-200 dark:border-[var(--border-primary)] rounded-xl text-xs text-[var(--text-primary)] placeholder-slate-500 dark:placeholder-slate-400 focus:outline-hidden focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
                       />
                     </div>
                   </div>
 
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
-                      <label className="text-xs font-semibold text-slate-300">
+                      <label className="text-xs font-semibold text-slate-600 dark:text-slate-300">
                         Kata Sandi (Password)
                       </label>
                       <button
@@ -348,12 +348,12 @@ export const AuthGate: React.FC = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Masukkan kata sandi Anda"
-                        className="w-full pl-10 pr-10 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-hidden focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                        className="w-full pl-10 pr-10 py-2.5 bg-[var(--bg-elevated)] border border-slate-200 dark:border-[var(--border-primary)] rounded-xl text-xs text-[var(--text-primary)] placeholder-slate-500 dark:placeholder-slate-400 focus:outline-hidden focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-600 dark:text-slate-300"
                       >
                         {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
@@ -381,7 +381,7 @@ export const AuthGate: React.FC = () => {
               {authMode === 'forgot' && (
                 <form onSubmit={handleRequestResetSubmit} className="space-y-4 text-left">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5">
                       Alamat Email Pemilik Akun
                     </label>
                     <div className="relative">
@@ -392,7 +392,7 @@ export const AuthGate: React.FC = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="saipulabe@gmail.com"
-                        className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-hidden focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                        className="w-full pl-10 pr-4 py-2.5 bg-[var(--bg-elevated)] border border-slate-200 dark:border-[var(--border-primary)] rounded-xl text-xs text-[var(--text-primary)] placeholder-slate-500 dark:placeholder-slate-400 focus:outline-hidden focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
                       />
                     </div>
                   </div>
@@ -427,7 +427,7 @@ export const AuthGate: React.FC = () => {
                         setErrorMessage('');
                         setSuccessMessage('');
                       }}
-                      className="text-xs text-slate-400 hover:text-slate-200 transition-colors inline-flex items-center gap-1"
+                      className="text-xs text-[var(--text-secondary)] hover:text-slate-200 transition-colors inline-flex items-center gap-1"
                     >
                       <RotateCcw className="w-3.5 h-3.5" />
                       <span>Kembali ke Halaman Login</span>
@@ -447,7 +447,7 @@ export const AuthGate: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5">
                       Kode Pemulihan dari Email (6 Digit PIN)
                     </label>
                     <input
@@ -456,12 +456,12 @@ export const AuthGate: React.FC = () => {
                       value={resetCode}
                       onChange={(e) => setResetCode(e.target.value)}
                       placeholder="Masukkan 6-digit kode dari email"
-                      className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm font-mono tracking-widest text-center text-amber-400 font-bold placeholder-slate-600 focus:outline-hidden focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+                      className="w-full px-4 py-2.5 bg-[var(--bg-elevated)] border border-slate-200 dark:border-[var(--border-primary)] rounded-xl text-sm font-mono tracking-widest text-center text-amber-400 font-bold placeholder-slate-600 focus:outline-hidden focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5">
                       Kata Sandi Baru (Minimal 6 Karakter)
                     </label>
                     <div className="relative">
@@ -472,12 +472,12 @@ export const AuthGate: React.FC = () => {
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         placeholder="Masukkan kata sandi baru"
-                        className="w-full pl-10 pr-10 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-hidden focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                        className="w-full pl-10 pr-10 py-2.5 bg-[var(--bg-elevated)] border border-slate-200 dark:border-[var(--border-primary)] rounded-xl text-xs text-[var(--text-primary)] placeholder-slate-500 dark:placeholder-slate-400 focus:outline-hidden focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                       />
                       <button
                         type="button"
                         onClick={() => setShowNewPassword(!showNewPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-600 dark:text-slate-300"
                       >
                         {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
@@ -485,7 +485,7 @@ export const AuthGate: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5">
                       Ulangi Kata Sandi Baru
                     </label>
                     <div className="relative">
@@ -496,7 +496,7 @@ export const AuthGate: React.FC = () => {
                         value={confirmNewPassword}
                         onChange={(e) => setConfirmNewPassword(e.target.value)}
                         placeholder="Ketik ulang kata sandi baru"
-                        className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-hidden focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                        className="w-full pl-10 pr-4 py-2.5 bg-[var(--bg-elevated)] border border-slate-200 dark:border-[var(--border-primary)] rounded-xl text-xs text-[var(--text-primary)] placeholder-slate-500 dark:placeholder-slate-400 focus:outline-hidden focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                       />
                     </div>
                   </div>
@@ -524,7 +524,7 @@ export const AuthGate: React.FC = () => {
                         setErrorMessage('');
                         setSuccessMessage('');
                       }}
-                      className="text-xs text-slate-400 hover:text-slate-200 transition-colors inline-flex items-center gap-1"
+                      className="text-xs text-[var(--text-secondary)] hover:text-slate-200 transition-colors inline-flex items-center gap-1"
                     >
                       <RotateCcw className="w-3.5 h-3.5" />
                       <span>Batal dan Kembali ke Login</span>
@@ -544,10 +544,10 @@ export const AuthGate: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-slate-800/60 bg-slate-950/80 px-6 py-4 text-center text-xs text-slate-500">
+      <footer className="relative z-10 border-t border-slate-200 dark:border-[var(--border-primary)]/60 bg-[var(--bg-elevated)]/80 px-6 py-4 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>&copy; {new Date().getFullYear()} RAB Pro Enterprise. Hak Cipta Dilindungi.</span>
-          <div className="flex items-center space-x-4 text-slate-400">
+          <div className="flex items-center space-x-4 text-[var(--text-secondary)]">
             <span>Standar SNI & AHSP PU</span>
             <span>•</span>
             <span>Single-Account Authorized: saipulabe@gmail.com</span>

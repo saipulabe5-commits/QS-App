@@ -830,7 +830,7 @@ async function runV5ForensicAuditTestSuite() {
     const giantItem = [{ id: 'g1', code: 'G-01', name: 'Mega Value', volume: 1000000, unitPrice: 1000000 }];
     const giantRes = calculateProjectFinancials(giantItem as any);
     assert(giantRes.directCost === 1000000000000, '1 Triliun direct cost computes cleanly');
-    assert(giantRes.grandTotal > giantRes.directCost, 'Giant grand total > direct cost');
+    assert(giantRes.grandTotal === giantRes.directCost, 'Giant grand total equals direct cost (project OH/Profit moved to AHSP)');
     assert(giantRes.reconciliation.isReconciled, 'Giant project calculation is 100% reconciled');
 
     const microItem = [{ id: 'm1', code: 'M-01', name: 'Micro', volume: 0.0001, unitPrice: 10000000 }];

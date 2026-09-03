@@ -23,7 +23,7 @@ export const StatCards: React.FC<StatCardsProps> = ({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
       {/* Stat 1: Total Nilai RAB */}
-      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs hover:border-slate-300 transition-all">
+      <div className="bg-[var(--bg-elevated)] p-5 rounded-2xl border border-[var(--border-primary)] shadow-2xs hover:border-[var(--border-primary)] transition-all">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Total Nilai Seluruh RAB
@@ -33,7 +33,7 @@ export const StatCards: React.FC<StatCardsProps> = ({
           </div>
         </div>
         <div className="mt-3">
-          <div className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+          <div className="text-xl sm:text-2xl font-black text-[var(--text-primary)] tracking-tight">
             {formatRupiah(totalPortfolioValue)}
           </div>
           <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-100 text-xs text-slate-500">
@@ -46,30 +46,30 @@ export const StatCards: React.FC<StatCardsProps> = ({
       {/* Stat 2: Total Proyek */}
       <div
         onClick={onNavigateToProjects}
-        className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs hover:border-blue-400 hover:shadow-xs transition-all cursor-pointer group"
+        className="bg-[var(--bg-elevated)] p-5 rounded-2xl border border-[var(--border-primary)] shadow-2xs hover:border-blue-400 hover:shadow-xs transition-all cursor-pointer group"
       >
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Total Proyek
           </span>
-          <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center border border-slate-200 group-hover:bg-blue-50 group-hover:text-blue-700 transition-colors">
+          <div className="w-10 h-10 rounded-xl bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] flex items-center justify-center border border-[var(--border-primary)] group-hover:bg-blue-50 group-hover:text-blue-700 transition-colors">
             <Briefcase className="w-5 h-5" />
           </div>
         </div>
         <div className="mt-3">
-          <div className="text-2xl font-black text-slate-900 tracking-tight flex items-baseline gap-1.5">
+          <div className="text-2xl font-black text-[var(--text-primary)] tracking-tight flex items-baseline gap-1.5">
             {projects.length}
             <span className="text-sm font-medium text-slate-500">Proyek Terdaftar</span>
           </div>
           <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-100 text-xs text-slate-500">
             <span className="group-hover:text-blue-700 font-medium transition-colors">Lihat Semua</span>
-            <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-700 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            <ArrowUpRight className="w-3.5 h-3.5 text-[var(--text-secondary)] group-hover:text-blue-700 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </div>
         </div>
       </div>
 
       {/* Stat 3: Proyek Berjalan / Aktif */}
-      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs hover:border-slate-300 transition-all">
+      <div className="bg-[var(--bg-elevated)] p-5 rounded-2xl border border-[var(--border-primary)] shadow-2xs hover:border-[var(--border-primary)] transition-all">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Proyek Aktif (Berjalan)
@@ -93,7 +93,7 @@ export const StatCards: React.FC<StatCardsProps> = ({
       </div>
 
       {/* Stat 4: Selesai & Draft */}
-      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs hover:border-slate-300 transition-all">
+      <div className="bg-[var(--bg-elevated)] p-5 rounded-2xl border border-[var(--border-primary)] shadow-2xs hover:border-[var(--border-primary)] transition-all">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Selesai & Perencanaan
@@ -103,7 +103,7 @@ export const StatCards: React.FC<StatCardsProps> = ({
           </div>
         </div>
         <div className="mt-3">
-          <div className="text-2xl font-black text-slate-900 tracking-tight flex items-baseline gap-1.5">
+          <div className="text-2xl font-black text-[var(--text-primary)] tracking-tight flex items-baseline gap-1.5">
             {completedProjectsCount}
             <span className="text-xs font-medium text-slate-500">Selesai / {draftProjectsCount} Draft</span>
           </div>

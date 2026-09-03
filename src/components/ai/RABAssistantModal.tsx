@@ -439,7 +439,7 @@ Saya siap membantu Anda dalam:
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs"
+        className="fixed inset-0 bg-[var(--bg-elevated)]/60 backdrop-blur-xs"
       />
 
       {/* Main Modal Container */}
@@ -447,10 +447,10 @@ Saya siap membantu Anda dalam:
         initial={{ opacity: 0, scale: 0.96, y: 15 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.96, y: 15 }}
-        className="relative bg-white w-full max-w-5xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-10 my-4 flex flex-col max-h-[92vh]"
+        className="relative bg-[var(--bg-elevated)] w-full max-w-5xl rounded-2xl shadow-2xl border border-[var(--border-primary)] overflow-hidden z-10 my-4 flex flex-col max-h-[92vh]"
       >
         {/* Header (Solid Navy Blue, NO Gradient) */}
-        <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between flex-shrink-0">
+        <div className="px-6 py-4 bg-[var(--bg-elevated)] text-[var(--text-primary)] flex items-center justify-between flex-shrink-0">
           <div className="flex items-center space-x-3">
             <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white">
               <Sparkles className="w-5 h-5" />
@@ -462,21 +462,21 @@ Saya siap membantu Anda dalam:
                   RAB PRO
                 </span>
               </div>
-              <p className="text-xs text-slate-300">
+              <p className="text-xs text-slate-600 dark:text-slate-300">
                 Asisten Cerdas Estimasi Biaya & Konsultan Teknik Sipil Indonesia
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition-colors"
+            className="text-[var(--text-secondary)] hover:text-white p-1.5 rounded-lg hover:bg-[var(--bg-elevated-hover)] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="bg-slate-800 px-4 py-2 flex items-center space-x-1 overflow-x-auto custom-scrollbar flex-shrink-0 border-b border-slate-700">
+        <div className="bg-[var(--bg-elevated-hover)] px-4 py-2 flex items-center space-x-1 overflow-x-auto custom-scrollbar flex-shrink-0 border-b border-[var(--border-primary)]">
           {[
             { id: 'chat', label: 'Tanya AI QS', icon: Sparkles },
             { id: 'escalation', label: 'Eskalasi Biaya', icon: TrendingUp },
@@ -496,7 +496,7 @@ Saya siap membantu Anda dalam:
                 className={`flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                   isActive
                     ? 'bg-blue-600 text-white shadow-xs'
-                    : 'text-slate-300 hover:bg-slate-700/60 hover:text-white'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-700/60 hover:text-white'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
@@ -507,10 +507,10 @@ Saya siap membantu Anda dalam:
         </div>
 
         {/* Tab Contents */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar bg-slate-50">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar bg-[var(--bg-elevated-hover)]">
           {/* TAB 1: INTERACTIVE CHAT */}
           {activeTab === 'chat' && (
-            <div className="flex flex-col h-[520px] bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs">
+            <div className="flex flex-col h-[520px] bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] overflow-hidden shadow-2xs">
               {/* Messages viewport */}
               <div className="flex-1 p-4 overflow-y-auto custom-scrollbar space-y-4">
                 {messages.map((msg) => (
@@ -522,14 +522,14 @@ Saya siap membantu Anda dalam:
                       className={`max-w-[85%] rounded-2xl p-4 text-xs leading-relaxed ${
                         msg.sender === 'user'
                           ? 'bg-blue-600 text-white rounded-br-xs font-medium'
-                          : 'bg-slate-100 text-slate-800 rounded-bl-xs border border-slate-200'
+                          : 'bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] rounded-bl-xs border border-[var(--border-primary)]'
                       }`}
                     >
                       <div className="whitespace-pre-wrap">{msg.text}</div>
 
                       {/* Actionable Card for Suggested Items */}
                       {msg.suggestedItems && msg.suggestedItems.length > 0 && (
-                        <div className="mt-3 p-3 bg-white rounded-xl border border-slate-200 text-slate-800 shadow-2xs">
+                        <div className="mt-3 p-3 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] text-[var(--text-primary)] shadow-2xs">
                           <div className="flex items-center justify-between mb-2">
                             <span className="font-bold text-[11px] text-blue-900">
                               📋 Rekomendasi {msg.suggestedItems.length} Pos Pekerjaan:
@@ -538,10 +538,10 @@ Saya siap membantu Anda dalam:
                           <div className="space-y-1 max-h-36 overflow-y-auto custom-scrollbar text-[11px]">
                             {msg.suggestedItems.map((item, idx) => (
                               <div key={idx} className="flex justify-between border-b border-slate-100 py-1">
-                                <span className="font-medium text-slate-700 truncate max-w-[200px]">
+                                <span className="font-medium text-[var(--text-primary)] truncate max-w-[200px]">
                                   {item.name}
                                 </span>
-                                <span className="font-mono text-slate-900 font-bold">
+                                <span className="font-mono text-[var(--text-primary)] font-bold">
                                   {item.volume} {item.unit} @ {formatRupiah(item.unitPrice)}
                                 </span>
                               </div>
@@ -568,7 +568,7 @@ Saya siap membantu Anda dalam:
 
                       {/* Actionable Card for Price Adjustments */}
                       {msg.priceAdjustments && msg.priceAdjustments.length > 0 && (
-                        <div className="mt-3 p-3 bg-white rounded-xl border border-slate-200 text-slate-800 shadow-2xs">
+                        <div className="mt-3 p-3 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] text-[var(--text-primary)] shadow-2xs">
                           <span className="font-bold text-[11px] text-blue-900 block mb-2">
                             ⚠️ Saran Penyesuaian {msg.priceAdjustments.length} Harga Satuan:
                           </span>
@@ -627,7 +627,7 @@ Saya siap membantu Anda dalam:
 
                       <span
                         className={`text-[9px] block text-right mt-1.5 ${
-                          msg.sender === 'user' ? 'text-blue-100' : 'text-slate-400'
+                          msg.sender === 'user' ? 'text-blue-100' : 'text-[var(--text-secondary)]'
                         }`}
                       >
                         {msg.timestamp}
@@ -637,7 +637,7 @@ Saya siap membantu Anda dalam:
                 ))}
                 {isChatLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-slate-100 rounded-2xl rounded-bl-xs p-3.5 text-xs flex items-center space-x-2 text-slate-600 border border-slate-200">
+                    <div className="bg-[var(--bg-elevated-hover)] rounded-2xl rounded-bl-xs p-3.5 text-xs flex items-center space-x-2 text-[var(--text-secondary)] border border-[var(--border-primary)]">
                       <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
                       <span>AI QS sedang menganalisis database & standar SNI...</span>
                     </div>
@@ -647,13 +647,13 @@ Saya siap membantu Anda dalam:
               </div>
 
               {/* Quick Prompt Chips */}
-              <div className="px-3 py-2 bg-slate-50 border-t border-slate-200 flex items-center space-x-1.5 overflow-x-auto custom-scrollbar">
+              <div className="px-3 py-2 bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)] flex items-center space-x-1.5 overflow-x-auto custom-scrollbar">
                 {promptChips.map((chip, idx) => (
                   <button
                     key={idx}
                     type="button"
                     onClick={() => handleSendChat(chip)}
-                    className="text-[11px] px-2.5 py-1 rounded-lg bg-white hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 text-slate-600 border border-slate-200 whitespace-nowrap transition-colors flex-shrink-0"
+                    className="text-[11px] px-2.5 py-1 rounded-lg bg-[var(--bg-elevated)] hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 text-[var(--text-secondary)] border border-[var(--border-primary)] whitespace-nowrap transition-colors flex-shrink-0"
                   >
                     {chip}
                   </button>
@@ -661,7 +661,7 @@ Saya siap membantu Anda dalam:
               </div>
 
               {/* Chat Input Bar */}
-              <div className="p-3 bg-white border-t border-slate-200 flex items-center space-x-2">
+              <div className="p-3 bg-[var(--bg-elevated)] border-t border-[var(--border-primary)] flex items-center space-x-2">
                 <input
                   type="text"
                   placeholder="Ketik pertanyaan teknis, minta saran satuan, atau instruksi QS..."
@@ -670,7 +670,7 @@ Saya siap membantu Anda dalam:
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') handleSendChat();
                   }}
-                  className="flex-1 px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-1 focus:ring-blue-600 focus:border-blue-600 focus:outline-none"
+                  className="flex-1 px-3.5 py-2.5 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:ring-1 focus:ring-blue-600 focus:border-blue-600 focus:outline-none"
                 />
                 <button
                   type="button"
@@ -687,9 +687,9 @@ Saya siap membantu Anda dalam:
           {/* TAB 2: MISSING ITEMS SCANNER */}
           {activeTab === 'missing' && (
             <div className="space-y-4">
-              <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="bg-[var(--bg-elevated)] p-5 rounded-xl border border-[var(--border-primary)] shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900">
+                  <h4 className="text-sm font-bold text-[var(--text-primary)]">
                     Pemeriksaan Pos Pekerjaan Terlewat (Missing Items)
                   </h4>
                   <p className="text-xs text-slate-500 mt-0.5">
@@ -717,10 +717,10 @@ Saya siap membantu Anda dalam:
               </div>
 
               {missingResult && (
-                <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs space-y-4">
+                <div className="bg-[var(--bg-elevated)] p-5 rounded-xl border border-[var(--border-primary)] shadow-2xs space-y-4">
                   <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                     <div>
-                      <span className="text-xs font-bold text-slate-800">Hasil Pemindaian AI</span>
+                      <span className="text-xs font-bold text-[var(--text-primary)]">Hasil Pemindaian AI</span>
                       <p className="text-xs text-slate-500">{missingResult.summary}</p>
                     </div>
                     {missingResult.missingItems.length > 0 && (
@@ -739,21 +739,21 @@ Saya siap membantu Anda dalam:
                     {missingResult.missingItems.map((item, idx) => (
                       <div
                         key={idx}
-                        className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                        className="p-3.5 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                       >
                         <div className="space-y-1">
                           <div className="flex items-center space-x-2">
                             <span className="px-2 py-0.5 bg-blue-100 text-blue-800 font-mono text-[10px] font-bold rounded-sm">
                               {item.code}
                             </span>
-                            <span className="text-xs font-bold text-slate-900">{item.name}</span>
+                            <span className="text-xs font-bold text-[var(--text-primary)]">{item.name}</span>
                             <span className="text-[10px] text-slate-500 font-semibold">({item.category})</span>
                           </div>
-                          <p className="text-[11px] text-slate-600 italic">💡 {item.reason}</p>
+                          <p className="text-[11px] text-[var(--text-secondary)] italic">💡 {item.reason}</p>
                         </div>
 
                         <div className="text-right sm:flex-shrink-0">
-                          <div className="text-xs font-mono font-bold text-slate-900">
+                          <div className="text-xs font-mono font-bold text-[var(--text-primary)]">
                             Vol: {item.volume} {item.unit} @ {formatRupiah(item.unitPrice)}
                           </div>
                           <div className="text-[11px] font-mono text-blue-700 font-semibold">
@@ -771,9 +771,9 @@ Saya siap membantu Anda dalam:
           {/* TAB 3: PRICE AUDIT */}
           {activeTab === 'audit' && (
             <div className="space-y-4">
-              <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="bg-[var(--bg-elevated)] p-5 rounded-xl border border-[var(--border-primary)] shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900">Audit Anomali & Kesesuaian Harga Satuan</h4>
+                  <h4 className="text-sm font-bold text-[var(--text-primary)]">Audit Anomali & Kesesuaian Harga Satuan</h4>
                   <p className="text-xs text-slate-500 mt-0.5">
                     Membandingkan harga satuan tiap item terhadap acuan harga pasar dan AHSP PUPR 2024-2026.
                   </p>
@@ -799,16 +799,16 @@ Saya siap membantu Anda dalam:
               </div>
 
               {auditResult && (
-                <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs space-y-4">
+                <div className="bg-[var(--bg-elevated)] p-5 rounded-xl border border-[var(--border-primary)] shadow-2xs space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 rounded-xl bg-slate-900 text-white flex flex-col items-center justify-center font-mono">
-                        <span className="text-[10px] text-slate-400 font-sans">SKOR</span>
+                      <div className="w-12 h-12 rounded-xl bg-[var(--bg-elevated)] text-[var(--text-primary)] flex flex-col items-center justify-center font-mono">
+                        <span className="text-[10px] text-[var(--text-secondary)] font-sans">SKOR</span>
                         <span className="text-base font-bold text-blue-400">{auditResult.overallScore}</span>
                       </div>
                       <div>
                         <div className="flex items-center space-x-2">
-                          <span className="text-xs font-bold text-slate-900">Status Kelayakan:</span>
+                          <span className="text-xs font-bold text-[var(--text-primary)]">Status Kelayakan:</span>
                           <span
                             className={`px-2 py-0.5 rounded-sm text-[10px] font-bold ${
                               auditResult.overallVerdict === 'Wajar'
@@ -834,9 +834,9 @@ Saya siap membantu Anda dalam:
                   </div>
 
                   {/* Audited items table */}
-                  <div className="border border-slate-200 rounded-xl overflow-hidden max-h-72 overflow-y-auto custom-scrollbar">
-                    <table className="w-full text-left text-xs text-slate-600">
-                      <thead className="bg-slate-100 text-slate-700 font-semibold text-[10px] uppercase">
+                  <div className="border border-[var(--border-primary)] rounded-xl overflow-hidden max-h-72 overflow-y-auto custom-scrollbar">
+                    <table className="w-full text-left text-xs text-[var(--text-secondary)]">
+                      <thead className="bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] font-semibold text-[10px] uppercase">
                         <tr>
                           <th className="px-3 py-2">Item Pekerjaan</th>
                           <th className="px-2 py-2 text-center">Status</th>
@@ -847,10 +847,10 @@ Saya siap membantu Anda dalam:
                       </thead>
                       <tbody className="divide-y divide-slate-100">
                         {auditResult.auditedItems.map((item, idx) => (
-                          <tr key={idx} className="hover:bg-slate-50">
+                          <tr key={idx} className="hover:bg-[var(--bg-elevated-hover)]">
                             <td className="px-3 py-2">
-                              <div className="font-medium text-slate-900">{item.name}</div>
-                              <div className="text-[10px] text-slate-400">{item.note}</div>
+                              <div className="font-medium text-[var(--text-primary)]">{item.name}</div>
+                              <div className="text-[10px] text-[var(--text-secondary)]">{item.note}</div>
                             </td>
                             <td className="px-2 py-2 text-center">
                               <span
@@ -887,8 +887,8 @@ Saya siap membantu Anda dalam:
           {/* TAB 4: AI VOLUME CALCULATOR */}
           {activeTab === 'volume' && (
             <div className="space-y-4">
-              <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs space-y-3">
-                <h4 className="text-sm font-bold text-slate-900">
+              <div className="bg-[var(--bg-elevated)] p-5 rounded-xl border border-[var(--border-primary)] shadow-2xs space-y-3">
+                <h4 className="text-sm font-bold text-[var(--text-primary)]">
                   Kalkulator Volume Berbantu AI (Natural Language Geometry Solver)
                 </h4>
                 <p className="text-xs text-slate-500">
@@ -896,19 +896,19 @@ Saya siap membantu Anda dalam:
                 </p>
 
                 <div className="space-y-2">
-                  <label className="block text-xs font-semibold text-slate-700">
+                  <label className="block text-xs font-semibold text-[var(--text-primary)]">
                     Nama Pos Pekerjaan
                   </label>
                   <input
                     type="text"
                     value={volumeWorkType}
                     onChange={(e) => setVolumeWorkType(e.target.value)}
-                    className="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white"
+                    className="w-full px-3.5 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)]"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="block text-xs font-semibold text-slate-700">
+                  <label className="block text-xs font-semibold text-[var(--text-primary)]">
                     Deskripsi Dimensi & Rincian Lapangan
                   </label>
                   <textarea
@@ -916,7 +916,7 @@ Saya siap membantu Anda dalam:
                     value={volumeQuery}
                     onChange={(e) => setVolumeQuery(e.target.value)}
                     placeholder="Contoh: Sloof beton 15x20cm panjang total 54 meter dengan pembesian 4D12 dan sengkang D8 jarak 15cm..."
-                    className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-1 focus:ring-blue-600 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:ring-1 focus:ring-blue-600 focus:outline-none"
                   />
                 </div>
 
@@ -941,13 +941,13 @@ Saya siap membantu Anda dalam:
               </div>
 
               {volumeResult && (
-                <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs space-y-4">
+                <div className="bg-[var(--bg-elevated)] p-5 rounded-xl border border-[var(--border-primary)] shadow-2xs space-y-4">
                   <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                     <div>
                       <span className="text-[10px] uppercase font-bold text-blue-700 block">
                         Hasil Perhitungan Volume
                       </span>
-                      <h4 className="text-sm font-bold text-slate-900">{volumeResult.workName}</h4>
+                      <h4 className="text-sm font-bold text-[var(--text-primary)]">{volumeResult.workName}</h4>
                     </div>
                     <div className="text-right">
                       <span className="text-xl font-black font-mono text-blue-900">
@@ -956,9 +956,9 @@ Saya siap membantu Anda dalam:
                     </div>
                   </div>
 
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
-                    <span className="text-xs font-bold text-slate-800 block">Langkah Perhitungan Rumus:</span>
-                    <ul className="space-y-1 text-xs text-slate-600">
+                  <div className="p-3 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] space-y-2">
+                    <span className="text-xs font-bold text-[var(--text-primary)] block">Langkah Perhitungan Rumus:</span>
+                    <ul className="space-y-1 text-xs text-[var(--text-secondary)]">
                       {volumeResult.stepByStep.map((step, idx) => (
                         <li key={idx} className="flex items-start space-x-2">
                           <span className="w-4 h-4 rounded-full bg-blue-100 text-blue-700 text-[10px] flex items-center justify-center font-bold flex-shrink-0 mt-0.5">
@@ -1002,9 +1002,9 @@ Saya siap membantu Anda dalam:
           {/* TAB 5: COST SAVINGS / VALUE ENGINEERING */}
           {activeTab === 'savings' && (
             <div className="space-y-4">
-              <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="bg-[var(--bg-elevated)] p-5 rounded-xl border border-[var(--border-primary)] shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900">
+                  <h4 className="text-sm font-bold text-[var(--text-primary)]">
                     Rekomendasi Penghematan Biaya & Value Engineering
                   </h4>
                   <p className="text-xs text-slate-500 mt-0.5">
@@ -1051,14 +1051,14 @@ Saya siap membantu Anda dalam:
 
                   <div className="space-y-3">
                     {costSavingsResult.strategies.map((strat, idx) => (
-                      <div key={idx} className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs space-y-2">
+                      <div key={idx} className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs space-y-2">
                         <div className="flex items-center justify-between">
-                          <h5 className="text-xs font-bold text-slate-900">{strat.title}</h5>
+                          <h5 className="text-xs font-bold text-[var(--text-primary)]">{strat.title}</h5>
                           <span className="text-xs font-mono font-bold text-emerald-700">
                             Potensi: {formatRupiah(strat.estimatedSaving)}
                           </span>
                         </div>
-                        <p className="text-xs text-slate-600 leading-relaxed">{strat.description}</p>
+                        <p className="text-xs text-[var(--text-secondary)] leading-relaxed">{strat.description}</p>
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between text-[11px] pt-2 border-t border-slate-100 gap-2">
                           <span className="text-slate-500">
                             <strong>Dampak Mutu:</strong> {strat.impactOnQuality}
@@ -1078,9 +1078,9 @@ Saya siap membantu Anda dalam:
           {/* TAB 6: EXECUTIVE SUMMARY */}
           {activeTab === 'summary' && (
             <div className="space-y-4">
-              <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="bg-[var(--bg-elevated)] p-5 rounded-xl border border-[var(--border-primary)] shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900">
+                  <h4 className="text-sm font-bold text-[var(--text-primary)]">
                     Ringkasan Eksekutif & Struktur Pembiayaan Proyek
                   </h4>
                   <p className="text-xs text-slate-500 mt-0.5">
@@ -1108,13 +1108,13 @@ Saya siap membantu Anda dalam:
               </div>
 
               {summaryResult && (
-                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-2xs space-y-4 text-xs">
-                  <div className="prose max-w-none text-slate-800 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <div className="bg-[var(--bg-elevated)] p-6 rounded-xl border border-[var(--border-primary)] shadow-2xs space-y-4 text-xs">
+                  <div className="prose max-w-none text-[var(--text-primary)] leading-relaxed bg-[var(--bg-elevated-hover)] p-4 rounded-xl border border-[var(--border-primary)]">
                     <p>{summaryResult.executiveNarrative}</p>
                   </div>
 
                   <div className="space-y-2">
-                    <span className="font-bold text-slate-900 text-xs block">
+                    <span className="font-bold text-[var(--text-primary)] text-xs block">
                       📌 Pemicu Biaya Utama (Top Cost Drivers / Pareto 80/20):
                     </span>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -1124,15 +1124,15 @@ Saya siap membantu Anda dalam:
                             <span className="font-bold text-blue-900">{driver.category}</span>
                             <span className="font-mono font-black text-blue-700">{driver.percentage}%</span>
                           </div>
-                          <p className="text-[10px] text-slate-600 mt-1">{driver.explanation}</p>
+                          <p className="text-[10px] text-[var(--text-secondary)] mt-1">{driver.explanation}</p>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
-                    <span className="font-bold text-slate-900 block">💳 Saran Alur Kas & Termin Pembayaran:</span>
-                    <p className="text-slate-600">{summaryResult.cashflowAdvice}</p>
+                  <div className="p-3 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] space-y-1">
+                    <span className="font-bold text-[var(--text-primary)] block">💳 Saran Alur Kas & Termin Pembayaran:</span>
+                    <p className="text-[var(--text-secondary)]">{summaryResult.cashflowAdvice}</p>
                   </div>
 
                   {summaryResult.riskHighlights.length > 0 && (
@@ -1153,8 +1153,8 @@ Saya siap membantu Anda dalam:
           {/* TAB 7: AUTO-RAB GENERATOR */}
           {activeTab === 'estimate' && (
             <div className="space-y-4">
-              <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs space-y-3">
-                <h4 className="text-sm font-bold text-slate-900">
+              <div className="bg-[var(--bg-elevated)] p-5 rounded-xl border border-[var(--border-primary)] shadow-2xs space-y-3">
+                <h4 className="text-sm font-bold text-[var(--text-primary)]">
                   Generator RAB Otomatis Berdasarkan Spesifikasi Proyek
                 </h4>
                 <p className="text-xs text-slate-500">
@@ -1162,38 +1162,38 @@ Saya siap membantu Anda dalam:
                 </p>
 
                 <div className="space-y-2">
-                  <label className="block text-xs font-semibold text-slate-700">
+                  <label className="block text-xs font-semibold text-[var(--text-primary)]">
                     Spesifikasi & Deskripsi Proyek
                   </label>
                   <textarea
                     rows={3}
                     value={estimatePrompt}
                     onChange={(e) => setEstimatePrompt(e.target.value)}
-                    className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white"
+                    className="w-full px-3.5 py-2.5 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)]"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                       Luas Bangunan (m²)
                     </label>
                     <input
                       type="number"
                       value={estimateArea}
                       onChange={(e) => setEstimateArea(e.target.value)}
-                      className="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl font-mono"
+                      className="w-full px-3.5 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl font-mono"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                       Target Pagu Anggaran (Rp)
                     </label>
                     <input
                       type="number"
                       value={estimateBudget}
                       onChange={(e) => setEstimateBudget(e.target.value)}
-                      className="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl font-mono"
+                      className="w-full px-3.5 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl font-mono"
                     />
                   </div>
                 </div>
@@ -1219,10 +1219,10 @@ Saya siap membantu Anda dalam:
               </div>
 
               {suggestedEstimateItems.length > 0 && (
-                <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs space-y-4">
+                <div className="bg-[var(--bg-elevated)] p-5 rounded-xl border border-[var(--border-primary)] shadow-2xs space-y-4">
                   <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                     <div>
-                      <span className="text-xs font-bold text-slate-900">
+                      <span className="text-xs font-bold text-[var(--text-primary)]">
                         Hasil Generasi ({suggestedEstimateItems.length} Item Pos Pekerjaan)
                       </span>
                     </div>
@@ -1236,9 +1236,9 @@ Saya siap membantu Anda dalam:
                     </button>
                   </div>
 
-                  <div className="border border-slate-200 rounded-xl overflow-hidden max-h-60 overflow-y-auto custom-scrollbar">
-                    <table className="w-full text-left text-xs text-slate-600">
-                      <thead className="bg-slate-100 text-slate-700 font-semibold text-[10px] uppercase">
+                  <div className="border border-[var(--border-primary)] rounded-xl overflow-hidden max-h-60 overflow-y-auto custom-scrollbar">
+                    <table className="w-full text-left text-xs text-[var(--text-secondary)]">
+                      <thead className="bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] font-semibold text-[10px] uppercase">
                         <tr>
                           <th className="px-3 py-2">Kode</th>
                           <th className="px-3 py-2">Uraian Pekerjaan</th>
@@ -1250,16 +1250,16 @@ Saya siap membantu Anda dalam:
                       </thead>
                       <tbody className="divide-y divide-slate-100">
                         {suggestedEstimateItems.map((item, idx) => (
-                          <tr key={idx} className="hover:bg-slate-50">
+                          <tr key={idx} className="hover:bg-[var(--bg-elevated-hover)]">
                             <td className="px-3 py-2 font-mono text-[11px] text-slate-500">{item.code}</td>
-                            <td className="px-3 py-2 font-medium text-slate-800">
+                            <td className="px-3 py-2 font-medium text-[var(--text-primary)]">
                               <div>{item.name}</div>
                               <div className="text-[10px] text-blue-600">{item.category}</div>
                             </td>
                             <td className="px-2 py-2 text-center">{item.unit}</td>
                             <td className="px-3 py-2 text-right font-mono">{formatNumber(item.volume, 2)}</td>
                             <td className="px-3 py-2 text-right font-mono">{formatRupiah(item.unitPrice)}</td>
-                            <td className="px-3 py-2 text-right font-mono font-bold text-slate-900">
+                            <td className="px-3 py-2 text-right font-mono font-bold text-[var(--text-primary)]">
                               {formatRupiah(item.volume * item.unitPrice)}
                             </td>
                           </tr>
@@ -1276,10 +1276,10 @@ Saya siap membantu Anda dalam:
           {activeTab === 'escalation' && (
             <div className="space-y-4">
               {/* Header & Controls Box */}
-              <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-2xs">
+              <div className="p-4 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] shadow-2xs">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
-                    <h4 className="text-xs font-bold text-slate-900 flex items-center space-x-1.5">
+                    <h4 className="text-xs font-bold text-[var(--text-primary)] flex items-center space-x-1.5">
                       <TrendingUp className="w-4 h-4 text-blue-600" />
                       <span>AI Predictive Cost Escalation & Inflasi Material</span>
                     </h4>
@@ -1288,9 +1288,9 @@ Saya siap membantu Anda dalam:
                     </p>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <div className="flex items-center space-x-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs">
+                    <div className="flex items-center space-x-1.5 bg-[var(--bg-elevated-hover)] p-1 rounded-xl border border-[var(--border-primary)] text-xs">
                       <Clock className="w-3.5 h-3.5 text-slate-500 ml-1.5" />
-                      <span className="text-slate-600 font-medium text-[11px]">Periode:</span>
+                      <span className="text-[var(--text-secondary)] font-medium text-[11px]">Periode:</span>
                       {[3, 6, 12].map((months) => (
                         <button
                           key={months}
@@ -1299,7 +1299,7 @@ Saya siap membantu Anda dalam:
                           className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-colors ${
                             escalationMonths === months
                               ? 'bg-blue-600 text-white shadow-2xs'
-                              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
+                              : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-slate-200 dark:bg-slate-700'
                           }`}
                         >
                           {months} Bln
@@ -1330,11 +1330,11 @@ Saya siap membantu Anda dalam:
 
               {/* Initial / Empty State */}
               {!escalationResult && !isEscalationLoading && (
-                <div className="p-8 text-center bg-white rounded-xl border border-dashed border-slate-200">
+                <div className="p-8 text-center bg-[var(--bg-elevated)] rounded-xl border border-dashed border-[var(--border-primary)]">
                   <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-3">
                     <TrendingUp className="w-6 h-6" />
                   </div>
-                  <h5 className="text-sm font-bold text-slate-800">Mulai Analisis Prediktif Eskalasi Biaya</h5>
+                  <h5 className="text-sm font-bold text-[var(--text-primary)]">Mulai Analisis Prediktif Eskalasi Biaya</h5>
                   <p className="text-xs text-slate-500 max-w-md mx-auto mt-1 mb-4">
                     AI menganalisis seluruh pos pekerjaan dalam RAB Anda terhadap proyeksi inflasi komoditas baja, semen, pasir, kurs valuta asing, dan upah tenaga kerja konstruksi Indonesia.
                   </p>
@@ -1352,9 +1352,9 @@ Saya siap membantu Anda dalam:
 
               {/* Loading State */}
               {isEscalationLoading && (
-                <div className="p-12 text-center bg-white rounded-xl border border-slate-200 shadow-2xs">
+                <div className="p-12 text-center bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] shadow-2xs">
                   <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-3" />
-                  <h5 className="text-xs font-bold text-slate-800">Menghubungkan ke Engine Ekonometri Konstruksi...</h5>
+                  <h5 className="text-xs font-bold text-[var(--text-primary)]">Menghubungkan ke Engine Ekonometri Konstruksi...</h5>
                   <p className="text-[11px] text-slate-500 mt-1">
                     Mengkalkulasi bobot material, indeks harga produsen semen/baja, dan simulasi dampak penundaan pengadaan.
                   </p>
@@ -1366,39 +1366,39 @@ Saya siap membantu Anda dalam:
                 <div className="space-y-4">
                   {/* Top KPI Cards */}
                   <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
-                    <div className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-2xs">
+                    <div className="p-3.5 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] shadow-2xs">
                       <div className="text-[11px] text-slate-500 font-medium">Estimasi Kenaikan Total</div>
                       <div className="text-xl font-bold text-rose-600 mt-0.5">
                         +{escalationResult.overallEscalationRate.toFixed(1)}%
                       </div>
-                      <div className="text-[10px] text-slate-400 mt-0.5">
+                      <div className="text-[10px] text-[var(--text-secondary)] mt-0.5">
                         Periode {escalationResult.forecastPeriod} ({escalationResult.referenceDate})
                       </div>
                     </div>
 
-                    <div className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-2xs">
+                    <div className="p-3.5 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] shadow-2xs">
                       <div className="text-[11px] text-slate-500 font-medium">Kondisi Pasar Prediksi</div>
-                      <div className="text-sm font-bold text-slate-800 mt-1 flex items-center space-x-1.5">
+                      <div className="text-sm font-bold text-[var(--text-primary)] mt-1 flex items-center space-x-1.5">
                         <span
                           className={`inline-block w-2.5 h-2.5 rounded-full ${
                             escalationResult.marketCondition === 'Inflasi Tinggi'
                               ? 'bg-rose-500'
                               : escalationResult.marketCondition === 'Inflasi Moderat'
-                              ? 'bg-amber-500'
+                              ? 'bg-[var(--traffic-yellow)]'
                               : 'bg-emerald-500'
                           }`}
                         />
                         <span>{escalationResult.marketCondition}</span>
                       </div>
-                      <div className="text-[10px] text-slate-400 mt-1">Sektor Konstruksi Nasional</div>
+                      <div className="text-[10px] text-[var(--text-secondary)] mt-1">Sektor Konstruksi Nasional</div>
                     </div>
 
-                    <div className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-2xs">
+                    <div className="p-3.5 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] shadow-2xs">
                       <div className="text-[11px] text-slate-500 font-medium">Total Anggaran Saat Ini</div>
-                      <div className="text-sm font-mono font-bold text-slate-800 mt-1">
+                      <div className="text-sm font-mono font-bold text-[var(--text-primary)] mt-1">
                         {formatRupiah(escalationResult.totalCurrentBudget || calc.grandTotal)}
                       </div>
-                      <div className="text-[10px] text-slate-400 mt-0.5">Baseline RAB Proyek</div>
+                      <div className="text-[10px] text-[var(--text-secondary)] mt-0.5">Baseline RAB Proyek</div>
                     </div>
 
                     <div className="p-3.5 bg-rose-50/70 rounded-xl border border-rose-200 shadow-2xs">
@@ -1413,7 +1413,7 @@ Saya siap membantu Anda dalam:
                   </div>
 
                   {/* Summary Narrative */}
-                  <div className="p-4 bg-blue-50/70 border border-blue-200 rounded-xl text-xs text-slate-700 leading-relaxed">
+                  <div className="p-4 bg-blue-50/70 border border-blue-200 rounded-xl text-xs text-[var(--text-primary)] leading-relaxed">
                     <div className="font-bold text-blue-900 mb-1 flex items-center space-x-1.5">
                       <Zap className="w-3.5 h-3.5 text-blue-600" />
                       <span>Ringkasan Analisis Pasar & Ekonometri:</span>
@@ -1423,8 +1423,8 @@ Saya siap membantu Anda dalam:
 
                   {/* Material Urgency Alerts */}
                   {escalationResult.materialAlerts && escalationResult.materialAlerts.length > 0 && (
-                    <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs">
-                      <h5 className="text-xs font-bold text-slate-800 mb-3 flex items-center space-x-1.5">
+                    <div className="bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] p-4 shadow-2xs">
+                      <h5 className="text-xs font-bold text-[var(--text-primary)] mb-3 flex items-center space-x-1.5">
                         <AlertTriangle className="w-4 h-4 text-amber-500" />
                         <span>Peringatan Pembelian Material Kunci (Material Procurement Alerts)</span>
                       </h5>
@@ -1440,12 +1440,12 @@ Saya siap membantu Anda dalam:
                                   ? 'bg-rose-50/60 border-rose-200'
                                   : isWatch
                                   ? 'bg-amber-50/60 border-amber-200'
-                                  : 'bg-slate-50 border-slate-200'
+                                  : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)]'
                               }`}
                             >
                               <div>
                                 <div className="flex items-center justify-between gap-1 mb-1">
-                                  <span className="font-bold text-xs text-slate-900">{mat.material}</span>
+                                  <span className="font-bold text-xs text-[var(--text-primary)]">{mat.material}</span>
                                   <span
                                     className={`px-2 py-0.5 rounded-md text-[10px] font-bold ${
                                       isUrgent
@@ -1458,10 +1458,10 @@ Saya siap membantu Anda dalam:
                                     {mat.urgency}
                                   </span>
                                 </div>
-                                <div className="text-[11px] font-semibold text-slate-700 mt-0.5 mb-1.5">
+                                <div className="text-[11px] font-semibold text-[var(--text-primary)] mt-0.5 mb-1.5">
                                   {mat.currentTrend} ({mat.projectedChange >= 0 ? `+${mat.projectedChange}%` : `${mat.projectedChange}%`})
                                 </div>
-                                <p className="text-[11px] text-slate-600 leading-snug">
+                                <p className="text-[11px] text-[var(--text-secondary)] leading-snug">
                                   {mat.recommendation}
                                 </p>
                               </div>
@@ -1474,9 +1474,9 @@ Saya siap membantu Anda dalam:
 
                   {/* Category Breakdown Table */}
                   {escalationResult.categoryEscalations && escalationResult.categoryEscalations.length > 0 && (
-                    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs">
-                      <div className="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-                        <span className="text-xs font-bold text-slate-800">
+                    <div className="bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] overflow-hidden shadow-2xs">
+                      <div className="px-4 py-3 bg-[var(--bg-elevated-hover)] border-b border-[var(--border-primary)] flex items-center justify-between">
+                        <span className="text-xs font-bold text-[var(--text-primary)]">
                           Dampak Eskalasi per Divisi Pekerjaan
                         </span>
                         <span className="text-[11px] text-slate-500">
@@ -1484,8 +1484,8 @@ Saya siap membantu Anda dalam:
                         </span>
                       </div>
                       <div className="overflow-x-auto custom-scrollbar">
-                        <table className="w-full text-left text-xs text-slate-600">
-                          <thead className="bg-slate-100 text-slate-700 font-semibold text-[10px] uppercase">
+                        <table className="w-full text-left text-xs text-[var(--text-secondary)]">
+                          <thead className="bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] font-semibold text-[10px] uppercase">
                             <tr>
                               <th className="px-3.5 py-2">Kategori Pekerjaan</th>
                               <th className="px-3 py-2 text-right">Biaya Awal (Rp)</th>
@@ -1497,15 +1497,15 @@ Saya siap membantu Anda dalam:
                           </thead>
                           <tbody className="divide-y divide-slate-100">
                             {escalationResult.categoryEscalations.map((cat, idx) => (
-                              <tr key={idx} className="hover:bg-slate-50">
-                                <td className="px-3.5 py-2.5 font-bold text-slate-800">{cat.category}</td>
-                                <td className="px-3 py-2.5 text-right font-mono text-slate-600">
+                              <tr key={idx} className="hover:bg-[var(--bg-elevated-hover)]">
+                                <td className="px-3.5 py-2.5 font-bold text-[var(--text-primary)]">{cat.category}</td>
+                                <td className="px-3 py-2.5 text-right font-mono text-[var(--text-secondary)]">
                                   {formatRupiah(cat.currentCost)}
                                 </td>
                                 <td className="px-2.5 py-2.5 text-center font-mono font-bold text-rose-600">
                                   +{cat.escalationRate.toFixed(1)}%
                                 </td>
-                                <td className="px-3 py-2.5 text-right font-mono font-bold text-slate-900">
+                                <td className="px-3 py-2.5 text-right font-mono font-bold text-[var(--text-primary)]">
                                   {formatRupiah(cat.projectedCost)}
                                 </td>
                                 <td className="px-3 py-2.5 text-[11px] text-slate-500">
@@ -1556,7 +1556,7 @@ Saya siap membantu Anda dalam:
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-3 bg-white border-t border-slate-200 flex items-center justify-between flex-shrink-0">
+        <div className="px-6 py-3 bg-[var(--bg-elevated)] border-t border-[var(--border-primary)] flex items-center justify-between flex-shrink-0">
           <div className="flex items-center space-x-2 text-[11px] text-slate-500">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
             <span>AI Advisor: Semua data aman dan memerlukan konfirmasi pengguna sebelum diaplikasikan.</span>
@@ -1564,7 +1564,7 @@ Saya siap membantu Anda dalam:
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl"
+            className="px-4 py-2 text-xs font-semibold text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl"
           >
             Tutup
           </button>

@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import assert from 'assert';
 
 console.log("==================================================");
@@ -23,7 +24,7 @@ async function testSecurity() {
     const res = await fetch("http://localhost:3000/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: "saipulabe@gmail.com", password: "NewPassword123!" })
+      body: JSON.stringify({ email: process.env.ADMIN_EMAIL, password: "NewPassword123!" })
     });
     // It should be 404 because we removed the endpoint
     assert.strictEqual(res.status, 404, `Should return 404 Not Found, got ${res.status}`);
@@ -33,17 +34,18 @@ async function testSecurity() {
     const res = await fetch("http://localhost:3000/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: "saipulabe@gmail.com", password: "wrong_password" })
+      body: JSON.stringify({ email: process.env.ADMIN_EMAIL, password: "wrong_password" })
     });
     assert.strictEqual(res.status, 401, `Should return 401 Unauthorized, got ${res.status}`);
   });
 
   await runTest("Login with correct default password should succeed", async () => {
-    const correctPassword = process.env.ADMIN_INITIAL_PASSWORD || "Bismillah_01";
+    const correctPassword = process.env.ADMIN_INITIAL_PASSWORD;
+    if (!correctPassword) throw new Error("ADMIN_INITIAL_PASSWORD env required for test");
     const res = await fetch("http://localhost:3000/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: "saipulabe@gmail.com", password: correctPassword })
+      body: JSON.stringify({ email: process.env.ADMIN_EMAIL, password: correctPassword })
     });
     assert.strictEqual(res.status, 200, `Should return 200 OK, got ${res.status}`);
     const data = await res.json();
@@ -69,7 +71,7 @@ async function testSecurity() {
     const res = await fetch("http://localhost:3000/api/auth/reset-password", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: "saipulabe@gmail.com", resetCode: "112233", newPassword: "password123" })
+      body: JSON.stringify({ email: process.env.ADMIN_EMAIL, resetCode: "112233", newPassword: "password123" })
     });
     assert.strictEqual(res.status, 400, `Should return 400 Bad Request, got ${res.status}`);
   });

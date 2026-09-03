@@ -244,11 +244,11 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
-      <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-xs" onClick={onClose} />
+      <div className="fixed inset-0 bg-[var(--bg-elevated)]/70 backdrop-blur-xs" onClick={onClose} />
 
-      <div className="relative bg-white w-full max-w-6xl h-[94vh] rounded-2xl shadow-2xl border border-slate-200 flex flex-col z-10 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative bg-[var(--bg-elevated)] w-full max-w-6xl h-[94vh] rounded-2xl shadow-2xl border border-[var(--border-primary)] flex flex-col z-10 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         {/* Top Header */}
-        <div className="px-6 py-3.5 bg-slate-900 text-white flex items-center justify-between flex-shrink-0">
+        <div className="px-6 py-3.5 bg-[var(--bg-elevated)] text-[var(--text-primary)] flex items-center justify-between flex-shrink-0">
           <div className="flex items-center space-x-3 truncate">
             <div className="p-2 bg-blue-600/30 text-blue-400 border border-blue-500/30 rounded-xl">
               <Calculator className="w-5 h-5" />
@@ -268,7 +268,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                   </span>
                 )}
               </div>
-              <p className="text-[11px] text-slate-400 truncate">
+              <p className="text-[11px] text-[var(--text-secondary)] truncate">
                 Berkas Sumber: <strong>{fileName}</strong> &middot; {(fileSize / 1024).toFixed(1)} KB
               </p>
             </div>
@@ -277,7 +277,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
           <div className="flex items-center space-x-2">
             <button
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+              className="p-1.5 text-[var(--text-secondary)] hover:text-white hover:bg-[var(--bg-elevated-hover)] rounded-lg transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -285,13 +285,13 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
         </div>
 
         {/* Verification Summary Banner (Anti-Hallucination & Math Check) */}
-        <div className="bg-slate-50 border-b border-slate-200 px-6 py-3 flex-shrink-0 grid grid-cols-1 md:grid-cols-4 gap-3">
+        <div className="bg-[var(--bg-elevated-hover)] border-b border-[var(--border-primary)] px-6 py-3 flex-shrink-0 grid grid-cols-1 md:grid-cols-4 gap-3">
           {/* Card 1: Total Items */}
-          <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
-            <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+          <div className="p-3 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] shadow-2xs">
+            <div className="text-[10px] uppercase font-bold text-[var(--text-secondary)] tracking-wider">
               Total Item Terbaca
             </div>
-            <div className="text-lg font-black text-slate-900 mt-0.5">
+            <div className="text-lg font-black text-[var(--text-primary)] mt-0.5">
               {parsedItems.length} Item
             </div>
             <div className="text-[11px] text-slate-500">
@@ -300,8 +300,8 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
           </div>
 
           {/* Card 2: Verification Status Breakdown */}
-          <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
-            <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+          <div className="p-3 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] shadow-2xs">
+            <div className="text-[10px] uppercase font-bold text-[var(--text-secondary)] tracking-wider">
               Status Verifikasi
             </div>
             <div className="flex items-center space-x-2 mt-0.5">
@@ -324,8 +324,8 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
           </div>
 
           {/* Card 3: Total System Calculation */}
-          <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
-            <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+          <div className="p-3 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] shadow-2xs">
+            <div className="text-[10px] uppercase font-bold text-[var(--text-secondary)] tracking-wider">
               Total Hitungan Sistem
             </div>
             <div className="text-base font-black text-blue-900 font-mono mt-0.5">
@@ -377,16 +377,16 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
         )}
 
         {/* Toolbar & Filter Tabs */}
-        <div className="p-4 bg-white border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
+        <div className="p-4 bg-[var(--bg-elevated)] border-b border-[var(--border-primary)] flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
           <div className="flex items-center space-x-2">
             {/* Status Filter Tabs */}
-            <div className="flex items-center bg-slate-100 p-1 rounded-xl text-xs font-semibold">
+            <div className="flex items-center bg-[var(--bg-elevated-hover)] p-1 rounded-xl text-xs font-semibold">
               <button
                 onClick={() => setActiveFilter('all')}
                 className={`px-3 py-1.5 rounded-lg transition-colors ${
                   activeFilter === 'all'
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-[var(--bg-elevated)] text-[var(--text-primary)] shadow-xs'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
               >
                 Semua ({parsedItems.length})
@@ -395,7 +395,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                 onClick={() => setActiveFilter('needs_verification')}
                 className={`px-3 py-1.5 rounded-lg transition-colors flex items-center space-x-1.5 ${
                   activeFilter === 'needs_verification'
-                    ? 'bg-amber-500 text-white shadow-xs font-bold'
+                    ? 'bg-[var(--traffic-yellow)] text-white shadow-xs font-bold'
                     : 'text-amber-700 hover:bg-amber-50'
                 }`}
               >
@@ -419,7 +419,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
             <select
               value={selectedCategoryFilter}
               onChange={(e) => setSelectedCategoryFilter(e.target.value)}
-              className="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-slate-700 font-medium focus:bg-white"
+              className="text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl px-3 py-1.5 text-[var(--text-primary)] font-medium focus:bg-[var(--bg-elevated)]"
             >
               <option value="all">Semua Kategori ({categoriesInJob.length})</option>
               {categoriesInJob.map((c) => (
@@ -433,13 +433,13 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
           <div className="flex items-center space-x-2">
             {/* Search Input */}
             <div className="relative">
-              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-3.5 h-3.5 text-[var(--text-secondary)] absolute left-2.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Cari uraian / kode..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl w-44 md:w-56 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
+                className="pl-8 pr-3 py-1.5 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl w-44 md:w-56 focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
               />
             </div>
 
@@ -468,15 +468,15 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
         {/* Interactive Editable Table */}
         <div className="flex-1 overflow-y-auto custom-scrollbar p-6">
           {filteredItems.length === 0 ? (
-            <div className="py-16 text-center text-slate-400">
+            <div className="py-16 text-center text-[var(--text-secondary)]">
               <Layers className="w-10 h-10 mx-auto mb-2 opacity-50" />
-              <p className="text-sm font-semibold text-slate-600">Tidak ada item yang sesuai filter.</p>
-              <p className="text-xs text-slate-400 mt-0.5">Coba ubah kriteria pencarian atau status tab di atas.</p>
+              <p className="text-sm font-semibold text-[var(--text-secondary)]">Tidak ada item yang sesuai filter.</p>
+              <p className="text-xs text-[var(--text-secondary)] mt-0.5">Coba ubah kriteria pencarian atau status tab di atas.</p>
             </div>
           ) : (
-            <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-2xs bg-white">
+            <div className="border border-[var(--border-primary)] rounded-2xl overflow-hidden shadow-2xs bg-[var(--bg-elevated)]">
               <table className="w-full text-left text-xs border-collapse">
-                <thead className="bg-slate-100/90 text-slate-700 font-bold border-b border-slate-200 uppercase tracking-wider text-[10px]">
+                <thead className="bg-[var(--bg-elevated-hover)]/90 text-[var(--text-primary)] font-bold border-b border-[var(--border-primary)] uppercase tracking-wider text-[10px]">
                   <tr>
                     <th className="py-3 px-3 w-10 text-center">No</th>
                     <th className="py-3 px-3 w-28">Kode Item</th>
@@ -502,11 +502,11 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                         className={`transition-colors ${
                           isNeedsCheck
                             ? 'bg-amber-50/50 hover:bg-amber-50'
-                            : 'hover:bg-slate-50/80'
+                            : 'hover:bg-[var(--bg-elevated-hover)]'
                         }`}
                       >
                         {/* No */}
-                        <td className="py-2.5 px-3 text-center text-slate-400 font-mono text-[11px]">
+                        <td className="py-2.5 px-3 text-center text-[var(--text-secondary)] font-mono text-[11px]">
                           {item.sortOrder || idx + 1}
                         </td>
 
@@ -518,7 +518,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                             onChange={(e) =>
                               updateImportJobItem(jobId, item.id, { itemCode: e.target.value })
                             }
-                            className="w-full px-2 py-1 bg-transparent hover:bg-white focus:bg-white border border-transparent hover:border-slate-200 focus:border-blue-400 rounded-lg text-xs font-mono"
+                            className="w-full px-2 py-1 bg-transparent hover:bg-[var(--bg-elevated)] focus:bg-[var(--bg-elevated)] border border-transparent hover:border-[var(--border-primary)] focus:border-blue-400 rounded-lg text-xs font-mono"
                           />
                         </td>
 
@@ -531,7 +531,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                                 category: e.target.value as RABCategory,
                               })
                             }
-                            className="w-full px-2 py-1 bg-transparent hover:bg-white focus:bg-white border border-transparent hover:border-slate-200 focus:border-blue-400 rounded-lg text-[11px] font-semibold text-slate-800"
+                            className="w-full px-2 py-1 bg-transparent hover:bg-[var(--bg-elevated)] focus:bg-[var(--bg-elevated)] border border-transparent hover:border-[var(--border-primary)] focus:border-blue-400 rounded-lg text-[11px] font-semibold text-[var(--text-primary)]"
                           >
                             {RAB_CATEGORIES.map((cat) => (
                               <option key={cat} value={cat}>
@@ -549,7 +549,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                             onChange={(e) =>
                               updateImportJobItem(jobId, item.id, { description: e.target.value })
                             }
-                            className="w-full px-2 py-1 bg-transparent hover:bg-white focus:bg-white border border-transparent hover:border-slate-200 focus:border-blue-400 rounded-lg text-xs font-medium text-slate-900"
+                            className="w-full px-2 py-1 bg-transparent hover:bg-[var(--bg-elevated)] focus:bg-[var(--bg-elevated)] border border-transparent hover:border-[var(--border-primary)] focus:border-blue-400 rounded-lg text-xs font-medium text-[var(--text-primary)]"
                           />
                           {item.validationWarnings && item.validationWarnings.length > 0 && (
                             <div className="text-[10px] text-amber-700 mt-0.5 flex items-center space-x-1 pl-2">
@@ -567,7 +567,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                             onChange={(e) =>
                               updateImportJobItem(jobId, item.id, { unit: e.target.value })
                             }
-                            className="w-full text-center px-1.5 py-1 bg-transparent hover:bg-white focus:bg-white border border-transparent hover:border-slate-200 focus:border-blue-400 rounded-lg text-xs font-mono font-bold"
+                            className="w-full text-center px-1.5 py-1 bg-transparent hover:bg-[var(--bg-elevated)] focus:bg-[var(--bg-elevated)] border border-transparent hover:border-[var(--border-primary)] focus:border-blue-400 rounded-lg text-xs font-mono font-bold"
                           />
                         </td>
 
@@ -582,7 +582,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                                 volume: parseFloat(e.target.value) || 0,
                               })
                             }
-                            className="w-full text-right px-2 py-1 bg-transparent hover:bg-white focus:bg-white border border-transparent hover:border-slate-200 focus:border-blue-400 rounded-lg text-xs font-mono font-semibold"
+                            className="w-full text-right px-2 py-1 bg-transparent hover:bg-[var(--bg-elevated)] focus:bg-[var(--bg-elevated)] border border-transparent hover:border-[var(--border-primary)] focus:border-blue-400 rounded-lg text-xs font-mono font-semibold"
                           />
                         </td>
 
@@ -597,7 +597,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                                 unitPrice: parseFloat(e.target.value) || 0,
                               })
                             }
-                            className="w-full text-right px-2 py-1 bg-transparent hover:bg-white focus:bg-white border border-transparent hover:border-slate-200 focus:border-blue-400 rounded-lg text-xs font-mono font-semibold"
+                            className="w-full text-right px-2 py-1 bg-transparent hover:bg-[var(--bg-elevated)] focus:bg-[var(--bg-elevated)] border border-transparent hover:border-[var(--border-primary)] focus:border-blue-400 rounded-lg text-xs font-mono font-semibold"
                           />
                         </td>
 
@@ -640,7 +640,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                         <td className="py-2.5 px-2 text-center">
                           <button
                             onClick={() => removeImportJobItem(jobId, item.id)}
-                            className="p-1 text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                            className="p-1 text-slate-600 dark:text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
                             title="Hapus baris ini"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -656,9 +656,9 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
         </div>
 
         {/* Footer Actions */}
-        <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 flex-shrink-0">
+        <div className="px-6 py-4 bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)] flex flex-col sm:flex-row items-center justify-between gap-3 flex-shrink-0">
           <div className="flex items-center space-x-3 text-xs text-slate-500">
-            <span className="font-semibold text-slate-700">Total Validasi:</span>
+            <span className="font-semibold text-[var(--text-primary)]">Total Validasi:</span>
             <span>{parsedItems.length} Pos Pekerjaan</span>
             <span>&middot;</span>
             <span className="font-mono font-bold text-blue-900 text-sm">
@@ -672,7 +672,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                 clearActiveImportJob();
                 onClose();
               }}
-              className="flex-1 sm:flex-none px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-xl transition-colors"
+              className="flex-1 sm:flex-none px-4 py-2 text-xs font-semibold text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl transition-colors"
             >
               Buang Draft
             </button>
@@ -680,7 +680,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
             {selectedProject && (
               <button
                 onClick={() => setShowApplyProjectDialog(true)}
-                className="flex-1 sm:flex-none px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold rounded-xl flex items-center justify-center space-x-1.5 transition-colors shadow-xs"
+                className="flex-1 sm:flex-none px-4 py-2 bg-[var(--bg-elevated-hover)] hover:bg-[var(--bg-elevated)] text-[var(--text-primary)] text-xs font-semibold rounded-xl flex items-center justify-center space-x-1.5 transition-colors shadow-xs"
               >
                 <Layers className="w-3.5 h-3.5" />
                 <span>Terapkan ke Proyek</span>
@@ -702,17 +702,17 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
       {showSaveTemplateDialog && (
         <div className="fixed inset-0 z-60 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs"
+            className="fixed inset-0 bg-[var(--bg-elevated)]/60 backdrop-blur-xs"
             onClick={() => setShowSaveTemplateDialog(false)}
           />
-          <div className="relative bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 p-6 z-10 space-y-4 animate-in fade-in zoom-in-95 duration-150">
+          <div className="relative bg-[var(--bg-elevated)] w-full max-w-lg rounded-2xl shadow-2xl border border-[var(--border-primary)] p-6 z-10 space-y-4 animate-in fade-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center space-x-2">
                 <div className="p-2 bg-blue-100 text-blue-700 rounded-xl">
                   <Save className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-slate-900">
+                  <h3 className="text-base font-bold text-[var(--text-primary)]">
                     Simpan Template Master RAB
                   </h3>
                   <p className="text-xs text-slate-500">
@@ -722,7 +722,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
               </div>
               <button
                 onClick={() => setShowSaveTemplateDialog(false)}
-                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg"
+                className="p-1.5 text-[var(--text-secondary)] hover:text-[var(--text-secondary)] rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -730,35 +730,35 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block font-bold text-slate-700 mb-1">
+                <label className="block font-bold text-[var(--text-primary)] mb-1">
                   Nama Template <span className="text-rose-500">*</span>
                 </label>
                 <input
                   type="text"
                   value={templateName}
                   onChange={(e) => setTemplateName(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 font-semibold text-slate-900"
+                  className="w-full px-3 py-2 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 font-semibold text-[var(--text-primary)]"
                   placeholder="Contoh: Template Rumah Mewah 2 Lantai"
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Deskripsi Ringkas</label>
+                <label className="block font-bold text-[var(--text-primary)] mb-1">Deskripsi Ringkas</label>
                 <textarea
                   value={templateDescription}
                   onChange={(e) => setTemplateDescription(e.target.value)}
                   rows={2}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 text-slate-700"
+                  className="w-full px-3 py-2 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 text-[var(--text-primary)]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Kategori</label>
+                  <label className="block font-bold text-[var(--text-primary)] mb-1">Kategori</label>
                   <select
                     value={templateCategory}
                     onChange={(e) => setTemplateCategory(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-medium"
+                    className="w-full px-3 py-2 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl font-medium"
                   >
                     <option value="Perumahan">Perumahan / Residensial</option>
                     <option value="Komersial">Komersial / Ruko / Kantor</option>
@@ -768,20 +768,20 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                   </select>
                 </div>
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Tipe Bangunan</label>
+                  <label className="block font-bold text-[var(--text-primary)] mb-1">Tipe Bangunan</label>
                   <input
                     type="text"
                     value={templateProjectType}
                     onChange={(e) => setTemplateProjectType(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-medium"
+                    className="w-full px-3 py-2 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl font-medium"
                     placeholder="Contoh: Type 70, 2 Lantai"
                   />
                 </div>
               </div>
 
               {/* Default Financial Markups */}
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
-                <div className="font-bold text-slate-800 text-[11px] uppercase tracking-wider">
+              <div className="p-3 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] space-y-2">
+                <div className="font-bold text-[var(--text-primary)] text-[11px] uppercase tracking-wider">
                   Default Parameter Keuangan Proyek
                 </div>
                 <div className="grid grid-cols-3 gap-2">
@@ -793,7 +793,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                       type="number"
                       value={overheadPercent}
                       onChange={(e) => setOverheadPercent(Number(e.target.value))}
-                      className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg text-center font-bold"
+                      className="w-full px-2 py-1 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg text-center font-bold"
                     />
                   </div>
                   <div>
@@ -804,7 +804,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                       type="number"
                       value={profitPercent}
                       onChange={(e) => setProfitPercent(Number(e.target.value))}
-                      className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg text-center font-bold"
+                      className="w-full px-2 py-1 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg text-center font-bold"
                     />
                   </div>
                   <div>
@@ -815,7 +815,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                       type="number"
                       value={taxPercent}
                       onChange={(e) => setTaxPercent(Number(e.target.value))}
-                      className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg text-center font-bold"
+                      className="w-full px-2 py-1 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg text-center font-bold"
                     />
                   </div>
                 </div>
@@ -823,7 +823,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
 
               {/* Visibility / Access Control */}
               <div>
-                <label className="block font-bold text-slate-700 mb-1">
+                <label className="block font-bold text-[var(--text-primary)] mb-1">
                   Hak Akses & Privasi Template
                 </label>
                 <div className="grid grid-cols-3 gap-2">
@@ -833,7 +833,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                     className={`p-2 rounded-xl border text-center font-semibold transition-all ${
                       templateVisibility === 'private'
                         ? 'bg-blue-50 border-blue-500 text-blue-700'
-                        : 'bg-slate-50 border-slate-200 text-slate-600'
+                        : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]'
                     }`}
                   >
                     Privat (Saya)
@@ -844,7 +844,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                     className={`p-2 rounded-xl border text-center font-semibold transition-all ${
                       templateVisibility === 'team'
                         ? 'bg-blue-50 border-blue-500 text-blue-700'
-                        : 'bg-slate-50 border-slate-200 text-slate-600'
+                        : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]'
                     }`}
                   >
                     Tim Perusahaan
@@ -855,7 +855,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                     className={`p-2 rounded-xl border text-center font-semibold transition-all ${
                       templateVisibility === 'public'
                         ? 'bg-blue-50 border-blue-500 text-blue-700'
-                        : 'bg-slate-50 border-slate-200 text-slate-600'
+                        : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]'
                     }`}
                   >
                     Publik
@@ -868,7 +868,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
               <button
                 type="button"
                 onClick={() => setShowSaveTemplateDialog(false)}
-                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl"
+                className="px-4 py-2 text-xs font-semibold text-[var(--text-secondary)] hover:bg-[var(--bg-elevated-hover)] rounded-xl"
               >
                 Batal
               </button>
@@ -888,11 +888,11 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
       {showApplyProjectDialog && (
         <div className="fixed inset-0 z-60 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs"
+            className="fixed inset-0 bg-[var(--bg-elevated)]/60 backdrop-blur-xs"
             onClick={() => setShowApplyProjectDialog(false)}
           />
-          <div className="relative bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 p-6 z-10 space-y-4">
-            <h3 className="text-base font-bold text-slate-900">
+          <div className="relative bg-[var(--bg-elevated)] w-full max-w-md rounded-2xl shadow-2xl border border-[var(--border-primary)] p-6 z-10 space-y-4">
+            <h3 className="text-base font-bold text-[var(--text-primary)]">
               Terapkan Hasil Import ke Proyek
             </h3>
             <p className="text-xs text-slate-500">
@@ -915,7 +915,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                       className={`p-2 rounded-lg border text-center font-semibold ${
                         applyMode === 'append'
                           ? 'bg-blue-600 text-white border-blue-600 font-bold shadow-2xs'
-                          : 'bg-white text-slate-700 border-slate-200'
+                          : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border-[var(--border-primary)]'
                       }`}
                     >
                       Tambahkan ke Akhir
@@ -926,7 +926,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                       className={`p-2 rounded-lg border text-center font-semibold ${
                         applyMode === 'replace'
                           ? 'bg-rose-600 text-white border-rose-600 font-bold shadow-2xs'
-                          : 'bg-white text-slate-700 border-slate-200'
+                          : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border-[var(--border-primary)]'
                       }`}
                     >
                       Ganti Semua RAB
@@ -943,8 +943,8 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                 </div>
               )}
 
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
-                <div className="font-bold text-slate-800">
+              <div className="p-3 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl space-y-2">
+                <div className="font-bold text-[var(--text-primary)]">
                   Buat Proyek Baru Mandiri
                 </div>
                 <div className="text-[11px] text-slate-500">
@@ -953,7 +953,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                 <button
                   type="button"
                   onClick={() => handleExecuteApplyToProject('new')}
-                  className="w-full py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl shadow-xs transition-colors"
+                  className="w-full py-2 bg-[var(--bg-elevated-hover)] hover:bg-[var(--bg-elevated)] text-[var(--text-primary)] font-bold rounded-xl shadow-xs transition-colors"
                 >
                   Buat Proyek Baru Sekarang
                 </button>
@@ -964,7 +964,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
               <button
                 type="button"
                 onClick={() => setShowApplyProjectDialog(false)}
-                className="px-4 py-1.5 text-xs text-slate-500 hover:bg-slate-100 rounded-xl font-medium"
+                className="px-4 py-1.5 text-xs text-slate-500 hover:bg-[var(--bg-elevated-hover)] rounded-xl font-medium"
               >
                 Batal
               </button>
@@ -977,21 +977,21 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
       {showAddItemDialog && (
         <div className="fixed inset-0 z-60 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs"
+            className="fixed inset-0 bg-[var(--bg-elevated)]/60 backdrop-blur-xs"
             onClick={() => setShowAddItemDialog(false)}
           />
-          <div className="relative bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 p-6 z-10 space-y-4">
-            <h3 className="text-base font-bold text-slate-900">
+          <div className="relative bg-[var(--bg-elevated)] w-full max-w-md rounded-2xl shadow-2xl border border-[var(--border-primary)] p-6 z-10 space-y-4">
+            <h3 className="text-base font-bold text-[var(--text-primary)]">
               Tambah Item Pekerjaan Baru
             </h3>
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Kategori</label>
+                <label className="block font-bold text-[var(--text-primary)] mb-1">Kategori</label>
                 <select
                   value={newItemCategory}
                   onChange={(e) => setNewItemCategory(e.target.value as RABCategory)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-medium"
+                  className="w-full px-3 py-2 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl font-medium"
                 >
                   {RAB_CATEGORIES.map((cat) => (
                     <option key={cat} value={cat}>
@@ -1003,17 +1003,17 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
 
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Kode Item</label>
+                  <label className="block font-bold text-[var(--text-primary)] mb-1">Kode Item</label>
                   <input
                     type="text"
                     value={newItemCode}
                     onChange={(e) => setNewItemCode(e.target.value)}
                     placeholder="STR-01"
-                    className="w-full px-2 py-1.5 bg-slate-50 border border-slate-200 rounded-xl font-mono"
+                    className="w-full px-2 py-1.5 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl font-mono"
                   />
                 </div>
                 <div className="col-span-2">
-                  <label className="block font-bold text-slate-700 mb-1">
+                  <label className="block font-bold text-[var(--text-primary)] mb-1">
                     Uraian Pekerjaan <span className="text-rose-500">*</span>
                   </label>
                   <input
@@ -1021,51 +1021,51 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                     value={newItemDescription}
                     onChange={(e) => setNewItemDescription(e.target.value)}
                     placeholder="Pekerjaan Kolom Praktis 15x15"
-                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl"
+                    className="w-full px-3 py-1.5 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Satuan</label>
+                  <label className="block font-bold text-[var(--text-primary)] mb-1">Satuan</label>
                   <input
                     type="text"
                     value={newItemUnit}
                     onChange={(e) => setNewItemUnit(e.target.value)}
-                    className="w-full px-2 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-center font-mono"
+                    className="w-full px-2 py-1.5 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl text-center font-mono"
                   />
                 </div>
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Volume</label>
+                  <label className="block font-bold text-[var(--text-primary)] mb-1">Volume</label>
                   <input
                     type="number"
                     step="0.01"
                     value={newItemVolume}
                     onChange={(e) => setNewItemVolume(Number(e.target.value))}
-                    className="w-full px-2 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-right font-mono"
+                    className="w-full px-2 py-1.5 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl text-right font-mono"
                   />
                 </div>
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Harga Satuan (Rp)</label>
+                  <label className="block font-bold text-[var(--text-primary)] mb-1">Harga Satuan (Rp)</label>
                   <input
                     type="number"
                     step="1000"
                     value={newItemUnitPrice}
                     onChange={(e) => setNewItemUnitPrice(Number(e.target.value))}
-                    className="w-full px-2 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-right font-mono"
+                    className="w-full px-2 py-1.5 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl text-right font-mono"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Catatan / Spesifikasi</label>
+                <label className="block font-bold text-[var(--text-primary)] mb-1">Catatan / Spesifikasi</label>
                 <input
                   type="text"
                   value={newItemNotes}
                   onChange={(e) => setNewItemNotes(e.target.value)}
                   placeholder="K-225 besi ulir dia 10mm"
-                  className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-600"
+                  className="w-full px-3 py-1.5 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl text-[var(--text-secondary)]"
                 />
               </div>
             </div>
@@ -1074,7 +1074,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
               <button
                 type="button"
                 onClick={() => setShowAddItemDialog(false)}
-                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl"
+                className="px-4 py-2 text-xs font-semibold text-[var(--text-secondary)] hover:bg-[var(--bg-elevated-hover)] rounded-xl"
               >
                 Batal
               </button>

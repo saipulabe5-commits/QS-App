@@ -138,22 +138,22 @@ export const TemplateUploadModal: React.FC<TemplateUploadModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={onClose} />
-      <div className="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="fixed inset-0 bg-[var(--bg-elevated)]/60 backdrop-blur-xs" onClick={onClose} />
+      <div className="relative w-full max-w-xl bg-[var(--bg-elevated)] rounded-2xl shadow-2xl border border-[var(--border-primary)] overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50/70">
+        <div className="px-6 py-4 border-b border-[var(--border-primary)] flex items-center justify-between bg-[var(--bg-elevated-hover)]">
           <div className="flex items-center space-x-2.5">
             <div className="p-2 bg-blue-100 text-blue-600 rounded-xl">
               <Upload className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-slate-800">Unggah File RAB & Template</h2>
+              <h2 className="text-base font-bold text-[var(--text-primary)]">Unggah File RAB & Template</h2>
               <p className="text-xs text-slate-500">Mendukung Excel (.xlsx/.xls), CSV, PDF, dan Gambar Cetak</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+            className="p-1.5 text-[var(--text-secondary)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-elevated-hover)] rounded-lg transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -175,7 +175,7 @@ export const TemplateUploadModal: React.FC<TemplateUploadModalProps> = ({
                 ? 'border-blue-500 bg-blue-50/50 scale-[0.99]'
                 : selectedFile
                 ? 'border-emerald-400 bg-emerald-50/30'
-                : 'border-slate-300 hover:border-blue-400 hover:bg-slate-50/50'
+                : 'border-[var(--border-primary)] hover:border-blue-400 hover:bg-[var(--bg-elevated-hover)]'
             }`}
           >
             <input
@@ -201,12 +201,12 @@ export const TemplateUploadModal: React.FC<TemplateUploadModalProps> = ({
                     <ImageIcon className="w-8 h-8" />
                   )}
                 </div>
-                <div className="text-sm font-semibold text-slate-800">{selectedFile.name}</div>
+                <div className="text-sm font-semibold text-[var(--text-primary)]">{selectedFile.name}</div>
                 <div className="text-xs text-slate-500">
                   {(selectedFile.size / 1024).toFixed(1)} KB • Klik atau tarik untuk mengganti file
                 </div>
                 {filePreview && (
-                  <div className="mt-2 max-h-32 rounded-lg overflow-hidden border border-slate-200 shadow-xs">
+                  <div className="mt-2 max-h-32 rounded-lg overflow-hidden border border-[var(--border-primary)] shadow-xs">
                     <img src={filePreview} alt="Preview" className="h-28 w-auto object-contain" />
                   </div>
                 )}
@@ -217,10 +217,10 @@ export const TemplateUploadModal: React.FC<TemplateUploadModalProps> = ({
                   <Upload className="w-7 h-7" />
                 </div>
                 <div>
-                  <div className="text-sm font-semibold text-slate-700">
+                  <div className="text-sm font-semibold text-[var(--text-primary)]">
                     Tarik file ke sini atau <span className="text-blue-600 underline">pilih dari perangkat</span>
                   </div>
-                  <div className="text-xs text-slate-400 mt-1">
+                  <div className="text-xs text-[var(--text-secondary)] mt-1">
                     Excel (.xlsx, .xls), CSV, Dokumen PDF, Gambar/Scan Foto (.png, .jpg)
                   </div>
                 </div>
@@ -230,20 +230,20 @@ export const TemplateUploadModal: React.FC<TemplateUploadModalProps> = ({
 
           {/* Info Feature Badges */}
           <div className="grid grid-cols-3 gap-2 text-center text-xs">
-            <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-100 flex flex-col items-center">
+            <div className="p-2.5 bg-[var(--bg-elevated-hover)] rounded-xl border border-slate-100 flex flex-col items-center">
               <FileSpreadsheet className="w-4 h-4 text-emerald-600 mb-1" />
-              <span className="font-semibold text-slate-700">Auto Formula</span>
-              <span className="text-[10px] text-slate-400">Deteksi Volume & Satuan</span>
+              <span className="font-semibold text-[var(--text-primary)]">Auto Formula</span>
+              <span className="text-[10px] text-[var(--text-secondary)]">Deteksi Volume & Satuan</span>
             </div>
-            <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-100 flex flex-col items-center">
+            <div className="p-2.5 bg-[var(--bg-elevated-hover)] rounded-xl border border-slate-100 flex flex-col items-center">
               <Sparkles className="w-4 h-4 text-purple-600 mb-1" />
-              <span className="font-semibold text-slate-700">AI OCR Vision</span>
-              <span className="text-[10px] text-slate-400">Pindai PDF & Gambar</span>
+              <span className="font-semibold text-[var(--text-primary)]">AI OCR Vision</span>
+              <span className="text-[10px] text-[var(--text-secondary)]">Pindai PDF & Gambar</span>
             </div>
-            <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-100 flex flex-col items-center">
+            <div className="p-2.5 bg-[var(--bg-elevated-hover)] rounded-xl border border-slate-100 flex flex-col items-center">
               <ShieldCheck className="w-4 h-4 text-blue-600 mb-1" />
-              <span className="font-semibold text-slate-700">Validasi Data</span>
-              <span className="text-[10px] text-slate-400">Verifikasi & Normalisasi</span>
+              <span className="font-semibold text-[var(--text-primary)]">Validasi Data</span>
+              <span className="text-[10px] text-[var(--text-secondary)]">Verifikasi & Normalisasi</span>
             </div>
           </div>
 
@@ -268,12 +268,12 @@ export const TemplateUploadModal: React.FC<TemplateUploadModalProps> = ({
         </div>
 
         {/* Footer Actions */}
-        <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+        <div className="px-6 py-4 bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)] flex items-center justify-between">
           <button
             type="button"
             onClick={onClose}
             disabled={isProcessing}
-            className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-xl transition-colors disabled:opacity-50"
+            className="px-4 py-2 text-xs font-semibold text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl transition-colors disabled:opacity-50"
           >
             Batal
           </button>

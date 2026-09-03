@@ -6,14 +6,14 @@ import { ErrorBoundary } from './ErrorBoundary';
 import { Sidebar } from './components/layout/Sidebar';
 import { MacToolbar } from './components/layout/MacToolbar';
 import { StatusBar } from './components/layout/StatusBar';
-import { InspectorPanel } from './components/layout/InspectorPanel';
-import { CommandBar } from './components/layout/CommandBar';
-import { ProjectSwitcherModal } from './components/layout/ProjectSwitcherModal';
-import { KeyboardShortcutsModal } from './components/layout/KeyboardShortcutsModal';
-import { DiagnosticsModal } from './components/diagnostics/DiagnosticsModal';
+const InspectorPanel = lazyWithRetry(() => import('./components/layout/InspectorPanel').then(m => ({ default: m.InspectorPanel })));
+const CommandBar = lazyWithRetry(() => import('./components/layout/CommandBar').then(m => ({ default: m.CommandBar })));
+const ProjectSwitcherModal = lazyWithRetry(() => import('./components/layout/ProjectSwitcherModal').then(m => ({ default: m.ProjectSwitcherModal })));
+const KeyboardShortcutsModal = lazyWithRetry(() => import('./components/layout/KeyboardShortcutsModal').then(m => ({ default: m.KeyboardShortcutsModal })));
+const DiagnosticsModal = lazyWithRetry(() => import('./components/diagnostics/DiagnosticsModal').then(m => ({ default: m.DiagnosticsModal })));
 import { ToastContainer } from './components/layout/Toast';
 import { ViewFallback } from './components/layout/ViewFallback';
-import { DashboardView } from './components/dashboard/DashboardView';
+const DashboardView = lazyWithRetry(() => import('./components/dashboard/DashboardView').then(m => ({ default: m.DashboardView })));
 import { AuthGate } from './components/auth/AuthGate';
 
 // PROGRESSIVE LAZY MODULE LOADING (ISOLATION OF SUB-MODULE FAILURES)
@@ -60,6 +60,9 @@ const MainLayout: React.FC = () => {
 
   // GLOBAL KEYBOARD SHORTCUTS CONTROLLER
   useEffect(() => {
+    // Clear chunk reload flag on successful app boot
+    sessionStorage.removeItem("rabpro_chunk_reload_attempt");
+
     const handleKeyDown = (e: KeyboardEvent) => {
       // Don't intercept shortcuts when typing in inputs/textareas except for Command+K/P/I/Escape
       const target = e.target as HTMLElement;
@@ -194,15 +197,19 @@ const MainLayout: React.FC = () => {
           </Suspense>
         );
       default:
-        return <DashboardView />;
+        return (
+          <Suspense fallback={<ViewFallback label="Memuat Dasbor..." />}>
+            <DashboardView />
+          </Suspense>
+        );
     }
   };
 
   return (
-    <div className="flex flex-col h-screen bg-slate-100 text-slate-900 overflow-hidden antialiased select-none font-sans">
+    <div className="flex flex-col h-screen bg-slate-100 dark:bg-[var(--bg-elevated)] text-slate-900 dark:text-slate-100 overflow-hidden antialiased select-none font-sans transition-colors">
       {/* SAFE MODE BANNER IF ACTIVATED */}
       {isSafeMode && (
-        <div className="bg-amber-500 text-slate-950 font-bold px-4 py-1 text-xs text-center flex items-center justify-between shadow-sm z-50 flex-shrink-0">
+        <div className="bg-[var(--traffic-yellow)] text-slate-950 font-bold px-4 py-1 text-xs text-center flex items-center justify-between shadow-sm z-50 flex-shrink-0">
           <span>SAFE MODE AKTIF: Fitur berat diisolasi untuk keandalan maksimal.</span>
           <button
             onClick={() => { window.location.href = window.location.pathname; }}
@@ -226,7 +233,7 @@ const MainLayout: React.FC = () => {
         )}
 
         {/* Main Content Viewport */}
-        <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-slate-50/50">
+        <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[var(--bg-elevated-hover)]">
           {/* Top Window Bar (Mac Toolbar) */}
           <MacToolbar
             onOpenNewProject={() => setIsProjectModalOpen(true)}
@@ -270,11 +277,12 @@ const MainLayout: React.FC = () => {
         </div>
 
         {/* Inspector Panel Slide-Over */}
+        <Suspense fallback={null}>
         <InspectorPanel
           isOpen={isInspectorOpen}
           onClose={() => setIsInspectorOpen(false)}
           onOpenAIEstimator={() => handleOpenAIWithTab('chat')}
-        />
+        />      </Suspense>
       </div>
 
       {/* Bottom Desktop Status Bar */}
@@ -288,6 +296,7 @@ const MainLayout: React.FC = () => {
       />
 
       {/* Command Palette (⌘K) */}
+      <Suspense fallback={null}>
       <CommandBar
         isOpen={isCommandBarOpen}
         onClose={() => setIsCommandBarOpen(false)}
@@ -295,26 +304,29 @@ const MainLayout: React.FC = () => {
         onOpenAIEstimator={() => handleOpenAIWithTab('chat')}
         onOpenQuickBuilder={() => setIsQuickBuilderOpen(true)}
         onOpenDiagnostics={() => setIsDiagnosticsModalOpen(true)}
-      />
+      />    </Suspense>
 
       {/* Quick Project Switcher (⌘P) */}
+      <Suspense fallback={null}>
       <ProjectSwitcherModal
         isOpen={isProjectSwitcherOpen}
         onClose={() => setIsProjectSwitcherOpen(false)}
         onOpenNewProject={() => setIsProjectModalOpen(true)}
-      />
+      />    </Suspense>
 
       {/* Keyboard Shortcuts Helper (⌘/) */}
+      <Suspense fallback={null}>
       <KeyboardShortcutsModal
         isOpen={isShortcutsModalOpen}
         onClose={() => setIsShortcutsModalOpen(false)}
-      />
+      />    </Suspense>
 
       {/* Runtime Diagnostics Modal (⌥D) */}
+      <Suspense fallback={null}>
       <DiagnosticsModal
         isOpen={isDiagnosticsModalOpen}
         onClose={() => setIsDiagnosticsModalOpen(false)}
-      />
+      />    </Suspense>
 
       {/* Global Modals loaded lazily only when requested */}
       {isProjectModalOpen && (

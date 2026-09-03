@@ -90,7 +90,7 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
       {/* Top Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-slate-900 tracking-tight">
+          <h2 className="text-xl font-bold text-[var(--text-primary)] tracking-tight">
             Daftar Seluruh Proyek ({projects.length})
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -110,16 +110,16 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="bg-[var(--bg-elevated)] p-4 rounded-2xl border border-[var(--border-primary)] shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3">
         {/* Search */}
         <div className="relative w-full md:w-80">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[var(--text-secondary)] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Cari nama proyek, no. dokumen, klien..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
+            className="w-full pl-9 pr-3.5 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
           />
         </div>
 
@@ -134,7 +134,7 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
                 className={`px-3 py-1.5 text-xs rounded-xl font-medium transition-all ${
                   statusFilter === st
                     ? 'bg-blue-600 text-white font-semibold shadow-2xs'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    : 'bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700'
                 }`}
               >
                 {st === 'all' ? 'Semua Status' : st}
@@ -143,11 +143,11 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
           </div>
 
           {/* Grid/Table Switcher */}
-          <div className="hidden sm:flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
+          <div className="hidden sm:flex items-center bg-[var(--bg-elevated-hover)] p-1 rounded-xl border border-[var(--border-primary)]">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-lg text-slate-600 transition-colors ${
-                viewMode === 'grid' ? 'bg-white text-blue-600 shadow-2xs font-bold' : 'hover:text-slate-900'
+              className={`p-1.5 rounded-lg text-[var(--text-secondary)] transition-colors ${
+                viewMode === 'grid' ? 'bg-[var(--bg-elevated)] text-blue-600 shadow-2xs font-bold' : 'hover:text-[var(--text-primary)]'
               }`}
               title="Tampilan Grid"
             >
@@ -155,8 +155,8 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
             </button>
             <button
               onClick={() => setViewMode('table')}
-              className={`p-1.5 rounded-lg text-slate-600 transition-colors ${
-                viewMode === 'table' ? 'bg-white text-blue-600 shadow-2xs font-bold' : 'hover:text-slate-900'
+              className={`p-1.5 rounded-lg text-[var(--text-secondary)] transition-colors ${
+                viewMode === 'table' ? 'bg-[var(--bg-elevated)] text-blue-600 shadow-2xs font-bold' : 'hover:text-[var(--text-primary)]'
               }`}
               title="Tampilan Tabel"
             >
@@ -168,9 +168,9 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
 
       {/* Projects List / Grid */}
       {filteredProjects.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center shadow-2xs">
-          <Building2 className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-          <h3 className="text-base font-bold text-slate-800">Tidak Ada Proyek yang Sesuai</h3>
+        <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] p-12 text-center shadow-2xs">
+          <Building2 className="w-12 h-12 text-slate-600 dark:text-slate-300 mx-auto mb-3" />
+          <h3 className="text-base font-bold text-[var(--text-primary)]">Tidak Ada Proyek yang Sesuai</h3>
           <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
             {searchQuery || statusFilter !== 'all'
               ? 'Coba sesuaikan kata kunci pencarian atau ganti filter status.'
@@ -193,12 +193,12 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
             return (
               <div
                 key={proj.id}
-                className="bg-white rounded-2xl border border-slate-200 shadow-2xs hover:shadow-md hover:border-slate-300 transition-all flex flex-col justify-between overflow-hidden group"
+                className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] shadow-2xs hover:shadow-md hover:border-[var(--border-primary)] transition-all flex flex-col justify-between overflow-hidden group"
               >
                 <div className="p-5">
                   {/* Status & Doc No */}
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-[11px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md truncate max-w-[170px]">
+                    <span className="text-[11px] font-mono text-slate-500 bg-[var(--bg-elevated-hover)] px-2 py-0.5 rounded-md truncate max-w-[170px]">
                       {proj.documentNo}
                     </span>
                     <select
@@ -209,7 +209,7 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
                           ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
                           : proj.status === 'Selesai'
                           ? 'bg-blue-50 text-blue-700 border-blue-300'
-                          : 'bg-slate-50 text-slate-600 border-slate-200'
+                          : 'bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)] border-[var(--border-primary)]'
                       }`}
                     >
                       <option value="Draft">Draft</option>
@@ -224,24 +224,24 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
                       setActiveProjectId(proj.id);
                       setActiveTab('rab');
                     }}
-                    className="text-base font-bold text-slate-900 line-clamp-2 cursor-pointer hover:text-blue-600 transition-colors leading-snug"
+                    className="text-base font-bold text-[var(--text-primary)] line-clamp-2 cursor-pointer hover:text-blue-600 transition-colors leading-snug"
                     title={proj.name}
                   >
                     {proj.name}
                   </h3>
 
                   {/* Client & Location */}
-                  <div className="mt-3 space-y-1.5 text-xs text-slate-600">
+                  <div className="mt-3 space-y-1.5 text-xs text-[var(--text-secondary)]">
                     <div className="flex items-center space-x-2 truncate">
-                      <Building2 className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                      <Building2 className="w-3.5 h-3.5 text-[var(--text-secondary)] flex-shrink-0" />
                       <span className="truncate">Klien: <strong>{proj.clientName || '-'}</strong></span>
                     </div>
                     <div className="flex items-center space-x-2 truncate">
-                      <MapPin className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                      <MapPin className="w-3.5 h-3.5 text-[var(--text-secondary)] flex-shrink-0" />
                       <span className="truncate">{proj.location || '-'}</span>
                     </div>
                     <div className="flex items-center space-x-2 truncate">
-                      <Calendar className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                      <Calendar className="w-3.5 h-3.5 text-[var(--text-secondary)] flex-shrink-0" />
                       <span>
                         Mulai: {formatDateIndo(proj.startDate)}
                       </span>
@@ -249,9 +249,9 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
                   </div>
 
                   {/* Financial Overview Pill */}
-                  <div className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
+                  <div className="mt-4 p-3 bg-[var(--bg-elevated-hover)] rounded-xl border border-slate-100 flex items-center justify-between">
                     <div>
-                      <div className="text-[10px] text-slate-400 uppercase font-semibold">
+                      <div className="text-[10px] text-[var(--text-secondary)] uppercase font-semibold">
                         Total Anggaran (RAB)
                       </div>
                       <div className="text-base font-black text-blue-900 tracking-tight">
@@ -259,10 +259,10 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-[10px] text-slate-400 uppercase font-semibold">
+                      <div className="text-[10px] text-[var(--text-secondary)] uppercase font-semibold">
                         Item Pekerjaan
                       </div>
-                      <div className="text-xs font-bold text-slate-700">
+                      <div className="text-xs font-bold text-[var(--text-primary)]">
                         {pItems.length} Pos
                       </div>
                     </div>
@@ -270,7 +270,7 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
                 </div>
 
                 {/* Card Actions Footer */}
-                <div className="px-5 py-3 bg-slate-50/70 border-t border-slate-100 flex items-center justify-between gap-2">
+                <div className="px-5 py-3 bg-[var(--bg-elevated-hover)] border-t border-slate-100 flex items-center justify-between gap-2">
                   <button
                     onClick={() => {
                       setActiveProjectId(proj.id);
@@ -289,28 +289,28 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
                         setActiveTab('reports');
                       }}
                       title="Cetak Laporan"
-                      className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-200 rounded-lg transition-colors"
+                      className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-slate-200 dark:bg-slate-700 rounded-lg transition-colors"
                     >
                       <Printer className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => duplicateProject(proj.id)}
                       title="Duplikasi Proyek"
-                      className="p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                      className="p-2 text-[var(--text-secondary)] hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                     >
                       <Copy className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => handleEdit(proj)}
                       title="Edit Proyek"
-                      className="p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+                      className="p-2 text-[var(--text-secondary)] hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => setProjectToDelete(proj)}
                       title="Hapus Proyek"
-                      className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                      className="p-2 text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -322,10 +322,10 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
         </div>
       ) : (
         /* TABLE VIEW */
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
+        <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] shadow-2xs overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-600">
-              <thead className="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200 uppercase text-[11px] tracking-wider">
+            <table className="w-full text-left text-xs text-[var(--text-secondary)]">
+              <thead className="bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] font-semibold border-b border-[var(--border-primary)] uppercase text-[11px] tracking-wider">
                 <tr>
                   <th className="px-5 py-3.5">Nama Proyek</th>
                   <th className="px-4 py-3.5">No. Dokumen</th>
@@ -342,29 +342,29 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
                   const pCalc = calculateRAB(pItems, proj.overheadPercent, proj.profitPercent, proj.taxPercent);
 
                   return (
-                    <tr key={proj.id} className="hover:bg-slate-50 transition-colors">
+                    <tr key={proj.id} className="hover:bg-[var(--bg-elevated-hover)] transition-colors">
                       <td className="px-5 py-4">
                         <div
                           onClick={() => {
                             setActiveProjectId(proj.id);
                             setActiveTab('rab');
                           }}
-                          className="font-bold text-slate-900 text-sm hover:text-blue-600 cursor-pointer"
+                          className="font-bold text-[var(--text-primary)] text-sm hover:text-blue-600 cursor-pointer"
                         >
                           {proj.name}
                         </div>
-                        <div className="text-[11px] text-slate-400 mt-0.5">
+                        <div className="text-[11px] text-[var(--text-secondary)] mt-0.5">
                           {pItems.length} pos pekerjaan
                         </div>
                       </td>
-                      <td className="px-4 py-4 font-mono font-medium text-slate-700">
+                      <td className="px-4 py-4 font-mono font-medium text-[var(--text-primary)]">
                         {proj.documentNo}
                       </td>
                       <td className="px-4 py-4">
-                        <div className="font-medium text-slate-800">{proj.clientName}</div>
-                        <div className="text-[11px] text-slate-400">{proj.location}</div>
+                        <div className="font-medium text-[var(--text-primary)]">{proj.clientName}</div>
+                        <div className="text-[11px] text-[var(--text-secondary)]">{proj.location}</div>
                       </td>
-                      <td className="px-4 py-4 text-[11px] text-slate-600">
+                      <td className="px-4 py-4 text-[11px] text-[var(--text-secondary)]">
                         {formatDateIndo(proj.startDate)}
                       </td>
                       <td className="px-4 py-4">
@@ -374,13 +374,13 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
                               ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
                               : proj.status === 'Selesai'
                               ? 'bg-blue-100 text-blue-800 border border-blue-200'
-                              : 'bg-slate-100 text-slate-700 border border-slate-200'
+                              : 'bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] border border-[var(--border-primary)]'
                           }`}
                         >
                           {proj.status}
                         </span>
                       </td>
-                      <td className="px-4 py-4 text-right font-bold text-slate-900 text-sm">
+                      <td className="px-4 py-4 text-right font-bold text-[var(--text-primary)] text-sm">
                         {formatRupiah(pCalc.grandTotal)}
                       </td>
                       <td className="px-5 py-4 text-right">
@@ -410,7 +410,7 @@ export const ProjectListView: React.FC<ProjectListViewProps> = ({
                           </button>
                           <button
                             onClick={() => setProjectToDelete(proj)}
-                            className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg cursor-pointer"
+                            className="p-1.5 text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50 rounded-lg cursor-pointer"
                             title="Hapus"
                           >
                             <Trash2 className="w-4 h-4" />

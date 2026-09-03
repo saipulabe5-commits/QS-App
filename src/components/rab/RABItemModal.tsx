@@ -230,13 +230,13 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
       {/* Backdrop */}
       <div
         onClick={onClose}
-        className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-[var(--bg-elevated)]/60 backdrop-blur-xs transition-opacity"
       />
 
       {/* Modal Box */}
-      <div className="relative bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-10 my-8 flex flex-col">
+      <div className="relative bg-[var(--bg-elevated)] w-full max-w-2xl rounded-2xl shadow-2xl border border-[var(--border-primary)] overflow-hidden z-10 my-8 flex flex-col">
         {/* Modal Header */}
-        <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+        <div className="px-6 py-4 bg-[var(--bg-elevated)] text-[var(--text-primary)] flex items-center justify-between">
           <div className="flex items-center space-x-2.5">
             <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
               <Calculator className="w-4 h-4" />
@@ -245,28 +245,28 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
               <h3 className="text-base font-bold">
                 {itemToEdit ? 'Edit Item Pekerjaan RAB' : 'Tambah Item Pekerjaan Baru'}
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[var(--text-secondary)]">
                 Lengkapi rincian volume, harga satuan, dan divisi pekerjaan
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition-colors"
+            className="text-[var(--text-secondary)] hover:text-white p-1.5 rounded-lg hover:bg-[var(--bg-elevated-hover)] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Tab Selector */}
-        <div className="flex border-b border-slate-200 bg-slate-50 px-6 pt-2 gap-2 text-xs font-bold">
+        <div className="flex border-b border-[var(--border-primary)] bg-[var(--bg-elevated-hover)] px-6 pt-2 gap-2 text-xs font-bold">
           <button
             type="button"
             onClick={() => setPickerTab('form')}
             className={`px-4 py-2 rounded-t-lg transition-colors border-b-2 ${
               pickerTab === 'form'
-                ? 'bg-white text-blue-700 border-blue-600 shadow-2xs'
-                : 'text-slate-500 hover:text-slate-900 border-transparent'
+                ? 'bg-[var(--bg-elevated)] text-blue-700 border-blue-600 shadow-2xs'
+                : 'text-slate-500 hover:text-[var(--text-primary)] border-transparent'
             }`}
           >
             Form Input RAB
@@ -276,8 +276,8 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
             onClick={() => setPickerTab('priceDb')}
             className={`px-4 py-2 rounded-t-lg transition-colors border-b-2 flex items-center space-x-1.5 ${
               pickerTab === 'priceDb'
-                ? 'bg-white text-blue-700 border-blue-600 shadow-2xs'
-                : 'text-slate-500 hover:text-slate-900 border-transparent'
+                ? 'bg-[var(--bg-elevated)] text-blue-700 border-blue-600 shadow-2xs'
+                : 'text-slate-500 hover:text-[var(--text-primary)] border-transparent'
             }`}
           >
             <Database className="w-3.5 h-3.5" />
@@ -288,8 +288,8 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
             onClick={() => setPickerTab('ahsp')}
             className={`px-4 py-2 rounded-t-lg transition-colors border-b-2 flex items-center space-x-1.5 ${
               pickerTab === 'ahsp'
-                ? 'bg-white text-blue-700 border-blue-600 shadow-2xs'
-                : 'text-slate-500 hover:text-slate-900 border-transparent'
+                ? 'bg-[var(--bg-elevated)] text-blue-700 border-blue-600 shadow-2xs'
+                : 'text-slate-500 hover:text-[var(--text-primary)] border-transparent'
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
@@ -303,13 +303,13 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
             {/* Category & Code */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="sm:col-span-2">
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                   Kategori / Divisi Pekerjaan <span className="text-rose-500">*</span>
                 </label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value as RABCategory)}
-                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
+                  className="w-full px-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
                 >
                   {RAB_CATEGORIES.map((cat) => (
                     <option key={cat} value={cat}>
@@ -320,7 +320,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                   Kode Pekerjaan
                 </label>
                 <input
@@ -328,7 +328,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                   placeholder="Contoh: STR-01"
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl font-mono focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
+                  className="w-full px-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl font-mono focus:bg-[var(--bg-elevated)] focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
                 />
               </div>
             </div>
@@ -336,7 +336,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
             {/* Uraian Pekerjaan */}
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="block text-xs font-semibold text-slate-700">
+                <label className="block text-xs font-semibold text-[var(--text-primary)]">
                   Uraian Pekerjaan <span className="text-rose-500">*</span>
                 </label>
                 <div className="flex items-center space-x-2 text-[11px]">
@@ -385,8 +385,8 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                   if (autoCatResult) setAutoCatResult(null);
                 }}
                 placeholder="Contoh: Pekerjaan cor beton bertulang Sloof 15/20 cm K-250 besi ulir"
-                className={`w-full px-3.5 py-2 text-xs bg-slate-50 border rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 ${
-                  errors.name ? 'border-rose-400' : 'border-slate-200'
+                className={`w-full px-3.5 py-2 text-xs bg-[var(--bg-elevated-hover)] border rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 ${
+                  errors.name ? 'border-rose-400' : 'border-[var(--border-primary)]'
                 }`}
               />
               {errors.name && <p className="text-[11px] text-rose-600 mt-1 font-medium">{errors.name}</p>}
@@ -417,7 +417,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
             {/* Satuan, Volume, Harga Satuan */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                   Satuan
                 </label>
                 <input
@@ -426,7 +426,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                   placeholder="m², m³, kg, ls..."
                   value={unit}
                   onChange={(e) => setUnit(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl font-medium focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
+                  className="w-full px-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl font-medium focus:bg-[var(--bg-elevated)] focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
                 />
                 <datalist id="unit-options-list">
                   <option value="m¹" />
@@ -446,7 +446,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
 
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="block text-xs font-semibold text-slate-700">
+                  <label className="block text-xs font-semibold text-[var(--text-primary)]">
                     Volume <span className="text-rose-500">*</span>
                   </label>
                   <button
@@ -465,15 +465,15 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                   min="0.001"
                   value={volume}
                   onChange={(e) => setVolume(e.target.value)}
-                  className={`w-full px-3 py-2 text-xs bg-slate-50 border rounded-xl font-mono text-right font-bold text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 ${
-                    errors.volume ? 'border-rose-400' : 'border-slate-200'
+                  className={`w-full px-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border rounded-xl font-mono text-right font-bold text-[var(--text-primary)] focus:bg-[var(--bg-elevated)] focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 ${
+                    errors.volume ? 'border-rose-400' : 'border-[var(--border-primary)]'
                   }`}
                 />
                 {errors.volume && <p className="text-[10px] text-rose-600 mt-1">{errors.volume}</p>}
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                   Harga Satuan (Rp) <span className="text-rose-500">*</span>
                 </label>
                 <input
@@ -482,8 +482,8 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                   step="any"
                   value={unitPrice}
                   onChange={(e) => setUnitPrice(e.target.value)}
-                  className={`w-full px-3 py-2 text-xs bg-slate-50 border rounded-xl font-mono text-right font-bold text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 ${
-                    errors.unitPrice ? 'border-rose-400' : 'border-slate-200'
+                  className={`w-full px-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border rounded-xl font-mono text-right font-bold text-[var(--text-primary)] focus:bg-[var(--bg-elevated)] focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 ${
+                    errors.unitPrice ? 'border-rose-400' : 'border-[var(--border-primary)]'
                   }`}
                 />
                 {errors.unitPrice && <p className="text-[10px] text-rose-600 mt-1">{errors.unitPrice}</p>}
@@ -492,9 +492,9 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
 
             {/* Quick Mini Calculator Drawer inside Modal */}
             {isMiniCalcOpen && (
-              <div className="p-4 bg-slate-100 rounded-xl border border-slate-200 space-y-3">
+              <div className="p-4 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                  <span className="text-xs font-bold text-[var(--text-primary)] flex items-center gap-1.5">
                     <Ruler className="w-3.5 h-3.5 text-blue-700" />
                     Kalkulator Dimensi Cepat
                   </span>
@@ -507,7 +507,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                         className={`px-2 py-0.5 rounded-md font-semibold transition-colors ${
                           calcFormula === mode
                             ? 'bg-blue-600 text-white'
-                            : 'bg-white text-slate-600 hover:bg-slate-200'
+                            : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700'
                         }`}
                       >
                         {mode === 'luas' ? 'Luas' : mode === 'volume' ? 'Volume' : mode === 'dinding' ? 'Dinding' : 'Galian'}
@@ -518,7 +518,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
 
                 <div className="grid grid-cols-3 gap-2 text-xs">
                   <div>
-                    <label className="block text-[10px] font-semibold text-slate-600 mb-0.5">
+                    <label className="block text-[10px] font-semibold text-[var(--text-secondary)] mb-0.5">
                       Panjang (m)
                     </label>
                     <input
@@ -526,11 +526,11 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                       step="any"
                       value={calcLength || ''}
                       onChange={(e) => setCalcLength(Number(e.target.value))}
-                      className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-lg text-right font-mono"
+                      className="w-full px-2.5 py-1.5 text-xs bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg text-right font-mono"
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-semibold text-slate-600 mb-0.5">
+                    <label className="block text-[10px] font-semibold text-[var(--text-secondary)] mb-0.5">
                       {calcFormula === 'dinding' ? 'Tinggi (m)' : 'Lebar (m)'}
                     </label>
                     <input
@@ -542,12 +542,12 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                           ? setCalcHeight(Number(e.target.value))
                           : setCalcWidth(Number(e.target.value))
                       }
-                      className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-lg text-right font-mono"
+                      className="w-full px-2.5 py-1.5 text-xs bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg text-right font-mono"
                     />
                   </div>
                   {calcFormula === 'volume' || calcFormula === 'galian' ? (
                     <div>
-                      <label className="block text-[10px] font-semibold text-slate-600 mb-0.5">
+                      <label className="block text-[10px] font-semibold text-[var(--text-secondary)] mb-0.5">
                         {calcFormula === 'galian' ? 'Kedalaman (m)' : 'Tinggi/Tebal (m)'}
                       </label>
                       <input
@@ -555,12 +555,12 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                         step="any"
                         value={calcHeight || ''}
                         onChange={(e) => setCalcHeight(Number(e.target.value))}
-                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-lg text-right font-mono"
+                        className="w-full px-2.5 py-1.5 text-xs bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg text-right font-mono"
                       />
                     </div>
                   ) : calcFormula === 'dinding' ? (
                     <div>
-                      <label className="block text-[10px] font-semibold text-slate-600 mb-0.5">
+                      <label className="block text-[10px] font-semibold text-[var(--text-secondary)] mb-0.5">
                         Bukaan Pintu/Jendela (m²)
                       </label>
                       <input
@@ -568,14 +568,14 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                         step="any"
                         value={calcOpenings || ''}
                         onChange={(e) => setCalcOpenings(Number(e.target.value))}
-                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-lg text-right font-mono"
+                        className="w-full px-2.5 py-1.5 text-xs bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg text-right font-mono"
                       />
                     </div>
                   ) : null}
                 </div>
 
                 <div className="flex items-center justify-between pt-1">
-                  <span className="text-xs text-slate-600">
+                  <span className="text-xs text-[var(--text-secondary)]">
                     Hasil: <strong className="text-blue-700 font-mono text-sm">{formatNumber(getCalculatedVolume(), 3)}</strong> {calcFormula === 'luas' || calcFormula === 'dinding' ? 'm²' : 'm³'}
                   </span>
                   <button
@@ -596,9 +596,9 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                 <span className="text-[10px] text-blue-800 uppercase font-extrabold tracking-wider block">
                   Perhitungan Otomatis Biaya Item
                 </span>
-                <div className="text-xs text-slate-700 mt-0.5">
-                  Volume: <strong className="text-slate-900">{formatNumber(numVol, 2)} {unit}</strong> &times; Harga:{' '}
-                  <strong className="text-slate-900">{formatRupiah(numPrice)}</strong>
+                <div className="text-xs text-[var(--text-primary)] mt-0.5">
+                  Volume: <strong className="text-[var(--text-primary)]">{formatNumber(numVol, 2)} {unit}</strong> &times; Harga:{' '}
+                  <strong className="text-[var(--text-primary)]">{formatRupiah(numPrice)}</strong>
                 </div>
               </div>
               <div className="text-left sm:text-right">
@@ -611,7 +611,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
 
             {/* Keterangan */}
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                 Keterangan / Spesifikasi Bahan (Opsional)
               </label>
               <input
@@ -619,7 +619,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                 placeholder="Contoh: Semen Gresik, pasir muntilan, besi ulir SNI"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
+                className="w-full px-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
               />
             </div>
 
@@ -628,7 +628,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2.5 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+                className="px-4 py-2.5 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl transition-colors"
               >
                 Batal
               </button>
@@ -649,7 +649,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                 placeholder="Cari nama material, upah tukang, alat..."
                 value={dbSearch}
                 onChange={(e) => setDbSearch(e.target.value)}
-                className="flex-1 px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
+                className="flex-1 px-3.5 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
               />
               <div className="flex items-center space-x-1 text-xs">
                 {(['all', 'material', 'labor', 'equipment'] as const).map((type) => (
@@ -660,7 +660,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                     className={`px-2.5 py-1.5 rounded-lg font-semibold transition-colors ${
                       priceTypeFilter === type
                         ? 'bg-blue-600 text-white shadow-2xs'
-                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                        : 'bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700'
                     }`}
                   >
                     {type === 'all' ? 'Semua' : type === 'material' ? 'Bahan' : type === 'labor' ? 'Upah' : 'Alat'}
@@ -683,14 +683,14 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                   <div
                     key={p.id}
                     onClick={() => handleSelectFromPriceDb(p)}
-                    className="p-3 bg-slate-50 hover:bg-blue-50 rounded-xl border border-slate-200 hover:border-blue-300 transition-all cursor-pointer flex items-center justify-between group"
+                    className="p-3 bg-[var(--bg-elevated-hover)] hover:bg-blue-50 rounded-xl border border-[var(--border-primary)] hover:border-blue-300 transition-all cursor-pointer flex items-center justify-between group"
                   >
                     <div>
-                      <div className="text-xs font-bold text-slate-900 group-hover:text-blue-900">
+                      <div className="text-xs font-bold text-[var(--text-primary)] group-hover:text-blue-900">
                         {p.name}
                       </div>
                       <div className="text-[11px] text-slate-500 mt-0.5">
-                        <span className="font-mono text-slate-400 font-semibold">{p.code}</span> &middot; {p.category} &middot;{' '}
+                        <span className="font-mono text-[var(--text-secondary)] font-semibold">{p.code}</span> &middot; {p.category} &middot;{' '}
                         <span className="capitalize">{p.type}</span>
                       </div>
                     </div>
@@ -698,7 +698,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                       <div className="text-xs font-black text-blue-700 font-mono">
                         {formatRupiah(p.price)} / {p.unit}
                       </div>
-                      <div className="text-[10px] text-slate-400">{p.source || 'Master'}</div>
+                      <div className="text-[10px] text-[var(--text-secondary)]">{p.source || 'Master'}</div>
                     </div>
                   </div>
                 ))}
@@ -708,7 +708,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
               <button
                 type="button"
                 onClick={() => setPickerTab('form')}
-                className="px-4 py-2 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl"
+                className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl"
               >
                 Kembali ke Form
               </button>
@@ -723,7 +723,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                 placeholder="Cari analisis SNI (Pondasi, Plesteran, Cor Beton, Pasangan Bata, Plafon)..."
                 value={dbSearch}
                 onChange={(e) => setDbSearch(e.target.value)}
-                className="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
+                className="w-full px-3.5 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
               />
 
               {/* Category Pills inside AHSP Picker */}
@@ -734,7 +734,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                   className={`px-2.5 py-1 rounded-lg font-medium flex-shrink-0 transition-colors ${
                     ahspCategoryFilter === 'all'
                       ? 'bg-blue-600 text-white font-semibold'
-                      : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
+                      : 'bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-secondary)]'
                   }`}
                 >
                   Semua Kategori ({ahspItems.length})
@@ -750,7 +750,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                       className={`px-2.5 py-1 rounded-lg font-medium flex-shrink-0 transition-colors ${
                         isSelected
                           ? 'bg-blue-600 text-white font-semibold'
-                          : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
+                          : 'bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-secondary)]'
                       }`}
                     >
                       {cat} ({count})
@@ -776,20 +776,20 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                   <div
                     key={a.id}
                     onClick={() => handleSelectFromAHSP(a)}
-                    className="p-3.5 bg-slate-50 hover:bg-blue-50 rounded-xl border border-slate-200 hover:border-blue-300 transition-all cursor-pointer flex items-center justify-between group"
+                    className="p-3.5 bg-[var(--bg-elevated-hover)] hover:bg-blue-50 rounded-xl border border-[var(--border-primary)] hover:border-blue-300 transition-all cursor-pointer flex items-center justify-between group"
                   >
                     <div>
-                      <div className="text-xs font-bold text-slate-900 group-hover:text-blue-900">
+                      <div className="text-xs font-bold text-[var(--text-primary)] group-hover:text-blue-900">
                         {a.name}
                       </div>
                       <div className="text-[11px] text-slate-500 mt-0.5 flex items-center space-x-1.5">
-                        <span className="font-mono text-slate-400 font-semibold">{a.code}</span>
+                        <span className="font-mono text-[var(--text-secondary)] font-semibold">{a.code}</span>
                         <span>&middot;</span>
                         <span className="text-blue-600 font-medium">{a.category}</span>
                         {a.subCategory && (
                           <>
                             <span>&middot;</span>
-                            <span className="text-slate-400">{a.subCategory}</span>
+                            <span className="text-[var(--text-secondary)]">{a.subCategory}</span>
                           </>
                         )}
                       </div>
@@ -798,7 +798,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                       <div className="text-xs font-black text-blue-700 font-mono">
                         {formatRupiah(a.unitPrice)} / {a.unit}
                       </div>
-                      <div className="text-[10px] text-slate-400 font-medium">Standar SNI PUPR</div>
+                      <div className="text-[10px] text-[var(--text-secondary)] font-medium">Standar SNI PUPR</div>
                     </div>
                   </div>
                 ))}
@@ -808,7 +808,7 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
               <button
                 type="button"
                 onClick={() => setPickerTab('form')}
-                className="px-4 py-2 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl"
+                className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl"
               >
                 Kembali ke Form
               </button>

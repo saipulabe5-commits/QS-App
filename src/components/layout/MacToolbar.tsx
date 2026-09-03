@@ -22,6 +22,8 @@ import {
   HelpCircle,
   Activity,
   Sliders,
+  Moon,
+  Sun,
 } from 'lucide-react';
 
 interface MacToolbarProps {
@@ -69,6 +71,8 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
     selectedProject,
     user,
     logout,
+    isDarkMode,
+    toggleDarkMode,
     showToast,
   } = useApp();
 
@@ -132,26 +136,26 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-slate-50/90 backdrop-blur-xl border-b border-slate-200/80 shadow-[0_1px_3px_0_rgba(0,0,0,0.02)] transition-all select-none">
+    <header className="sticky top-0 z-30 bg-[var(--bg-titlebar)] backdrop-blur-[20px] saturate-[180%] border-b border-[var(--border-primary)] shadow-sm transition-all select-none">
       {/* Top Window Title Bar with Mac Traffic Lights */}
-      <div className="h-10 px-3 sm:px-4 flex items-center justify-between border-b border-slate-200/50">
+      <div className="h-10 px-3 sm:px-4 flex items-center justify-between border-b border-[var(--border-primary)]/50">
         {/* Left: Mac Traffic Lights & Mobile Hamburger */}
         <div className="flex items-center space-x-3">
           {/* Traffic Lights for macOS feel */}
           <div className="hidden sm:flex items-center space-x-2 mr-2">
             <button
               onClick={handleTrafficRed}
-              className="w-3 h-3 rounded-full bg-rose-500 hover:bg-rose-600 transition-colors shadow-2xs cursor-pointer"
+              className="w-3 h-3 rounded-full bg-[var(--traffic-red)] transition-colors shadow-2xs cursor-pointer"
               title="Segarkan Sesi Workspace (Red Dot)"
             />
             <button
               onClick={handleTrafficYellow}
-              className="w-3 h-3 rounded-full bg-amber-400 hover:bg-amber-500 transition-colors shadow-2xs cursor-pointer"
+              className="w-3 h-3 rounded-full bg-[var(--traffic-yellow)] transition-colors shadow-2xs cursor-pointer"
               title="Toggle Mode Fokus / Full Density (Yellow Dot)"
             />
             <button
               onClick={handleTrafficGreen}
-              className="w-3 h-3 rounded-full bg-emerald-500 hover:bg-emerald-600 transition-colors shadow-2xs cursor-pointer"
+              className="w-3 h-3 rounded-full bg-[var(--traffic-green)] transition-colors shadow-2xs cursor-pointer"
               title="Toggle Fullscreen Layar Penuh (Green Dot)"
             />
           </div>
@@ -159,7 +163,7 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
           <button
             type="button"
             onClick={() => setIsMobileSidebarOpen(true)}
-            className="lg:hidden p-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 transition-colors"
+            className="lg:hidden p-1.5 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-slate-200 dark:bg-slate-700/60 transition-colors"
             aria-label="Buka Menu"
           >
             <Menu className="w-4 h-4" />
@@ -167,18 +171,18 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
 
           {/* Breadcrumbs */}
           <div className="flex items-center space-x-1.5 text-xs text-slate-500">
-            <span className="font-bold text-slate-800">RAB Pro 10.0</span>
+            <span className="font-bold text-[var(--text-primary)]">RAB Pro 10.0</span>
             <span>›</span>
             {selectedProject ? (
               <button
                 onClick={onOpenProjectSwitcher}
-                className="font-medium text-slate-700 hover:text-blue-600 truncate max-w-[140px] sm:max-w-[220px] transition-colors"
+                className="font-medium text-[var(--text-primary)] hover:text-blue-600 truncate max-w-[140px] sm:max-w-[220px] transition-colors"
                 title={selectedProject.name}
               >
                 {selectedProject.name}
               </button>
             ) : (
-              <span className="text-slate-400">Pilih Proyek</span>
+              <span className="text-[var(--text-secondary)]">Pilih Proyek</span>
             )}
             <span>›</span>
             <span className="font-semibold text-blue-600 truncate">{getPageTitle()}</span>
@@ -189,13 +193,13 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
         <div className="hidden md:flex items-center justify-center flex-1 max-w-sm px-4">
           <button
             onClick={onOpenCommandBar}
-            className="w-full flex items-center justify-between px-3 py-1 bg-white hover:bg-slate-100/80 border border-slate-200/80 rounded-lg text-xs text-slate-400 shadow-2xs transition-all"
+            className="w-full flex items-center justify-between px-3 py-1 bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)]/80 border border-[var(--border-primary)]/80 rounded-lg text-xs text-[var(--text-secondary)] shadow-2xs transition-all"
           >
             <div className="flex items-center space-x-2">
-              <Search className="w-3.5 h-3.5 text-slate-400" />
+              <Search className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
               <span className="font-medium text-slate-500">Cari modul, aksi, proyek...</span>
             </div>
-            <kbd className="px-1.5 py-0.5 bg-slate-100 border border-slate-200 rounded text-[10px] font-mono text-slate-500">
+            <kbd className="px-1.5 py-0.5 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded text-[10px] font-mono text-slate-500">
               ⌘K
             </kbd>
           </button>
@@ -227,6 +231,18 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
             </button>
           )}
 
+          
+          
+
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleDarkMode}
+            className="p-1.5 rounded-lg text-slate-600 dark:text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:bg-slate-700/70 hover:bg-[var(--bg-elevated-hover)] transition-colors"
+            title="Toggle Dark/Light Mode"
+          >
+            {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          </button>
+
           {/* Offline Indicator */}
           <OfflineStatusIndicator />
 
@@ -240,7 +256,7 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
               className={`p-1.5 rounded-lg transition-colors ${
                 isInspectorOpen
                   ? 'bg-blue-600 text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/70'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-slate-200 dark:bg-slate-700/70'
               }`}
               title="Buka / Tutup Inspector Panel (⌘I)"
             >
@@ -255,9 +271,9 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
                 setIsUserMenuOpen(!isUserMenuOpen);
                 setIsProjectDropdownOpen(false);
               }}
-              className="flex items-center space-x-1 p-1 rounded-lg hover:bg-slate-200/70 transition-colors"
+              className="flex items-center space-x-1 p-1 rounded-lg hover:bg-slate-200 dark:bg-slate-700/70 transition-colors"
             >
-              <div className="w-6 h-6 rounded-full bg-slate-900 text-white font-bold flex items-center justify-center text-[10px]">
+              <div className="w-6 h-6 rounded-full bg-[var(--bg-elevated)] text-[var(--text-primary)] font-bold flex items-center justify-center text-[10px]">
                 {user ? user.name.charAt(0).toUpperCase() : <UserIcon className="w-3 h-3" />}
               </div>
             </button>
@@ -265,10 +281,10 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
             {isUserMenuOpen && (
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setIsUserMenuOpen(false)} />
-                <div className="absolute right-0 mt-2 w-60 bg-white/95 backdrop-blur-xl rounded-xl shadow-2xl border border-slate-200 py-2 z-50 animate-in fade-in zoom-in-95 duration-100">
+                <div className="absolute right-0 mt-2 w-60 bg-[var(--bg-elevated)]/95 backdrop-blur-xl rounded-xl shadow-2xl border border-[var(--border-primary)] py-2 z-50 animate-in fade-in zoom-in-95 duration-100">
                   <div className="px-4 py-2 border-b border-slate-100">
                     <div className="flex items-center justify-between gap-1">
-                      <p className="text-xs font-bold text-slate-900 truncate">
+                      <p className="text-xs font-bold text-[var(--text-primary)] truncate">
                         {user ? user.name : 'Pengguna Demo'}
                       </p>
                       <span className="text-[9px] bg-amber-100 text-amber-800 border border-amber-300 px-1.5 py-0.5 rounded-full font-bold uppercase">
@@ -285,20 +301,20 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
                         if (onOpenProjectSwitcher) onOpenProjectSwitcher();
                         setIsUserMenuOpen(false);
                       }}
-                      className="w-full text-left px-4 py-2 text-slate-700 hover:bg-slate-50 flex items-center justify-between"
+                      className="w-full text-left px-4 py-2 text-[var(--text-primary)] hover:bg-[var(--bg-elevated-hover)] flex items-center justify-between"
                     >
                       <div className="flex items-center space-x-2">
-                        <FolderOpen className="w-4 h-4 text-slate-400" />
+                        <FolderOpen className="w-4 h-4 text-[var(--text-secondary)]" />
                         <span>Ganti Proyek</span>
                       </div>
-                      <kbd className="font-mono text-[10px] text-slate-400">⌘P</kbd>
+                      <kbd className="font-mono text-[10px] text-[var(--text-secondary)]">⌘P</kbd>
                     </button>
                     <button
                       onClick={() => {
                         if (onOpenDiagnostics) onOpenDiagnostics();
                         setIsUserMenuOpen(false);
                       }}
-                      className="w-full text-left px-4 py-2 text-slate-700 hover:bg-slate-50 flex items-center space-x-2"
+                      className="w-full text-left px-4 py-2 text-[var(--text-primary)] hover:bg-[var(--bg-elevated-hover)] flex items-center space-x-2"
                     >
                       <ShieldCheck className="w-4 h-4 text-emerald-500" />
                       <span>Diagnostik Runtime</span>
@@ -308,13 +324,13 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
                         if (onOpenShortcuts) onOpenShortcuts();
                         setIsUserMenuOpen(false);
                       }}
-                      className="w-full text-left px-4 py-2 text-slate-700 hover:bg-slate-50 flex items-center justify-between"
+                      className="w-full text-left px-4 py-2 text-[var(--text-primary)] hover:bg-[var(--bg-elevated-hover)] flex items-center justify-between"
                     >
                       <div className="flex items-center space-x-2">
-                        <HelpCircle className="w-4 h-4 text-slate-400" />
+                        <HelpCircle className="w-4 h-4 text-[var(--text-secondary)]" />
                         <span>Pintasan Keyboard</span>
                       </div>
-                      <kbd className="font-mono text-[10px] text-slate-400">⌘/</kbd>
+                      <kbd className="font-mono text-[10px] text-[var(--text-secondary)]">⌘/</kbd>
                     </button>
                   </div>
                   <div className="border-t border-slate-100 pt-1">

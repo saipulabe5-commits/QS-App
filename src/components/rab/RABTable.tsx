@@ -62,9 +62,9 @@ export const RABTable: React.FC<RABTableProps> = ({
 
   if (items.length === 0) {
     return (
-      <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center shadow-2xs">
-        <FileSpreadsheet className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-        <h3 className="text-base font-bold text-slate-800">Tidak Ada Item Pekerjaan</h3>
+      <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] p-12 text-center shadow-2xs">
+        <FileSpreadsheet className="w-12 h-12 text-slate-600 dark:text-slate-300 mx-auto mb-3" />
+        <h3 className="text-base font-bold text-[var(--text-primary)]">Tidak Ada Item Pekerjaan</h3>
         <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
           {searchQuery || selectedCategoryFilter !== 'all'
             ? 'Tidak ditemukan pos pekerjaan yang sesuai dengan kriteria pencarian / filter Anda.'
@@ -81,10 +81,10 @@ export const RABTable: React.FC<RABTableProps> = ({
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
+    <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] shadow-2xs overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs text-slate-600">
-          <thead className="bg-slate-900 text-white font-bold uppercase text-[11px] tracking-wider sticky top-0 z-10">
+        <table className="w-full text-left text-xs text-[var(--text-secondary)]">
+          <thead className="bg-[var(--bg-elevated)] text-[var(--text-primary)] font-bold uppercase text-[11px] tracking-wider sticky top-0 z-10">
             <tr>
               <th className="px-3 py-3.5 w-12 text-center">No</th>
               <th className="px-3 py-3.5 w-24">Kode</th>
@@ -116,7 +116,7 @@ export const RABTable: React.FC<RABTableProps> = ({
                 return (
                   <React.Fragment key={cat}>
                     {/* Category Divider Header Row (SUB-TOTAL) */}
-                    <tr className="bg-slate-300 hover:bg-slate-400/80 text-slate-900 font-bold border-y-2 border-slate-400 transition-colors shadow-2xs">
+                    <tr className="bg-slate-300 hover:bg-slate-400/80 text-[var(--text-primary)] font-bold border-y-2 border-slate-400 transition-colors shadow-2xs">
                       <td className="px-3 py-2.5 text-center">
                         <span className="inline-flex items-center justify-center min-w-6 px-1.5 py-0.5 rounded bg-blue-700 text-white font-mono text-xs font-black shadow-2xs">
                           {romanNum}
@@ -126,7 +126,7 @@ export const RABTable: React.FC<RABTableProps> = ({
                         <div className="flex items-center space-x-2.5">
                           <button
                             onClick={() => toggleCategory(cat)}
-                            className="p-1 rounded-md hover:bg-slate-400/60 text-slate-800 transition-colors"
+                            className="p-1 rounded-md hover:bg-slate-400/60 text-[var(--text-primary)] transition-colors"
                             title={isCollapsed ? 'Buka Divisi' : 'Lipat Divisi'}
                           >
                             {isCollapsed ? (
@@ -138,7 +138,7 @@ export const RABTable: React.FC<RABTableProps> = ({
                           <span className="uppercase tracking-wider text-xs sm:text-[13px] font-black text-slate-950">
                             {cat}
                           </span>
-                          <span className="text-[11px] font-bold text-slate-800 bg-white/90 px-2 py-0.5 rounded-full border border-slate-400 shadow-2xs">
+                          <span className="text-[11px] font-bold text-[var(--text-primary)] bg-[var(--bg-elevated)]/90 px-2 py-0.5 rounded-full border border-slate-400 shadow-2xs">
                             {catItems.length} pos
                           </span>
                         </div>
@@ -147,14 +147,14 @@ export const RABTable: React.FC<RABTableProps> = ({
                         {formatRupiah(catSubtotal)}
                       </td>
                       <td className="px-3 py-2.5 text-right font-bold text-blue-900 font-mono text-xs">
-                        <span className="px-2 py-0.5 bg-white/95 text-blue-900 rounded border border-slate-400 shadow-2xs">
+                        <span className="px-2 py-0.5 bg-[var(--bg-elevated)]/95 text-blue-900 rounded border border-slate-400 shadow-2xs">
                           {formatNumber(catWeight, 2)}%
                         </span>
                       </td>
                       <td colSpan={2} className="px-3 py-2.5 text-right">
                         <button
                           onClick={() => onAddItem(cat)}
-                          className="text-[11px] font-bold text-slate-900 hover:text-blue-900 bg-white hover:bg-blue-50 px-2.5 py-1 rounded-lg border border-slate-400 hover:border-blue-500 transition-colors shadow-2xs inline-flex items-center space-x-1"
+                          className="text-[11px] font-bold text-[var(--text-primary)] hover:text-blue-900 bg-[var(--bg-elevated)] hover:bg-blue-50 px-2.5 py-1 rounded-lg border border-slate-400 hover:border-blue-500 transition-colors shadow-2xs inline-flex items-center space-x-1"
                         >
                           <Plus className="w-3 h-3 text-blue-700" />
                           <span>Item {cat.split(':')[0]}</span>
@@ -192,11 +192,11 @@ export const RABTable: React.FC<RABTableProps> = ({
 
                             {/* Subcategory Header */}
                             {isNewSubcategory && (
-                              <tr className="bg-slate-100/90 border-y border-slate-200">
-                                <td colSpan={10} className="px-4 py-1.5 pl-8 bg-slate-50/90">
-                                  <div className="flex items-center space-x-2 text-slate-800">
+                              <tr className="bg-[var(--bg-elevated-hover)]/90 border-y border-[var(--border-primary)]">
+                                <td colSpan={10} className="px-4 py-1.5 pl-8 bg-[var(--bg-elevated-hover)]">
+                                  <div className="flex items-center space-x-2 text-[var(--text-primary)]">
                                     <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
-                                    <span className="font-bold text-[11px] text-slate-800 tracking-wide uppercase">
+                                    <span className="font-bold text-[11px] text-[var(--text-primary)] tracking-wide uppercase">
                                       {item.subcategory}
                                     </span>
                                   </div>
@@ -206,41 +206,41 @@ export const RABTable: React.FC<RABTableProps> = ({
 
                             <tr className="hover:bg-blue-50/50 transition-colors group">
                               {/* Nomor Item */}
-                              <td className="px-3 py-3 text-center text-slate-400 font-mono text-[11px]">
+                              <td className="px-3 py-3 text-center text-[var(--text-secondary)] font-mono text-[11px]">
                                 {itemIdx + 1}
                               </td>
 
                               {/* Kode Pekerjaan */}
-                              <td className="px-3 py-3 font-mono font-semibold text-slate-700 text-[11px]">
+                              <td className="px-3 py-3 font-mono font-semibold text-[var(--text-primary)] text-[11px]">
                                 {item.code}
                               </td>
 
                               {/* Uraian Pekerjaan */}
                               <td className="px-4 py-3">
-                                <div className="font-semibold text-slate-900 text-xs leading-snug">
+                                <div className="font-semibold text-[var(--text-primary)] text-xs leading-snug">
                                   {item.name}
                                 </div>
                               </td>
 
                               {/* Satuan */}
-                              <td className="px-3 py-3 text-center font-medium text-slate-700">
-                                <span className="px-2 py-0.5 bg-slate-100 rounded-md text-[11px] text-slate-700 font-medium">
+                              <td className="px-3 py-3 text-center font-medium text-[var(--text-primary)]">
+                                <span className="px-2 py-0.5 bg-[var(--bg-elevated-hover)] rounded-md text-[11px] text-[var(--text-primary)] font-medium">
                                   {item.unit}
                                 </span>
                               </td>
 
                               {/* Volume */}
-                              <td className="px-3 py-3 text-right font-mono font-bold text-slate-900">
+                              <td className="px-3 py-3 text-right font-mono font-bold text-[var(--text-primary)]">
                                 {formatNumber(item.volume, 2)}
                               </td>
 
                               {/* Harga Satuan */}
-                              <td className="px-4 py-3 text-right font-mono text-slate-700">
+                              <td className="px-4 py-3 text-right font-mono text-[var(--text-primary)]">
                                 {formatRupiah(item.unitPrice)}
                               </td>
 
                               {/* Jumlah Biaya = Volume × Harga Satuan */}
-                              <td className="px-4 py-3 text-right font-mono font-black text-slate-900">
+                              <td className="px-4 py-3 text-right font-mono font-black text-[var(--text-primary)]">
                                 {formatRupiah(totalCost)}
                               </td>
 
@@ -262,21 +262,21 @@ export const RABTable: React.FC<RABTableProps> = ({
                                 <div className="flex items-center justify-center space-x-1">
                                   <button
                                     onClick={() => onEditItem(item)}
-                                    className="p-1.5 text-slate-400 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
+                                    className="p-1.5 text-[var(--text-secondary)] hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
                                     title="Edit Item"
                                   >
                                     <Edit2 className="w-3.5 h-3.5" />
                                   </button>
                                   <button
                                     onClick={() => onDuplicateItem(item)}
-                                    className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+                                    className="p-1.5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated-hover)] rounded-lg transition-colors"
                                     title="Duplikat Item"
                                   >
                                     <Copy className="w-3.5 h-3.5" />
                                   </button>
                                   <button
                                     onClick={() => onDeleteItem(item)}
-                                    className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                                    className="p-1.5 text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
                                     title="Hapus Item"
                                   >
                                     <Trash2 className="w-3.5 h-3.5" />
@@ -293,12 +293,12 @@ export const RABTable: React.FC<RABTableProps> = ({
           </tbody>
 
           {/* Table Footer: Total Biaya Langsung */}
-          <tfoot className="bg-slate-100 font-bold border-t-2 border-slate-300 text-slate-900">
+          <tfoot className="bg-[var(--bg-elevated-hover)] font-bold border-t-2 border-[var(--border-primary)] text-[var(--text-primary)]">
             <tr>
               <td colSpan={6} className="px-4 py-2 text-right uppercase tracking-wider text-xs">
                 Total Biaya Langsung Pekerjaan (Direct Cost):
               </td>
-              <td className="px-4 py-2 text-right font-black text-sm text-slate-900 font-mono">
+              <td className="px-4 py-2 text-right font-black text-sm text-[var(--text-primary)] font-mono">
                 {formatRupiah(calc.directCost)}
               </td>
               <td className="px-3 py-2 text-right font-black text-xs text-blue-700 font-mono">
@@ -311,11 +311,11 @@ export const RABTable: React.FC<RABTableProps> = ({
 
             {/* Tax */}
             {calc.taxCost > 0 && (
-              <tr className="bg-slate-50 text-slate-700 font-semibold border-t border-slate-200">
+              <tr className="bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] font-semibold border-t border-[var(--border-primary)]">
                 <td colSpan={6} className="px-4 py-1.5 text-right uppercase text-xs">
                   Pajak Pertambahan Nilai / PPN ({calc.taxPercent}%)
                 </td>
-                <td className="px-4 py-1.5 text-right font-mono text-sm text-slate-800">
+                <td className="px-4 py-1.5 text-right font-mono text-sm text-[var(--text-primary)]">
                   {formatRupiah(calc.taxCost)}
                 </td>
                 <td colSpan={3} className="px-3 py-1.5"></td>
@@ -323,7 +323,7 @@ export const RABTable: React.FC<RABTableProps> = ({
             )}
 
             {/* Grand Total */}
-            <tr className="bg-slate-200 font-black border-t-2 border-slate-400 text-slate-900">
+            <tr className="bg-slate-200 dark:bg-slate-700 font-black border-t-2 border-slate-400 text-[var(--text-primary)]">
               <td colSpan={6} className="px-4 py-3 text-right uppercase tracking-wider text-sm">
                 GRAND TOTAL NILAI RAB:
               </td>

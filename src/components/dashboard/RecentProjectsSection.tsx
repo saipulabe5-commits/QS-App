@@ -52,7 +52,7 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
   });
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
+    <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] shadow-2xs overflow-hidden">
       {/* Section Header */}
       <div className="p-5 sm:p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -60,7 +60,7 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
             <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center border border-blue-100">
               <Briefcase className="w-4 h-4" />
             </div>
-            <h3 className="text-base font-bold text-slate-900">Daftar Proyek Terbaru</h3>
+            <h3 className="text-base font-bold text-[var(--text-primary)]">Daftar Proyek Terbaru</h3>
           </div>
           <p className="text-xs text-slate-500 mt-1">
             Status pelaksanaan, nilai anggaran RAB, dan dokumen kontrak konstruksi
@@ -77,7 +77,7 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
           </button>
           <button
             onClick={onNavigateToProjects}
-            className="text-xs font-bold text-slate-700 hover:text-blue-700 hover:bg-slate-100 px-3 py-2 rounded-xl border border-slate-200 transition-colors flex items-center space-x-1"
+            className="text-xs font-bold text-[var(--text-primary)] hover:text-blue-700 hover:bg-[var(--bg-elevated-hover)] px-3 py-2 rounded-xl border border-[var(--border-primary)] transition-colors flex items-center space-x-1"
           >
             <span>Semua Proyek</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -86,16 +86,16 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="px-5 py-3 bg-slate-50 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="px-5 py-3 bg-[var(--bg-elevated-hover)] border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         {/* Search Field */}
         <div className="relative flex-1 max-w-md">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[var(--text-secondary)] absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Cari nama proyek, no. dokumen, klien, atau lokasi..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
+            className="w-full pl-9 pr-3 py-1.5 text-xs bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
           />
         </div>
 
@@ -108,7 +108,7 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
               className={`px-3 py-1 rounded-lg font-semibold transition-all ${
                 statusFilter === status
                   ? 'bg-blue-600 text-white shadow-2xs'
-                  : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
+                  : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border-primary)] hover:bg-[var(--bg-elevated-hover)]'
               }`}
             >
               {status}
@@ -120,8 +120,8 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
       {/* Table Container */}
       {filteredProjects.length === 0 ? (
         <div className="p-12 text-center">
-          <Briefcase className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-          <h4 className="text-sm font-bold text-slate-800">
+          <Briefcase className="w-12 h-12 text-slate-600 dark:text-slate-300 mx-auto mb-3" />
+          <h4 className="text-sm font-bold text-[var(--text-primary)]">
             {projects.length === 0 ? 'Belum Ada Proyek Terdaftar' : 'Tidak Ditemukan Proyek'}
           </h4>
           <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
@@ -140,8 +140,8 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
         </div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-600">
-            <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 uppercase text-[11px] tracking-wider">
+          <table className="w-full text-left text-xs text-[var(--text-secondary)]">
+            <thead className="bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] font-bold border-b border-[var(--border-primary)] uppercase text-[11px] tracking-wider">
               <tr>
                 <th className="px-5 py-3.5">Nama Proyek</th>
                 <th className="px-4 py-3.5">No. Dokumen</th>
@@ -165,14 +165,14 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
                 return (
                   <tr
                     key={proj.id}
-                    className={`hover:bg-slate-50/80 transition-colors ${
+                    className={`hover:bg-[var(--bg-elevated-hover)] transition-colors ${
                       isSelected ? 'bg-blue-50/40' : ''
                     }`}
                   >
                     {/* Nama Proyek */}
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-slate-900 text-sm truncate max-w-[240px]">
+                        <span className="font-bold text-[var(--text-primary)] text-sm truncate max-w-[240px]">
                           {proj.name}
                         </span>
                         {isSelected && (
@@ -181,20 +181,20 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
                           </span>
                         )}
                       </div>
-                      <div className="text-[11px] text-slate-400 mt-1 flex items-center space-x-1.5">
-                        <Calendar className="w-3 h-3 text-slate-400" />
+                      <div className="text-[11px] text-[var(--text-secondary)] mt-1 flex items-center space-x-1.5">
+                        <Calendar className="w-3 h-3 text-[var(--text-secondary)]" />
                         <span>Dibuat: {formatDateIndo(proj.createdAt)}</span>
                       </div>
                     </td>
 
                     {/* No. Dokumen */}
-                    <td className="px-4 py-4 font-mono text-slate-700 font-semibold">
+                    <td className="px-4 py-4 font-mono text-[var(--text-primary)] font-semibold">
                       {proj.documentNo}
                     </td>
 
                     {/* Klien / Lokasi */}
                     <td className="px-4 py-4">
-                      <div className="font-semibold text-slate-800 truncate max-w-[180px]">
+                      <div className="font-semibold text-[var(--text-primary)] truncate max-w-[180px]">
                         {proj.clientName}
                       </div>
                       <div className="text-[11px] text-slate-500 truncate max-w-[180px] mt-0.5">
@@ -210,7 +210,7 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
                             ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                             : proj.status === 'Selesai'
                             ? 'bg-blue-50 text-blue-800 border border-blue-200'
-                            : 'bg-slate-100 text-slate-700 border border-slate-200'
+                            : 'bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] border border-[var(--border-primary)]'
                         }`}
                       >
                         {proj.status}
@@ -219,10 +219,10 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
 
                     {/* Nilai Total RAB */}
                     <td className="px-4 py-4 text-right">
-                      <div className="font-black text-slate-900 text-sm">
+                      <div className="font-black text-[var(--text-primary)] text-sm">
                         {formatRupiah(pCalc.grandTotal)}
                       </div>
-                      <div className="text-[11px] text-slate-400 mt-0.5">
+                      <div className="text-[11px] text-[var(--text-secondary)] mt-0.5">
                         {pItems.length} item pekerjaan
                       </div>
                     </td>
@@ -245,7 +245,7 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
                             onSelectProject(proj.id);
                             onOpenReport(proj.id);
                           }}
-                          className="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-xs transition-colors border border-slate-200"
+                          className="px-2.5 py-1.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] font-semibold rounded-lg text-xs transition-colors border border-[var(--border-primary)]"
                           title="Lihat & Cetak Laporan"
                         >
                           <Printer className="w-3.5 h-3.5" />

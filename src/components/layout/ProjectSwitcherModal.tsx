@@ -90,7 +90,7 @@ export const ProjectSwitcherModal: React.FC<ProjectSwitcherModalProps> = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-slate-950/60 backdrop-blur-md"
+          className="fixed inset-0 bg-[var(--bg-elevated)]/60 backdrop-blur-md"
           onClick={onClose}
         />
 
@@ -100,23 +100,23 @@ export const ProjectSwitcherModal: React.FC<ProjectSwitcherModalProps> = ({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: -10 }}
           transition={{ type: 'spring', stiffness: 450, damping: 30 }}
-          className="relative w-full max-w-xl bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-200/80 overflow-hidden flex flex-col max-h-[70vh]"
+          className="relative w-full max-w-xl bg-[var(--bg-elevated)]/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-[var(--border-primary)]/80 overflow-hidden flex flex-col max-h-[70vh]"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header Bar */}
-          <div className="px-4 py-3 bg-slate-50 border-b border-slate-200/80 flex items-center justify-between">
-            <div className="flex items-center space-x-2 text-slate-800 font-bold text-sm">
+          <div className="px-4 py-3 bg-[var(--bg-elevated-hover)] border-b border-[var(--border-primary)]/80 flex items-center justify-between">
+            <div className="flex items-center space-x-2 text-[var(--text-primary)] font-bold text-sm">
               <Building2 className="w-4 h-4 text-blue-600" />
               <span>Pilih Proyek Aktif (⌘P)</span>
             </div>
-            <span className="text-[11px] text-slate-400 font-medium">
+            <span className="text-[11px] text-[var(--text-secondary)] font-medium">
               {projects.length} Proyek Terdaftar
             </span>
           </div>
 
           {/* Search Bar */}
-          <div className="px-4 py-3 border-b border-slate-200/60 flex items-center">
-            <Search className="w-4 h-4 text-slate-400 mr-2.5 flex-shrink-0" />
+          <div className="px-4 py-3 border-b border-[var(--border-primary)]/60 flex items-center">
+            <Search className="w-4 h-4 text-[var(--text-secondary)] mr-2.5 flex-shrink-0" />
             <input
               ref={inputRef}
               type="text"
@@ -127,14 +127,14 @@ export const ProjectSwitcherModal: React.FC<ProjectSwitcherModalProps> = ({
               }}
               onKeyDown={handleKeyDown}
               placeholder="Cari berdasarkan nama proyek, nomor dokumen, klien..."
-              className="w-full bg-transparent border-none outline-none text-slate-900 placeholder-slate-400 text-sm font-medium"
+              className="w-full bg-transparent border-none outline-none text-[var(--text-primary)] placeholder-slate-500 dark:placeholder-slate-400 text-sm font-medium"
             />
           </div>
 
           {/* Project List */}
           <div className="overflow-y-auto p-2 custom-scrollbar flex-1 space-y-1.5">
             {filteredProjects.length === 0 ? (
-              <div className="p-8 text-center text-slate-400 text-sm">
+              <div className="p-8 text-center text-[var(--text-secondary)] text-sm">
                 Tidak ada proyek yang sesuai dengan pencarian Anda.
               </div>
             ) : (
@@ -152,12 +152,12 @@ export const ProjectSwitcherModal: React.FC<ProjectSwitcherModalProps> = ({
                     className={`w-full p-3 rounded-xl text-left transition-all border flex items-center justify-between ${
                       isSelected
                         ? 'bg-blue-50 border-blue-300 shadow-xs'
-                        : 'bg-white hover:bg-slate-50 border-slate-200/70'
+                        : 'bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] border-[var(--border-primary)]/70'
                     }`}
                   >
                     <div className="min-w-0 pr-3">
                       <div className="flex items-center space-x-2 mb-0.5">
-                        <span className="font-bold text-sm text-slate-900 truncate">{proj.name}</span>
+                        <span className="font-bold text-sm text-[var(--text-primary)] truncate">{proj.name}</span>
                         {isActive && (
                           <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-600 text-white">
                             Aktif
@@ -184,10 +184,10 @@ export const ProjectSwitcherModal: React.FC<ProjectSwitcherModalProps> = ({
                     </div>
 
                     <div className="text-right flex-shrink-0">
-                      <div className="font-bold text-xs text-slate-900 tabular-nums">
+                      <div className="font-bold text-xs text-[var(--text-primary)] tabular-nums">
                         {formatCurrency(totalDirectCost)}
                       </div>
-                      <div className="text-[10px] text-slate-400">
+                      <div className="text-[10px] text-[var(--text-secondary)]">
                         {projRAB.length} Item RAB
                       </div>
                     </div>
@@ -198,7 +198,7 @@ export const ProjectSwitcherModal: React.FC<ProjectSwitcherModalProps> = ({
           </div>
 
           {/* Footer with New Project Button */}
-          <div className="p-3 bg-slate-50 border-t border-slate-200/80 flex items-center justify-between">
+          <div className="p-3 bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)]/80 flex items-center justify-between">
             <button
               onClick={() => {
                 onClose();
@@ -209,8 +209,8 @@ export const ProjectSwitcherModal: React.FC<ProjectSwitcherModalProps> = ({
               <Plus className="w-3.5 h-3.5" />
               <span>Tambah Proyek Baru</span>
             </button>
-            <div className="text-[11px] text-slate-400">
-              Tekan <kbd className="px-1.5 py-0.5 bg-white border border-slate-200 rounded font-mono shadow-2xs">ESC</kbd> untuk menutup
+            <div className="text-[11px] text-[var(--text-secondary)]">
+              Tekan <kbd className="px-1.5 py-0.5 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded font-mono shadow-2xs">ESC</kbd> untuk menutup
             </div>
           </div>
         </motion.div>

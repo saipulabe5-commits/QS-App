@@ -11,20 +11,20 @@ export const ToastContainer: React.FC = () => {
       <AnimatePresence>
         {toasts.map((toast) => {
           let Icon = CheckCircle2;
-          let borderClass = 'border-emerald-500 bg-white text-slate-800';
+          let borderClass = 'border-emerald-500 bg-[var(--bg-elevated)] text-[var(--text-primary)]';
           let iconColor = 'text-emerald-600';
 
           if (toast.type === 'error') {
             Icon = AlertCircle;
-            borderClass = 'border-rose-500 bg-white text-slate-800';
+            borderClass = 'border-rose-500 bg-[var(--bg-elevated)] text-[var(--text-primary)]';
             iconColor = 'text-rose-600';
           } else if (toast.type === 'warning') {
             Icon = AlertTriangle;
-            borderClass = 'border-amber-500 bg-white text-slate-800';
+            borderClass = 'border-amber-500 bg-[var(--bg-elevated)] text-[var(--text-primary)]';
             iconColor = 'text-amber-600';
           } else if (toast.type === 'info') {
             Icon = Info;
-            borderClass = 'border-blue-500 bg-white text-slate-800';
+            borderClass = 'border-blue-500 bg-[var(--bg-elevated)] text-[var(--text-primary)]';
             iconColor = 'text-blue-600';
           }
 
@@ -39,12 +39,12 @@ export const ToastContainer: React.FC = () => {
             >
               <Icon className={`w-5 h-5 mt-0.5 mr-3 flex-shrink-0 ${iconColor}`} />
               <div className="flex-1 pr-2">
-                <h4 className="text-sm font-semibold text-slate-900">{toast.title}</h4>
-                <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">{toast.message}</p>
+                <h4 className="text-sm font-semibold text-[var(--text-primary)]">{toast.title}</h4>
+                <p className="text-xs text-[var(--text-secondary)] mt-0.5 leading-relaxed">{toast.message}</p>
               </div>
               <button
                 onClick={() => dismissToast(toast.id)}
-                className="text-slate-400 hover:text-slate-700 p-1 rounded-md transition-colors"
+                className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] p-1 rounded-md transition-colors"
                 aria-label="Tutup"
               >
                 <X className="w-4 h-4" />

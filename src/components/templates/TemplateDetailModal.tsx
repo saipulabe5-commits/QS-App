@@ -131,18 +131,18 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
-      <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={onClose} />
+      <div className="fixed inset-0 bg-[var(--bg-elevated)]/60 backdrop-blur-xs" onClick={onClose} />
 
-      <div className="relative bg-white w-full max-w-5xl h-[92vh] rounded-2xl shadow-2xl border border-slate-200 flex flex-col z-10 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative bg-[var(--bg-elevated)] w-full max-w-5xl h-[92vh] rounded-2xl shadow-2xl border border-[var(--border-primary)] flex flex-col z-10 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         {/* Header */}
-        <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between flex-shrink-0">
+        <div className="px-6 py-4 bg-[var(--bg-elevated-hover)] border-b border-[var(--border-primary)] flex items-center justify-between flex-shrink-0">
           <div className="flex items-center space-x-3">
             <div className="p-2.5 bg-blue-100 text-blue-700 rounded-xl">
               <FileSpreadsheet className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h3 className="text-base font-bold text-slate-900">{template.name}</h3>
+                <h3 className="text-base font-bold text-[var(--text-primary)]">{template.name}</h3>
                 <span className="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full">
                   {template.category}
                 </span>
@@ -150,7 +150,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                   v{template.version}
                 </span>
                 {template.sourceFileName && (
-                  <span className="text-[10px] text-slate-500 bg-slate-200/70 px-2 py-0.5 rounded-md truncate max-w-[150px]">
+                  <span className="text-[10px] text-slate-500 bg-slate-200 dark:bg-slate-700/70 px-2 py-0.5 rounded-md truncate max-w-[150px]">
                     Dari: {template.sourceFileName}
                   </span>
                 )}
@@ -164,7 +164,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
           <div className="flex items-center space-x-2">
             <button
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-lg transition-colors"
+              className="p-1.5 text-[var(--text-secondary)] hover:text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700 rounded-lg transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -172,14 +172,14 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
         </div>
 
         {/* Subheader Toolbar & Tabs */}
-        <div className="px-6 py-2.5 bg-white border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
+        <div className="px-6 py-2.5 bg-[var(--bg-elevated)] border-b border-[var(--border-primary)] flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setActiveTab('items')}
               className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors ${
                 activeTab === 'items'
                   ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                  : 'text-slate-600 hover:bg-slate-100'
+                  : 'text-[var(--text-secondary)] hover:bg-[var(--bg-elevated-hover)]'
               }`}
             >
               Daftar Pos Pekerjaan ({displayItems.length})
@@ -189,7 +189,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
               className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1 ${
                 activeTab === 'versions'
                   ? 'bg-purple-50 text-purple-700 border border-purple-200'
-                  : 'text-slate-600 hover:bg-slate-100'
+                  : 'text-[var(--text-secondary)] hover:bg-[var(--bg-elevated-hover)]'
               }`}
             >
               <History className="w-3.5 h-3.5" />
@@ -210,7 +210,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                 className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors ${
                   activeTab === 'edit'
                     ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                    : 'text-slate-600 hover:bg-slate-100'
+                    : 'text-[var(--text-secondary)] hover:bg-[var(--bg-elevated-hover)]'
                 }`}
               >
                 Ubah Parameter
@@ -232,7 +232,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
             {/* Export Dropdown / Buttons */}
             <button
               onClick={() => exportTemplateToExcel(template)}
-              className="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl flex items-center space-x-1 transition-colors"
+              className="px-2.5 py-1.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-xl flex items-center space-x-1 transition-colors"
               title="Export ke file Excel .xlsx"
             >
               <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
@@ -240,7 +240,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
             </button>
             <button
               onClick={() => exportTemplateToCSV(template)}
-              className="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl flex items-center space-x-1 transition-colors"
+              className="px-2.5 py-1.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-xl flex items-center space-x-1 transition-colors"
               title="Export ke file CSV .csv"
             >
               <Download className="w-3.5 h-3.5" />
@@ -250,7 +250,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
             {/* Duplicate */}
             <button
               onClick={() => duplicateRABTemplate(template.id)}
-              className="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl flex items-center space-x-1 transition-colors"
+              className="px-2.5 py-1.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-xl flex items-center space-x-1 transition-colors"
               title="Gandakan sebagai template baru"
             >
               <Copy className="w-3.5 h-3.5" />
@@ -264,9 +264,9 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
           {activeTab === 'items' && (
             <div className="space-y-6">
               {/* Financial Recapitulation Card */}
-              <div className="p-4 bg-slate-900 text-white rounded-2xl shadow-md grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="p-4 bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl shadow-md grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div>
-                  <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">
+                  <div className="text-[10px] text-[var(--text-secondary)] uppercase font-bold tracking-wider">
                     Biaya Langsung (Direct Cost)
                   </div>
                   <div className="text-sm font-black font-mono text-blue-300 mt-0.5">
@@ -274,7 +274,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                   </div>
                 </div>
                 <div>
-                  <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">
+                  <div className="text-[10px] text-[var(--text-secondary)] uppercase font-bold tracking-wider">
                     Overhead ({template.defaultOverhead}%) + Profit ({template.defaultProfit}%)
                   </div>
                   <div className="text-sm font-bold font-mono text-slate-200 mt-0.5">
@@ -282,7 +282,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                   </div>
                 </div>
                 <div>
-                  <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">
+                  <div className="text-[10px] text-[var(--text-secondary)] uppercase font-bold tracking-wider">
                     PPN ({template.defaultTax}%)
                   </div>
                   <div className="text-sm font-bold font-mono text-slate-200 mt-0.5">
@@ -305,7 +305,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-slate-700 font-medium"
+                    className="text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl px-3 py-1.5 text-[var(--text-primary)] font-medium"
                   >
                     <option value="all">Semua Kategori ({categories.length})</option>
                     {categories.map((c) => (
@@ -336,7 +336,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                   placeholder="Cari item dalam template..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full sm:w-64 px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl"
+                  className="w-full sm:w-64 px-3 py-1.5 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl"
                 />
               </div>
 
@@ -352,7 +352,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                   return (
                     <div
                       key={cat}
-                      className="border border-slate-200 rounded-2xl overflow-hidden shadow-2xs bg-white"
+                      className="border border-[var(--border-primary)] rounded-2xl overflow-hidden shadow-2xs bg-[var(--bg-elevated)]"
                     >
                       <div className="px-4 py-3 bg-slate-300 border-b border-slate-400 flex items-center justify-between shadow-2xs">
                         <div className="flex items-center space-x-2">
@@ -360,7 +360,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                           <span className="font-black text-xs sm:text-[13px] text-slate-950 uppercase tracking-wider">
                             {cat}
                           </span>
-                          <span className="text-[11px] font-bold text-slate-800 bg-white/90 px-2 py-0.5 rounded-full border border-slate-400 shadow-2xs">
+                          <span className="text-[11px] font-bold text-[var(--text-primary)] bg-[var(--bg-elevated)]/90 px-2 py-0.5 rounded-full border border-slate-400 shadow-2xs">
                             {catItems.length} pos
                           </span>
                         </div>
@@ -370,7 +370,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                       </div>
 
                       <table className="w-full text-left text-xs">
-                        <thead className="bg-slate-50 text-slate-600 font-semibold text-[10px] uppercase">
+                        <thead className="bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)] font-semibold text-[10px] uppercase">
                           <tr>
                             <th className="py-2 px-3 w-12 text-center">No</th>
                             <th className="py-2 px-3 w-28">Kode</th>
@@ -407,11 +407,11 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
 
                                 {/* Subcategory / Room / Section Header */}
                                 {isNewSubcategory && (
-                                  <tr className="bg-slate-100/90 border-y border-slate-200">
-                                    <td colSpan={7} className="py-1.5 px-4 pl-8 bg-slate-50/90">
-                                      <div className="flex items-center space-x-2 text-slate-800">
+                                  <tr className="bg-[var(--bg-elevated-hover)]/90 border-y border-[var(--border-primary)]">
+                                    <td colSpan={7} className="py-1.5 px-4 pl-8 bg-[var(--bg-elevated-hover)]">
+                                      <div className="flex items-center space-x-2 text-[var(--text-primary)]">
                                         <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
-                                        <span className="font-bold text-[11px] text-slate-800 tracking-wide uppercase">
+                                        <span className="font-bold text-[11px] text-[var(--text-primary)] tracking-wide uppercase">
                                           {item.subcategory}
                                         </span>
                                       </div>
@@ -421,29 +421,29 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
 
                                 {/* Item Row */}
                                 <tr className="hover:bg-blue-50/40 transition-colors">
-                                  <td className="py-2.5 px-3 text-center text-slate-400 font-mono text-[11px]">
+                                  <td className="py-2.5 px-3 text-center text-[var(--text-secondary)] font-mono text-[11px]">
                                     {idx + 1}
                                   </td>
-                                  <td className="py-2.5 px-3 font-mono font-semibold text-slate-700 text-xs">
+                                  <td className="py-2.5 px-3 font-mono font-semibold text-[var(--text-primary)] text-xs">
                                     {item.itemCode}
                                   </td>
-                                  <td className="py-2.5 px-4 font-medium text-slate-900">
-                                    <div className="font-semibold text-slate-900 leading-snug">{item.description}</div>
+                                  <td className="py-2.5 px-4 font-medium text-[var(--text-primary)]">
+                                    <div className="font-semibold text-[var(--text-primary)] leading-snug">{item.description}</div>
                                     {item.notes && (
                                       <span className="block text-[11px] text-slate-500 mt-0.5">
-                                        <strong className="text-slate-600 font-semibold">Spesifikasi:</strong> {item.notes}
+                                        <strong className="text-[var(--text-secondary)] font-semibold">Spesifikasi:</strong> {item.notes}
                                       </span>
                                     )}
                                   </td>
                                   <td className="py-2.5 px-3 text-center">
-                                    <span className="px-2 py-0.5 bg-slate-100 text-slate-700 rounded-md font-mono font-bold text-[11px]">
+                                    <span className="px-2 py-0.5 bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] rounded-md font-mono font-bold text-[11px]">
                                       {item.unit}
                                     </span>
                                   </td>
-                                  <td className="py-2.5 px-3 text-right font-mono font-semibold text-slate-800">
+                                  <td className="py-2.5 px-3 text-right font-mono font-semibold text-[var(--text-primary)]">
                                     {formatNumber(item.volume, 2)}
                                   </td>
-                                  <td className="py-2.5 px-3 text-right font-mono text-slate-700">
+                                  <td className="py-2.5 px-3 text-right font-mono text-[var(--text-primary)]">
                                     {formatRupiah(item.unitPrice)}
                                   </td>
                                   <td className="py-2.5 px-4 text-right font-mono font-bold text-blue-900">
@@ -466,7 +466,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
             <div className="space-y-4 max-w-2xl mx-auto">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900">Versi & Riwayat Modifikasi</h4>
+                  <h4 className="text-sm font-bold text-[var(--text-primary)]">Versi & Riwayat Modifikasi</h4>
                   <p className="text-xs text-slate-500">
                     Setiap perubahan struktur atau pembaruan item dapat diabadikan dalam versi terpisah
                   </p>
@@ -484,16 +484,16 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                 {(template.versions || []).map((v) => (
                   <div
                     key={v.id}
-                    className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2"
+                    className="p-4 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-2xl space-y-2"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <span className="text-xs font-mono font-bold bg-purple-100 text-purple-800 px-2 py-0.5 rounded-md border border-purple-200">
                           v{v.versionNumber}
                         </span>
-                        <span className="text-xs font-bold text-slate-800">{v.changeSummary}</span>
+                        <span className="text-xs font-bold text-[var(--text-primary)]">{v.changeSummary}</span>
                       </div>
-                      <span className="text-[11px] text-slate-400">
+                      <span className="text-[11px] text-[var(--text-secondary)]">
                         {v.createdAt.split('T')[0]} &middot; oleh {v.createdBy}
                       </span>
                     </div>
@@ -502,7 +502,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                       <div className="text-xs text-slate-500 flex items-center space-x-4 pt-1">
                         <span>{v.snapshotData.items?.length || 0} Item Pekerjaan</span>
                         <span>&middot;</span>
-                        <span className="font-mono font-bold text-slate-800">
+                        <span className="font-mono font-bold text-[var(--text-primary)]">
                           {formatRupiah(v.snapshotData.estimatedTotal || 0)}
                         </span>
                       </div>
@@ -514,37 +514,37 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
           )}
 
           {activeTab === 'edit' && (
-            <div className="space-y-4 max-w-lg mx-auto bg-slate-50 p-6 rounded-2xl border border-slate-200">
-              <h4 className="text-sm font-bold text-slate-900">Ubah Parameter Template</h4>
+            <div className="space-y-4 max-w-lg mx-auto bg-[var(--bg-elevated-hover)] p-6 rounded-2xl border border-[var(--border-primary)]">
+              <h4 className="text-sm font-bold text-[var(--text-primary)]">Ubah Parameter Template</h4>
 
               <div className="space-y-3 text-xs">
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Nama Template</label>
+                  <label className="block font-bold text-[var(--text-primary)] mb-1">Nama Template</label>
                   <input
                     type="text"
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-semibold"
+                    className="w-full px-3 py-2 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl font-semibold"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Deskripsi</label>
+                  <label className="block font-bold text-[var(--text-primary)] mb-1">Deskripsi</label>
                   <textarea
                     value={editDescription}
                     onChange={(e) => setEditDescription(e.target.value)}
                     rows={2}
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl"
+                    className="w-full px-3 py-2 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-bold text-slate-700 mb-1">Kategori</label>
+                    <label className="block font-bold text-[var(--text-primary)] mb-1">Kategori</label>
                     <select
                       value={editCategory}
                       onChange={(e) => setEditCategory(e.target.value)}
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-medium"
+                      className="w-full px-3 py-2 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl font-medium"
                     >
                       <option value="Perumahan">Perumahan</option>
                       <option value="Komersial">Komersial</option>
@@ -554,12 +554,12 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                     </select>
                   </div>
                   <div>
-                    <label className="block font-bold text-slate-700 mb-1">Tipe Bangunan</label>
+                    <label className="block font-bold text-[var(--text-primary)] mb-1">Tipe Bangunan</label>
                     <input
                       type="text"
                       value={editProjectType}
                       onChange={(e) => setEditProjectType(e.target.value)}
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl"
+                      className="w-full px-3 py-2 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl"
                     />
                   </div>
                 </div>
@@ -573,7 +573,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                       type="number"
                       value={editOverhead}
                       onChange={(e) => setEditOverhead(Number(e.target.value))}
-                      className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg text-center font-bold"
+                      className="w-full px-2 py-1 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg text-center font-bold"
                     />
                   </div>
                   <div>
@@ -584,7 +584,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                       type="number"
                       value={editProfit}
                       onChange={(e) => setEditProfit(Number(e.target.value))}
-                      className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg text-center font-bold"
+                      className="w-full px-2 py-1 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg text-center font-bold"
                     />
                   </div>
                   <div>
@@ -595,7 +595,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                       type="number"
                       value={editTax}
                       onChange={(e) => setEditTax(Number(e.target.value))}
-                      className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg text-center font-bold"
+                      className="w-full px-2 py-1 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg text-center font-bold"
                     />
                   </div>
                 </div>
@@ -603,7 +603,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                 <div className="pt-3 flex justify-end space-x-2">
                   <button
                     onClick={() => setActiveTab('items')}
-                    className="px-4 py-2 bg-slate-200 hover:bg-slate-300 font-semibold rounded-xl text-slate-700"
+                    className="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 font-semibold rounded-xl text-[var(--text-primary)]"
                   >
                     Batal
                   </button>
@@ -620,7 +620,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
         </div>
 
         {/* Footer Actions */}
-        <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between flex-shrink-0">
+        <div className="px-6 py-4 bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)] flex items-center justify-between flex-shrink-0">
           <div className="text-xs text-slate-500">
             Terakhir Diperbarui: <strong>{template.updatedAt.split('T')[0]}</strong>
           </div>
@@ -628,7 +628,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
           <div className="flex items-center space-x-2">
             <button
               onClick={onClose}
-              className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-xl"
+              className="px-4 py-2 text-xs font-semibold text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl"
             >
               Tutup
             </button>
@@ -650,18 +650,18 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
       {showNewVersionDialog && (
         <div className="fixed inset-0 z-60 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs"
+            className="fixed inset-0 bg-[var(--bg-elevated)]/60 backdrop-blur-xs"
             onClick={() => setShowNewVersionDialog(false)}
           />
-          <div className="relative bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 p-6 z-10 space-y-4">
-            <h4 className="text-base font-bold text-slate-900">Buat Versi Baru Template</h4>
+          <div className="relative bg-[var(--bg-elevated)] w-full max-w-md rounded-2xl shadow-2xl border border-[var(--border-primary)] p-6 z-10 space-y-4">
+            <h4 className="text-base font-bold text-[var(--text-primary)]">Buat Versi Baru Template</h4>
             <p className="text-xs text-slate-500">
               Versi baru akan menaikkan nomor versi dan menyimpan snapshot kondisi template saat ini.
             </p>
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block font-bold text-slate-700 mb-1">
+                <label className="block font-bold text-[var(--text-primary)] mb-1">
                   Ringkasan Perubahan <span className="text-rose-500">*</span>
                 </label>
                 <input
@@ -669,7 +669,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                   value={versionChangelog}
                   onChange={(e) => setVersionChangelog(e.target.value)}
                   placeholder="Contoh: Penyesuaian harga semen & besi 2026"
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white"
+                  className="w-full px-3 py-2 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)]"
                 />
               </div>
             </div>
@@ -677,7 +677,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
             <div className="flex justify-end space-x-2 pt-2">
               <button
                 onClick={() => setShowNewVersionDialog(false)}
-                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl"
+                className="px-4 py-2 text-xs font-semibold text-[var(--text-secondary)] hover:bg-[var(--bg-elevated-hover)] rounded-xl"
               >
                 Batal
               </button>

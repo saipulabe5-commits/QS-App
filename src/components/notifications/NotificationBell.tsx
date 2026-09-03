@@ -47,7 +47,7 @@ export const NotificationBell: React.FC = () => {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="relative p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors focus:outline-hidden"
+        className="relative p-2 rounded-xl text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated-hover)] transition-colors focus:outline-hidden"
         title="Pusat Notifikasi & Pengingat Proyek"
       >
         <Bell className="w-5 h-5" />

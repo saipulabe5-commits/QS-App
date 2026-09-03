@@ -155,10 +155,10 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 md:p-6 animate-in fade-in duration-200">
-      <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[88vh]">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-[var(--bg-elevated)]/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 md:p-6 animate-in fade-in duration-200">
+      <div className="bg-[var(--bg-elevated)] w-full max-w-2xl rounded-2xl shadow-2xl border border-[var(--border-primary)] overflow-hidden flex flex-col max-h-[88vh]">
         {/* Header */}
-        <div className="bg-slate-900 text-white px-6 py-4 flex items-center justify-between border-b border-slate-800">
+        <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] px-6 py-4 flex items-center justify-between border-b border-slate-200 dark:border-[var(--border-primary)]">
           <div className="flex items-center space-x-3">
             <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white">
               <Bell className="w-5 h-5" />
@@ -167,21 +167,21 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
               <h2 className="text-base font-bold text-white tracking-tight">
                 Pusat Notifikasi & Pengingat
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[var(--text-secondary)]">
                 Peringatan anggaran, deadline proyek, kurva S, revisi, dan status sinkronisasi data.
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-lg text-[var(--text-secondary)] hover:text-white hover:bg-[var(--bg-elevated-hover)] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Filter Navigation Tabs */}
-        <div className="bg-slate-50 border-b border-slate-200 px-6 py-2.5 flex items-center justify-between overflow-x-auto">
+        <div className="bg-[var(--bg-elevated-hover)] border-b border-[var(--border-primary)] px-6 py-2.5 flex items-center justify-between overflow-x-auto">
           <div className="flex items-center space-x-1">
             {[
               { id: 'all' as FilterTab, label: 'Semua' },
@@ -197,7 +197,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
                   activeFilter === t.id
                     ? 'bg-blue-600 text-white shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-slate-200 dark:bg-slate-700'
                 }`}
               >
                 {t.label}
@@ -222,7 +222,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
             /* Settings Panel */
             <div className="space-y-4">
               <div className="border-b border-slate-100 pb-3">
-                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <h3 className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-2">
                   <Sliders className="w-4 h-4 text-blue-600" />
                   Konfigurasi Ambang Batas Notifikasi
                 </h3>
@@ -232,10 +232,10 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
               </div>
 
               {/* Budget Rules */}
-              <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+              <div className="p-4 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="text-xs font-bold text-slate-900">Notifikasi Anggaran & Plafon Biaya</h4>
+                    <h4 className="text-xs font-bold text-[var(--text-primary)]">Notifikasi Anggaran & Plafon Biaya</h4>
                     <p className="text-[11px] text-slate-500">Kirim peringatan jika total RAB mendekati atau melebihi anggaran target.</p>
                   </div>
                   <input
@@ -247,9 +247,9 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                 </div>
 
                 {settings.enableBudgetNotifications && (
-                  <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-200">
+                  <div className="grid grid-cols-2 gap-3 pt-2 border-t border-[var(--border-primary)]">
                     <div>
-                      <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      <label className="block text-[11px] font-semibold text-[var(--text-primary)] mb-1">
                         Peringatan Kuning (% Anggaran)
                       </label>
                       <input
@@ -258,11 +258,11 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                         max={99}
                         value={settings.budgetWarningPercent}
                         onChange={(e) => setSettings({ ...settings, budgetWarningPercent: Number(e.target.value) })}
-                        className="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg bg-white"
+                        className="w-full px-2.5 py-1.5 text-xs border border-[var(--border-primary)] rounded-lg bg-[var(--bg-elevated)]"
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      <label className="block text-[11px] font-semibold text-[var(--text-primary)] mb-1">
                         Kritis Merah (% Anggaran)
                       </label>
                       <input
@@ -271,7 +271,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                         max={150}
                         value={settings.budgetCriticalPercent}
                         onChange={(e) => setSettings({ ...settings, budgetCriticalPercent: Number(e.target.value) })}
-                        className="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg bg-white"
+                        className="w-full px-2.5 py-1.5 text-xs border border-[var(--border-primary)] rounded-lg bg-[var(--bg-elevated)]"
                       />
                     </div>
                   </div>
@@ -279,10 +279,10 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
               </div>
 
               {/* Deadline Rules */}
-              <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+              <div className="p-4 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="text-xs font-bold text-slate-900">Pengingat Jadwal & Batas Waktu</h4>
+                    <h4 className="text-xs font-bold text-[var(--text-primary)]">Pengingat Jadwal & Batas Waktu</h4>
                     <p className="text-[11px] text-slate-500">Peringatan saat tanggal target selesai proyek semakin dekat atau terlewat.</p>
                   </div>
                   <input
@@ -294,9 +294,9 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                 </div>
 
                 {settings.enableDeadlineNotifications && (
-                  <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-200">
+                  <div className="grid grid-cols-2 gap-3 pt-2 border-t border-[var(--border-primary)]">
                     <div>
-                      <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      <label className="block text-[11px] font-semibold text-[var(--text-primary)] mb-1">
                         Mulai Ingatkan (Hari Sebelum)
                       </label>
                       <input
@@ -305,7 +305,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                         max={30}
                         value={settings.deadlineReminderDays}
                         onChange={(e) => setSettings({ ...settings, deadlineReminderDays: Number(e.target.value) })}
-                        className="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg bg-white"
+                        className="w-full px-2.5 py-1.5 text-xs border border-[var(--border-primary)] rounded-lg bg-[var(--bg-elevated)]"
                       />
                     </div>
                     <div className="flex items-center pt-5">
@@ -316,7 +316,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                           onChange={(e) => setSettings({ ...settings, enableOverdueNotifications: e.target.checked })}
                           className="rounded-sm text-blue-600 focus:ring-blue-500"
                         />
-                        <span className="text-xs font-semibold text-slate-700">Notifikasi Keterlambatan (Overdue)</span>
+                        <span className="text-xs font-semibold text-[var(--text-primary)]">Notifikasi Keterlambatan (Overdue)</span>
                       </label>
                     </div>
                   </div>
@@ -324,10 +324,10 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
               </div>
 
               {/* Revision Rules */}
-              <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+              <div className="p-4 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="text-xs font-bold text-slate-900">Notifikasi Perubahan Revisi Signifikan</h4>
+                    <h4 className="text-xs font-bold text-[var(--text-primary)]">Notifikasi Perubahan Revisi Signifikan</h4>
                     <p className="text-[11px] text-slate-500">Peringatkan jika terjadi perubahan harga/volume di atas batas toleransi.</p>
                   </div>
                   <input
@@ -339,9 +339,9 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                 </div>
 
                 {settings.enableRevisionNotifications && (
-                  <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-200">
+                  <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[var(--border-primary)]">
                     <div>
-                      <label className="block text-[10px] font-semibold text-slate-700 mb-1">
+                      <label className="block text-[10px] font-semibold text-[var(--text-primary)] mb-1">
                         Delta Harga (%)
                       </label>
                       <input
@@ -350,11 +350,11 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                         max={100}
                         value={settings.revisionPriceChangeThresholdPercent}
                         onChange={(e) => setSettings({ ...settings, revisionPriceChangeThresholdPercent: Number(e.target.value) })}
-                        className="w-full px-2 py-1 text-xs border border-slate-300 rounded-lg bg-white"
+                        className="w-full px-2 py-1 text-xs border border-[var(--border-primary)] rounded-lg bg-[var(--bg-elevated)]"
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-semibold text-slate-700 mb-1">
+                      <label className="block text-[10px] font-semibold text-[var(--text-primary)] mb-1">
                         Delta Volume (%)
                       </label>
                       <input
@@ -363,11 +363,11 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                         max={100}
                         value={settings.revisionVolumeChangeThresholdPercent}
                         onChange={(e) => setSettings({ ...settings, revisionVolumeChangeThresholdPercent: Number(e.target.value) })}
-                        className="w-full px-2 py-1 text-xs border border-slate-300 rounded-lg bg-white"
+                        className="w-full px-2 py-1 text-xs border border-[var(--border-primary)] rounded-lg bg-[var(--bg-elevated)]"
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-semibold text-slate-700 mb-1">
+                      <label className="block text-[10px] font-semibold text-[var(--text-primary)] mb-1">
                         Delta Grand Total (%)
                       </label>
                       <input
@@ -376,7 +376,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                         max={50}
                         value={settings.revisionTotalChangeThresholdPercent}
                         onChange={(e) => setSettings({ ...settings, revisionTotalChangeThresholdPercent: Number(e.target.value) })}
-                        className="w-full px-2 py-1 text-xs border border-slate-300 rounded-lg bg-white"
+                        className="w-full px-2 py-1 text-xs border border-[var(--border-primary)] rounded-lg bg-[var(--bg-elevated)]"
                       />
                     </div>
                   </div>
@@ -384,9 +384,9 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
               </div>
 
               {/* Browser Push Permission */}
-              <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+              <div className="p-4 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] flex items-center justify-between">
                 <div>
-                  <h4 className="text-xs font-bold text-slate-900">Notifikasi Browser Desktop</h4>
+                  <h4 className="text-xs font-bold text-[var(--text-primary)]">Notifikasi Browser Desktop</h4>
                   <p className="text-[11px] text-slate-500">Izinkan browser menampilkan popup notifikasi saat aplikasi berada di latar belakang.</p>
                 </div>
                 <button
@@ -402,7 +402,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                 <button
                   type="button"
                   onClick={handleSaveSettings}
-                  className="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition-colors shadow-xs"
+                  className="px-5 py-2 bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] text-white text-xs font-bold rounded-xl transition-colors shadow-xs"
                 >
                   Simpan Pengaturan
                 </button>
@@ -413,9 +413,9 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
             <div className="space-y-3">
               {filteredNotifications.length === 0 ? (
                 <div className="py-12 text-center text-slate-500 space-y-2">
-                  <Bell className="w-8 h-8 text-slate-300 mx-auto" />
+                  <Bell className="w-8 h-8 text-slate-600 dark:text-slate-300 mx-auto" />
                   <p className="text-xs font-semibold">Tidak ada notifikasi pada kategori ini.</p>
-                  <p className="text-[11px] text-slate-400">Semua aktivitas proyek dan anggaran berjalan normal.</p>
+                  <p className="text-[11px] text-[var(--text-secondary)]">Semua aktivitas proyek dan anggaran berjalan normal.</p>
                 </div>
               ) : (
                 filteredNotifications.map((notif) => (
@@ -423,7 +423,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                     key={notif.id}
                     className={`p-4 rounded-xl border transition-all ${
                       notif.isRead
-                        ? 'bg-white border-slate-200 opacity-80'
+                        ? 'bg-[var(--bg-elevated)] border-[var(--border-primary)] opacity-80'
                         : 'bg-blue-50/40 border-blue-200 shadow-2xs'
                     }`}
                   >
@@ -433,15 +433,15 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                         <div>
                           <h4
                             className={`text-xs font-bold ${
-                              notif.isRead ? 'text-slate-700' : 'text-slate-900'
+                              notif.isRead ? 'text-[var(--text-primary)]' : 'text-[var(--text-primary)]'
                             }`}
                           >
                             {notif.title}
                           </h4>
-                          <p className="text-[11px] text-slate-600 mt-1 leading-relaxed">
+                          <p className="text-[11px] text-[var(--text-secondary)] mt-1 leading-relaxed">
                             {notif.message}
                           </p>
-                          <div className="flex items-center gap-3 mt-2 text-[10px] text-slate-400">
+                          <div className="flex items-center gap-3 mt-2 text-[10px] text-[var(--text-secondary)]">
                             <span>
                               {new Date(notif.createdAt).toLocaleDateString('id-ID', {
                                 day: 'numeric',
@@ -454,7 +454,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                             {notif.projectName && (
                               <>
                                 <span>•</span>
-                                <span className="font-semibold text-slate-600">{notif.projectName}</span>
+                                <span className="font-semibold text-[var(--text-secondary)]">{notif.projectName}</span>
                               </>
                             )}
                           </div>
@@ -474,7 +474,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                         {!notif.isRead && (
                           <button
                             onClick={() => handleMarkAsRead(notif.id)}
-                            className="p-1 text-slate-400 hover:text-blue-600 rounded-md"
+                            className="p-1 text-[var(--text-secondary)] hover:text-blue-600 rounded-md"
                             title="Tandai Dibaca"
                           >
                             <CheckCheck className="w-4 h-4" />
@@ -482,7 +482,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                         )}
                         <button
                           onClick={() => handleDelete(notif.id)}
-                          className="p-1 text-slate-400 hover:text-rose-600 rounded-md"
+                          className="p-1 text-[var(--text-secondary)] hover:text-rose-600 rounded-md"
                           title="Hapus"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -497,12 +497,12 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
         </div>
 
         {/* Modal Footer */}
-        <div className="bg-slate-50 border-t border-slate-200 px-6 py-3 flex items-center justify-between text-xs text-slate-500">
+        <div className="bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)] px-6 py-3 flex items-center justify-between text-xs text-slate-500">
           <span>{notifications.length} Total Catatan Notifikasi</span>
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors"
+            className="px-4 py-1.5 text-xs font-semibold text-[var(--text-primary)] bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg hover:bg-[var(--bg-elevated-hover)] transition-colors"
           >
             Tutup
           </button>

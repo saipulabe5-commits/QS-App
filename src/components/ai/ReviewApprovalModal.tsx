@@ -162,29 +162,29 @@ export const ReviewApprovalModal: React.FC<ReviewApprovalModalProps> = ({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs"
+        className="fixed inset-0 bg-[var(--bg-elevated)]/60 backdrop-blur-xs"
       />
 
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 15 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 15 }}
-        className="relative bg-white w-full max-w-3xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-10 my-8"
+        className="relative bg-[var(--bg-elevated)] w-full max-w-3xl rounded-2xl shadow-2xl border border-[var(--border-primary)] overflow-hidden z-10 my-8"
       >
         {/* Modal Header */}
-        <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+        <div className="px-6 py-4 bg-[var(--bg-elevated)] text-[var(--text-primary)] flex items-center justify-between">
           <div className="flex items-center space-x-2.5">
             <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
               <ShieldCheck className="w-4 h-4 text-white" />
             </div>
             <div>
               <h3 className="text-base font-bold text-white">{title}</h3>
-              <p className="text-[11px] text-slate-300">{description}</p>
+              <p className="text-[11px] text-slate-600 dark:text-slate-300">{description}</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
+            className="text-[var(--text-secondary)] hover:text-white p-1 rounded-lg hover:bg-[var(--bg-elevated-hover)] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -211,16 +211,16 @@ export const ReviewApprovalModal: React.FC<ReviewApprovalModalProps> = ({
                   >
                     Pilih Semua
                   </button>
-                  <span className="text-slate-300">|</span>
+                  <span className="text-slate-600 dark:text-slate-300">|</span>
                   <button
                     type="button"
                     onClick={() => handleSelectAllItems(false)}
-                    className="text-slate-500 hover:text-slate-700 font-semibold"
+                    className="text-slate-500 hover:text-[var(--text-primary)] font-semibold"
                   >
                     Batal Pilih
                   </button>
                 </div>
-                <span className="font-bold text-slate-700">
+                <span className="font-bold text-[var(--text-primary)]">
                   {selectedItemCount} dari {items.length} item dipilih
                 </span>
               </div>
@@ -232,7 +232,7 @@ export const ReviewApprovalModal: React.FC<ReviewApprovalModalProps> = ({
                     className={`p-4 rounded-xl border transition-all ${
                       item.selected
                         ? 'bg-blue-50/40 border-blue-200 shadow-2xs'
-                        : 'bg-slate-50 border-slate-200 opacity-60'
+                        : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] opacity-60'
                     }`}
                   >
                     <div className="flex items-start space-x-3">
@@ -240,18 +240,18 @@ export const ReviewApprovalModal: React.FC<ReviewApprovalModalProps> = ({
                         type="checkbox"
                         checked={item.selected}
                         onChange={() => handleToggleItem(idx)}
-                        className="mt-1 w-4 h-4 text-blue-600 rounded-sm border-slate-300 focus:ring-blue-500 cursor-pointer"
+                        className="mt-1 w-4 h-4 text-blue-600 rounded-sm border-[var(--border-primary)] focus:ring-blue-500 cursor-pointer"
                       />
 
                       <div className="flex-1 space-y-2">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                           <div className="flex items-center space-x-2">
-                            <span className="px-2 py-0.5 bg-slate-200 text-slate-800 font-mono text-[10px] font-bold rounded-sm">
+                            <span className="px-2 py-0.5 bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] font-mono text-[10px] font-bold rounded-sm">
                               {item.code}
                             </span>
                             <span className="text-xs font-bold text-blue-800">{item.category}</span>
                           </div>
-                          <span className="text-xs font-mono font-bold text-slate-900">
+                          <span className="text-xs font-mono font-bold text-[var(--text-primary)]">
                             Subtotal: {formatRupiah((Number(item.volume) || 0) * (Number(item.unitPrice) || 0))}
                           </span>
                         </div>
@@ -260,7 +260,7 @@ export const ReviewApprovalModal: React.FC<ReviewApprovalModalProps> = ({
                           type="text"
                           value={item.name}
                           onChange={(e) => handleUpdateItemField(idx, 'name', e.target.value)}
-                          className="w-full text-xs font-medium text-slate-800 bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 focus:border-blue-600"
+                          className="w-full text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg px-2.5 py-1.5 focus:border-blue-600"
                         />
 
                         <div className="grid grid-cols-3 gap-2">
@@ -272,7 +272,7 @@ export const ReviewApprovalModal: React.FC<ReviewApprovalModalProps> = ({
                               type="number"
                               value={item.volume}
                               onChange={(e) => handleUpdateItemField(idx, 'volume', Number(e.target.value))}
-                              className="w-full text-xs font-mono bg-white border border-slate-200 rounded-lg px-2 py-1"
+                              className="w-full text-xs font-mono bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg px-2 py-1"
                             />
                           </div>
                           <div>
@@ -283,7 +283,7 @@ export const ReviewApprovalModal: React.FC<ReviewApprovalModalProps> = ({
                               type="text"
                               value={item.unit}
                               onChange={(e) => handleUpdateItemField(idx, 'unit', e.target.value)}
-                              className="w-full text-xs bg-white border border-slate-200 rounded-lg px-2 py-1 text-center"
+                              className="w-full text-xs bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg px-2 py-1 text-center"
                             />
                           </div>
                           <div>
@@ -294,13 +294,13 @@ export const ReviewApprovalModal: React.FC<ReviewApprovalModalProps> = ({
                               type="number"
                               value={item.unitPrice}
                               onChange={(e) => handleUpdateItemField(idx, 'unitPrice', Number(e.target.value))}
-                              className="w-full text-xs font-mono bg-white border border-slate-200 rounded-lg px-2 py-1"
+                              className="w-full text-xs font-mono bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-lg px-2 py-1"
                             />
                           </div>
                         </div>
 
                         {item.reason && (
-                          <p className="text-[11px] text-slate-500 italic bg-white/70 p-2 rounded-lg border border-slate-100">
+                          <p className="text-[11px] text-slate-500 italic bg-[var(--bg-elevated)]/70 p-2 rounded-lg border border-slate-100">
                             💡 {item.reason}
                           </p>
                         )}
@@ -318,7 +318,7 @@ export const ReviewApprovalModal: React.FC<ReviewApprovalModalProps> = ({
                   className={`p-4 rounded-xl border transition-all ${
                     adj.selected
                       ? 'bg-blue-50/40 border-blue-200'
-                      : 'bg-slate-50 border-slate-200 opacity-60'
+                      : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] opacity-60'
                   }`}
                 >
                   <div className="flex items-start space-x-3">
@@ -326,27 +326,27 @@ export const ReviewApprovalModal: React.FC<ReviewApprovalModalProps> = ({
                       type="checkbox"
                       checked={adj.selected}
                       onChange={() => handleToggleAdjustment(idx)}
-                      className="mt-1 w-4 h-4 text-blue-600 rounded-sm border-slate-300 focus:ring-blue-500 cursor-pointer"
+                      className="mt-1 w-4 h-4 text-blue-600 rounded-sm border-[var(--border-primary)] focus:ring-blue-500 cursor-pointer"
                     />
                     <div className="flex-1 space-y-2">
-                      <h4 className="text-xs font-bold text-slate-900">{adj.itemName}</h4>
+                      <h4 className="text-xs font-bold text-[var(--text-primary)]">{adj.itemName}</h4>
                       <p className="text-[11px] text-slate-500">{adj.reason}</p>
 
                       <div className="flex items-center space-x-3 text-xs pt-1">
                         <div>
-                          <span className="text-[10px] text-slate-400 block font-semibold">Harga Saat Ini</span>
+                          <span className="text-[10px] text-[var(--text-secondary)] block font-semibold">Harga Saat Ini</span>
                           <span className="line-through text-slate-500 font-mono font-medium">
                             {formatRupiah(adj.currentPrice)}
                           </span>
                         </div>
-                        <span className="text-slate-400">➔</span>
+                        <span className="text-[var(--text-secondary)]">➔</span>
                         <div className="flex-1 max-w-[180px]">
                           <span className="text-[10px] text-blue-700 block font-bold">Harga Rekomendasi (Rp)</span>
                           <input
                             type="number"
                             value={adj.suggestedPrice}
                             onChange={(e) => handleUpdateAdjPrice(idx, Number(e.target.value))}
-                            className="w-full text-xs font-mono font-bold text-blue-900 bg-white border border-blue-300 rounded-lg px-2.5 py-1 focus:ring-1 focus:ring-blue-500"
+                            className="w-full text-xs font-mono font-bold text-blue-900 bg-[var(--bg-elevated)] border border-blue-300 rounded-lg px-2.5 py-1 focus:ring-1 focus:ring-blue-500"
                           />
                         </div>
                       </div>
@@ -359,12 +359,12 @@ export const ReviewApprovalModal: React.FC<ReviewApprovalModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="px-6 py-4 bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)] flex flex-col sm:flex-row items-center justify-between gap-3">
           <div>
             {mode === 'add_items' && (
-              <span className="text-xs text-slate-600">
+              <span className="text-xs text-[var(--text-secondary)]">
                 Total Nilai Item Disetujui:{' '}
-                <strong className="text-slate-900 font-mono">{formatRupiah(totalProposedCost)}</strong>
+                <strong className="text-[var(--text-primary)] font-mono">{formatRupiah(totalProposedCost)}</strong>
               </span>
             )}
           </div>
@@ -373,7 +373,7 @@ export const ReviewApprovalModal: React.FC<ReviewApprovalModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-medium text-slate-700 bg-white border border-slate-300 hover:bg-slate-100 rounded-xl"
+              className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated)] border border-[var(--border-primary)] hover:bg-[var(--bg-elevated-hover)] rounded-xl"
             >
               Batal
             </button>

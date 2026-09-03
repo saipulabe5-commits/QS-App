@@ -65,6 +65,8 @@ export type AuthResult = {
 
 export interface AppContextType {
   isDbBooting: boolean;
+  isDarkMode: boolean;
+  toggleDarkMode: () => void;
   user: User | null;
   activeTab: string;
   setActiveTab: (tab: string) => void;
@@ -168,7 +170,7 @@ export interface AppContextType {
   addDrawing: (drawing: Partial<ProjectDrawing>) => ProjectDrawing;
   updateDrawing: (id: string, updates: Partial<ProjectDrawing>) => void;
   deleteDrawing: (id: string) => void;
-  analyzeDrawingWithAI: (drawingId: string) => Promise<DrawingAnalysis>;
+  analyzeDrawingWithAI: (drawingId: string, forceTwoPass?: boolean) => Promise<DrawingAnalysis>;
   updateAnalysisItem: (analysisId: string, itemId: string, updates: Partial<EstimatedDrawingItem>) => void;
   updateEstimatedItem: (analysisId: string, itemId: string, updates: Partial<EstimatedDrawingItem>) => void;
   verifyAnalysisItem: (analysisId: string, itemId: string, status: VerificationStatus, notes?: string) => void;
@@ -205,6 +207,16 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isDbBooting, setIsDbBooting] = useState<boolean>(false);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('rabpro_theme') === 'dark';
+    }
+    return false;
+  });
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(prev => !prev);
+  };
   const [user, setUser] = useState<User | null>(null);
   const [activeTab, setActiveTab] = useState<string>('dashboard');
   const [activeProjectId, setActiveProjectId] = useState<string | null>(INITIAL_PROJECTS[0]?.id || null);
@@ -260,6 +272,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     lsKey: string,
     normalizer?: (it: any) => T
   ): Promise<T[]> => {
+    // If key exists in local storage, user has used the app before
+    const hasBeenInitialized = safeLocalStorageGet(lsKey) !== null;
+
     try {
       if (idbStorage.isSupported()) {
         const idbData = await idbStorage.getAll<T>(storeName);
@@ -275,9 +290,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     if (lsStr) {
       try {
         const parsed = JSON.parse(lsStr);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           const norm = normalizer ? parsed.map(normalizer) : parsed;
-          if (idbStorage.isSupported()) {
+          if (idbStorage.isSupported() && norm.length > 0) {
             idbStorage.putAll(storeName, norm).catch(() => {});
           }
           return norm;
@@ -287,10 +302,16 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       }
     }
 
-    if (idbStorage.isSupported() && initialData.length > 0) {
-      idbStorage.putAll(storeName, initialData).catch(() => {});
+    // Only fallback to initialData if never initialized
+    if (!hasBeenInitialized) {
+      if (idbStorage.isSupported() && initialData.length > 0) {
+        idbStorage.putAll(storeName, initialData).catch(() => {});
+      }
+      return initialData;
     }
-    return initialData;
+
+    // User explicitly deleted all items
+    return [];
   };
 
   // Initial DB Boot
@@ -309,6 +330,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
               if (data.success && data.user) {
                 setUser(data.user);
                 safeLocalStorageSet(STORAGE_KEYS.USER, JSON.stringify(data.user));
+                safeLocalStorageSet('rabpro_last_verified', Date.now().toString());
               } else {
                 throw new Error('Invalid response');
               }
@@ -316,35 +338,48 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
               // Token invalid or expired
               safeLocalStorageRemove('rabpro_token');
               safeLocalStorageRemove(STORAGE_KEYS.USER);
+              safeLocalStorageRemove('rabpro_last_verified');
               setUser(null);
             }
           } catch (e) {
             // Network error or fetch failed.
-            // Strict zero trust: Only authenticate locally if we have a valid, unexpired JWT.
+            // Strict zero trust: Only authenticate locally if we have a valid, unexpired JWT 
+            // AND it was verified by the server within the last 72 hours.
             try {
-              const base64Url = token.split('.')[1];
-              const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-              const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                  return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-              }).join(''));
-              const payload = JSON.parse(jsonPayload);
-              if (payload.exp && payload.exp * 1000 > Date.now()) {
-                const storedUser = safeLocalStorageGet(STORAGE_KEYS.USER);
-                if (storedUser) {
-                  const parsedUser = JSON.parse(storedUser);
-                  // Ensure ID matches
-                  if (parsedUser.id === payload.id) {
-                    setUser(parsedUser);
+              const lastVerified = parseInt(safeLocalStorageGet('rabpro_last_verified') || '0', 10);
+              const isVerifiedRecently = Date.now() - lastVerified < 72 * 60 * 60 * 1000;
+
+              if (!isVerifiedRecently) {
+                console.warn('Offline session expired. Please connect to the internet to verify your session.');
+                safeLocalStorageRemove('rabpro_token');
+                safeLocalStorageRemove(STORAGE_KEYS.USER);
+                setUser(null);
+              } else {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                const payload = JSON.parse(jsonPayload);
+                if (payload.exp && payload.exp * 1000 > Date.now()) {
+                  const storedUser = safeLocalStorageGet(STORAGE_KEYS.USER);
+                  if (storedUser) {
+                    const parsedUser = JSON.parse(storedUser);
+                    // Ensure ID matches
+                    if (parsedUser.id === payload.id) {
+                      setUser(parsedUser);
+                    } else {
+                      setUser(null);
+                    }
                   } else {
                     setUser(null);
                   }
                 } else {
+                  safeLocalStorageRemove('rabpro_token');
+                  safeLocalStorageRemove(STORAGE_KEYS.USER);
+                  safeLocalStorageRemove('rabpro_last_verified');
                   setUser(null);
                 }
-              } else {
-                safeLocalStorageRemove('rabpro_token');
-                safeLocalStorageRemove(STORAGE_KEYS.USER);
-                setUser(null);
               }
             } catch(jwtErr) {
               setUser(null);
@@ -380,7 +415,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
         const loadedTemplatesRaw = await loadStoreData(DB_STORES.TEMPLATES, INITIAL_TEMPLATES, STORAGE_KEYS.TEMPLATES);
         const existingTplIds = new Set((loadedTemplatesRaw || []).map((t: any) => t.id));
-        const mergedTemplates = [
+        // Only merge built-in templates if the user hasn't initialized the app
+        const hasTplInit = safeLocalStorageGet(STORAGE_KEYS.TEMPLATES) !== null;
+        const mergedTemplates = hasTplInit ? (loadedTemplatesRaw || []) : [
           ...(loadedTemplatesRaw || []),
           ...INITIAL_TEMPLATES.filter((t) => !existingTplIds.has(t.id)),
         ];
@@ -388,7 +425,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
         const loadedRabTemplatesRaw = await loadStoreData(DB_STORES.RAB_TEMPLATES, INITIAL_RAB_TEMPLATES, STORAGE_KEYS.RAB_TEMPLATES);
         const existingRabTplIds = new Set((loadedRabTemplatesRaw || []).map((t: any) => t.id));
-        const mergedRabTemplates = [
+        const hasRabTplInit = safeLocalStorageGet(STORAGE_KEYS.RAB_TEMPLATES) !== null;
+        const mergedRabTemplates = hasRabTplInit ? (loadedRabTemplatesRaw || []) : [
           ...INITIAL_RAB_TEMPLATES.filter((t) => t.isBuiltIn),
           ...(loadedRabTemplatesRaw || []).filter((t: any) => !t.isBuiltIn || !INITIAL_RAB_TEMPLATES.some((it) => it.id === t.id)),
         ];
@@ -429,6 +467,15 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     bootDB();
   }, []);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('rabpro_theme', isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode]);
 
   // Save changes to IDB & LocalStorage debounce
   useEffect(() => {
@@ -1579,7 +1626,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     showToast('Gambar Dihapus', 'Gambar kerja telah dihapus.', 'info');
   };
 
-  const analyzeDrawingWithAI = async (drawingId: string): Promise<DrawingAnalysis> => {
+  const analyzeDrawingWithAI = async (drawingId: string, forceTwoPass?: boolean): Promise<DrawingAnalysis> => {
     const drawing = drawings.find((d) => d.id === drawingId);
     if (!drawing) throw new Error('Gambar tidak ditemukan');
 
@@ -1599,6 +1646,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
           fileName: drawing.fileName,
           fileData: drawing.fileData,
           category: drawing.category,
+          forceTwoPass,
         }),
       });
 
@@ -1932,6 +1980,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const contextValue: AppContextType = {
     isDbBooting,
+    isDarkMode,
+    toggleDarkMode,
     user,
     activeTab,
     setActiveTab,

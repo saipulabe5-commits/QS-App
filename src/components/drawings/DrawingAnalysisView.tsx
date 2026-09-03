@@ -77,6 +77,7 @@ export const DrawingAnalysisView: React.FC = () => {
 
   const [previewModalUrl, setPreviewModalUrl] = useState<string | null>(null);
   const [editingItem, setEditingItem] = useState<{ analysisId: string; item: EstimatedDrawingItem } | null>(null);
+  const [batchAnalysisState, setBatchAnalysisState] = useState<{isBatching: boolean, total: number, current: number, currentId: string, success: number, failed: string[]}>({isBatching: false, total: 0, current: 0, currentId: '', success: 0, failed: []});
   const [isAnalyzing, setIsAnalyzing] = useState<Record<string, boolean>>({});
   const [selectedItemIds, setSelectedItemIds] = useState<string[]>([]);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
@@ -107,10 +108,62 @@ export const DrawingAnalysisView: React.FC = () => {
     return matchesCat && matchesSearch;
   });
 
+  const [forceTwoPass, setForceTwoPass] = useState(false);
+  
+  const handleBatchAnalyze = async () => {
+    const unanalyzed = projectDrawings.filter(d => d.projectId === selectedProject?.id && d.analysisStatus !== 'completed');
+    if (unanalyzed.length === 0) {
+      showToast('Info', 'Semua gambar sudah dianalisis.', 'info');
+      return;
+    }
+    
+    setBatchAnalysisState({
+      isBatching: true,
+      total: unanalyzed.length,
+      current: 1,
+      currentId: unanalyzed[0].id,
+      success: 0,
+      failed: []
+    });
+    
+    let successCount = 0;
+    const failedList: string[] = [];
+    
+    for (let i = 0; i < unanalyzed.length; i++) {
+      const drawing = unanalyzed[i];
+      setBatchAnalysisState(prev => ({ ...prev, current: i + 1, currentId: drawing.id }));
+      setSelectedDrawingId(drawing.id);
+      
+      try {
+        setIsAnalyzing(prev => ({ ...prev, [drawing.id]: true }));
+        await analyzeDrawingWithAI(drawing.id, forceTwoPass);
+        successCount++;
+      } catch (err: any) {
+        console.error(err);
+        failedList.push(drawing.fileName || drawing.id);
+      } finally {
+        setIsAnalyzing(prev => ({ ...prev, [drawing.id]: false }));
+      }
+    }
+    
+    setBatchAnalysisState(prev => ({
+      ...prev,
+      isBatching: false,
+      success: successCount,
+      failed: failedList
+    }));
+    
+    if (failedList.length === 0) {
+      showToast('Batch Selesai', `${successCount} dari ${unanalyzed.length} lembar berhasil dianalisa. 0 lembar dilewati.`, 'success');
+    } else {
+      showToast('Batch Selesai dengan Error', `${successCount} berhasil. ${failedList.length} gagal (${failedList.join(', ')}).`, 'warning');
+    }
+  };
+
   const handleRunAIAnalysis = async (drawingId: string) => {
     try {
       setIsAnalyzing((prev) => ({ ...prev, [drawingId]: true }));
-      await analyzeDrawingWithAI(drawingId);
+      await analyzeDrawingWithAI(drawingId, forceTwoPass);
       setSelectedDrawingId(drawingId);
     } catch (err: any) {
       console.error(err);
@@ -148,7 +201,7 @@ export const DrawingAnalysisView: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Banner & Stats */}
-      <div className="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 border border-slate-200 dark:border-[var(--border-primary)] shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <div className="flex items-center space-x-2.5 mb-1.5">
             <span className="p-1.5 bg-blue-600 rounded-lg text-white">
@@ -156,10 +209,10 @@ export const DrawingAnalysisView: React.FC = () => {
             </span>
             <h1 className="text-xl font-bold tracking-tight">Analisis Dokumen Gambar Konstruksi (AI Vision)</h1>
           </div>
-          <p className="text-xs text-slate-300 max-w-2xl">
+          <p className="text-xs text-slate-600 dark:text-slate-300 max-w-2xl">
             Ekstrak dimensi, volume pekerjaan pondasi, struktur, dinding, atap, serta spesifikasi material langsung dari denah dan dokumen gambar teknik menggunakan AI Multimodal.
           </p>
-          <div className="flex items-center space-x-3 mt-3 text-xs text-slate-400">
+          <div className="flex items-center space-x-3 mt-3 text-xs text-[var(--text-secondary)]">
             <span className="flex items-center gap-1.5">
               <Building2 className="w-3.5 h-3.5 text-blue-400" />
               Proyek: <strong className="text-white">{selectedProject?.name || 'Pilih Proyek'}</strong>
@@ -183,32 +236,78 @@ export const DrawingAnalysisView: React.FC = () => {
           </button>
 
           {activeDrawing && activeDrawing.analysisStatus !== 'processing' && (
-            <button
-              onClick={() => handleRunAIAnalysis(activeDrawing.id)}
-              disabled={isAnalyzing[activeDrawing.id]}
+            <div className="flex items-center space-x-2">
+            
+                  <div className="flex items-center space-x-2 mr-2">
+                    <input
+                      type="checkbox"
+                      id="forceTwoPass2"
+                      checked={forceTwoPass}
+                      onChange={(e) => setForceTwoPass(e.target.checked)}
+                      className="rounded text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <label htmlFor="forceTwoPass2" className="text-xs text-[var(--text-secondary)] cursor-pointer">
+                      QC 2-Pass
+                    </label>
+                  </div>
+                  <button
+                    onClick={() => handleRunAIAnalysis(activeDrawing.id)}
+                    disabled={isAnalyzing[activeDrawing.id]}
               className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-xs font-bold rounded-xl shadow-xs transition-colors flex items-center space-x-1.5"
             >
               <Sparkles className={`w-4 h-4 ${isAnalyzing[activeDrawing.id] ? 'animate-spin' : ''}`} />
               <span>{isAnalyzing[activeDrawing.id] ? 'Menganalisis Gambar...' : 'Analisis Ulang dengan AI'}</span>
             </button>
+            </div>
           )}
         </div>
       </div>
+
+      
+            {batchAnalysisState.isBatching && (
+              <div className="mb-4 bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-800 rounded-xl p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-bold text-indigo-800 dark:text-indigo-300">
+                    <Sparkles className="w-4 h-4 inline-block mr-2 animate-pulse" />
+                    Menganalisa lembar {batchAnalysisState.current} dari {batchAnalysisState.total}...
+                  </span>
+                  <span className="text-xs font-mono text-indigo-600 dark:text-indigo-400">
+                    {Math.round((batchAnalysisState.current / batchAnalysisState.total) * 100)}%
+                  </span>
+                </div>
+                <div className="w-full bg-indigo-100 dark:bg-indigo-950 rounded-full h-2">
+                  <div className="bg-indigo-600 h-2 rounded-full transition-all duration-300" style={{ width: `${(batchAnalysisState.current / batchAnalysisState.total) * 100}%` }}></div>
+                </div>
+              </div>
+            )}
+            
+            {!batchAnalysisState.isBatching && batchAnalysisState.total > 0 && batchAnalysisState.current === batchAnalysisState.total && (
+              <div className={`mb-4 border rounded-xl p-4 ${batchAnalysisState.failed.length > 0 ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800' : 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'}`}>
+                <p className={`text-sm font-bold ${batchAnalysisState.failed.length > 0 ? 'text-amber-800 dark:text-amber-400' : 'text-green-800 dark:text-green-400'}`}>
+                  {batchAnalysisState.success} dari {batchAnalysisState.total} lembar berhasil dianalisa. 0 lembar dilewati.
+                </p>
+                {batchAnalysisState.failed.length > 0 && (
+                  <p className="text-xs text-amber-700 dark:text-amber-500 mt-1">
+                    Gagal diproses: {batchAnalysisState.failed.join(', ')}
+                  </p>
+                )}
+              </div>
+            )}
 
       {/* Main Grid: Left Thumbnails/List, Right Detailed Analysis */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Drawing Gallery & Search (4 cols) */}
         <div className="lg:col-span-4 space-y-4">
           {/* Search & Filter Header */}
-          <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs space-y-3">
+          <div className="bg-[var(--bg-elevated)] rounded-2xl p-4 border border-[var(--border-primary)] shadow-xs space-y-3">
             <div className="relative">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-[var(--text-secondary)] absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Cari denah, tampak, potongan..."
-                className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-800"
+                className="w-full pl-9 pr-3 py-2 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none text-[var(--text-primary)]"
               />
             </div>
 
@@ -221,7 +320,7 @@ export const DrawingAnalysisView: React.FC = () => {
                   className={`px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
                     selectedCategory === cat.value
                       ? 'bg-blue-600 text-white'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                      : 'bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700'
                   }`}
                 >
                   {cat.label}
@@ -233,11 +332,11 @@ export const DrawingAnalysisView: React.FC = () => {
           {/* Drawings List Cards */}
           <div className="space-y-3 max-h-[700px] overflow-y-auto custom-scrollbar pr-1">
             {filteredDrawings.length === 0 ? (
-              <div className="bg-white rounded-2xl p-8 border border-dashed border-slate-300 text-center space-y-3">
-                <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
+              <div className="bg-[var(--bg-elevated)] rounded-2xl p-8 border border-dashed border-[var(--border-primary)] text-center space-y-3">
+                <div className="w-12 h-12 rounded-2xl bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)] flex items-center justify-center mx-auto">
                   <ImageIcon className="w-6 h-6" />
                 </div>
-                <h4 className="text-sm font-bold text-slate-800">Belum Ada Dokumen Gambar</h4>
+                <h4 className="text-sm font-bold text-[var(--text-primary)]">Belum Ada Dokumen Gambar</h4>
                 <p className="text-xs text-slate-500 max-w-xs mx-auto">
                   Unggah denah arsitektur, gambar kerja, atau foto lapangan untuk dianalisis oleh AI.
                 </p>
@@ -258,26 +357,30 @@ export const DrawingAnalysisView: React.FC = () => {
                   <div
                     key={drawing.id}
                     onClick={() => setSelectedDrawingId(drawing.id)}
-                    className={`bg-white rounded-2xl border transition-all cursor-pointer overflow-hidden p-3 relative ${
+                    className={`bg-[var(--bg-elevated)] rounded-2xl border transition-all cursor-pointer overflow-hidden p-3 relative ${
                       isSelected
                         ? 'border-blue-600 ring-2 ring-blue-500/20 shadow-sm bg-blue-50/20'
-                        : 'border-slate-200 hover:border-slate-300 shadow-2xs'
+                        : 'border-[var(--border-primary)] hover:border-[var(--border-primary)] shadow-2xs'
                     }`}
                   >
                     <div className="flex items-start space-x-3">
                       {/* Image Thumbnail with zoom trigger */}
-                      <div className="relative w-20 h-20 rounded-xl border border-slate-200 overflow-hidden bg-slate-100 flex-shrink-0 group">
-                        <img
-                          src={drawing.fileUrl}
-                          alt={drawing.title}
-                          className="w-full h-full object-cover"
-                        />
+                      <div className="relative w-20 h-20 rounded-xl border border-[var(--border-primary)] overflow-hidden bg-[var(--bg-elevated-hover)] flex-shrink-0 group">
+                        {drawing.fileUrl?.includes('application/pdf') ? (
+                          <object data={drawing.fileUrl} type="application/pdf" className="w-full h-full object-cover overflow-hidden pointer-events-none" />
+                        ) : (
+                          <img
+                            src={drawing.fileUrl}
+                            alt={drawing.title}
+                            className="w-full h-full object-cover"
+                          />
+                        )}
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             setPreviewModalUrl(drawing.fileUrl);
                           }}
-                          className="absolute inset-0 bg-slate-950/40 text-white opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"
+                          className="absolute inset-0 bg-[var(--bg-elevated)]/40 text-[var(--text-primary)] opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"
                           title="Perbesar Gambar"
                         >
                           <Maximize2 className="w-4 h-4" />
@@ -287,13 +390,13 @@ export const DrawingAnalysisView: React.FC = () => {
                       {/* Content */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-1">
-                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm bg-slate-100 text-slate-700">
+                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm bg-[var(--bg-elevated-hover)] text-[var(--text-primary)]">
                             {drawing.category}
                           </span>
-                          <span className="text-[10px] text-slate-400">{drawing.scale || '1:100'}</span>
+                          <span className="text-[10px] text-[var(--text-secondary)]">{drawing.scale || '1:100'}</span>
                         </div>
 
-                        <h4 className="text-xs font-bold text-slate-900 mt-1 line-clamp-1" title={drawing.title}>
+                        <h4 className="text-xs font-bold text-[var(--text-primary)] mt-1 line-clamp-1" title={drawing.title}>
                           {drawing.title}
                         </h4>
 
@@ -325,7 +428,7 @@ export const DrawingAnalysisView: React.FC = () => {
                               e.stopPropagation();
                               setDeleteConfirmId(drawing.id);
                             }}
-                            className="text-slate-400 hover:text-rose-600 p-1 rounded-md transition-colors"
+                            className="text-[var(--text-secondary)] hover:text-rose-600 p-1 rounded-md transition-colors"
                             title="Hapus Gambar"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -355,7 +458,7 @@ export const DrawingAnalysisView: React.FC = () => {
                           </button>
                           <button
                             onClick={() => setDeleteConfirmId(null)}
-                            className="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-lg"
+                            className="px-2.5 py-1 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 text-[var(--text-primary)] text-xs font-bold rounded-lg"
                           >
                             Batal
                           </button>
@@ -372,20 +475,24 @@ export const DrawingAnalysisView: React.FC = () => {
         {/* Right Column: Active Drawing AI Analysis & Extraction Table (8 cols) */}
         <div className="lg:col-span-8 space-y-5">
           {activeDrawing ? (
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+            <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] shadow-xs overflow-hidden">
               {/* Active Drawing Header & Preview */}
-              <div className="p-5 border-b border-slate-100 bg-slate-50/60 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+              <div className="p-5 border-b border-slate-100 bg-[var(--bg-elevated-hover)] flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                 <div className="flex items-center space-x-3">
                   <div
-                    className="w-14 h-14 rounded-xl border border-slate-200 overflow-hidden bg-white flex-shrink-0 cursor-pointer relative group"
+                    className="w-14 h-14 rounded-xl border border-[var(--border-primary)] overflow-hidden bg-[var(--bg-elevated)] flex-shrink-0 cursor-pointer relative group"
                     onClick={() => setPreviewModalUrl(activeDrawing.fileUrl)}
                   >
-                    <img
-                      src={activeDrawing.fileUrl}
-                      alt={activeDrawing.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                    />
-                    <div className="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white">
+                    {activeDrawing.fileUrl?.includes('application/pdf') ? (
+                      <object data={activeDrawing.fileUrl} type="application/pdf" className="w-full h-full object-cover group-hover:scale-105 transition-transform pointer-events-none" />
+                    ) : (
+                      <img
+                        src={activeDrawing.fileUrl}
+                        alt={activeDrawing.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-[var(--bg-elevated)]/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white">
                       <Eye className="w-4 h-4" />
                     </div>
                   </div>
@@ -396,7 +503,7 @@ export const DrawingAnalysisView: React.FC = () => {
                       </span>
                       <span className="text-xs text-slate-500 font-medium">Skala: {activeDrawing.scale || '1:100'}</span>
                     </div>
-                    <h2 className="text-base font-bold text-slate-900 mt-0.5">{activeDrawing.title}</h2>
+                    <h2 className="text-base font-bold text-[var(--text-primary)] mt-0.5">{activeDrawing.title}</h2>
                     {activeDrawing.description && (
                       <p className="text-xs text-slate-500 mt-0.5">{activeDrawing.description}</p>
                     )}
@@ -406,12 +513,27 @@ export const DrawingAnalysisView: React.FC = () => {
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => setPreviewModalUrl(activeDrawing.fileUrl)}
-                    className="px-3 py-2 bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
+                    className="px-3 py-2 bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
                   >
                     <Maximize2 className="w-3.5 h-3.5" />
                     <span>Layar Penuh</span>
                   </button>
 
+
+                  
+                  
+                  <div className="flex items-center space-x-2 mr-2">
+                    <input
+                      type="checkbox"
+                      id="forceTwoPass2"
+                      checked={forceTwoPass}
+                      onChange={(e) => setForceTwoPass(e.target.checked)}
+                      className="rounded text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <label htmlFor="forceTwoPass2" className="text-xs text-[var(--text-secondary)] cursor-pointer">
+                      QC 2-Pass
+                    </label>
+                  </div>
                   <button
                     onClick={() => handleRunAIAnalysis(activeDrawing.id)}
                     disabled={isAnalyzing[activeDrawing.id]}
@@ -424,16 +546,16 @@ export const DrawingAnalysisView: React.FC = () => {
               </div>
 
               {/* Interactive Image Preview Box with Zoom Controls */}
-              <div className="bg-slate-900 border-b border-slate-800 p-3">
-                <div className="flex items-center justify-between text-xs text-slate-300 pb-2 px-2 border-b border-slate-800">
-                  <span className="font-semibold text-slate-300 flex items-center gap-1.5">
+              <div className="bg-[var(--bg-elevated)] border-b border-slate-200 dark:border-[var(--border-primary)] p-3">
+                <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 pb-2 px-2 border-b border-slate-200 dark:border-[var(--border-primary)]">
+                  <span className="font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
                     <ImageIcon className="w-3.5 h-3.5 text-blue-400" />
                     Pratinjau Gambar Kerja Konstruksi
                   </span>
-                  <div className="flex items-center space-x-1 bg-slate-800 rounded-lg p-1 border border-slate-700">
+                  <div className="flex items-center space-x-1 bg-[var(--bg-elevated-hover)] rounded-lg p-1 border border-[var(--border-primary)]">
                     <button
                       onClick={() => setZoomLevel((z) => Math.max(0.6, z - 0.2))}
-                      className="p-1 text-slate-300 hover:text-white hover:bg-slate-700 rounded transition-colors"
+                      className="p-1 text-slate-600 dark:text-slate-300 hover:text-white hover:bg-slate-700 rounded transition-colors"
                       title="Perkecil"
                     >
                       <ZoomOut className="w-3.5 h-3.5" />
@@ -443,14 +565,14 @@ export const DrawingAnalysisView: React.FC = () => {
                     </span>
                     <button
                       onClick={() => setZoomLevel((z) => Math.min(3, z + 0.2))}
-                      className="p-1 text-slate-300 hover:text-white hover:bg-slate-700 rounded transition-colors"
+                      className="p-1 text-slate-600 dark:text-slate-300 hover:text-white hover:bg-slate-700 rounded transition-colors"
                       title="Perbesar"
                     >
                       <ZoomIn className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => setZoomLevel(1)}
-                      className="p-1 text-slate-300 hover:text-white hover:bg-slate-700 rounded transition-colors"
+                      className="p-1 text-slate-600 dark:text-slate-300 hover:text-white hover:bg-slate-700 rounded transition-colors"
                       title="Reset Zoom"
                     >
                       <RotateCcw className="w-3.5 h-3.5" />
@@ -458,17 +580,25 @@ export const DrawingAnalysisView: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="relative overflow-auto max-h-[360px] flex items-center justify-center p-4 min-h-[220px]">
-                  <img
-                    src={activeDrawing.fileUrl}
-                    alt={activeDrawing.title}
-                    style={{
-                      transform: `scale(${zoomLevel})`,
-                      transformOrigin: 'center center',
-                      transition: 'transform 0.2s ease',
-                    }}
-                    className="max-h-[320px] w-auto object-contain rounded-md shadow-md"
-                  />
+                <div className="relative overflow-auto max-h-[600px] flex items-center justify-center p-4 min-h-[220px]">
+                  {activeDrawing.fileUrl?.includes('application/pdf') ? (
+                    <object 
+                      data={activeDrawing.fileUrl} 
+                      type="application/pdf"
+                      className="w-full h-full min-h-[500px] rounded-md shadow-md"
+                    />
+                  ) : (
+                    <img
+                      src={activeDrawing.fileUrl}
+                      alt={activeDrawing.title}
+                      style={{
+                        transform: `scale(${zoomLevel})`,
+                        transformOrigin: 'center center',
+                        transition: 'transform 0.2s ease',
+                      }}
+                      className="max-h-[320px] w-auto object-contain rounded-md shadow-md"
+                    />
+                  )}
                 </div>
               </div>
 
@@ -478,7 +608,7 @@ export const DrawingAnalysisView: React.FC = () => {
                   <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto animate-bounce">
                     <Sparkles className="w-8 h-8" />
                   </div>
-                  <h3 className="text-base font-bold text-slate-800">AI Sedang Menganalisis Dokumen Gambar...</h3>
+                  <h3 className="text-base font-bold text-[var(--text-primary)]">AI Sedang Menganalisis Dokumen Gambar...</h3>
                   <p className="text-xs text-slate-500 max-w-md mx-auto">
                     Mengekstrak teks dimensi, notasi arsitektur/struktur, serta menghitung volume pekerjaan tanpa mengarang ukuran di luar gambar.
                   </p>
@@ -509,15 +639,15 @@ export const DrawingAnalysisView: React.FC = () => {
 
                   {/* Summary & Cost Card */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="md:col-span-2 p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
-                      <div className="flex items-center justify-between text-xs font-bold text-slate-700">
+                    <div className="md:col-span-2 p-4 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] space-y-2">
+                      <div className="flex items-center justify-between text-xs font-bold text-[var(--text-primary)]">
                         <span className="flex items-center gap-1.5">
                           <Info className="w-3.5 h-3.5 text-blue-600" />
                           Ringkasan Temuan AI
                         </span>
                         <span className="text-slate-500 font-normal">Skala: {activeAnalysis.scaleDetected}</span>
                       </div>
-                      <p className="text-xs text-slate-700 leading-relaxed">{activeAnalysis.summary}</p>
+                      <p className="text-xs text-[var(--text-primary)] leading-relaxed">{activeAnalysis.summary}</p>
 
                       {/* Detected Elements Chips */}
                       {activeDetectedElements.length > 0 && (
@@ -531,7 +661,7 @@ export const DrawingAnalysisView: React.FC = () => {
                               return (
                                 <span
                                   key={i}
-                                  className="text-[11px] bg-white border border-slate-300 text-slate-800 px-2 py-0.5 rounded-md font-medium"
+                                  className="text-[11px] bg-[var(--bg-elevated)] border border-[var(--border-primary)] text-[var(--text-primary)] px-2 py-0.5 rounded-md font-medium"
                                 >
                                   {label}
                                 </span>
@@ -543,11 +673,11 @@ export const DrawingAnalysisView: React.FC = () => {
 
                       {/* Assumptions list */}
                       {activeAssumptions.length > 0 && (
-                        <div className="pt-2 border-t border-slate-200/80 mt-2">
-                          <span className="text-[11px] font-bold text-slate-600 block mb-1">
+                        <div className="pt-2 border-t border-[var(--border-primary)]/80 mt-2">
+                          <span className="text-[11px] font-bold text-[var(--text-secondary)] block mb-1">
                             Asumsi Perhitungan (Perlu Verifikasi Fisik):
                           </span>
-                          <ul className="list-disc list-inside space-y-0.5 text-[11px] text-slate-600">
+                          <ul className="list-disc list-inside space-y-0.5 text-[11px] text-[var(--text-secondary)]">
                             {activeAssumptions.map((asm: string, idx: number) => (
                               <li key={idx}>{asm}</li>
                             ))}
@@ -582,17 +712,17 @@ export const DrawingAnalysisView: React.FC = () => {
 
                   {/* Extracted Dimensions Summary */}
                   {activeExtractedDimensions.length > 0 && (
-                    <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200">
-                      <div className="text-xs font-bold text-slate-700 mb-2 flex items-center gap-1.5">
+                    <div className="p-4 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)]">
+                      <div className="text-xs font-bold text-[var(--text-primary)] mb-2 flex items-center gap-1.5">
                         <Ruler className="w-3.5 h-3.5 text-blue-600" />
                         Dimensi Terukur Nyata dari Gambar
                       </div>
                       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                         {activeExtractedDimensions.map((dim: any, i: number) => (
-                          <div key={i} className="bg-white p-2.5 rounded-lg border border-slate-200 text-xs">
+                          <div key={i} className="bg-[var(--bg-elevated)] p-2.5 rounded-lg border border-[var(--border-primary)] text-xs">
                             <span className="text-slate-500 text-[10px] block truncate">{dim.component || dim.label || 'Dimensi'}</span>
-                            <div className="font-bold text-slate-900 mt-0.5">{dim.dimension || (dim.value ? `${dim.value} ${dim.unit || ''}` : '-')}</div>
-                            {(dim.notes || dim.source) && <p className="text-[10px] text-slate-400 truncate mt-0.5">{dim.notes || dim.source}</p>}
+                            <div className="font-bold text-[var(--text-primary)] mt-0.5">{dim.dimension || (dim.value ? `${dim.value} ${dim.unit || ''}` : '-')}</div>
+                            {(dim.notes || dim.source) && <p className="text-[10px] text-[var(--text-secondary)] truncate mt-0.5">{dim.notes || dim.source}</p>}
                           </div>
                         ))}
                       </div>
@@ -603,9 +733,9 @@ export const DrawingAnalysisView: React.FC = () => {
                   <div className="space-y-3">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
-                        <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                        <h3 className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-2">
                           <span>Daftar Uraian Pekerjaan & Perhitungan Volume</span>
-                          <span className="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-semibold">
+                          <span className="text-xs bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] px-2 py-0.5 rounded-full font-semibold">
                             {displayedEstimatedItems.length} / {activeEstimatedItems.length} Item
                           </span>
                         </h3>
@@ -617,13 +747,13 @@ export const DrawingAnalysisView: React.FC = () => {
                       {/* Status Filter & Bulk Verification */}
                       <div className="flex items-center space-x-2 flex-wrap gap-y-1">
                         {/* Status Filter Pills */}
-                        <div className="flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200 text-xs">
+                        <div className="flex items-center bg-[var(--bg-elevated-hover)] p-1 rounded-lg border border-[var(--border-primary)] text-xs">
                           <button
                             onClick={() => setStatusFilter('all')}
                             className={`px-2.5 py-1 rounded-md font-semibold transition-colors ${
                               statusFilter === 'all'
-                                ? 'bg-white text-slate-900 shadow-xs'
-                                : 'text-slate-600 hover:text-slate-900'
+                                ? 'bg-[var(--bg-elevated)] text-[var(--text-primary)] shadow-xs'
+                                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                             }`}
                           >
                             Semua ({activeEstimatedItems.length})
@@ -632,8 +762,8 @@ export const DrawingAnalysisView: React.FC = () => {
                             onClick={() => setStatusFilter('unverified')}
                             className={`px-2.5 py-1 rounded-md font-semibold transition-colors ${
                               statusFilter === 'unverified'
-                                ? 'bg-white text-slate-900 shadow-xs'
-                                : 'text-slate-600 hover:text-slate-900'
+                                ? 'bg-[var(--bg-elevated)] text-[var(--text-primary)] shadow-xs'
+                                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                             }`}
                           >
                             Belum Cek ({activeEstimatedItems.filter((i) => i.verificationStatus === 'unverified').length})
@@ -642,8 +772,8 @@ export const DrawingAnalysisView: React.FC = () => {
                             onClick={() => setStatusFilter('verified')}
                             className={`px-2.5 py-1 rounded-md font-semibold transition-colors ${
                               statusFilter === 'verified'
-                                ? 'bg-white text-emerald-800 shadow-xs'
-                                : 'text-slate-600 hover:text-emerald-800'
+                                ? 'bg-[var(--bg-elevated)] text-emerald-800 shadow-xs'
+                                : 'text-[var(--text-secondary)] hover:text-emerald-800'
                             }`}
                           >
                             Disetujui ({activeEstimatedItems.filter((i) => i.verificationStatus === 'verified').length})
@@ -661,7 +791,7 @@ export const DrawingAnalysisView: React.FC = () => {
                           </button>
                           <button
                             onClick={() => bulkVerifyAnalysisItems(activeAnalysis.id, 'unverified')}
-                            className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition-colors"
+                            className="px-3 py-1.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-lg transition-colors"
                           >
                             Reset
                           </button>
@@ -670,9 +800,9 @@ export const DrawingAnalysisView: React.FC = () => {
                     </div>
 
                     {/* Table */}
-                    <div className="border border-slate-200 rounded-xl overflow-x-auto shadow-2xs">
+                    <div className="border border-[var(--border-primary)] rounded-xl overflow-x-auto shadow-2xs">
                       <table className="w-full text-left text-xs">
-                        <thead className="bg-slate-100 text-slate-700 font-bold border-b border-slate-200 uppercase tracking-wider">
+                        <thead className="bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] font-bold border-b border-[var(--border-primary)] uppercase tracking-wider">
                           <tr>
                             <th className="p-3 w-10 text-center">
                               <input
@@ -707,7 +837,7 @@ export const DrawingAnalysisView: React.FC = () => {
                               const isChecked = selectedItemIds.includes(item.id);
 
                               let statusBadge = (
-                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)] border border-[var(--border-primary)]">
                                   Belum Cek
                                 </span>
                               );
@@ -734,7 +864,7 @@ export const DrawingAnalysisView: React.FC = () => {
                               return (
                                 <tr
                                   key={item.id}
-                                  className={`hover:bg-slate-50/80 transition-colors ${
+                                  className={`hover:bg-[var(--bg-elevated-hover)] transition-colors ${
                                     isChecked ? 'bg-blue-50/40' : ''
                                   }`}
                                 >
@@ -746,9 +876,9 @@ export const DrawingAnalysisView: React.FC = () => {
                                       className="rounded text-blue-600 focus:ring-blue-500"
                                     />
                                   </td>
-                                  <td className="p-3 font-semibold text-slate-900">
+                                  <td className="p-3 font-semibold text-[var(--text-primary)]">
                                     <div className="flex items-center space-x-1.5">
-                                      <span className="text-[10px] text-slate-400 font-mono">
+                                      <span className="text-[10px] text-[var(--text-secondary)] font-mono">
                                         {item.workCode}
                                       </span>
                                       <span>{item.workName}</span>
@@ -759,11 +889,11 @@ export const DrawingAnalysisView: React.FC = () => {
                                       </p>
                                     )}
                                   </td>
-                                  <td className="p-3 text-slate-600">{item.category}</td>
-                                  <td className="p-3 text-right font-bold text-slate-800 font-mono">
+                                  <td className="p-3 text-[var(--text-secondary)]">{item.category}</td>
+                                  <td className="p-3 text-right font-bold text-[var(--text-primary)] font-mono">
                                     {item.volume.toLocaleString('id-ID')} <span className="text-[10px] font-normal text-slate-500">{item.unit}</span>
                                   </td>
-                                  <td className="p-3 text-right text-slate-700 font-mono">
+                                  <td className="p-3 text-right text-[var(--text-primary)] font-mono">
                                     {formatRupiah(item.unitPrice)}
                                   </td>
                                   <td className="p-3 text-right font-extrabold text-blue-900 font-mono">
@@ -787,7 +917,7 @@ export const DrawingAnalysisView: React.FC = () => {
                                         className={`p-1.5 rounded-lg transition-colors ${
                                           item.verificationStatus === 'verified'
                                             ? 'text-emerald-700 bg-emerald-100 hover:bg-emerald-200'
-                                            : 'text-slate-400 hover:text-emerald-600 hover:bg-emerald-50'
+                                            : 'text-[var(--text-secondary)] hover:text-emerald-600 hover:bg-emerald-50'
                                         }`}
                                         title="Setujui Item"
                                       >
@@ -802,7 +932,7 @@ export const DrawingAnalysisView: React.FC = () => {
                                             item,
                                           })
                                         }
-                                        className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                        className="p-1.5 text-[var(--text-secondary)] hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                                         title="Edit Volume / Harga"
                                       >
                                         <Edit3 className="w-3.5 h-3.5" />
@@ -820,7 +950,7 @@ export const DrawingAnalysisView: React.FC = () => {
                                         className={`p-1.5 rounded-lg transition-colors ${
                                           item.verificationStatus === 'rejected'
                                             ? 'text-rose-700 bg-rose-100 hover:bg-rose-200'
-                                            : 'text-slate-400 hover:text-rose-600 hover:bg-rose-50'
+                                            : 'text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50'
                                         }`}
                                         title="Tolak Item"
                                       >
@@ -837,8 +967,8 @@ export const DrawingAnalysisView: React.FC = () => {
                     </div>
 
                     {/* Bottom Action Transfer Bar */}
-                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
-                      <div className="text-xs text-slate-600">
+                    <div className="p-4 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] flex flex-col sm:flex-row items-center justify-between gap-3">
+                      <div className="text-xs text-[var(--text-secondary)]">
                         <span>
                           {selectedItemIds.length > 0
                             ? `${selectedItemIds.length} item dipilih`
@@ -856,7 +986,7 @@ export const DrawingAnalysisView: React.FC = () => {
                         </button>
                         <button
                           onClick={() => setActiveTab('rab')}
-                          className="px-4 py-2.5 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-semibold text-xs rounded-xl transition-colors flex items-center space-x-1.5"
+                          className="px-4 py-2.5 bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] text-[var(--text-primary)] font-semibold text-xs rounded-xl transition-colors flex items-center space-x-1.5"
                         >
                           <span>Buka Tabel RAB</span>
                           <ArrowRight className="w-3.5 h-3.5" />
@@ -866,14 +996,28 @@ export const DrawingAnalysisView: React.FC = () => {
                   </div>
                 </div>
               ) : (
+                <>
                 <div className="p-12 text-center space-y-4">
-                  <div className="w-14 h-14 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
+                  <div className="w-14 h-14 rounded-2xl bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)] flex items-center justify-center mx-auto">
                     <Sparkles className="w-7 h-7 text-indigo-500" />
                   </div>
-                  <h3 className="text-base font-bold text-slate-800">Dokumen Belum Dianalisis AI</h3>
+                  <h3 className="text-base font-bold text-[var(--text-primary)]">Dokumen Belum Dianalisis AI</h3>
                   <p className="text-xs text-slate-500 max-w-md mx-auto">
                     Klik tombol "Mulai Analisis AI" untuk membaca dimensi gambar dan menyusun volume pekerjaan otomatis.
                   </p>
+                  
+                  <div className="mt-4 mb-4 flex items-center justify-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="forceTwoPass"
+                      checked={forceTwoPass}
+                      onChange={(e) => setForceTwoPass(e.target.checked)}
+                      className="rounded text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <label htmlFor="forceTwoPass" className="text-xs text-[var(--text-secondary)] cursor-pointer">
+                      Re-analisa dengan verifikasi ganda (QC 2-Pass)
+                    </label>
+                  </div>
                   <button
                     onClick={() => handleRunAIAnalysis(activeDrawing.id)}
                     className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors inline-flex items-center space-x-2"
@@ -882,14 +1026,21 @@ export const DrawingAnalysisView: React.FC = () => {
                     <span>Mulai Analisis AI Sekarang</span>
                   </button>
                 </div>
+                <div className="mt-3 flex justify-end">
+                   <span className="inline-flex items-center space-x-1 text-[10px] text-[var(--text-secondary)] bg-[var(--bg-elevated-hover)] px-2 py-1 rounded">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--traffic-green)]"></span>
+                    <span>🟢 AI Verifikasi Ganda: aktif</span>
+                  </span>
+                </div>
+                </>
               )}
             </div>
           ) : (
-            <div className="bg-white rounded-2xl p-12 border border-slate-200 text-center space-y-3">
-              <div className="w-14 h-14 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
+            <div className="bg-[var(--bg-elevated)] rounded-2xl p-12 border border-[var(--border-primary)] text-center space-y-3">
+              <div className="w-14 h-14 rounded-2xl bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)] flex items-center justify-center mx-auto">
                 <ImageIcon className="w-7 h-7" />
               </div>
-              <h3 className="text-base font-bold text-slate-800">Pilih Dokumen Gambar untuk Ditampilkan</h3>
+              <h3 className="text-base font-bold text-[var(--text-primary)]">Pilih Dokumen Gambar untuk Ditampilkan</h3>
               <p className="text-xs text-slate-500">
                 Pilih gambar dari daftar di sebelah kiri atau unggah dokumen gambar baru.
               </p>
@@ -919,24 +1070,28 @@ export const DrawingAnalysisView: React.FC = () => {
       {/* Image Fullscreen Preview Modal */}
       {previewModalUrl && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-xs"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--bg-elevated)]/85 backdrop-blur-xs"
           onClick={() => setPreviewModalUrl(null)}
         >
           <div
-            className="relative max-w-4xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl p-2"
+            className="relative max-w-4xl w-full bg-[var(--bg-elevated)] rounded-2xl overflow-hidden shadow-2xl p-2"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-3 border-b border-slate-100 flex items-center justify-between">
-              <h4 className="text-sm font-bold text-slate-900">Preview Dokumen Gambar Konstruksi</h4>
+              <h4 className="text-sm font-bold text-[var(--text-primary)]">Preview Dokumen Gambar Konstruksi</h4>
               <button
                 onClick={() => setPreviewModalUrl(null)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+                className="p-1 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated-hover)]"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="max-h-[75vh] overflow-auto flex items-center justify-center p-4 bg-slate-900 rounded-xl">
-              <img src={previewModalUrl} alt="Preview" className="max-w-full h-auto object-contain rounded-lg" />
+            <div className="max-h-[75vh] overflow-auto flex items-center justify-center p-4 bg-[var(--bg-elevated)] rounded-xl">
+              {previewModalUrl?.includes('application/pdf') ? (
+                <object data={previewModalUrl} type="application/pdf" className="w-full h-[70vh] rounded-lg" />
+              ) : (
+                <img src={previewModalUrl} alt="Preview" className="max-w-full h-auto object-contain rounded-lg" />
+              )}
             </div>
           </div>
         </div>

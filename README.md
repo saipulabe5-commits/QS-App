@@ -63,3 +63,9 @@ GEMINI_API_KEY=your_gemini_api_key_here
 JWT_SECRET=rab-pro-local-first-enterprise-secret-key-987654321
 ```
 *Catatan: Aplikasi tetap dapat berjalan secara offline dan mandiri (Local-First) meskipun `GEMINI_API_KEY` tidak diisi.*
+
+## Biaya & Batasan Zero-Cost
+Aplikasi ini dirancang dengan prinsip **Zero-Cost Local-First**, yang berarti:
+- **Gratis Selamanya**: Seluruh fitur utama (kalkulasi RAB, IndexedDB lokal, S-Curve, laporan, export Excel/PDF, dan manajemen proyek) memproses data secara lokal di browser atau server Anda tanpa memakan biaya pihak ketiga.
+- **Batasan Kuota AI (Gemini)**: Fitur kecerdasan buatan (RAB Assistant, Parse Dokumen OCR, Analisis Harga) menggunakan kunci API Gemini. Untuk mencegah tagihan membengkak akibat _abuse_ atau _overusage_, aplikasi ini memiliki **Global AI Rate Limiter** bawaan yang membatasi hingga **1.000 request per hari**. Jika kuota habis, fitur AI akan dinonaktifkan sementara hingga hari berikutnya, sedangkan fitur manual tetap dapat digunakan 100% tanpa hambatan.
+- **Cloud Run Deployment**: Jika Anda menggunakan Google Cloud Run, pastikan mengkonfigurasi `min-instances = 0` dan `max-instances = 1` agar server ini masuk ke dalam _Free Tier_ Google Cloud, dan tidak menimbulkan biaya saat tidak ada pengguna aktif (idle).

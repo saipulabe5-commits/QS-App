@@ -57,9 +57,9 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
   };
 
   return (
-    <div className="bg-slate-900 text-white rounded-2xl p-6 sm:p-7 border border-slate-800 shadow-xl space-y-6">
+    <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 sm:p-7 border border-[var(--border-primary)] shadow-xl space-y-6">
       {/* Header & Quick Action */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[var(--border-primary)]">
         <div>
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 rounded-lg bg-blue-950 text-blue-400 flex items-center justify-center border border-blue-800">
@@ -69,7 +69,7 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
               Rekapitulasi Anggaran & Biaya Proyek
             </h3>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 mt-1">
             Akumulasi biaya langsung, persentase overhead, margin profit pelaksana, dan PPN
           </p>
         </div>
@@ -80,7 +80,7 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
             className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all flex items-center space-x-1.5 ${
               isEditingRates
                 ? 'bg-blue-600 border-blue-500 text-white'
-                : 'bg-slate-800 border-slate-700 text-slate-300 hover:text-white hover:bg-slate-700'
+                : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)] hover:text-white hover:bg-slate-700'
             }`}
           >
             <Building2 className="w-3.5 h-3.5" />
@@ -89,7 +89,7 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
 
           <button
             onClick={onSaveAsTemplate}
-            className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-blue-300 hover:text-white border border-slate-700 transition-colors flex items-center space-x-1.5"
+            className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-blue-300 hover:text-white border border-[var(--border-primary)] transition-colors flex items-center space-x-1.5"
             title="Simpan susunan RAB ini sebagai template master"
           >
             <FolderPlus className="w-3.5 h-3.5" />
@@ -100,7 +100,7 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
 
       {/* Editable Area Form */}
       {isEditingRates && (
-        <div className="p-4 bg-slate-800 rounded-xl border border-slate-700 space-y-4">
+        <div className="p-4 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] space-y-4">
           <div className="flex items-center justify-between">
             <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
               <Percent className="w-3.5 h-3.5 text-blue-400" />
@@ -110,7 +110,7 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1">
                 Luas Bangunan (m²)
               </label>
               <div className="relative">
@@ -120,17 +120,17 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
                   value={buildingArea || ''}
                   onChange={(e) => setBuildingArea(Number(e.target.value))}
                   placeholder="0"
-                  className="w-full pl-3 pr-8 py-2 text-xs bg-slate-900 border border-slate-700 rounded-xl text-white font-mono focus:border-blue-500 focus:outline-none"
+                  className="w-full pl-3 pr-8 py-2 text-xs bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-white font-mono focus:border-blue-500 focus:outline-none"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-bold">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500 font-bold">
                   m²
                 </span>
               </div>
-              <p className="text-[10px] text-slate-400 mt-1">Digunakan untuk menghitung Harga Permeter Bangunan.</p>
+              <p className="text-[10px] text-slate-500 mt-1">Digunakan untuk menghitung Harga Permeter Bangunan.</p>
             </div>
             
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1">
                 Pajak PPN (%)
               </label>
               <div className="relative">
@@ -141,13 +141,13 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
                   value={tax || ''}
                   onChange={(e) => setTax(Number(e.target.value))}
                   placeholder="0"
-                  className="w-full pl-3 pr-8 py-2 text-xs bg-slate-900 border border-slate-700 rounded-xl text-white font-mono focus:border-blue-500 focus:outline-none"
+                  className="w-full pl-3 pr-8 py-2 text-xs bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-white font-mono focus:border-blue-500 focus:outline-none"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-bold">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500 font-bold">
                   %
                 </span>
               </div>
-              <p className="text-[10px] text-slate-400 mt-1">Ditambahkan pada total akhir Rekapitulasi RAB.</p>
+              <p className="text-[10px] text-slate-500 mt-1">Ditambahkan pada total akhir Rekapitulasi RAB.</p>
             </div>
           </div>
 
@@ -171,12 +171,12 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
             <span className="text-xs font-bold text-blue-400 uppercase tracking-wider mb-2 block">
               Nilai Terbilang (Rupiah Indonesia)
             </span>
-            <div className="p-4 bg-slate-800/90 rounded-xl border border-slate-700 text-xs sm:text-sm font-medium text-slate-200 leading-relaxed italic">
+            <div className="p-4 bg-[var(--bg-elevated-hover)]/90 rounded-xl border border-[var(--border-primary)] text-xs sm:text-sm font-medium text-slate-200 leading-relaxed italic">
               "{numberToWordsIndo(calc.grandTotal)} Rupiah"
             </div>
           </div>
 
-          <div className="space-y-2 text-xs text-slate-400 pt-2 border-t border-slate-800">
+          <div className="space-y-2 text-xs text-slate-500 pt-2 border-t border-[var(--border-primary)]">
             <div className="flex justify-between items-center">
               <span>Jumlah Item Pekerjaan:</span>
               <strong className="text-white">{itemCount} Pos</strong>
@@ -197,9 +197,9 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
         </div>
 
         {/* Right Column (7 Cols): Step-by-Step Calculation Table */}
-        <div className="lg:col-span-7 bg-slate-800/80 p-5 rounded-xl border border-slate-700/80 space-y-3 text-xs sm:text-sm">
+        <div className="lg:col-span-7 bg-[var(--bg-elevated-hover)]/80 p-5 rounded-xl border border-[var(--border-primary)]/80 space-y-3 text-xs sm:text-sm">
           {/* A. Total Biaya Langsung */}
-          <div className="flex justify-between items-center py-1 text-slate-300">
+          <div className="flex justify-between items-center py-1 text-[var(--text-secondary)]">
             <div className="flex items-center space-x-2">
               <span className="w-5 h-5 rounded-md bg-blue-950 text-blue-300 border border-blue-800 flex items-center justify-center font-bold text-[10px]">
                 A
@@ -212,9 +212,9 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
           </div>
 
           {/* B. Pajak PPN */}
-          <div className="flex justify-between items-center py-1 text-slate-300 border-t border-slate-700/60 mt-1 pt-2">
+          <div className="flex justify-between items-center py-1 text-[var(--text-secondary)] border-t border-[var(--border-primary)]/60 mt-1 pt-2">
             <div className="flex items-center space-x-2">
-              <span className="w-5 h-5 rounded-md bg-slate-900 text-slate-300 border border-slate-700 flex items-center justify-center font-bold text-[10px]">
+              <span className="w-5 h-5 rounded-md bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border-primary)] flex items-center justify-center font-bold text-[10px]">
                 B
               </span>
               <span>Pajak Pertambahan Nilai (PPN)</span>
@@ -231,7 +231,7 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
               <div className="text-xs sm:text-sm font-black text-white uppercase tracking-tight">
                 Grand Total RAB (Nilai Kontrak)
               </div>
-              <div className="text-[11px] text-slate-400">Total Keseluruhan Termasuk Pajak</div>
+              <div className="text-[11px] text-slate-500">Total Keseluruhan Termasuk Pajak</div>
             </div>
             <div className="text-lg sm:text-2xl font-black text-blue-400 font-mono tracking-tight">
               {formatRupiah(calc.grandTotal)}
@@ -239,11 +239,11 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
           </div>
           
           {/* HARGA PER METER */}
-          <div className="flex justify-between items-center pt-2 mt-2 border-t border-slate-700/50">
-            <div className="text-xs text-slate-400">
+          <div className="flex justify-between items-center pt-2 mt-2 border-t border-[var(--border-primary)]/50">
+            <div className="text-xs text-slate-500">
               Harga Permeter Bangunan {project.buildingArea ? `(Luas: ${project.buildingArea} m²)` : '(Luas belum diisi)'}
             </div>
-            <div className="font-mono font-bold text-sm text-slate-300">
+            <div className="font-mono font-bold text-sm text-[var(--text-secondary)]">
               {project.buildingArea ? `${formatRupiah(Math.round(calc.grandTotal / project.buildingArea))} / m²` : 'Rp 0 / m²'}
             </div>
           </div>
@@ -252,8 +252,8 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
 
       {/* Expandable Category Breakdown Pills */}
       {showCategoryPills && (
-        <div className="pt-4 border-t border-slate-800">
-          <div className="text-xs font-bold text-slate-300 mb-3 flex items-center justify-between">
+        <div className="pt-4 border-t border-[var(--border-primary)]">
+          <div className="text-xs font-bold text-[var(--text-secondary)] mb-3 flex items-center justify-between">
             <span>Rincian Biaya per Divisi Pekerjaan</span>
             <span>100% Bobot Biaya Langsung</span>
           </div>
@@ -261,13 +261,13 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
             {calc.categorySummaries.map((cat, idx) => (
               <div
                 key={cat.category}
-                className="p-3 bg-slate-800 rounded-xl border border-slate-700 flex items-center justify-between"
+                className="p-3 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] flex items-center justify-between"
               >
                 <div className="truncate mr-2">
                   <div className="text-xs font-semibold text-white truncate">
                     {idx + 1}. {cat.category}
                   </div>
-                  <div className="text-[10px] text-slate-400">{cat.itemCount} item</div>
+                  <div className="text-[10px] text-slate-500">{cat.itemCount} item</div>
                 </div>
                 <div className="text-right flex-shrink-0">
                   <div className="text-xs font-bold text-slate-200 font-mono">
