@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import { PdfExportButton } from "../common/PdfExportButton";
 import { DistributionPattern, ScheduleItem } from '../../types/scurve';
 import { formatRupiah } from '../../utils/formatters';
 import {
@@ -94,7 +95,7 @@ export const SCurvePlanView: React.FC = () => {
     : [];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" id="scurve-plan-view">
       {/* Header Banner */}
       <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 border border-slate-200 dark:border-[var(--border-primary)] shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
@@ -107,6 +108,7 @@ export const SCurvePlanView: React.FC = () => {
           <p className="text-xs text-slate-600 dark:text-slate-300 max-w-2xl">
             Distribusi bobot pekerjaan RAB secara proporsional sepanjang durasi proyek dengan kurva distribusi normal (Bell Curve) atau linier untuk membentuk target Kurva S standar konstruksi.
           </p>
+          <div className="mt-4"><PdfExportButton elementId="scurve-plan-view" filename="Kurva_S_Rencana" title="Kurva S Rencana" isLandscape={true} /></div>
           <div className="flex items-center space-x-3 mt-3 text-xs text-[var(--text-secondary)]">
             <span>
               Proyek: <strong className="text-white">{selectedProject?.name || 'Belum Dipilih'}</strong>
@@ -221,7 +223,7 @@ export const SCurvePlanView: React.FC = () => {
           </button>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-6" id="scurve-plan-view">
           {/* Summary Stats Row */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">

@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useApp } from '../../context/AppContext';
+import { PdfExportButton } from "../common/PdfExportButton";
 import {
   AHSPItem,
   AHSP_CATEGORIES,
@@ -234,7 +235,7 @@ export const AHSPView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" id="ahsp-view">
       {/* Header Banner */}
       <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-md border border-slate-200 dark:border-[var(--border-primary)] relative overflow-hidden">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -263,6 +264,7 @@ export const AHSPView: React.FC = () => {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
+              <PdfExportButton elementId="ahsp-view" filename="Katalog_AHSP" title="Analisis Harga Satuan Pekerjaan (AHSP)" isLandscape={true} />
               <button
                 onClick={() => {
                   setIsSyncing(true);
@@ -442,7 +444,7 @@ export const AHSPView: React.FC = () => {
         </div>
       ) : viewMode === 'grouped' ? (
         /* ================= GROUPED BY CATEGORY VIEW ================= */
-        <div className="space-y-6">
+        <div className="space-y-6" id="ahsp-view">
           {groupedItems.map((group, groupIdx) => {
             const IconComp = CATEGORY_ICONS[group.category] || Layers;
             const isCatExpanded = expandedCategories[group.category] ?? true;

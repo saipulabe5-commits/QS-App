@@ -1,13 +1,11 @@
 #!/bin/bash
-echo "1. Login with NEW password..."
+echo "--- Testing OLD PASSWORD (should fail) ---"
 curl -s -X POST http://localhost:3000/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"saipulabe@gmail.com","password":"RabPro#2026Secure!"}'
+  -d '{"email":"saipulabe@gmail.com","password":"AdminSaipul123!"}'
 echo ""
-echo ""
-
-echo "2. Login with OLD password..."
+echo "--- Testing NEW PASSWORD (should succeed) ---"
 curl -s -X POST http://localhost:3000/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"saipulabe@gmail.com","password":"gunakan-password-kuat-yang-baru"}'
+  -d '{"email":"saipulabe@gmail.com","password":"RabPro$2026Secure!"}'
 echo ""

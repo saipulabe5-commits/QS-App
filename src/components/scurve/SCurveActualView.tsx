@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useApp } from '../../context/AppContext';
+import { PdfExportButton } from "../common/PdfExportButton";
 import { PeriodProgressRecord } from '../../types/scurve';
 import { formatRupiah } from '../../utils/formatters';
 import {
@@ -103,7 +104,7 @@ export const SCurveActualView: React.FC = () => {
   const currentDeviation = latestReported ? latestReported.deviation : 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" id="scurve-actual-view">
       {/* Header Banner */}
       <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 border border-slate-200 dark:border-[var(--border-primary)] shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
@@ -116,6 +117,7 @@ export const SCurveActualView: React.FC = () => {
           <p className="text-xs text-slate-600 dark:text-slate-300 max-w-2xl">
             Input capaian fisik pekerjaan berkala, pantau deviasi (+/-) terhadap rencana, dan catat kendala teknis pelaksanaan proyek secara terstruktur.
           </p>
+          <div className="mt-4"><PdfExportButton elementId="scurve-actual-view" filename="Kurva_S_Aktual" title="Kurva S Aktual" isLandscape={true} /></div>
           <div className="flex items-center space-x-3 mt-3 text-xs text-[var(--text-secondary)]">
             <span>
               Proyek: <strong className="text-white">{selectedProject?.name || 'Pilih Proyek'}</strong>
@@ -185,7 +187,7 @@ export const SCurveActualView: React.FC = () => {
           </button>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-6" id="scurve-actual-view">
           {/* Status KPI Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">

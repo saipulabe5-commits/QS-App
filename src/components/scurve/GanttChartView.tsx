@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { useApp } from '../../context/AppContext';
+import { PdfExportButton } from "../common/PdfExportButton";
 import { formatRupiah, formatNumber } from '../../utils/formatters';
 import {
   Calendar,
@@ -194,7 +195,7 @@ export const GanttChartView: React.FC = () => {
   // ── No SCurve State ─────────────────────────────────────
   if (!scurve) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6" id="gantt-chart-view">
         {/* Header */}
         <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 border border-slate-200 dark:border-[var(--border-primary)]">
           <div className="flex items-center space-x-2.5 mb-1.5">

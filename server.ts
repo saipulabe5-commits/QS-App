@@ -176,47 +176,42 @@ async function loadUsersStore() {
     const data = await fs.promises.readFile(USERS_STORE_PATH, 'utf-8');
     const entries = JSON.parse(data);
     for (const [key, value] of entries) {
-      usersDb.set(key, value as ServerUser);
+      usersDb.set(key, value);
     }
     console.log('Users store loaded successfully.');
     
-    // FORCE SYNC ADMIN PASSWORD WITH ENVIRONMENT VARIABLE ON BOOT
     let adminUsr = usersDb.get(adminEmail);
     if (!adminUsr) {
-      // If admin email changed in env vars, delete old ones and create new
       usersDb.clear();
-      adminUsr = {
+      const newAdmin = {
         id: "usr_admin_main",
         name: "Administrator",
         email: adminEmail,
-        passwordHash: hashPassword(initialPassword!),
+        passwordHash: hashPassword(initialPassword),
         companyName: "RAB Pro Enterprise",
         role: "administrator",
         createdAt: new Date().toISOString(),
       };
-    }
-    adminUsr.passwordHash = hashPassword(initialPassword!);
-    if (adminUsr) {
-      adminUsr.passwordHash = hashPassword(initialPassword!);
-      usersDb.set(adminEmail, adminUsr);
+      usersDb.set(adminEmail, newAdmin);
       saveUsersStore();
-      console.log('Admin password synchronized with environment variable.');
+      console.log("Admin account seeded for the first time.");
+    } else {
+      console.log("Existing admin account loaded — password from storage preserved, NOT overwritten by env var.");
     }
   } catch (error) {
-    // If not exists, use default admin
     usersDb.set(adminEmail, {
       id: "usr_admin_main",
       name: "Administrator",
       email: adminEmail,
-      passwordHash: hashPassword(initialPassword!),
+      passwordHash: hashPassword(initialPassword),
       companyName: "RAB Pro Enterprise",
       role: "administrator",
       createdAt: new Date().toISOString(),
     });
     saveUsersStore();
+    console.log("Admin account seeded for the first time (storage did not exist).");
   }
 }
-
 loadUsersStore();
 
 
@@ -364,8 +359,9 @@ app.post("/api/auth/change-password", requireAuth, (req: any, res) => {
       return res.status(400).json({ error: "Kata sandi lama dan baru wajib diisi.", success: false });
     }
 
-    if (newPassword.length < 6) {
-      return res.status(400).json({ error: "Kata sandi baru minimal 6 karakter.", success: false });
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-.,])[A-Za-z\d@$!%*?&_\-.,]{10,}$/;
+    if (!strongPasswordRegex.test(newPassword)) {
+      return res.status(400).json({ error: "Kata sandi baru minimal 10 karakter, harus mengandung huruf besar, huruf kecil, angka, dan simbol.", success: false });
     }
 
     const user = usersDb.get(userEmail);
@@ -510,7 +506,7 @@ async function sendPasswordRecoveryEmail(toEmail: string, code: string): Promise
       html: htmlBody,
     });
 
-    console.log(`[EMAIL DISPATCH] Password recovery email dispatched successfully to: ${toEmail} | PIN: ${code}`);
+    console.log(`[EMAIL DISPATCH] Password recovery email dispatched successfully to: ${toEmail.replace(/(.{2}).*(@.*)/, "$1***$2")}`);
     return { success: true };
   } catch (err: any) {
     const errorString = (err && (err.message || err.toString())) || "";
@@ -595,11 +591,9 @@ app.post("/api/auth/reset-password", authRateLimit, (req, res) => {
       });
     }
 
-    if (newPassword.length < 6) {
-      return res.status(400).json({
-        error: "Kata sandi baru minimal 6 karakter.",
-        success: false,
-      });
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-.,])[A-Za-z\d@$!%*?&_\-.,]{10,}$/;
+    if (!strongPasswordRegex.test(newPassword)) {
+      return res.status(400).json({ error: "Kata sandi baru minimal 10 karakter, harus mengandung huruf besar, huruf kecil, angka, dan simbol.", success: false });
     }
 
     const resetData = passwordResetStore.get(normalizedEmail);

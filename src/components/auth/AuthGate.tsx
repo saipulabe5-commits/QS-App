@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import { PasswordStrengthMeter } from "./PasswordStrengthMeter";
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Lock,
@@ -115,8 +116,9 @@ export const AuthGate: React.FC = () => {
       return;
     }
 
-    if (!newPassword || newPassword.length < 6) {
-      setErrorMessage('Kata sandi baru minimal 6 karakter.');
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-.,])[A-Za-z\d@$!%*?&_\-.,]{10,}$/;
+    if (!newPassword || !strongPasswordRegex.test(newPassword)) {
+      setErrorMessage("Kata sandi baru minimal 10 karakter, harus mengandung huruf besar, huruf kecil, angka, dan simbol.");
       return;
     }
 
@@ -243,9 +245,9 @@ export const AuthGate: React.FC = () => {
           {/* Right Column: Auth Card */}
           <div className="lg:col-span-6">
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, ease: 'easeOut' }}
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
               className="bg-[var(--bg-elevated)]/90 border border-slate-200 dark:border-[var(--border-primary)] rounded-2xl p-6 sm:p-8 shadow-2xl shadow-black/50 backdrop-blur-xl relative"
             >
               {/* Authorized Account Badge */}
@@ -462,7 +464,7 @@ export const AuthGate: React.FC = () => {
 
                   <div>
                     <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5">
-                      Kata Sandi Baru (Minimal 6 Karakter)
+                      Kata Sandi Baru (Min 10 Karakter, Huruf Besar, Angka, Simbol)
                     </label>
                     <div className="relative">
                       <Lock className="w-4 h-4 text-slate-500 dark:text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -480,6 +482,7 @@ export const AuthGate: React.FC = () => {
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:text-slate-300"
                       >
                         {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      <PasswordStrengthMeter password={newPassword} />
                       </button>
                     </div>
                   </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import { PasswordStrengthMeter } from "../auth/PasswordStrengthMeter";
 import { AppSettings } from '../../types';
 import { safeLocalStorageGet } from '../../utils/storageUtils';
 import {
@@ -52,8 +53,9 @@ export const SettingsView: React.FC = () => {
       setPassError('Kata sandi lama wajib diisi.');
       return;
     }
-    if (!newPassword || newPassword.length < 6) {
-      setPassError('Kata sandi baru minimal 6 karakter.');
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-.,])[A-Za-z\d@$!%*?&_\-.,]{10,}$/;
+    if (!newPassword || !strongPasswordRegex.test(newPassword)) {
+      setPassError("Kata sandi baru minimal 10 karakter, harus mengandung huruf besar, huruf kecil, angka, dan simbol.");
       return;
     }
     if (newPassword !== confirmPassword) {
@@ -422,7 +424,7 @@ export const SettingsView: React.FC = () => {
                   type={showNewPass ? 'text' : 'password'}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="Minimal 6 karakter"
+                  placeholder="Minimal 10 karakter"
                   className="w-full px-3.5 py-2.5 pr-9 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)] focus:ring-2 focus:ring-blue-500/20"
                 />
                 <button
@@ -433,6 +435,7 @@ export const SettingsView: React.FC = () => {
                   {showNewPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
+              <PasswordStrengthMeter password={newPassword} />
             </div>
 
             <div>

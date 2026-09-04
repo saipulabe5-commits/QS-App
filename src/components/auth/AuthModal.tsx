@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import { PasswordStrengthMeter } from "./PasswordStrengthMeter";
 import { X, Lock, Mail, User, Building, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -60,7 +61,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       return;
     }
     if (password.length < 6) {
-      setErrors({ password: 'Password minimal 6 karakter.' });
+      setErrors({ password: 'Password minimal 10 karakter.' });
       return;
     }
 
@@ -95,8 +96,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       setErrors({ resetCode: 'Kode pemulihan wajib diisi.' });
       return;
     }
-    if (!newPassword || newPassword.length < 6) {
-      setErrors({ newPassword: 'Kata sandi baru minimal 6 karakter.' });
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-.,])[A-Za-z\d@$!%*?&_\-.,]{10,}$/;
+    if (!newPassword || !strongPasswordRegex.test(newPassword)) {
+      setErrors({ newPassword: "Kata sandi baru minimal 10 karakter, harus mengandung huruf besar, huruf kecil, angka, dan simbol." });
       return;
     }
     if (newPassword !== confirmPassword) {
@@ -124,7 +126,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
         transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
         className="relative w-full max-w-md rounded-[20px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden z-10 flex flex-col border border-white/40 bg-[var(--bg-elevated)]/70 backdrop-blur-2xl"
@@ -296,7 +298,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Minimal 6 karakter"
+                  placeholder="Minimal 10 karakter"
                   className="w-full pl-9 pr-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)]"
                 />
               </div>
@@ -386,7 +388,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
             <div>
               <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
-                Kata Sandi Baru (Min. 6 Karakter)
+                Kata Sandi Baru (Min 10 Karakter, Huruf Besar, Angka, Simbol)
               </label>
               <div className="relative">
                 <Lock className="w-4 h-4 text-[var(--text-secondary)] absolute left-3 top-1/2 -translate-y-1/2" />
@@ -398,6 +400,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   className="w-full pl-9 pr-3 py-2 text-xs bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl focus:bg-[var(--bg-elevated)]"
                 />
               </div>
+              <PasswordStrengthMeter password={newPassword} />
               {errors.newPassword && <p className="text-[10px] text-rose-600 mt-0.5">{errors.newPassword}</p>}
             </div>
 

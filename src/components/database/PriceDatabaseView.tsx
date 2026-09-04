@@ -3,6 +3,7 @@ import { useApp } from '../../context/AppContext';
 import { PriceItem, ItemType, RABCategory } from '../../types';
 import { formatRupiah, formatDateIndo } from '../../utils/formatters';
 import { exportPriceDatabaseToCSV, parsePriceCSV } from '../../utils/exportHelpers';
+import { PdfExportButton } from "../common/PdfExportButton";
 import { PriceItemModal } from './PriceItemModal';
 import { ConfirmModal } from '../layout/ConfirmModal';
 import {
@@ -123,7 +124,7 @@ export const PriceDatabaseView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" id="price-database-view">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -163,6 +164,7 @@ export const PriceDatabaseView: React.FC = () => {
             <span>Export CSV</span>
           </button>
 
+          <PdfExportButton elementId="price-database-view" filename="Database_Harga" title="Master Database Harga" isLandscape={true} />
           <button
             onClick={() => {
               setItemToEdit(null);

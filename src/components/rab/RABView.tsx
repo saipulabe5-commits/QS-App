@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import { PdfExportButton } from "../common/PdfExportButton";
 import { RABItem, RABCategory, RAB_CATEGORIES } from '../../types';
 import { calculateRAB } from '../../utils/calculations';
 import { formatRupiah, formatNumber } from '../../utils/formatters';
@@ -194,7 +195,7 @@ export const RABView: React.FC<RABViewProps> = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" id="rab-view">
       {/* Project Identity Banner */}
       <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] p-6 shadow-2xs">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
@@ -365,6 +366,7 @@ export const RABView: React.FC<RABViewProps> = ({
             <span className="hidden md:inline">Ekspor CSV</span>
           </button>
 
+          <PdfExportButton elementId="rab-view" filename="RAB_Lengkap" title="Rencana Anggaran Biaya" isLandscape={true} />
           <button
             onClick={() => setActiveTab('reports')}
             className="px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
