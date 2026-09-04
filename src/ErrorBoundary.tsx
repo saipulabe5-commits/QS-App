@@ -38,6 +38,13 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error(`[RAB Pro V11 ErrorBoundary ${(this as any).state?.errorId}]:`, error, errorInfo);
+    bugTracker.log({
+      category: "react-error-boundary",
+      severity: "error",
+      message: error.message,
+      stack: error.stack,
+      componentStack: errorInfo.componentStack
+    });
   }
 
   private handleReload = () => {

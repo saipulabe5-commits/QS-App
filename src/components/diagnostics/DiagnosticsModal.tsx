@@ -17,6 +17,8 @@ import {
 import { diagnostics, clearRuntimeCachesAndReload, BootEvent } from '../../runtime/BootShell';
 import { Bot } from 'lucide-react';
 import { AILogger, AILogEntry } from '../../utils/AILogger';
+import { BugMonitorView } from "./BugMonitorView";
+import { bugTracker } from "../../utils/bugTracker";
 import { useApp } from '../../context/AppContext';
 
 interface DiagnosticsModalProps {
@@ -29,7 +31,7 @@ export const DiagnosticsModal: React.FC<DiagnosticsModalProps> = ({
   onClose,
 }) => {
   const { projects, rabItems, priceDatabase, ahspItems, showToast } = useApp();
-  const [activeTab, setActiveTab] = useState<'boot' | 'storage' | 'financial' | 'system' | 'ai'>('boot');
+  const [activeTab, setActiveTab] = useState<'boot' | 'storage' | 'financial' | 'system' | 'ai' | 'bugs'>('boot');
   const [aiLogs, setAiLogs] = useState<AILogEntry[]>([]);
   React.useEffect(() => {
     setAiLogs(AILogger.getLogs());

@@ -37,7 +37,94 @@ import cors from "cors";
 
 const PORT = 3000;
 
+import fsSync from 'fs';
+interface BugLogEntry {
+  id: string;
+  timestamp: string;
+  source: 'client' | 'server';
+  severity: 'error' | 'warning' | 'info';
+  category: 'runtime' | 'network' | 'react-error-boundary' | 'unhandled-rejection' | 'api-failure' | 'build' | 'other';
+  message: string;
+  stack?: string;
+  route?: string;
+  userEmail?: string;
+  requestUrl?: string;
+  requestMethod?: string;
+  responseStatus?: number;
+  metadata?: Record<string, any>;
+}
+
+const SERVER_BUG_LOG_PATH = path.join(process.cwd(), '.data/bug_log_server.json');
+
+function initServerBugLog() {
+  if (!fsSync.existsSync(path.join(process.cwd(), '.data'))) {
+    fsSync.mkdirSync(path.join(process.cwd(), '.data'), { recursive: true });
+  }
+  if (!fsSync.existsSync(SERVER_BUG_LOG_PATH)) {
+    fsSync.writeFileSync(SERVER_BUG_LOG_PATH, JSON.stringify([]));
+  }
+}
+
+function logServerBug(entryData: Omit<BugLogEntry, 'id' | 'timestamp' | 'source'>) {
+  try {
+    initServerBugLog();
+    const entry = {
+      id: crypto.randomUUID(),
+      timestamp: new Date().toISOString(),
+      source: 'server',
+      ...entryData
+    };
+    const data = JSON.parse(fsSync.readFileSync(SERVER_BUG_LOG_PATH, 'utf8'));
+    data.unshift(entry);
+    if (data.length > 1000) data.length = 1000;
+    fsSync.writeFileSync(SERVER_BUG_LOG_PATH, JSON.stringify(data, null, 2));
+  } catch (err) {
+    console.error('Failed to log server bug:', err);
+  }
+}
+
+// Global API to fetch bugs
+app.get('/api/bugs', (req, res) => {
+  try {
+    initServerBugLog();
+    const data = JSON.parse(fsSync.readFileSync(SERVER_BUG_LOG_PATH, 'utf8'));
+    res.json({ success: true, serverBugs: data });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to read server bugs' });
+  }
+});
+
+app.post('/api/bugs/clear', (req, res) => {
+  try {
+    initServerBugLog();
+    fsSync.writeFileSync(SERVER_BUG_LOG_PATH, JSON.stringify([]));
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to clear server bugs' });
+  }
+});
+
+
 // Security Headers Middleware
+
+app.use((req, res, next) => {
+  const originalSend = res.send;
+  res.send = function(body) {
+    if (res.statusCode >= 400 && res.statusCode < 600) {
+      logServerBug({
+        category: 'api-failure',
+        severity: 'error',
+        message: `HTTP ${res.statusCode} on ${req.method} ${req.url}`,
+        requestUrl: req.url,
+        requestMethod: req.method,
+        responseStatus: res.statusCode
+      });
+    }
+    return originalSend.apply(this, arguments as any);
+  };
+  next();
+});
+
 app.use((req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("X-XSS-Protection", "1; mode=block");
@@ -2030,6 +2117,19 @@ async function startServer() {
     });
   }
 
+
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  logServerBug({
+    category: 'runtime',
+    severity: 'error',
+    message: err.message || String(err),
+    stack: err.stack,
+    requestUrl: req.url,
+    requestMethod: req.method
+  });
+  next(err);
+});
+  
 async function startServerWithRetry(port: number, maxRetries = 5, delayMs = 1500) {
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
