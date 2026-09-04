@@ -19,17 +19,13 @@ function requireEnv(name: string, minLength = 1, fallback?: string): string {
     console.warn(`[DEV WARNING] Environment variable ${name} tidak diset. Menggunakan nilai dev fallback.`);
     if (name === 'ADMIN_EMAIL') return 'saipulabe@gmail.com';
     if (name === 'ADMIN_INITIAL_PASSWORD') return 'rabpro2025!';
+    if (name === 'JWT_SECRET') return 'dev_secret_rab_pro_fallback_key_32_chars_minimum_length_safe!';
     return `dev_fallback_${name.toLowerCase()}`;
   }
   return value;
 }
 
-// Validate and load JWT Secret safely
-function getJwtSecret(): string {
-  return requireEnv("JWT_SECRET", 32, "dev_secret_rab_pro_fallback_key_32_chars_minimum_length_safe!");
-}
-
-const JWT_SECRET = getJwtSecret();
+const JWT_SECRET = requireEnv("JWT_SECRET", 32);
 
 const app = express();
 

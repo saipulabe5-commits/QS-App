@@ -132,6 +132,34 @@ export interface AIAutoCategorizeResult {
   source?: string;
 }
 
+export interface ExtractedRABItem {
+  code: string;
+  name: string;
+  category: string;
+  unit: string;
+  volume: number;
+  unitPrice: number;
+  evidence: string;
+}
+
+export interface BatchPdfExtractionResult {
+  projectName: string;
+  summary: string;
+  confidenceScore: number;
+  detectedDrawings: string[];
+  rabItems: ExtractedRABItem[];
+}
+
+export interface PdfTaskStatusResponse {
+  success: boolean;
+  taskId: string;
+  status: 'queued' | 'processing' | 'completed' | 'failed';
+  progress?: number;
+  projectName?: string;
+  result?: BatchPdfExtractionResult;
+  error?: string;
+}
+
 
 const getHeaders = () => {
   const token = typeof window !== 'undefined' ? safeLocalStorageGet('rabpro_token') : '';
@@ -149,10 +177,7 @@ export const aiService = {
   async financialReview(project: any, items: any[], calc: any, anomalies: any[]): Promise<string> {
     const response = await fetch('/api/ai/financial-review', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...this.getAuthHeader(),
-      },
+      headers: getHeaders(),
       body: JSON.stringify({ project, items, calc, anomalies }),
     });
 
@@ -674,6 +699,66 @@ Silakan ajukan pertanyaan atau gunakan tombol pintas yang tersedia.`,
         source: 'heuristic',
       };
     }
+  },
+
+  // 9. Agentic Batch PDF RAB Extraction
+  async submitBatchPdfExtraction(base64Data: string, projectName: string): Promise<string> {
+    const response = await fetch('/api/ai/extract-pdf-rab', {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({ base64Data, projectName }),
+    });
+
+    if (!response.ok) {
+      if (response.status === 429) {
+        throw new Error('Batas pemakaian AI gratis harian (Zero-Cost Safeguard) telah tercapai.');
+      }
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || 'Gagal mengirim tugas ekstraksi PDF');
+    }
+
+    const data = await response.json();
+    if (!data.taskId) {
+      throw new Error('Server tidak mengembalikan ID tugas ekstraksi.');
+    }
+    return data.taskId;
+  },
+
+  async pollExtractionStatus(taskId: string): Promise<{
+    success: boolean;
+    taskId: string;
+    status: 'queued' | 'processing' | 'completed' | 'failed';
+    progress?: number;
+    projectName?: string;
+    result?: {
+      projectName: string;
+      summary: string;
+      confidenceScore: number;
+      detectedDrawings: string[];
+      rabItems: Array<{
+        code: string;
+        name: string;
+        category: string;
+        unit: string;
+        volume: number;
+        unitPrice: number;
+        evidence: string;
+      }>;
+    };
+    error?: string;
+  }> {
+    const response = await fetch(`/api/ai/task-status/${taskId}`, {
+      method: 'GET',
+      headers: getHeaders(),
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || 'Gagal mengambil status antrean tugas ekstraksi.');
+    }
+
+    const data = await response.json();
+    return data;
   },
 };
 
