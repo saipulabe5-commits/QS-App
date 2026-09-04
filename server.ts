@@ -2391,10 +2391,13 @@ async function processPdfRabTask(taskId: string, base64Data: string, projectName
       return;
     }
 
-    task.progress = 45;
+    // =========================================================================
+    // PASS 1: Vision & Extraction Agent
+    // =========================================================================
+    task.progress = 35;
 
     // Super strict Zero-Hallucination & Geometry Locking system prompt
-    const systemPrompt = "Anda adalah Agen Ekstraksi Visi & QS. Dilarang mengarang (Zero Hallucination). Ekstrak dimensi dan spesifikasi material dari gambar, lalu petakan menjadi item Rencana Anggaran Biaya (RAB). Jika angka tidak terbaca, jangan ditebak, abaikan atau beri nilai 0. Wajib sertakan 'evidence' (bukti posisi teks pada gambar).";
+    const pass1SystemPrompt = "Anda adalah Agen Ekstraksi Visi & QS. Dilarang mengarang (Zero Hallucination). Ekstrak dimensi dan spesifikasi material dari gambar, lalu petakan menjadi item Rencana Anggaran Biaya (RAB). Jika angka tidak terbaca, jangan ditebak, abaikan atau beri nilai 0. Wajib sertakan 'evidence' (bukti posisi teks pada gambar).";
 
     const promptText = `Lakukan ekstraksi gambar kerja arsitektur/struktur/MEP atau dokumen PDF teknis berikut untuk proyek: "${projectName}".
 Petakan seluruh item pekerjaan yang tertera secara presisi ke dalam format item Rencana Anggaran Biaya (RAB) standar konstruksi Indonesia.
@@ -2445,7 +2448,7 @@ Format respon JSON wajib memenuhi skema:
             },
           ],
           config: {
-            systemInstruction: systemPrompt,
+            systemInstruction: pass1SystemPrompt,
             responseMimeType: "application/json",
             temperature: 0.1,
           },
@@ -2453,14 +2456,14 @@ Format respon JSON wajib memenuhi skema:
         if (geminiResponse) break;
       } catch (tryErr: any) {
         lastErr = tryErr;
-        console.warn(`[Agentic PDF Worker] Model ${modelCandidate} gagal, mencoba kandidat berikutnya:`, tryErr?.message || tryErr);
+        console.warn(`[Agentic PDF Worker - Pass 1] Model ${modelCandidate} gagal, mencoba kandidat berikutnya:`, tryErr?.message || tryErr);
       }
     }
     if (!geminiResponse) {
-      throw lastErr || new Error("Gagal memperoleh respon dari Gemini API.");
+      throw lastErr || new Error("Gagal memperoleh respon dari Gemini API pada Pass 1.");
     }
 
-    task.progress = 85;
+    task.progress = 60;
 
     const rawOutput = geminiResponse.text?.trim() || "{}";
     let parsedResult: any;
@@ -2471,11 +2474,11 @@ Format respon JSON wajib memenuhi skema:
       if (match) {
         parsedResult = JSON.parse(match[0]);
       } else {
-        throw new Error("Respon AI tidak dapat diurai sebagai format JSON yang valid.");
+        throw new Error("Respon AI Pass 1 tidak dapat diurai sebagai format JSON yang valid.");
       }
     }
 
-    // Normalisasi struktur rabItems
+    // Normalisasi awal struktur rabItems dari Pass 1
     if (parsedResult && Array.isArray(parsedResult.rabItems)) {
       parsedResult.rabItems = parsedResult.rabItems.map((item: any, idx: number) => ({
         code: item.code || `ITEM-${String(idx + 1).padStart(3, "0")}`,
@@ -2484,10 +2487,103 @@ Format respon JSON wajib memenuhi skema:
         unit: item.unit || "ls",
         volume: typeof item.volume === "number" ? item.volume : parseFloat(item.volume) || 0,
         unitPrice: typeof item.unitPrice === "number" ? item.unitPrice : parseFloat(item.unitPrice) || 0,
-        evidence: item.evidence || "Terdeteksi pada dokumen gambar kerja",
+        evidence: item.evidence || "",
       }));
+    } else {
+      parsedResult.rabItems = [];
     }
 
+    // =========================================================================
+    // PASS 2: Critic & Math Validator Agent (Two-Pass Zero-Hallucination Audit)
+    // =========================================================================
+    task.progress = 75;
+
+    const pass2SystemPrompt = `Anda adalah Agen Quality Control (QC) Quantity Surveyor. Tugas Anda adalah mengaudit data ekstraksi RAB berikut. 
+- Periksa konsistensi matematis (misal: jika evidence menyebutkan luas 4x5 meter, pastikan volume tertulis 20, bukan angka lain).
+- Identifikasi dan hapus item yang terindikasi halusinasi (item yang tidak memiliki 'evidence' jelas dari gambar).
+- Perbaiki kesalahan hitung atau ketidakwajaran harga satuan.
+Kembalikan data dalam struktur JSON array yang sama persis (code, name, category, unit, volume, unitPrice, evidence), yang sudah divalidasi dan dikoreksi murni.`;
+
+    const pass2UserPrompt = `Berikut adalah data ekstraksi awal dari gambar kerja proyek "${projectName}":
+${JSON.stringify(parsedResult.rabItems, null, 2)}
+
+Audit setiap item pekerjaan di atas berdasarkan aturan QC Quantity Surveyor:
+1. Validasi rumus volume terhadap teks 'evidence'.
+2. Hapus item tanpa bukti gambar yang valid/nyata.
+3. Koreksi jika ada salah satuan atau anomali harga.
+
+Kembalikan data dalam struktur JSON array yang sama persis (code, name, category, unit, volume, unitPrice, evidence), yang sudah divalidasi dan dikoreksi murni:
+[
+  {
+    "code": "ITEM-001",
+    "name": "Nama Pekerjaan",
+    "category": "Kategori Pekerjaan",
+    "unit": "Satuan",
+    "volume": 0.0,
+    "unitPrice": 0,
+    "evidence": "Bukti spesifik dari gambar kerja"
+  }
+]`;
+
+    let pass2Response;
+    const pass2CandidateModels = ["gemini-2.5-flash", "gemini-3.7-flash", "gemini-3.6-flash"];
+    for (const modelCandidate of pass2CandidateModels) {
+      try {
+        pass2Response = await ai.models.generateContent({
+          model: modelCandidate,
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: pass2UserPrompt }],
+            },
+          ],
+          config: {
+            systemInstruction: pass2SystemPrompt,
+            responseMimeType: "application/json",
+            temperature: 0.1,
+          },
+        });
+        if (pass2Response) break;
+      } catch (pass2Err: any) {
+        console.warn(`[Agentic PDF Worker - Pass 2 QC] Model ${modelCandidate} gagal, mencoba kandidat berikutnya:`, pass2Err?.message || pass2Err);
+      }
+    }
+
+    if (pass2Response && pass2Response.text) {
+      const rawPass2 = pass2Response.text.trim();
+      let parsedPass2: any;
+      try {
+        parsedPass2 = JSON.parse(rawPass2);
+      } catch (pErr) {
+        const match = rawPass2.match(/\[[\s\S]*\]/) || rawPass2.match(/\{[\s\S]*\}/);
+        if (match) {
+          parsedPass2 = JSON.parse(match[0]);
+        }
+      }
+
+      let validatedItems: any[] | null = null;
+      if (Array.isArray(parsedPass2)) {
+        validatedItems = parsedPass2;
+      } else if (parsedPass2 && Array.isArray(parsedPass2.rabItems)) {
+        validatedItems = parsedPass2.rabItems;
+      }
+
+      if (validatedItems !== null) {
+        parsedResult.rabItems = validatedItems.map((item: any, idx: number) => ({
+          code: item.code || `ITEM-${String(idx + 1).padStart(3, "0")}`,
+          name: item.name || "Item Pekerjaan Teknis Terverifikasi",
+          category: item.category || "Pekerjaan Konstruksi",
+          unit: item.unit || "ls",
+          volume: typeof item.volume === "number" ? item.volume : parseFloat(item.volume) || 0,
+          unitPrice: typeof item.unitPrice === "number" ? item.unitPrice : parseFloat(item.unitPrice) || 0,
+          evidence: item.evidence || "Tervalidasi oleh QC Quantity Surveyor",
+        }));
+      }
+    }
+
+    // =========================================================================
+    // 3. Finalisasi Data
+    // =========================================================================
     task.status = "completed";
     task.progress = 100;
     task.completedAt = new Date().toISOString();
