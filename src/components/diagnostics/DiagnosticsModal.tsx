@@ -15,7 +15,7 @@ import {
   Lock,
 } from 'lucide-react';
 import { diagnostics, clearRuntimeCachesAndReload, BootEvent } from '../../runtime/BootShell';
-import { Bot } from 'lucide-react';
+import { Bot, Bug } from 'lucide-react';
 import { AILogger, AILogEntry } from '../../utils/AILogger';
 import { BugMonitorView } from "./BugMonitorView";
 import { bugTracker } from "../../utils/bugTracker";
@@ -103,10 +103,24 @@ export const DiagnosticsModal: React.FC<DiagnosticsModalProps> = ({
           </div>
 
           {/* Tab Navigation */}
-          <div className="px-5 pt-3 pb-1 border-b border-slate-200 dark:border-[var(--border-primary)] flex space-x-4 text-xs font-semibold">
+          <div className="px-5 pt-3 pb-1 border-b border-slate-200 dark:border-[var(--border-primary)] flex space-x-4 text-xs font-semibold overflow-x-auto">
+            <button
+              id="tab-bug-monitor"
+              onClick={() => setActiveTab('bugs')}
+              className={`pb-2 border-b-2 transition-colors cursor-pointer flex items-center space-x-1.5 whitespace-nowrap ${
+                activeTab === 'bugs'
+                  ? 'border-rose-500 text-rose-500 font-bold'
+                  : 'border-transparent text-[var(--text-secondary)] hover:text-slate-200'
+              }`}
+            >
+              <Bug className="w-3.5 h-3.5 text-rose-500" />
+              <span>Bug & Error Monitor</span>
+              <span className="text-[10px] bg-rose-500/10 text-rose-500 border border-rose-500/20 px-1.5 py-0.5 rounded-full font-bold">JSON</span>
+            </button>
+
             <button
               onClick={() => setActiveTab('boot')}
-              className={`pb-2 border-b-2 transition-colors cursor-pointer flex items-center space-x-1.5 ${
+              className={`pb-2 border-b-2 transition-colors cursor-pointer flex items-center space-x-1.5 whitespace-nowrap ${
                 activeTab === 'boot'
                   ? 'border-blue-500 text-blue-400'
                   : 'border-transparent text-[var(--text-secondary)] hover:text-slate-200'
@@ -118,7 +132,7 @@ export const DiagnosticsModal: React.FC<DiagnosticsModalProps> = ({
 
             <button
               onClick={() => setActiveTab('storage')}
-              className={`pb-2 border-b-2 transition-colors cursor-pointer flex items-center space-x-1.5 ${
+              className={`pb-2 border-b-2 transition-colors cursor-pointer flex items-center space-x-1.5 whitespace-nowrap ${
                 activeTab === 'storage'
                   ? 'border-blue-500 text-blue-400'
                   : 'border-transparent text-[var(--text-secondary)] hover:text-slate-200'
@@ -130,7 +144,7 @@ export const DiagnosticsModal: React.FC<DiagnosticsModalProps> = ({
 
             <button
               onClick={() => setActiveTab('financial')}
-              className={`pb-2 border-b-2 transition-colors cursor-pointer flex items-center space-x-1.5 ${
+              className={`pb-2 border-b-2 transition-colors cursor-pointer flex items-center space-x-1.5 whitespace-nowrap ${
                 activeTab === 'financial'
                   ? 'border-blue-500 text-blue-400'
                   : 'border-transparent text-[var(--text-secondary)] hover:text-slate-200'
@@ -142,7 +156,7 @@ export const DiagnosticsModal: React.FC<DiagnosticsModalProps> = ({
 
             <button
               onClick={() => setActiveTab('system')}
-              className={`pb-2 border-b-2 transition-colors cursor-pointer flex items-center space-x-1.5 ${
+              className={`pb-2 border-b-2 transition-colors cursor-pointer flex items-center space-x-1.5 whitespace-nowrap ${
                 activeTab === 'system'
                   ? 'border-blue-500 text-blue-400'
                   : 'border-transparent text-[var(--text-secondary)] hover:text-slate-200'
@@ -151,10 +165,27 @@ export const DiagnosticsModal: React.FC<DiagnosticsModalProps> = ({
               <Cpu className="w-3.5 h-3.5" />
               <span>Pemulihan & Cache</span>
             </button>
+
+            <button
+              onClick={() => setActiveTab('ai')}
+              className={`pb-2 border-b-2 transition-colors cursor-pointer flex items-center space-x-1.5 whitespace-nowrap ${
+                activeTab === 'ai'
+                  ? 'border-indigo-500 text-indigo-400 font-bold'
+                  : 'border-transparent text-[var(--text-secondary)] hover:text-slate-200'
+              }`}
+            >
+              <Bot className="w-3.5 h-3.5 text-indigo-400" />
+              <span>AI Logs ({aiLogs.length})</span>
+            </button>
           </div>
 
           {/* Tab Content */}
           <div className="p-5 overflow-y-auto flex-1 space-y-4 custom-scrollbar text-xs">
+            {activeTab === 'bugs' && (
+              <div className="h-[480px] -m-5">
+                <BugMonitorView />
+              </div>
+            )}
             {activeTab === 'ai' && (
               <div className="space-y-4 animate-in fade-in zoom-in-95 duration-200">
                 <div className="flex items-center justify-between">

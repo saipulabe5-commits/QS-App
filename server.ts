@@ -94,6 +94,35 @@ app.get('/api/bugs', (req, res) => {
   }
 });
 
+const handleBugExport = (req: express.Request, res: express.Response) => {
+  try {
+    initServerBugLog();
+    const data: any[] = JSON.parse(fsSync.readFileSync(SERVER_BUG_LOG_PATH, 'utf8'));
+    const summary = {
+      error: data.filter((l: any) => l.severity === 'error').length,
+      warning: data.filter((l: any) => l.severity === 'warning').length,
+      info: data.filter((l: any) => l.severity === 'info').length,
+    };
+    const exportData = {
+      exportedAt: new Date().toISOString(),
+      appVersion: 'RAB PRO V19',
+      environment: process.env.NODE_ENV === 'production' ? 'production' : 'preview',
+      totalEntries: data.length,
+      summary,
+      entries: data,
+    };
+    const filename = `rab-pro-bug-log-${new Date().toISOString().replace(/[:.]/g, '-').slice(0, 15)}.json`;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    return res.send(JSON.stringify(exportData, null, 2));
+  } catch (err) {
+    return res.status(500).json({ success: false, error: 'Failed to export server bug log' });
+  }
+};
+
+app.get('/api/bugs/download', handleBugExport);
+app.get('/api/bugs/export', handleBugExport);
+
 app.post('/api/bugs/clear', (req, res) => {
   try {
     initServerBugLog();

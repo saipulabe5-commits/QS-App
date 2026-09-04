@@ -129,14 +129,18 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <button 
+            id="btn-download-bug-report-json"
             onClick={handleExportJSON}
-            className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-sm"
+            className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors cursor-pointer"
+            title="Unduh Laporan Bug lengkap berformat JSON"
           >
-            <Download className="w-4 h-4" /> Export JSON
+            <Download className="w-4 h-4" /> Unduh Laporan Bug (JSON)
           </button>
           <button 
+            id="btn-clear-bug-logs"
             onClick={handleClearLogs}
-            className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-red-600 dark:text-red-400 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-semibold"
+            className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-red-600 dark:text-red-400 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
+            title="Bersihkan riwayat catatan bug"
           >
             <Trash2 className="w-4 h-4" /> Bersihkan Log
           </button>

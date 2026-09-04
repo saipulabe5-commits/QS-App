@@ -24,6 +24,7 @@ import {
   Sliders,
   Moon,
   Sun,
+  Bug,
 } from 'lucide-react';
 
 interface MacToolbarProps {
@@ -308,6 +309,20 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
                         <span>Ganti Proyek</span>
                       </div>
                       <kbd className="font-mono text-[10px] text-[var(--text-secondary)]">⌘P</kbd>
+                    </button>
+                    <button
+                      id="menu-btn-diagnostics"
+                      onClick={() => {
+                        if (onOpenDiagnostics) onOpenDiagnostics();
+                        setIsUserMenuOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-[var(--text-primary)] hover:bg-[var(--bg-elevated-hover)] flex items-center justify-between"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <Bug className="w-4 h-4 text-rose-500" />
+                        <span>Bug & Error Monitor</span>
+                      </div>
+                      <span className="text-[9px] bg-rose-500/10 text-rose-500 border border-rose-500/20 px-1.5 py-0.5 rounded-full font-bold">Unduh JSON</span>
                     </button>
                     <button
                       onClick={() => {
