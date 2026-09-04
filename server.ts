@@ -1083,7 +1083,11 @@ async function checkAndIncrementAIQuota() {
   return { allowed: true, remaining: MAX_DAILY_REQUESTS - usage.count };
 }
 
-const aiZeroCostGuard = async (req, res, next) => {
+const aiZeroCostGuard = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  // Polling status GET requests should not consume daily AI quota
+  if (req.method === 'GET') {
+    return next();
+  }
   const quota = await checkAndIncrementAIQuota();
   if (!quota.allowed) {
     return res.status(429).json({
@@ -1091,7 +1095,7 @@ const aiZeroCostGuard = async (req, res, next) => {
       success: false
     });
   }
-  res.setHeader('X-AI-Quota-Remaining', quota.remaining);
+  res.setHeader('X-AI-Quota-Remaining', String(quota.remaining));
   next();
 };
 
@@ -2340,6 +2344,264 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
     });
   }
   next();
+});
+
+// ============================================================================
+// AGENTIC PDF RAB EXTRACTOR (ASYNCHRONOUS TASK QUEUE ARCHITECTURE)
+// ============================================================================
+
+export interface PdfRabTaskItem {
+  taskId: string;
+  status: 'queued' | 'processing' | 'completed' | 'failed';
+  projectName: string;
+  createdAt: string;
+  startedAt?: string;
+  completedAt?: string;
+  progress: number;
+  result?: any;
+  error?: string;
+}
+
+// 1. In-Memory Task Queue
+const pdfTaskQueue = new Map<string, PdfRabTaskItem>();
+
+// Memory purge: Clean up tasks older than 2 hours to prevent memory growth
+function cleanupOldPdfTasks() {
+  const twoHoursAgo = Date.now() - 2 * 60 * 60 * 1000;
+  for (const [taskId, task] of pdfTaskQueue.entries()) {
+    const taskTime = new Date(task.createdAt).getTime();
+    if (taskTime < twoHoursAgo) {
+      pdfTaskQueue.delete(taskId);
+    }
+  }
+}
+
+// 3. Background Worker Function
+async function processPdfRabTask(taskId: string, base64Data: string, projectName: string, mimeType = "application/pdf") {
+  const task = pdfTaskQueue.get(taskId);
+  if (!task) return;
+
+  task.status = "processing";
+  task.startedAt = new Date().toISOString();
+  task.progress = 25;
+
+  try {
+    const ai = getGeminiClient();
+    if (!ai) {
+      task.status = "failed";
+      task.progress = 0;
+      task.error = "Google Gemini API client belum diinisialisasi atau GEMINI_API_KEY tidak ditemukan.";
+      task.completedAt = new Date().toISOString();
+      return;
+    }
+
+    task.progress = 45;
+
+    // Super strict Zero-Hallucination & Geometry Locking system prompt
+    const systemPrompt = "Anda adalah Agen Ekstraksi Visi & QS. Dilarang mengarang (Zero Hallucination). Ekstrak dimensi dan spesifikasi material dari gambar, lalu petakan menjadi item Rencana Anggaran Biaya (RAB). Jika angka tidak terbaca, jangan ditebak, abaikan atau beri nilai 0. Wajib sertakan 'evidence' (bukti posisi teks pada gambar).";
+
+    const promptText = `Lakukan ekstraksi gambar kerja arsitektur/struktur/MEP atau dokumen PDF teknis berikut untuk proyek: "${projectName}".
+Petakan seluruh item pekerjaan yang tertera secara presisi ke dalam format item Rencana Anggaran Biaya (RAB) standar konstruksi Indonesia.
+PENTING: Jangan menebak dimensi yang tidak tertera. Setiap item WAJIB menyertakan 'evidence' yang merujuk pada teks/notasi/tabel gambar.
+
+Format respon JSON wajib memenuhi skema:
+{
+  "projectName": string,
+  "summary": string,
+  "confidenceScore": number,
+  "detectedDrawings": [string],
+  "rabItems": [
+    {
+      "code": string,
+      "name": string,
+      "category": string,
+      "unit": string,
+      "volume": number,
+      "unitPrice": number,
+      "evidence": string
+    }
+  ]
+}`;
+
+    const effectiveMime = mimeType && (mimeType.includes("pdf") || mimeType.includes("image")) 
+      ? mimeType 
+      : "application/pdf";
+
+    let geminiResponse;
+    const candidateModels = ["gemini-3.6-flash", "gemini-3.7-flash", "gemini-2.5-flash"];
+    let lastErr: any = null;
+    for (const modelCandidate of candidateModels) {
+      try {
+        geminiResponse = await ai.models.generateContent({
+          model: modelCandidate,
+          contents: [
+            {
+              role: "user",
+              parts: [
+                {
+                  inlineData: {
+                    data: base64Data,
+                    mimeType: effectiveMime,
+                  },
+                },
+                { text: promptText },
+              ],
+            },
+          ],
+          config: {
+            systemInstruction: systemPrompt,
+            responseMimeType: "application/json",
+            temperature: 0.1,
+          },
+        });
+        if (geminiResponse) break;
+      } catch (tryErr: any) {
+        lastErr = tryErr;
+        console.warn(`[Agentic PDF Worker] Model ${modelCandidate} gagal, mencoba kandidat berikutnya:`, tryErr?.message || tryErr);
+      }
+    }
+    if (!geminiResponse) {
+      throw lastErr || new Error("Gagal memperoleh respon dari Gemini API.");
+    }
+
+    task.progress = 85;
+
+    const rawOutput = geminiResponse.text?.trim() || "{}";
+    let parsedResult: any;
+    try {
+      parsedResult = JSON.parse(rawOutput);
+    } catch (parseErr) {
+      const match = rawOutput.match(/\{[\s\S]*\}/);
+      if (match) {
+        parsedResult = JSON.parse(match[0]);
+      } else {
+        throw new Error("Respon AI tidak dapat diurai sebagai format JSON yang valid.");
+      }
+    }
+
+    // Normalisasi struktur rabItems
+    if (parsedResult && Array.isArray(parsedResult.rabItems)) {
+      parsedResult.rabItems = parsedResult.rabItems.map((item: any, idx: number) => ({
+        code: item.code || `ITEM-${String(idx + 1).padStart(3, "0")}`,
+        name: item.name || "Item Pekerjaan Teknis",
+        category: item.category || "Pekerjaan Konstruksi",
+        unit: item.unit || "ls",
+        volume: typeof item.volume === "number" ? item.volume : parseFloat(item.volume) || 0,
+        unitPrice: typeof item.unitPrice === "number" ? item.unitPrice : parseFloat(item.unitPrice) || 0,
+        evidence: item.evidence || "Terdeteksi pada dokumen gambar kerja",
+      }));
+    }
+
+    task.status = "completed";
+    task.progress = 100;
+    task.completedAt = new Date().toISOString();
+    task.result = parsedResult;
+  } catch (err: any) {
+    console.error(`[Agentic PDF Extractor] Task ${taskId} gagal:`, err);
+    task.status = "failed";
+    task.progress = 0;
+    task.error = err.message || String(err);
+    task.completedAt = new Date().toISOString();
+    logServerBug({
+      category: 'api-failure',
+      severity: 'error',
+      message: `Agentic PDF RAB Extractor task error: ${err.message || String(err)}`,
+      stack: err.stack,
+      requestUrl: `/api/ai/extract-pdf-rab (task ${taskId})`,
+      requestMethod: 'BACKGROUND'
+    });
+  }
+}
+
+// 2. Endpoint Menerima Tugas (POST /api/ai/extract-pdf-rab)
+app.post("/api/ai/extract-pdf-rab", async (req: express.Request, res: express.Response) => {
+  try {
+    cleanupOldPdfTasks();
+
+    const { pdfBase64, base64Data, data, fileData, projectName, mimeType } = req.body || {};
+    const rawData = pdfBase64 || base64Data || data || fileData;
+
+    if (!rawData || typeof rawData !== "string") {
+      return res.status(400).json({
+        success: false,
+        error: "Payload tidak valid. Parameter pdfBase64 atau base64Data berupa string base64 wajib disertakan.",
+      });
+    }
+
+    let cleanBase64 = rawData;
+    let detectedMime = mimeType || "application/pdf";
+    if (rawData.includes("base64,")) {
+      const parts = rawData.split("base64,");
+      cleanBase64 = parts[1];
+      const prefix = parts[0];
+      const match = prefix.match(/data:([^;]+)/);
+      if (match && match[1]) {
+        detectedMime = match[1];
+      }
+    }
+
+    const taskId = crypto.randomUUID();
+    const task: PdfRabTaskItem = {
+      taskId,
+      status: "queued",
+      projectName: (projectName && typeof projectName === "string" && projectName.trim()) ? projectName.trim() : "Proyek Tanpa Judul",
+      createdAt: new Date().toISOString(),
+      progress: 10,
+    };
+
+    pdfTaskQueue.set(taskId, task);
+
+    // Jalankan background worker secara asinkron tanpa await (non-blocking)
+    processPdfRabTask(taskId, cleanBase64, task.projectName, detectedMime).catch((workerErr) => {
+      console.error(`[Agentic Worker Background Error] Task ${taskId}:`, workerErr);
+    });
+
+    // Kembalikan HTTP 202 Accepted secara instan
+    return res.status(202).json({
+      success: true,
+      taskId,
+      status: "queued",
+      message: "Tugas ekstraksi PDF RAB telah diterima dan dimasukkan ke dalam antrean (asynchronous queue). Silakan lakukan polling ke /api/ai/task-status/" + taskId,
+    });
+  } catch (err: any) {
+    console.error("Error queueing PDF RAB extraction:", err);
+    return res.status(500).json({
+      success: false,
+      error: "Gagal memproses antrean tugas ekstraksi: " + (err.message || String(err)),
+    });
+  }
+});
+
+// 4. Endpoint Polling Status (GET /api/ai/task-status/:taskId)
+app.get("/api/ai/task-status/:taskId", (req: express.Request, res: express.Response) => {
+  try {
+    const { taskId } = req.params;
+    if (!taskId || !pdfTaskQueue.has(taskId)) {
+      return res.status(404).json({
+        success: false,
+        error: "Task ID tidak ditemukan atau antrean telah kedaluwarsa.",
+      });
+    }
+
+    const task = pdfTaskQueue.get(taskId)!;
+    return res.json({
+      success: true,
+      taskId: task.taskId,
+      status: task.status,
+      progress: task.progress,
+      projectName: task.projectName,
+      createdAt: task.createdAt,
+      startedAt: task.startedAt,
+      completedAt: task.completedAt,
+      result: task.status === "completed" ? task.result : undefined,
+      error: task.status === "failed" ? task.error : undefined,
+    });
+  } catch (err: any) {
+    return res.status(500).json({
+      success: false,
+      error: "Gagal mengambil status antrean tugas: " + (err.message || String(err)),
+    });
+  }
 });
 
 // Setup Vite or Static serve
