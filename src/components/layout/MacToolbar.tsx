@@ -136,7 +136,7 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-[var(--bg-titlebar)] backdrop-blur-[20px] saturate-[180%] border-b border-[var(--border-primary)] shadow-sm transition-all select-none">
+    <header className="no-print sticky top-0 z-30 bg-[var(--bg-titlebar)] backdrop-blur-[20px] saturate-[180%] border-b border-[var(--border-primary)] shadow-sm transition-all select-none">
       {/* Top Window Title Bar with Mac Traffic Lights */}
       <div className="h-10 px-3 sm:px-4 flex items-center justify-between border-b border-[var(--border-primary)]/50">
         {/* Left: Mac Traffic Lights & Mobile Hamburger */}

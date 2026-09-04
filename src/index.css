@@ -151,3 +151,32 @@
     color: var(--text-primary) !important;
   }
 }
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body, html, #root, #root > div {
+    background: white !important;
+    color: black !important;
+  }
+  #report-view, .print-content, main, .flex-1 {
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  /* Remove scrollbars and ensure full height for printing */
+  body, main, #root, .flex, .flex-1, .overflow-y-auto {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: auto !important;
+    display: block !important;
+  }
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import { PdfExportButton } from "../common/PdfExportButton";
 import { calculateRAB } from '../../utils/calculations';
 import { formatRupiah, formatNumber, numberToWordsIndo, formatDateIndo } from '../../utils/formatters';
 import { exportRABToCSV } from '../../utils/exportHelpers';
@@ -79,7 +80,7 @@ export const ReportView: React.FC = () => {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" id="report-view">
       {/* Top Toolbar (Hidden on Print) */}
       <div className="no-print bg-[var(--bg-elevated)] p-5 rounded-2xl border border-[var(--border-primary)] shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>

@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { useApp } from '../../context/AppContext';
 import { PdfExportButton } from "../common/PdfExportButton";
 import { formatRupiah } from '../../utils/formatters';
-import {
+          import {
   ComposedChart,
   Line,
   Bar,
@@ -101,7 +101,7 @@ export const SCurveComparisonView: React.FC = () => {
   });
 
   return (
-    <div className="space-y-6" ref={printRef}>
+    <div className="space-y-6" id="scurve-compare-view" ref={printRef}>
       {/* Header Banner */}
       <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 border border-slate-200 dark:border-[var(--border-primary)] shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4 print:bg-[var(--bg-elevated)] print:text-[var(--text-primary)] print:border-none print:p-0">
         <div>

@@ -200,7 +200,7 @@ export const DrawingAnalysisView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" id="drawing-analysis-view">
       {/* Top Banner & Stats */}
       <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 border border-slate-200 dark:border-[var(--border-primary)] shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>

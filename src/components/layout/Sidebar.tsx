@@ -119,7 +119,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Sidebar Container */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-40 w-72 bg-[var(--bg-elevated-hover)] border-r border-[var(--border-primary)] text-[var(--text-primary)] flex flex-col border-r border-[var(--border-primary)] transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static shadow-[4px_0_24px_rgba(0,0,0,0.1)] ${
+        className={`no-print fixed top-0 bottom-0 left-0 z-40 w-72 bg-[var(--bg-elevated-hover)] border-r border-[var(--border-primary)] text-[var(--text-primary)] flex flex-col border-r border-[var(--border-primary)] transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static shadow-[4px_0_24px_rgba(0,0,0,0.1)] ${
           isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

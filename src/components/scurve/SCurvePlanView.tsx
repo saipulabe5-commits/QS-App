@@ -108,8 +108,7 @@ export const SCurvePlanView: React.FC = () => {
           <p className="text-xs text-slate-600 dark:text-slate-300 max-w-2xl">
             Distribusi bobot pekerjaan RAB secara proporsional sepanjang durasi proyek dengan kurva distribusi normal (Bell Curve) atau linier untuk membentuk target Kurva S standar konstruksi.
           </p>
-          <div className="mt-4"><PdfExportButton elementId="scurve-plan-view" filename="Kurva_S_Rencana" title="Kurva S Rencana" isLandscape={true} /></div>
-          <div className="flex items-center space-x-3 mt-3 text-xs text-[var(--text-secondary)]">
+                    <div className="flex items-center space-x-3 mt-3 text-xs text-[var(--text-secondary)]">
             <span>
               Proyek: <strong className="text-white">{selectedProject?.name || 'Belum Dipilih'}</strong>
             </span>

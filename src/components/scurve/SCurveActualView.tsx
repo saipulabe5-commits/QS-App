@@ -117,8 +117,7 @@ export const SCurveActualView: React.FC = () => {
           <p className="text-xs text-slate-600 dark:text-slate-300 max-w-2xl">
             Input capaian fisik pekerjaan berkala, pantau deviasi (+/-) terhadap rencana, dan catat kendala teknis pelaksanaan proyek secara terstruktur.
           </p>
-          <div className="mt-4"><PdfExportButton elementId="scurve-actual-view" filename="Kurva_S_Aktual" title="Kurva S Aktual" isLandscape={true} /></div>
-          <div className="flex items-center space-x-3 mt-3 text-xs text-[var(--text-secondary)]">
+                    <div className="flex items-center space-x-3 mt-3 text-xs text-[var(--text-secondary)]">
             <span>
               Proyek: <strong className="text-white">{selectedProject?.name || 'Pilih Proyek'}</strong>
             </span>

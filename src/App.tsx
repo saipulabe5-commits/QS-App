@@ -209,7 +209,7 @@ const MainLayout: React.FC = () => {
     <div className="flex flex-col h-screen bg-slate-100 dark:bg-[var(--bg-elevated)] text-slate-900 dark:text-slate-100 overflow-hidden antialiased select-none font-sans transition-colors">
       {/* SAFE MODE BANNER IF ACTIVATED */}
       {isSafeMode && (
-        <div className="bg-[var(--traffic-yellow)] text-slate-950 font-bold px-4 py-1 text-xs text-center flex items-center justify-between shadow-sm z-50 flex-shrink-0">
+        <div className="no-print bg-[var(--traffic-yellow)] text-slate-950 font-bold px-4 py-1 text-xs text-center flex items-center justify-between shadow-sm z-50 flex-shrink-0">
           <span>SAFE MODE AKTIF: Fitur berat diisolasi untuk keandalan maksimal.</span>
           <button
             onClick={() => { window.location.href = window.location.pathname; }}
