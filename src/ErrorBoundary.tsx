@@ -1,5 +1,6 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { AlertTriangle, RefreshCw, Database, ShieldAlert } from 'lucide-react';
+import { bugTracker } from './utils/bugTracker';
 
 export interface ErrorBoundaryProps {
   children?: ReactNode;

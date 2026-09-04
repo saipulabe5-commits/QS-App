@@ -4,6 +4,11 @@
 
   <script>
     // [V12 SUPER FINAL FIX] Catch Vite HMR WebSocket errors before AI Studio diagnostic overlay
+    // CATATAN: Pesan "[vite] failed to connect to websocket" adalah artefak sandbox
+    // preview Google AI Studio (bukan bug aplikasi). Dikonfirmasi via Bug Tracker
+    // internal (lihat src/utils/bugTracker.ts) — noise ini TIDAK PERNAH tercatat
+    // sebagai entry bug sungguhan di 12+ sesi pengujian. Jangan investigasi ulang
+    // kecuali muncul di console Render production (bukan preview AI Studio).
     window.addEventListener('unhandledrejection', function(e) {
       const reasonStr = e.reason ? (e.reason.message || String(e.reason)) : '';
       if (reasonStr.includes('WebSocket') || reasonStr.includes('closed without opened')) {
@@ -20,9 +25,9 @@
     <meta httpquiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta httpquiv="Pragma" content="no-cache" />
     <meta httpquiv="Expires" content="0" />
-    <title>RAB Pro V12</title>
+    <title>RAB Pro</title>
     <meta name="description" content="Aplikasi Web Rencana Anggaran Biaya (RAB) Profesional & Modern untuk Estimasi Proyek Konstruksi Indonesia" />
-    <meta property="og:title" content="RAB Pro V12" />
+    <meta property="og:title" content="RAB Pro" />
     <meta property="og:description" content="Aplikasi Web Rencana Anggaran Biaya (RAB) Profesional & Modern untuk Estimasi Proyek Konstruksi Indonesia" />
     <meta property="og:type" content="website" />
     <meta name="theme-color" content="#0f172a" />

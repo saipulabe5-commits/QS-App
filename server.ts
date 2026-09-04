@@ -6,6 +6,8 @@ import crypto from "crypto";
 import { GoogleGenAI } from "@google/genai";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
 
 
 function requireEnv(name, minLength = 1) {
@@ -52,9 +54,32 @@ interface BugLogEntry {
   requestMethod?: string;
   responseStatus?: number;
   metadata?: Record<string, any>;
+  fingerprint?: string;
+  status?: 'open' | 'investigating' | 'resolved' | 'wont-fix';
+  firstSeenAt?: string;
+  lastSeenAt?: string;
+  occurrenceCount?: number;
+  resolutionNote?: string;
+  resolvedAt?: string;
+  resolvedInCommit?: string;
 }
 
 const SERVER_BUG_LOG_PATH = path.join(process.cwd(), '.data/bug_log_server.json');
+
+function generateServerBugFingerprint(category: string, message: string, requestUrl?: string): string {
+  const cleanMsg = (message || '')
+    .replace(/[0-9a-fA-F-]{36}/g, ':uuid:')
+    .replace(/\b\d+\b/g, ':num:')
+    .replace(/\?.*$/, '')
+    .trim()
+    .toLowerCase();
+  const cleanUrl = (requestUrl || '')
+    .split('?')[0]
+    .replace(/[0-9a-fA-F-]{36}/g, ':uuid:')
+    .trim()
+    .toLowerCase();
+  return `${category}__${cleanUrl}__${cleanMsg.slice(0, 120)}`;
+}
 
 function initServerBugLog() {
   if (!fsSync.existsSync(path.join(process.cwd(), '.data'))) {
@@ -68,14 +93,37 @@ function initServerBugLog() {
 function logServerBug(entryData: Omit<BugLogEntry, 'id' | 'timestamp' | 'source'>) {
   try {
     initServerBugLog();
-    const entry = {
-      id: crypto.randomUUID(),
-      timestamp: new Date().toISOString(),
-      source: 'server',
-      ...entryData
-    };
-    const data = JSON.parse(fsSync.readFileSync(SERVER_BUG_LOG_PATH, 'utf8'));
-    data.unshift(entry);
+    const now = new Date().toISOString();
+    const fingerprint = entryData.fingerprint || generateServerBugFingerprint(entryData.category, entryData.message, entryData.requestUrl);
+    const data: any[] = JSON.parse(fsSync.readFileSync(SERVER_BUG_LOG_PATH, 'utf8'));
+
+    const existingIndex = data.findIndex((e: any) => e.fingerprint === fingerprint);
+    if (existingIndex !== -1) {
+      const existing = data[existingIndex];
+      existing.occurrenceCount = (existing.occurrenceCount || 1) + 1;
+      existing.lastSeenAt = now;
+      existing.timestamp = now;
+      if (existing.status === 'resolved') {
+        existing.status = 'open';
+        existing.resolutionNote = `(Terjadi kembali) ${existing.resolutionNote || ''}`.trim();
+      }
+      data.splice(existingIndex, 1);
+      data.unshift(existing);
+    } else {
+      const entry = {
+        id: crypto.randomUUID(),
+        timestamp: now,
+        firstSeenAt: now,
+        lastSeenAt: now,
+        occurrenceCount: 1,
+        fingerprint,
+        status: entryData.status || 'open',
+        source: 'server',
+        ...entryData
+      };
+      data.unshift(entry);
+    }
+
     if (data.length > 1000) data.length = 1000;
     fsSync.writeFileSync(SERVER_BUG_LOG_PATH, JSON.stringify(data, null, 2));
   } catch (err) {
@@ -87,10 +135,71 @@ function logServerBug(entryData: Omit<BugLogEntry, 'id' | 'timestamp' | 'source'
 app.get('/api/bugs', (req, res) => {
   try {
     initServerBugLog();
-    const data = JSON.parse(fsSync.readFileSync(SERVER_BUG_LOG_PATH, 'utf8'));
-    res.json({ success: true, serverBugs: data });
+    const data: any[] = JSON.parse(fsSync.readFileSync(SERVER_BUG_LOG_PATH, 'utf8'));
+    const normalized = data.map((d: any) => ({
+      ...d,
+      fingerprint: d.fingerprint || generateServerBugFingerprint(d.category, d.message, d.requestUrl),
+      status: d.status || 'open',
+      firstSeenAt: d.firstSeenAt || d.timestamp,
+      lastSeenAt: d.lastSeenAt || d.timestamp,
+      occurrenceCount: d.occurrenceCount || 1,
+    }));
+    res.json({ success: true, serverBugs: normalized });
   } catch (err) {
     res.status(500).json({ success: false, error: 'Failed to read server bugs' });
+  }
+});
+
+// Resolve a server-side bug
+app.post('/api/bugs/resolve', express.json(), (req, res) => {
+  try {
+    initServerBugLog();
+    const { id, fingerprint, resolutionNote, resolvedInCommit } = req.body;
+    const data: any[] = JSON.parse(fsSync.readFileSync(SERVER_BUG_LOG_PATH, 'utf8'));
+    let updated = false;
+
+    for (const entry of data) {
+      if ((id && entry.id === id) || (fingerprint && entry.fingerprint === fingerprint)) {
+        entry.status = 'resolved';
+        entry.resolutionNote = resolutionNote || 'Tandai selesai oleh admin';
+        entry.resolvedAt = new Date().toISOString();
+        if (resolvedInCommit) entry.resolvedInCommit = resolvedInCommit;
+        updated = true;
+      }
+    }
+
+    if (updated) {
+      fsSync.writeFileSync(SERVER_BUG_LOG_PATH, JSON.stringify(data, null, 2));
+      return res.json({ success: true });
+    }
+    return res.status(404).json({ success: false, error: 'Bug entry not found' });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: 'Failed to resolve server bug' });
+  }
+});
+
+// Reopen a server-side bug
+app.post('/api/bugs/reopen', express.json(), (req, res) => {
+  try {
+    initServerBugLog();
+    const { id, fingerprint } = req.body;
+    const data: any[] = JSON.parse(fsSync.readFileSync(SERVER_BUG_LOG_PATH, 'utf8'));
+    let updated = false;
+
+    for (const entry of data) {
+      if ((id && entry.id === id) || (fingerprint && entry.fingerprint === fingerprint)) {
+        entry.status = 'open';
+        updated = true;
+      }
+    }
+
+    if (updated) {
+      fsSync.writeFileSync(SERVER_BUG_LOG_PATH, JSON.stringify(data, null, 2));
+      return res.json({ success: true });
+    }
+    return res.status(404).json({ success: false, error: 'Bug entry not found' });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: 'Failed to reopen server bug' });
   }
 });
 
@@ -98,18 +207,36 @@ const handleBugExport = (req: express.Request, res: express.Response) => {
   try {
     initServerBugLog();
     const data: any[] = JSON.parse(fsSync.readFileSync(SERVER_BUG_LOG_PATH, 'utf8'));
+    const normalized = data.map((d: any) => ({
+      ...d,
+      fingerprint: d.fingerprint || generateServerBugFingerprint(d.category, d.message, d.requestUrl),
+      status: d.status || 'open',
+      firstSeenAt: d.firstSeenAt || d.timestamp,
+      lastSeenAt: d.lastSeenAt || d.timestamp,
+      occurrenceCount: d.occurrenceCount || 1,
+    }));
+
+    const activeBugs = normalized.filter((l: any) => l.status === 'open' || l.status === 'investigating');
+    const resolvedHistory = normalized.filter((l: any) => l.status === 'resolved' || l.status === 'wont-fix');
+
     const summary = {
-      error: data.filter((l: any) => l.severity === 'error').length,
-      warning: data.filter((l: any) => l.severity === 'warning').length,
-      info: data.filter((l: any) => l.severity === 'info').length,
+      totalEntries: normalized.length,
+      activeBugs: activeBugs.length,
+      resolvedBugs: resolvedHistory.length,
+      error: normalized.filter((l: any) => l.severity === 'error').length,
+      warning: normalized.filter((l: any) => l.severity === 'warning').length,
+      info: normalized.filter((l: any) => l.severity === 'info').length,
     };
+
     const exportData = {
       exportedAt: new Date().toISOString(),
-      appVersion: 'RAB PRO V19',
+      appVersion: 'RAB PRO V20',
       environment: process.env.NODE_ENV === 'production' ? 'production' : 'preview',
-      totalEntries: data.length,
+      totalEntries: normalized.length,
       summary,
-      entries: data,
+      activeBugs,
+      resolvedHistory,
+      entries: normalized,
     };
     const filename = `rab-pro-bug-log-${new Date().toISOString().replace(/[:.]/g, '-').slice(0, 15)}.json`;
     res.setHeader('Content-Type', 'application/json');
@@ -130,6 +257,17 @@ app.post('/api/bugs/clear', (req, res) => {
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ success: false, error: 'Failed to clear server bugs' });
+  }
+});
+
+// Endpoint to run theme consistency audit
+app.get('/api/audit/theme', (req, res) => {
+  try {
+    const { runThemeConsistencyCheck } = require('./check-theme-consistency.cjs');
+    const result = runThemeConsistencyCheck();
+    res.json({ success: true, ...result });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message || 'Failed to run theme check' });
   }
 });
 
@@ -299,7 +437,7 @@ async function loadUsersStore() {
     let adminUsr = usersDb.get(adminEmail);
     if (!adminUsr) {
       usersDb.clear();
-      const newAdmin = {
+      const newAdmin: ServerUser = {
         id: "usr_admin_main",
         name: "Administrator",
         email: adminEmail,
@@ -315,7 +453,7 @@ async function loadUsersStore() {
       console.log("Existing admin account loaded — password from storage preserved, NOT overwritten by env var.");
     }
   } catch (error) {
-    usersDb.set(adminEmail, {
+    const fallbackAdmin: ServerUser = {
       id: "usr_admin_main",
       name: "Administrator",
       email: adminEmail,
@@ -323,7 +461,8 @@ async function loadUsersStore() {
       companyName: "RAB Pro Enterprise",
       role: "administrator",
       createdAt: new Date().toISOString(),
-    });
+    };
+    usersDb.set(adminEmail, fallbackAdmin);
     saveUsersStore();
     console.log("Admin account seeded for the first time (storage did not exist).");
   }

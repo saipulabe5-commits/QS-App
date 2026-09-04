@@ -107,7 +107,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                 {selectedProject?.status || 'Aktif'}
               </span>
             </div>
-            <h3 className="font-bold text-sm text-slate-100 mb-1 leading-snug line-clamp-2">
+            <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100 mb-1 leading-snug line-clamp-2">
               {selectedProject?.name || 'Pilih Proyek'}
             </h3>
             <p className="text-[var(--text-secondary)] text-[11px] mb-3">
