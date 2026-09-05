@@ -44,6 +44,34 @@ export interface AIMissingItemResult {
   }>;
 }
 
+export interface AIPriceWatcherRecommendation {
+  priceItemId: string;
+  code: string;
+  name: string;
+  type: 'material' | 'labor' | 'equipment';
+  category: string;
+  unit: string;
+  currentPrice: number;
+  recommendedPrice: number;
+  marketMin: number;
+  marketMax: number;
+  status: 'Stale / Terlalu Rendah' | 'Terlalu Tinggi' | 'Wajar';
+  priceDelta: number;
+  percentDelta: number;
+  confidence: number;
+  reason: string;
+}
+
+export interface AIPriceWatcherResult {
+  success: boolean;
+  summary: string;
+  marketReferenceYear: string;
+  overallVerdict: 'Wajar' | 'Perlu Penyesuaian' | 'Kritis';
+  staleCount: number;
+  fairCount: number;
+  recommendations: AIPriceWatcherRecommendation[];
+}
+
 export interface AIAuditResult {
   overallScore: number;
   overallVerdict: 'Wajar' | 'Perlu Penyesuaian' | 'Kritis';
@@ -792,6 +820,29 @@ Silakan ajukan pertanyaan atau gunakan tombol pintas yang tersedia.`,
 
     const data = await response.json();
     return data.analysis || data.result || '';
+  },
+
+  // 11. AI Price Watcher Agent
+  async auditStalePrices(prices: any[], region?: string): Promise<AIPriceWatcherResult> {
+    const response = await fetch('/api/ai/audit-stale-prices', {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({
+        prices,
+        region: region || 'Indonesia (Standar Konstruksi 2026)',
+      }),
+    });
+
+    if (!response.ok) {
+      if (response.status === 429) {
+        throw new Error('Batas pemakaian AI harian (Zero-Cost Safeguard) telah tercapai. Coba lagi besok.');
+      }
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || 'Gagal memindai kewajaran harga master database.');
+    }
+
+    const data = await response.json();
+    return data;
   },
 };
 

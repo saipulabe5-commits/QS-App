@@ -139,6 +139,7 @@ export interface AppContextType {
   updatePriceItem: (id: string, updates: Partial<PriceItem>) => void;
   deletePriceItem: (id: string) => void;
   importPriceItems: (items: Partial<PriceItem>[]) => number;
+  batchUpdatePriceItemsAndReconcile: (updates: Array<{ id: string; price: number; reason?: string }>) => { updatedPriceCount: number; updatedAHSPCount: number; updatedRABCount: number };
 
   // Templates
   createTemplateFromProject: (projectId: string, templateName: string, description?: string) => ProjectTemplate | null;
@@ -1118,7 +1119,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const importPriceItems = (items: Partial<PriceItem>[]): number => {
     const validItems: PriceItem[] = items.map((it, idx) => ({
-      id: it.id || `price_${Date.now()}_\${idx}`,
+      id: it.id || `price_${Date.now()}_${idx}`,
       userId: user?.id || 'usr_1',
       code: it.code || `MAT-${idx + 1}`,
       name: it.name || 'Item Harga',
@@ -1132,6 +1133,141 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setPriceDatabase((prev) => [...validItems, ...prev]);
     showToast('Import Database Berhasil', `Berhasil mengimpor ${validItems.length} item harga.`, 'success');
     return validItems.length;
+  };
+
+  const batchUpdatePriceItemsAndReconcile = (
+    updates: Array<{ id: string; price: number; reason?: string }>
+  ): { updatedPriceCount: number; updatedAHSPCount: number; updatedRABCount: number } => {
+    if (!updates || updates.length === 0) {
+      return { updatedPriceCount: 0, updatedAHSPCount: 0, updatedRABCount: 0 };
+    }
+
+    const today = new Date().toISOString().split('T')[0];
+    const updateMap = new Map<string, number>();
+    updates.forEach((u) => {
+      updateMap.set(u.id, Number(u.price) || 0);
+    });
+
+    // 1. Update Master Price Database
+    let updatedPriceCount = 0;
+    const priceLookupByName = new Map<string, number>();
+    const priceLookupById = new Map<string, number>();
+
+    setPriceDatabase((prev) => {
+      return prev.map((item) => {
+        if (updateMap.has(item.id)) {
+          const newPrice = updateMap.get(item.id)!;
+          updatedPriceCount++;
+          priceLookupByName.set(item.name.toLowerCase().trim(), newPrice);
+          priceLookupById.set(item.id, newPrice);
+          return {
+            ...item,
+            price: newPrice,
+            updatedAt: today,
+            source: item.source.includes('AI Watcher') ? item.source : `${item.source} (AI Watcher 2026)`,
+          };
+        }
+        priceLookupByName.set(item.name.toLowerCase().trim(), item.price);
+        priceLookupById.set(item.id, item.price);
+        return item;
+      });
+    });
+
+    // 2. Reconcile AHSP Items
+    let updatedAHSPCount = 0;
+    const updatedAhspPriceMap = new Map<string, number>(); // ahspId -> new unitPrice
+
+    setAhspItems((prev) => {
+      return prev.map((ahsp) => {
+        let ahspChanged = false;
+        const newComponents = ahsp.components.map((comp) => {
+          let matchedNewPrice: number | undefined;
+          if (comp.priceItemId && priceLookupById.has(comp.priceItemId) && updateMap.has(comp.priceItemId)) {
+            matchedNewPrice = priceLookupById.get(comp.priceItemId);
+          } else {
+            const compNameKey = comp.name.toLowerCase().trim();
+            const matchedPriceItem = priceDatabase.find((p) => p.name.toLowerCase().trim() === compNameKey && updateMap.has(p.id));
+            if (matchedPriceItem && updateMap.has(matchedPriceItem.id)) {
+              matchedNewPrice = updateMap.get(matchedPriceItem.id);
+            }
+          }
+
+          if (matchedNewPrice !== undefined && matchedNewPrice !== comp.unitPrice) {
+            ahspChanged = true;
+            return {
+              ...comp,
+              unitPrice: matchedNewPrice,
+              totalCost: comp.coefficient * matchedNewPrice,
+            };
+          }
+          return comp;
+        });
+
+        if (ahspChanged) {
+          updatedAHSPCount++;
+          const componentsCost = newComponents.reduce((sum, c) => sum + (c.totalCost || c.coefficient * c.unitPrice || 0), 0);
+          const overhead = ahsp.overheadPercent || 0;
+          const profit = ahsp.profitPercent || 0;
+          const totalAhspPrice = Math.round(componentsCost * (1 + (overhead + profit) / 100));
+          updatedAhspPriceMap.set(ahsp.id, totalAhspPrice);
+          updatedAhspPriceMap.set(ahsp.code.toLowerCase().trim(), totalAhspPrice);
+          return {
+            ...ahsp,
+            components: newComponents,
+            unitPrice: totalAhspPrice,
+            lastUpdated: today,
+          };
+        }
+        return ahsp;
+      });
+    });
+
+    // 3. Reconcile RAB Items
+    let updatedRABCount = 0;
+    setRabItems((prev) => {
+      return prev.map((rab) => {
+        let newUnitPrice: number | undefined;
+
+        // Check if sourced from AHSP
+        if (rab.sourceAHSPId && updatedAhspPriceMap.has(rab.sourceAHSPId)) {
+          newUnitPrice = updatedAhspPriceMap.get(rab.sourceAHSPId);
+        } else if (rab.code && updatedAhspPriceMap.has(rab.code.toLowerCase().trim())) {
+          newUnitPrice = updatedAhspPriceMap.get(rab.code.toLowerCase().trim());
+        } else if (rab.sourcePriceItemId && updateMap.has(rab.sourcePriceItemId)) {
+          newUnitPrice = updateMap.get(rab.sourcePriceItemId);
+        } else {
+          // Check by name if sourced from price_db
+          const rabNameKey = rab.name.toLowerCase().trim();
+          const matchedPriceItem = priceDatabase.find((p) => p.name.toLowerCase().trim() === rabNameKey && updateMap.has(p.id));
+          if (matchedPriceItem && updateMap.has(matchedPriceItem.id)) {
+            newUnitPrice = updateMap.get(matchedPriceItem.id);
+          }
+        }
+
+        if (newUnitPrice !== undefined && newUnitPrice !== rab.unitPrice) {
+          updatedRABCount++;
+          return {
+            ...rab,
+            unitPrice: newUnitPrice,
+            totalCost: rab.volume * newUnitPrice,
+            updatedAt: today,
+          };
+        }
+        return rab;
+      });
+    });
+
+    showToast(
+      'Rekonsiliasi AI Berhasil',
+      `${updatedPriceCount} harga master diperbarui. Rekonsiliasi otomatis menyelaraskan ${updatedAHSPCount} item AHSP dan ${updatedRABCount} pos item RAB.`,
+      'success'
+    );
+
+    return {
+      updatedPriceCount,
+      updatedAHSPCount,
+      updatedRABCount,
+    };
   };
 
   // ── Template Handlers ──────────────────────────────────────────────────────
@@ -2012,6 +2148,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     updatePriceItem,
     deletePriceItem,
     importPriceItems,
+    batchUpdatePriceItemsAndReconcile,
 
     createTemplateFromProject,
     deleteTemplate,

@@ -108,41 +108,6 @@ export const exportToPDF = async (options: PDFExportOptions): Promise<void> => {
           allowTaint: true,
           logging: false,
           backgroundColor: '#ffffff',
-          onclone: (clonedDoc: Document) => {
-            // 1. Sanitasi style tags untuk mencegah parser crash pada oklch/oklab
-            const styleTags = clonedDoc.querySelectorAll('style');
-            styleTags.forEach((styleTag) => {
-              if (styleTag.textContent && (styleTag.textContent.includes('oklch') || styleTag.textContent.includes('oklab'))) {
-                styleTag.textContent = styleTag.textContent
-                  .replace(/oklch\([^)]+\)/g, '#64748b')
-                  .replace(/oklab\([^)]+\)/g, '#64748b');
-              }
-            });
-
-            // 2. Sanitasi computed styles pada seluruh elemen
-            const allElements = clonedDoc.querySelectorAll('*');
-            allElements.forEach((el) => {
-              const htmlEl = el as HTMLElement;
-              if (!htmlEl || !htmlEl.style) return;
-              try {
-                const style = window.getComputedStyle(el);
-                const propsToCheck = ['backgroundColor', 'color', 'borderColor', 'stroke', 'fill'];
-                
-                propsToCheck.forEach((prop) => {
-                  const cssProp = prop.replace(/([A-Z])/g, '-$1').toLowerCase();
-                  const val = style.getPropertyValue(cssProp);
-                  if (val && (val.includes('oklch') || val.includes('oklab'))) {
-                    if (prop === 'color') htmlEl.style[prop as any] = '#0f172a';
-                    else if (prop === 'backgroundColor') htmlEl.style[prop as any] = '#ffffff';
-                    else if (prop === 'borderColor') htmlEl.style[prop as any] = '#e2e8f0';
-                    else htmlEl.style[prop as any] = 'transparent';
-                  }
-                });
-              } catch {
-                // ignore
-              }
-            });
-          }
         });
 
         // Restore non-printable elements

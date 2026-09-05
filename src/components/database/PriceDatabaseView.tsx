@@ -6,6 +6,8 @@ import { exportPriceDatabaseToCSV, parsePriceCSV } from '../../utils/exportHelpe
 import { PdfExportButton } from "../common/PdfExportButton";
 import { PriceItemModal } from './PriceItemModal';
 import { ConfirmModal } from '../layout/ConfirmModal';
+import { ReviewApprovalModal, ProposedPriceAdjustment } from '../ai/ReviewApprovalModal';
+import { aiService } from '../../services/aiService';
 import {
   Plus,
   Search,
@@ -18,6 +20,8 @@ import {
   FileSpreadsheet,
   CheckCircle2,
   Filter,
+  Sparkles,
+  Loader2,
 } from 'lucide-react';
 
 export const PriceDatabaseView: React.FC = () => {
@@ -38,6 +42,11 @@ export const PriceDatabaseView: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemToEdit, setItemToEdit] = useState<PriceItem | null>(null);
   const [itemToDelete, setItemToDelete] = useState<PriceItem | null>(null);
+
+  // AI Price Watcher states
+  const [isPriceWatcherScanning, setIsPriceWatcherScanning] = useState(false);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [proposedPriceAdjustments, setProposedPriceAdjustments] = useState<ProposedPriceAdjustment[]>([]);
 
   // File import ref
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -98,6 +107,49 @@ export const PriceDatabaseView: React.FC = () => {
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
+  const handleRunPriceWatcher = async () => {
+    if (priceDatabase.length === 0) {
+      showToast('Database Kosong', 'Tambahkan atau import data harga terlebih dahulu untuk diaudit.', 'warning');
+      return;
+    }
+
+    try {
+      setIsPriceWatcherScanning(true);
+      showToast('AI Price Watcher Aktif', 'Sedang memindai kewajaran harga terhadap indeks konstruksi Indonesia 2026...', 'info');
+
+      const result = await aiService.auditStalePrices(priceDatabase);
+
+      const formatted: ProposedPriceAdjustment[] = (result.recommendations || []).map((r) => ({
+        itemId: r.priceItemId,
+        itemName: r.name,
+        code: r.code,
+        category: r.category,
+        unit: r.unit,
+        currentPrice: r.currentPrice,
+        suggestedPrice: r.recommendedPrice,
+        marketMin: r.marketMin,
+        marketMax: r.marketMax,
+        status: r.status,
+        percentDelta: r.percentDelta,
+        reason: r.reason,
+        selected: r.status !== 'Wajar',
+      }));
+
+      setProposedPriceAdjustments(formatted);
+      setIsReviewModalOpen(true);
+      showToast(
+        'Audit AI 2026 Selesai',
+        `Ditemukan ${result.staleCount || 0} harga perlu disesuaikan dari total ${priceDatabase.length} item.`,
+        'success'
+      );
+    } catch (err: any) {
+      console.error('Price Watcher Error:', err);
+      showToast('Gagal Memindai', err?.message || 'Terjadi kesalahan saat memindai harga pasar.', 'error');
+    } finally {
+      setIsPriceWatcherScanning(false);
+    }
+  };
+
   const handleInsertToRAB = (e: React.FormEvent) => {
     e.preventDefault();
     if (!itemToInsert || !selectedProject) return;
@@ -131,7 +183,7 @@ export const PriceDatabaseView: React.FC = () => {
           <h2 className="text-xl font-bold text-[var(--text-primary)] tracking-tight">
             Database Harga Material, Upah & Alat ({priceDatabase.length})
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
             Katalog referensi harga satuan standar untuk estimasi cepat dan akurat
           </p>
         </div>
@@ -146,12 +198,32 @@ export const PriceDatabaseView: React.FC = () => {
             className="hidden"
           />
 
+          {/* AI Price Watcher Button */}
+          <button
+            onClick={handleRunPriceWatcher}
+            disabled={isPriceWatcherScanning || priceDatabase.length === 0}
+            className="flex items-center space-x-1.5 px-3.5 py-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 active:from-amber-700 active:to-orange-800 text-white text-xs font-bold rounded-xl shadow-xs transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            title="AI Price Watcher: Periksa Harga Kedaluwarsa 2026"
+          >
+            {isPriceWatcherScanning ? (
+              <>
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                <span>Memindai Pasar 2026...</span>
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>AI Price Watcher: Periksa Harga Kedaluwarsa</span>
+              </>
+            )}
+          </button>
+
           <button
             onClick={() => fileInputRef.current?.click()}
             className="flex items-center space-x-1.5 px-3 py-2 bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors"
             title="Import CSV"
           >
-            <Upload className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
+            <Upload className="w-3.5 h-3.5 text-slate-600 dark:text-slate-300" />
             <span>Import CSV</span>
           </button>
 
@@ -160,7 +232,7 @@ export const PriceDatabaseView: React.FC = () => {
             className="flex items-center space-x-1.5 px-3 py-2 bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors"
             title="Download CSV"
           >
-            <Download className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
+            <Download className="w-3.5 h-3.5 text-slate-600 dark:text-slate-300" />
             <span>Export CSV</span>
           </button>
 
@@ -408,6 +480,21 @@ export const PriceDatabaseView: React.FC = () => {
             </form>
           </div>
         </div>
+      )}
+
+      {/* AI Price Watcher Approval & Reconciliation Modal */}
+      {isReviewModalOpen && (
+        <ReviewApprovalModal
+          isOpen={isReviewModalOpen}
+          onClose={() => setIsReviewModalOpen(false)}
+          title="AI Price Watcher — Audit Kewajaran Harga Pasar 2026"
+          description="Evaluasi harga master database terhadap standar SNI PUPR & pasar konstruksi Indonesia 2026."
+          mode="price_watcher"
+          proposedPriceAdjustments={proposedPriceAdjustments}
+          onApproved={() => {
+            setIsReviewModalOpen(false);
+          }}
+        />
       )}
     </div>
   );
