@@ -108,6 +108,41 @@ export const GanttChartView: React.FC = () => {
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
+        onclone: (clonedDoc: Document) => {
+          // 1. Sanitasi style tags untuk mencegah parser crash pada oklch/oklab
+          const styleTags = clonedDoc.querySelectorAll('style');
+          styleTags.forEach((styleTag) => {
+            if (styleTag.textContent && (styleTag.textContent.includes('oklch') || styleTag.textContent.includes('oklab'))) {
+              styleTag.textContent = styleTag.textContent
+                .replace(/oklch\([^)]+\)/g, '#64748b')
+                .replace(/oklab\([^)]+\)/g, '#64748b');
+            }
+          });
+
+          // 2. Sanitasi computed styles pada seluruh elemen
+          const allElements = clonedDoc.querySelectorAll('*');
+          allElements.forEach((el) => {
+            const htmlEl = el as HTMLElement;
+            if (!htmlEl || !htmlEl.style) return;
+            try {
+              const style = window.getComputedStyle(el);
+              const propsToCheck = ['backgroundColor', 'color', 'borderColor', 'stroke', 'fill'];
+              
+              propsToCheck.forEach((prop) => {
+                const cssProp = prop.replace(/([A-Z])/g, '-$1').toLowerCase();
+                const val = style.getPropertyValue(cssProp);
+                if (val && (val.includes('oklch') || val.includes('oklab'))) {
+                  if (prop === 'color') htmlEl.style[prop as any] = '#0f172a';
+                  else if (prop === 'backgroundColor') htmlEl.style[prop as any] = '#ffffff';
+                  else if (prop === 'borderColor') htmlEl.style[prop as any] = '#e2e8f0';
+                  else htmlEl.style[prop as any] = 'transparent';
+                }
+              });
+            } catch {
+              // ignore
+            }
+          });
+        },
       });
 
       const imgData = canvas.toDataURL('image/png');
@@ -281,7 +316,7 @@ export const GanttChartView: React.FC = () => {
             <button
               onClick={handleGenerateSCurve}
               disabled={isGenerating}
-              className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-2xs transition-colors inline-flex items-center space-x-2 disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
+              className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-2xs transition-colors inline-flex items-center space-x-2 disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-600 disabled:cursor-not-allowed"
             >
               <Calendar className="w-4 h-4" />
               <span>{isGenerating ? 'Menyusun...' : 'Buat Jadwal dari RAB'}</span>
@@ -337,7 +372,7 @@ export const GanttChartView: React.FC = () => {
           <button
             onClick={handleSync}
             disabled={isGenerating}
-            className="px-3.5 py-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 transition-colors flex items-center space-x-1.5 disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-500 disabled:cursor-not-allowed shadow-2xs"
+            className="px-3.5 py-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 transition-colors flex items-center space-x-1.5 disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-600 disabled:cursor-not-allowed shadow-2xs"
             title="Sinkronkan dengan item RAB terbaru"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isGenerating ? 'animate-spin' : ''}`} />
@@ -348,7 +383,7 @@ export const GanttChartView: React.FC = () => {
           <button
             onClick={handleExportPDF}
             disabled={isExportingPDF}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors flex items-center space-x-1.5 disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors flex items-center space-x-1.5 disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-600 disabled:cursor-not-allowed"
           >
             {isExportingPDF ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin text-white" />
