@@ -247,14 +247,14 @@ export const AHSPView: React.FC = () => {
             <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
               Analisis Harga Satuan Pekerjaan (AHSP)
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
               Katalog lengkap {ahspItems.length} rincian koefisien bahan, upah tenaga kerja (OH), dan alat berat yang dikelompokkan secara terstruktur berdasarkan 13 kategori divisi pekerjaan konstruksi termasuk pekerjaan infrastruktur jalan perumahan.
             </p>
           </div>
 
           <div className="flex flex-row md:flex-col items-center md:items-end justify-between gap-3 flex-shrink-0">
             <div className="text-left md:text-right">
-              <div className="text-[11px] font-semibold text-[var(--text-secondary)] uppercase tracking-wider">
+              <div className="text-[11px] font-semibold text-blue-300 uppercase tracking-wider">
                 Total Koleksi AHSP
               </div>
               <div className="text-2xl sm:text-3xl font-black text-white font-mono">
@@ -276,7 +276,7 @@ export const AHSPView: React.FC = () => {
                 }}
                 disabled={isSyncing}
                 title="Perbarui seluruh harga satuan komponen AHSP mengikuti harga terbaru di Database Harga"
-                className="flex items-center space-x-1.5 px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-semibold rounded-xl border border-[var(--border-primary)] transition-all active:scale-95 disabled:opacity-50"
+                className="flex items-center space-x-1.5 px-3 py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-xl border border-white/20 transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
               >
                 <RefreshCw className={`w-3.5 h-3.5 text-emerald-400 ${isSyncing ? 'animate-spin' : ''}`} />
                 <span>Sinkron Database</span>
@@ -287,7 +287,7 @@ export const AHSPView: React.FC = () => {
                   exportAHSPComponentsToPriceDatabase();
                 }}
                 title="Salin seluruh komponen bahan/upah/alat dari AHSP yang belum terdaftar ke Database Harga"
-                className="flex items-center space-x-1.5 px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-semibold rounded-xl border border-[var(--border-primary)] transition-all active:scale-95"
+                className="flex items-center space-x-1.5 px-3 py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-xl border border-white/20 transition-all active:scale-95 cursor-pointer"
               >
                 <Database className="w-3.5 h-3.5 text-blue-400" />
                 <span>Ekspor ke DB</span>

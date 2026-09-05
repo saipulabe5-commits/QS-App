@@ -493,20 +493,20 @@ export const SettingsView: React.FC = () => {
                     TypeScript + React Bundle
                   </span>
                 </div>
-                <p className="text-xs text-[var(--text-secondary)] leading-relaxed max-w-xl">
+                <p className="text-xs text-slate-300 leading-relaxed max-w-xl">
                   Mengemas seluruh berkas kode program frontend (React, Context, Utilities, Types, AHSP logic, Views) dan backend Express ke dalam format file JSON terstruktur.
                 </p>
                 <div className="flex flex-wrap items-center gap-2 pt-1">
-                  <span className="text-[10px] bg-[var(--bg-elevated-hover)] text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-md border border-[var(--border-primary)] font-mono">
+                  <span className="text-[10px] bg-white/10 text-slate-300 px-2 py-0.5 rounded-md border border-white/15 font-mono">
                     React 18
                   </span>
-                  <span className="text-[10px] bg-[var(--bg-elevated-hover)] text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-md border border-[var(--border-primary)] font-mono">
+                  <span className="text-[10px] bg-white/10 text-slate-300 px-2 py-0.5 rounded-md border border-white/15 font-mono">
                     TypeScript
                   </span>
-                  <span className="text-[10px] bg-[var(--bg-elevated-hover)] text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-md border border-[var(--border-primary)] font-mono">
+                  <span className="text-[10px] bg-white/10 text-slate-300 px-2 py-0.5 rounded-md border border-white/15 font-mono">
                     Tailwind CSS
                   </span>
-                  <span className="text-[10px] bg-[var(--bg-elevated-hover)] text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-md border border-[var(--border-primary)] font-mono">
+                  <span className="text-[10px] bg-white/10 text-slate-300 px-2 py-0.5 rounded-md border border-white/15 font-mono">
                     Node/Express
                   </span>
                 </div>
@@ -517,7 +517,7 @@ export const SettingsView: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsSourceModalOpen(true)}
-                className="px-3.5 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 active:bg-slate-600 text-slate-200 text-xs font-semibold rounded-xl border border-[var(--border-primary)] transition-colors flex items-center space-x-1.5"
+                className="px-3.5 py-2 bg-white/10 hover:bg-white/20 active:bg-white/25 text-white text-xs font-semibold rounded-xl border border-white/20 transition-colors flex items-center space-x-1.5 cursor-pointer"
               >
                 <Eye className="w-4 h-4" />
                 <span>Inspeksi Berkas</span>

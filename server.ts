@@ -18,7 +18,7 @@ function requireEnv(name: string, minLength = 1, fallback?: string): string {
     }
     console.warn(`[DEV WARNING] Environment variable ${name} tidak diset. Menggunakan nilai dev fallback.`);
     if (name === 'ADMIN_EMAIL') return 'saipulabe@gmail.com';
-    if (name === 'ADMIN_INITIAL_PASSWORD') return 'rabpro2025!';
+    if (name === 'ADMIN_INITIAL_PASSWORD') return 'tanyasaya01';
     if (name === 'JWT_SECRET') return 'dev_secret_rab_pro_fallback_key_32_chars_minimum_length_safe!';
     return `dev_fallback_${name.toLowerCase()}`;
   }

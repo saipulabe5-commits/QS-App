@@ -550,21 +550,21 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
 
                   {/* AI Diagnostic Agent Expandable Panel */}
                   {aiAnalyses[log.id] && (
-                    <div className="bg-indigo-950/30 border border-indigo-800/50 rounded-xl p-3.5 space-y-2 text-slate-100">
+                    <div className="bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800/50 rounded-xl p-3.5 space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <div className="p-1 rounded bg-indigo-600 text-white">
                             <Sparkles className="w-3.5 h-3.5" />
                           </div>
-                          <span className="text-xs font-bold text-indigo-300">
+                          <span className="text-xs font-bold text-indigo-700 dark:text-indigo-200">
                             Analisis AI Diagnostic Agent (Root Cause & Perbaikan)
                           </span>
                         </div>
-                        <span className="text-[10px] font-mono text-indigo-300 bg-indigo-900/60 px-2 py-0.5 rounded border border-indigo-700/50">
+                        <span className="text-[10px] font-mono text-indigo-700 dark:text-indigo-300 bg-indigo-100/80 dark:bg-indigo-900/60 px-2 py-0.5 rounded border border-indigo-200 dark:border-indigo-700/50">
                           Senior DevOps & Engineer
                         </span>
                       </div>
-                      <div className="text-xs text-indigo-100 dark:text-indigo-200 whitespace-pre-wrap leading-relaxed bg-slate-950/40 p-3 rounded-lg border border-indigo-900/40 font-sans">
+                      <div className="text-xs text-indigo-900 dark:text-indigo-100 whitespace-pre-wrap leading-relaxed bg-white/70 dark:bg-slate-950/40 p-3 rounded-lg border border-indigo-100 dark:border-indigo-900/40 font-sans">
                         {aiAnalyses[log.id]}
                       </div>
                     </div>
