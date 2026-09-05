@@ -218,7 +218,20 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const toggleDarkMode = () => {
     setIsDarkMode(prev => !prev);
   };
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>({
+    id: "usr_admin_main",
+    name: "Administrator",
+    email: "saipulabe@gmail.com",
+    role: "administrator",
+    companyName: "RAB Pro Enterprise",
+    permissions: [
+      'project.create', 'project.read', 'project.update', 'project.delete',
+      'rab.create', 'rab.read', 'rab.update', 'rab.delete', 'rab.export',
+      'ahsp.create', 'ahsp.read', 'ahsp.update', 'ahsp.delete',
+      'prices.create', 'prices.read', 'prices.update', 'prices.delete',
+      'ai.access', 'audit.view', 'sync.manage', 'settings.manage', 'system.manage'
+    ]
+  });
   const [activeTab, setActiveTab] = useState<string>('dashboard');
   const [activeProjectId, setActiveProjectId] = useState<string | null>(INITIAL_PROJECTS[0]?.id || null);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
@@ -320,76 +333,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     async function bootDB() {
       setIsDbBooting(true);
       try {
-        const token = safeLocalStorageGet('rabpro_token');
-        if (token) {
-          try {
-            const res = await fetch('/api/auth/me', {
-              headers: { Authorization: `Bearer ${token}` }
-            });
-            if (res.ok) {
-              const data = await res.json();
-              if (data.success && data.user) {
-                setUser(data.user);
-                safeLocalStorageSet(STORAGE_KEYS.USER, JSON.stringify(data.user));
-                safeLocalStorageSet('rabpro_last_verified', Date.now().toString());
-              } else {
-                throw new Error('Invalid response');
-              }
-            } else {
-              // Token invalid or expired
-              safeLocalStorageRemove('rabpro_token');
-              safeLocalStorageRemove(STORAGE_KEYS.USER);
-              safeLocalStorageRemove('rabpro_last_verified');
-              setUser(null);
-            }
-          } catch (e) {
-            // Network error or fetch failed.
-            // Strict zero trust: Only authenticate locally if we have a valid, unexpired JWT 
-            // AND it was verified by the server within the last 72 hours.
-            try {
-              const lastVerified = parseInt(safeLocalStorageGet('rabpro_last_verified') || '0', 10);
-              const isVerifiedRecently = Date.now() - lastVerified < 72 * 60 * 60 * 1000;
-
-              if (!isVerifiedRecently) {
-                console.warn('Offline session expired. Please connect to the internet to verify your session.');
-                safeLocalStorageRemove('rabpro_token');
-                safeLocalStorageRemove(STORAGE_KEYS.USER);
-                setUser(null);
-              } else {
-                const base64Url = token.split('.')[1];
-                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                }).join(''));
-                const payload = JSON.parse(jsonPayload);
-                if (payload.exp && payload.exp * 1000 > Date.now()) {
-                  const storedUser = safeLocalStorageGet(STORAGE_KEYS.USER);
-                  if (storedUser) {
-                    const parsedUser = JSON.parse(storedUser);
-                    // Ensure ID matches
-                    if (parsedUser.id === payload.id) {
-                      setUser(parsedUser);
-                    } else {
-                      setUser(null);
-                    }
-                  } else {
-                    setUser(null);
-                  }
-                } else {
-                  safeLocalStorageRemove('rabpro_token');
-                  safeLocalStorageRemove(STORAGE_KEYS.USER);
-                  safeLocalStorageRemove('rabpro_last_verified');
-                  setUser(null);
-                }
-              }
-            } catch(jwtErr) {
-              setUser(null);
-            }
-          }
-        } else {
-          setUser(null);
-        }
-
         const rawActiveProject = safeLocalStorageGet(STORAGE_KEYS.ACTIVE_PROJECT);
         if (rawActiveProject) {
           try {

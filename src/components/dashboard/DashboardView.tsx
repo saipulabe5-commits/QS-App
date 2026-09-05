@@ -250,7 +250,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
               <div className="mt-3 pt-3 border-t border-[var(--border-primary)]/80 flex items-center justify-between text-xs">
                 <span className="text-[var(--text-secondary)]">Nilai Grand Total:</span>
-                <span className="font-bold text-blue-300 text-sm">
+                <span className="font-bold text-blue-600 dark:text-blue-400 text-sm">
                   {formatRupiah(activeCalc.grandTotal)}
                 </span>
               </div>

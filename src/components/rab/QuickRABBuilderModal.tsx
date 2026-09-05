@@ -680,7 +680,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                       onClick={() => setMethod(opt.id)}
                       className={`p-3.5 rounded-xl border text-left transition-all ${
                         isSelected
-                          ? 'border-blue-600 bg-blue-50/70 ring-2 ring-blue-500/20 shadow-xs'
+                          ? 'border-blue-600 bg-blue-50/70 dark:bg-blue-950/60 ring-2 ring-blue-500/20 shadow-xs'
                           : 'border-[var(--border-primary)] hover:border-[var(--border-primary)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)]'
                       }`}
                     >
@@ -714,7 +714,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                         onClick={() => setSelectedBuildingType(preset.id)}
                         className={`p-2.5 rounded-lg border text-left text-xs transition-colors ${
                           selectedBuildingType === preset.id
-                            ? 'border-blue-600 bg-[var(--bg-elevated)] font-bold text-blue-900 shadow-2xs'
+                            ? 'border-blue-600 bg-[var(--bg-elevated)] font-bold text-blue-600 dark:text-blue-400 shadow-2xs'
                             : 'border-[var(--border-primary)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] text-[var(--text-primary)]'
                         }`}
                       >
@@ -742,7 +742,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                           onClick={() => setSelectedTemplateId(tpl.id)}
                           className={`w-full p-2.5 rounded-lg border text-left text-xs flex items-center justify-between transition-colors ${
                             selectedTemplateId === tpl.id
-                              ? 'border-blue-600 bg-[var(--bg-elevated)] font-bold text-blue-900 shadow-2xs'
+                              ? 'border-blue-600 bg-[var(--bg-elevated)] font-bold text-blue-600 dark:text-blue-400 shadow-2xs'
                               : 'border-[var(--border-primary)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] text-[var(--text-primary)]'
                           }`}
                         >
@@ -786,7 +786,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                       onChange={(e) => setAiDisclaimerAccepted(e.target.checked)}
                       className="rounded-sm text-blue-600 focus:ring-blue-500 w-4 h-4"
                     />
-                    <span className="text-xs font-bold text-[var(--text-primary)]">
+                    <span className="text-xs font-bold text-amber-950">
                       Saya memahami dan menyetujui bahwa hasil AI merupakan estimasi awal yang perlu verifikasi teknis.
                     </span>
                   </label>
@@ -837,7 +837,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                       key={cat}
                       className={`flex items-center justify-between p-2.5 rounded-xl border text-xs cursor-pointer transition-colors ${
                         isChecked
-                          ? 'border-blue-600 bg-blue-50/60 font-semibold text-blue-900'
+                          ? 'border-blue-600 bg-blue-50/60 dark:bg-blue-950/60 font-semibold text-blue-900 dark:text-blue-200'
                           : 'border-[var(--border-primary)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] text-[var(--text-primary)]'
                       }`}
                     >

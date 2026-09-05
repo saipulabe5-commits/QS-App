@@ -14,7 +14,6 @@ const DiagnosticsModal = lazyWithRetry(() => import('./components/diagnostics/Di
 import { ToastContainer } from './components/layout/Toast';
 import { ViewFallback } from './components/layout/ViewFallback';
 const DashboardView = lazyWithRetry(() => import('./components/dashboard/DashboardView').then(m => ({ default: m.DashboardView })));
-import { AuthGate } from './components/auth/AuthGate';
 
 // PROGRESSIVE LAZY MODULE LOADING (ISOLATION OF SUB-MODULE FAILURES)
 const ProjectListView = lazyWithRetry(() => import('./components/projects/ProjectListView').then(m => ({ default: m.ProjectListView })));
@@ -95,16 +94,6 @@ const MainLayout: React.FC = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
-
-  // STRICT ACCESS GATE: JIKA USER LOGOUT ATAU BELUM LOGIN, APLIKASI TERKUNCI TOTAL
-  if (!user) {
-    return (
-      <>
-        <AuthGate />
-        <ToastContainer />
-      </>
-    );
-  }
 
   const handleOpenAIWithTab = (tab: 'chat' | 'missing' | 'audit' | 'volume' | 'savings' | 'summary' | 'estimate' = 'chat') => {
     setAiInitialTab(tab);

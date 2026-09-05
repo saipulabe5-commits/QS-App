@@ -596,9 +596,9 @@ export const RABItemModal: React.FC<RABItemModalProps> = ({
                 <span className="text-[10px] text-blue-800 uppercase font-extrabold tracking-wider block">
                   Perhitungan Otomatis Biaya Item
                 </span>
-                <div className="text-xs text-[var(--text-primary)] mt-0.5">
-                  Volume: <strong className="text-[var(--text-primary)]">{formatNumber(numVol, 2)} {unit}</strong> &times; Harga:{' '}
-                  <strong className="text-[var(--text-primary)]">{formatRupiah(numPrice)}</strong>
+                <div className="text-xs text-slate-700 mt-0.5">
+                  Volume: <strong className="text-slate-900">{formatNumber(numVol, 2)} {unit}</strong> &times; Harga:{' '}
+                  <strong className="text-slate-900">{formatRupiah(numPrice)}</strong>
                 </div>
               </div>
               <div className="text-left sm:text-right">

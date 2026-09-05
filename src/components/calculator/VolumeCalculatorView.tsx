@@ -630,17 +630,17 @@ export const VolumeCalculatorView: React.FC = () => {
           )}
 
           {/* Large Result Box */}
-          <div className="p-5 bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl flex items-center justify-between">
+          <div className="p-5 bg-gradient-to-r from-slate-900 to-blue-950 text-white rounded-2xl flex items-center justify-between border border-blue-900/40 shadow-sm">
             <div>
-              <div className="text-xs font-bold uppercase text-blue-400">
+              <div className="text-xs font-bold uppercase text-blue-300">
                 Hasil Perhitungan Volume
               </div>
-              <div className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
+              <div className="text-xs text-slate-300 mt-0.5">
                 Formula siap dimasukkan langsung ke item RAB
               </div>
             </div>
             <div className="text-right">
-              <div className="text-2xl sm:text-3xl font-black font-mono text-blue-400">
+              <div className="text-2xl sm:text-3xl font-black font-mono text-blue-300">
                 {formatNumber(computedVolume, 3)}{' '}
                 <span className="text-base font-normal text-white">{computedUnit}</span>
               </div>

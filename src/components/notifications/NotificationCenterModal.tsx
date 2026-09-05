@@ -424,7 +424,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                     className={`p-4 rounded-xl border transition-all ${
                       notif.isRead
                         ? 'bg-[var(--bg-elevated)] border-[var(--border-primary)] opacity-80'
-                        : 'bg-blue-50/40 border-blue-200 shadow-2xs'
+                        : 'bg-blue-50/40 dark:bg-blue-950/40 border-blue-200 dark:border-blue-800 shadow-2xs'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-3">
@@ -465,7 +465,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                         {notif.actionLabel && notif.actionTarget && (
                           <button
                             onClick={() => handleActionClick(notif)}
-                            className="px-2.5 py-1 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg flex items-center gap-1 transition-colors"
+                            className="px-2.5 py-1 text-xs font-semibold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950 hover:bg-blue-100 dark:hover:bg-blue-900 border border-blue-200 dark:border-blue-800 rounded-lg flex items-center gap-1 transition-colors"
                           >
                             <span>{notif.actionLabel}</span>
                             <ExternalLink className="w-3 h-3" />

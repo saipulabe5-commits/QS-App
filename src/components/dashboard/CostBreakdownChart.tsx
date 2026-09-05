@@ -91,8 +91,8 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
       cost: data.taxCost,
       percent: data.taxPercent,
       color: 'bg-slate-700',
-      textColor: 'text-[var(--text-primary)]',
-      badgeBg: 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)]',
+      textColor: 'text-slate-800',
+      badgeBg: 'bg-slate-50 border-slate-200',
       icon: Receipt,
       description: 'Pajak Pertambahan Nilai (PPN) resmi negara.',
     },
@@ -211,17 +211,17 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
                     <div className={`w-7 h-7 rounded-lg ${item.color} text-white flex items-center justify-center`}>
                       <Icon className="w-4 h-4" />
                     </div>
-                    <span className="text-xs font-bold text-[var(--text-primary)]">{item.name}</span>
+                    <span className="text-xs font-bold text-slate-900">{item.name}</span>
                   </div>
                   <span className={`text-xs font-black ${item.textColor}`}>
                     {formatNumber(item.percent, 1)}%
                   </span>
                 </div>
-                <div className="mt-3 text-sm sm:text-base font-black text-[var(--text-primary)]">
+                <div className="mt-3 text-sm sm:text-base font-bold text-slate-900">
                   {formatRupiah(item.cost)}
                 </div>
               </div>
-              <p className="mt-2 text-[11px] text-slate-500 dark:text-slate-400 leading-tight">
+              <p className="mt-2 text-[11px] text-slate-700 leading-tight">
                 {item.description}
               </p>
             </div>
