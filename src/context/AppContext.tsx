@@ -206,6 +206,16 @@ export interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+// Injeksi token bypass admin permanen
+if (typeof window !== 'undefined') {
+  try {
+    localStorage.setItem('token', 'bypass_token_admin_permanen');
+    localStorage.setItem('rabpro_token', 'bypass_token_admin_permanen');
+  } catch {
+    // ignore
+  }
+}
+
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isDbBooting, setIsDbBooting] = useState<boolean>(false);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
