@@ -1097,6 +1097,53 @@ const aiZeroCostGuard = async (req: express.Request, res: express.Response, next
 
 app.use('/api/ai/*', aiZeroCostGuard);
 
+// ==========================================
+// AI AGENT: BUG & ERROR DIAGNOSTIC
+// ==========================================
+app.post("/api/ai/analyze-bug", requireAuth, async (req, res) => {
+  try {
+    const { message, route, fingerprint, severity, stack, requestUrl, requestMethod, responseStatus, source, category, occurrenceCount } = req.body;
+
+    const ai = getGeminiClient();
+    if (!ai) {
+      return res.status(503).json({ error: "Kunci API Gemini belum dikonfigurasi." });
+    }
+
+    const systemInstruction = "Anda adalah Senior DevOps & Software Engineer. Analisis log error dari aplikasi React + Node.js berikut. Jelaskan dengan singkat, padat, dan teknis: 1) Akar masalah (Root Cause). 2) Cara spesifik memperbaikinya. Gunakan bahasa Indonesia profesional.";
+
+    const bugContext = `
+DETAIL LOG ERROR:
+- Pesan Error: ${message || 'Tidak ada pesan error spesifik'}
+- Severity: ${severity || 'error'}
+- Fingerprint: ${fingerprint || '-'}
+- Route / URL: ${route || requestUrl || '-'}
+- HTTP Method: ${requestMethod || '-'}
+- HTTP Status: ${responseStatus || '-'}
+- Kategori: ${category || '-'}
+- Sumber: ${source || '-'}
+- Frekuensi Kemunculan: ${occurrenceCount ? occurrenceCount + 'x' : '1x'}
+${stack ? `\nSTACK TRACE:\n${stack}` : ''}
+`.trim();
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: [
+        { role: "user", parts: [{ text: bugContext }] }
+      ],
+      config: {
+        systemInstruction,
+        temperature: 0.2,
+      }
+    });
+
+    const analysisText = response.text || "Tidak ada hasil analisis yang dihasilkan.";
+    res.json({ analysis: analysisText, success: true });
+  } catch (error: any) {
+    console.error("AI Bug Diagnostic error:", error);
+    res.status(500).json({ error: error?.message || "Gagal menganalisis bug via AI." });
+  }
+});
+
 
 
 // ==========================================

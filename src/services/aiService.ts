@@ -760,5 +760,37 @@ Silakan ajukan pertanyaan atau gunakan tombol pintas yang tersedia.`,
     const data = await response.json();
     return data;
   },
+
+  // 10. AI Bug & Error Diagnostic Agent
+  async analyzeBugDiagnostic(bugEntry: any): Promise<string> {
+    const response = await fetch('/api/ai/analyze-bug', {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({
+        message: bugEntry.message,
+        route: bugEntry.route,
+        fingerprint: bugEntry.fingerprint,
+        severity: bugEntry.severity,
+        stack: bugEntry.stack,
+        requestUrl: bugEntry.requestUrl,
+        requestMethod: bugEntry.requestMethod,
+        responseStatus: bugEntry.responseStatus,
+        source: bugEntry.source,
+        category: bugEntry.category,
+        occurrenceCount: bugEntry.occurrenceCount,
+      }),
+    });
+
+    if (!response.ok) {
+      if (response.status === 429) {
+        throw new Error('Batas pemakaian AI harian (Zero-Cost Safeguard) telah tercapai.');
+      }
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || 'Gagal menganalisis bug via AI.');
+    }
+
+    const data = await response.json();
+    return data.analysis || data.result || '';
+  },
 };
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { bugTracker, BugLogEntry, BugStatus } from '../../utils/bugTracker';
 import { appAuditService, AppAuditReport } from '../../services/appAuditService';
+import { aiService } from '../../services/aiService';
 import { 
   ShieldAlert, 
   Download, 
@@ -33,6 +34,10 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
   const [filterSeverity, setFilterSeverity] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
+  // AI Diagnostic State
+  const [analyzingIds, setAnalyzingIds] = useState<Set<string>>(new Set());
+  const [aiAnalyses, setAiAnalyses] = useState<Record<string, string>>({});
+
   // Resolve Modal State
   const [resolvingBug, setResolvingBug] = useState<BugLogEntry | null>(null);
   const [resolutionNote, setResolutionNote] = useState('');
@@ -42,6 +47,30 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
   const [isRunningAudit, setIsRunningAudit] = useState(false);
   const [auditReport, setAuditReport] = useState<AppAuditReport | null>(null);
   const [showAuditModal, setShowAuditModal] = useState(false);
+
+  const handleAnalyzeBug = async (bug: any) => {
+    if (!bug || analyzingIds.has(bug.id)) return;
+    setAnalyzingIds((prev) => new Set(prev).add(bug.id));
+    try {
+      const result = await aiService.analyzeBugDiagnostic(bug);
+      setAiAnalyses((prev) => ({
+        ...prev,
+        [bug.id]: result,
+      }));
+    } catch (err: any) {
+      console.error('Failed to run AI bug diagnostic:', err);
+      setAiAnalyses((prev) => ({
+        ...prev,
+        [bug.id]: `[Gagal Analisis]: ${err.message || 'Terjadi kesalahan saat memanggil AI Diagnostic Agent.'}`,
+      }));
+    } finally {
+      setAnalyzingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(bug.id);
+        return next;
+      });
+    }
+  };
 
   const fetchLogs = async () => {
     setLoading(true);
@@ -431,14 +460,27 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
                     {/* Action Buttons */}
                     <div className="flex items-center gap-2 flex-shrink-0">
                       {!isResolved ? (
-                        <button
-                          onClick={() => handleOpenResolveModal(log)}
-                          className="flex items-center gap-1.5 px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow-xs transition-colors cursor-pointer"
-                          title="Tandai bug ini sudah diperbaiki dan simpan catatan resolusi"
-                        >
-                          <Check className="w-3.5 h-3.5" />
-                          Tandai Selesai
-                        </button>
+                        <>
+                          <button
+                            onClick={() => handleAnalyzeBug(log)}
+                            disabled={analyzingIds.has(log.id)}
+                            className="flex items-center gap-1.5 px-2.5 py-1.5 border border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 rounded-lg text-xs font-semibold shadow-xs transition-colors cursor-pointer disabled:opacity-60"
+                            title="Analisis akar masalah & instruksi perbaikan teknis dengan AI"
+                          >
+                            {analyzingIds.has(log.id) ? (
+                              <RefreshCw className="w-3.5 h-3.5 animate-spin text-indigo-600 dark:text-indigo-400" />
+                            ) : null}
+                            <span>✨ Analisis AI</span>
+                          </button>
+                          <button
+                            onClick={() => handleOpenResolveModal(log)}
+                            className="flex items-center gap-1.5 px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow-xs transition-colors cursor-pointer"
+                            title="Tandai bug ini sudah diperbaiki dan simpan catatan resolusi"
+                          >
+                            <Check className="w-3.5 h-3.5" />
+                            Tandai Selesai
+                          </button>
+                        </>
                       ) : (
                         <button
                           onClick={() => handleReopenBug(log)}
@@ -504,6 +546,28 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
                         {log.componentStack && `\n\nComponent Stack:\n${log.componentStack}`}
                       </pre>
                     </details>
+                  )}
+
+                  {/* AI Diagnostic Agent Expandable Panel */}
+                  {aiAnalyses[log.id] && (
+                    <div className="bg-indigo-950/30 border border-indigo-800/50 rounded-xl p-3.5 space-y-2 text-slate-100">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1 rounded bg-indigo-600 text-white">
+                            <Sparkles className="w-3.5 h-3.5" />
+                          </div>
+                          <span className="text-xs font-bold text-indigo-300">
+                            Analisis AI Diagnostic Agent (Root Cause & Perbaikan)
+                          </span>
+                        </div>
+                        <span className="text-[10px] font-mono text-indigo-300 bg-indigo-900/60 px-2 py-0.5 rounded border border-indigo-700/50">
+                          Senior DevOps & Engineer
+                        </span>
+                      </div>
+                      <div className="text-xs text-indigo-100 dark:text-indigo-200 whitespace-pre-wrap leading-relaxed bg-slate-950/40 p-3 rounded-lg border border-indigo-900/40 font-sans">
+                        {aiAnalyses[log.id]}
+                      </div>
+                    </div>
                   )}
                 </div>
               );
