@@ -1,4 +1,6 @@
 import React, { useState, useRef } from 'react';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import { useApp } from '../../context/AppContext';
 import { PdfExportButton } from "../common/PdfExportButton";
 import { PeriodProgressRecord } from '../../types/scurve';
@@ -20,6 +22,8 @@ import {
   Info,
   HelpCircle,
   Plus,
+  Printer,
+  Loader2,
 } from 'lucide-react';
 
 export const SCurveActualView: React.FC = () => {
@@ -42,6 +46,60 @@ export const SCurveActualView: React.FC = () => {
   const [reportDateInput, setReportDateInput] = useState<string>('');
   const [notesInput, setNotesInput] = useState<string>('');
   const [issuesInput, setIssuesInput] = useState<string>('');
+  const [isExportingPDF, setIsExportingPDF] = useState(false);
+
+  // High-Resolution PDF Export Engine
+  const handleExportPDF = async () => {
+    try {
+      setIsExportingPDF(true);
+      showToast('Memproses PDF', 'Menyiapkan render visual resolusi tinggi...', 'info');
+      await new Promise((resolve) => setTimeout(resolve, 800));
+
+      const element = document.getElementById('kurvas-export-area');
+      if (!element) {
+        showToast('Gagal', 'Area dokumen Kurva S tidak ditemukan.', 'error');
+        setIsExportingPDF(false);
+        return;
+      }
+
+      const canvas = await html2canvas(element, {
+        scale: 4,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('l', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const margin = 10;
+      const imgWidth = pdfWidth - margin * 2;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let heightLeft = imgHeight;
+      let position = margin;
+
+      pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight, undefined, 'FAST');
+      heightLeft -= (pdfHeight - margin * 2);
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight + margin;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight, undefined, 'FAST');
+        heightLeft -= (pdfHeight - margin * 2);
+      }
+
+      const filename = `Progres_Aktual_KurvaS_${selectedProject?.name?.replace(/\s+/g, '_') || 'Proyek'}_${new Date().toISOString().slice(0, 10)}.pdf`;
+      pdf.save(filename);
+      showToast('Cetak PDF Berhasil', `Dokumen ${filename} berhasil diunduh.`, 'success');
+    } catch (err: any) {
+      console.error('PDF generation error:', err);
+      showToast('Gagal Cetak PDF', err.message || 'Terjadi kesalahan saat memproses dokumen PDF.', 'error');
+    } finally {
+      setIsExportingPDF(false);
+    }
+  };
 
   const scurve = projectSCurve;
 
@@ -112,19 +170,19 @@ export const SCurveActualView: React.FC = () => {
             <span className="p-1.5 bg-blue-600 rounded-lg text-white">
               <Activity className="w-5 h-5" />
             </span>
-            <h1 className="text-xl font-bold tracking-tight">Progres Aktual & Pengendalian Lapangan</h1>
+            <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Progres Aktual & Pengendalian Lapangan</h1>
           </div>
           <p className="text-xs text-slate-600 dark:text-slate-300 max-w-2xl">
             Input capaian fisik pekerjaan berkala, pantau deviasi (+/-) terhadap rencana, dan catat kendala teknis pelaksanaan proyek secara terstruktur.
           </p>
-                    <div className="flex items-center space-x-3 mt-3 text-xs text-[var(--text-secondary)]">
+          <div className="flex items-center space-x-3 mt-3 text-xs text-slate-700 dark:text-slate-200">
             <span>
-              Proyek: <strong className="text-white">{selectedProject?.name || 'Pilih Proyek'}</strong>
+              Proyek: <strong className="font-bold text-slate-900 dark:text-white">{selectedProject?.name || 'Pilih Proyek'}</strong>
             </span>
             <span>•</span>
             <span>{reportedRecords.length} Periode Telah Dilaporkan</span>
             <span>•</span>
-            <span className="text-blue-400 font-semibold">
+            <span className="text-blue-700 dark:text-blue-400 font-bold">
               Deviasi Terakhir: {currentDeviation > 0 ? `+${currentDeviation.toFixed(2)}%` : `${currentDeviation.toFixed(2)}%`}
             </span>
           </div>
@@ -144,7 +202,7 @@ export const SCurveActualView: React.FC = () => {
           />
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="px-3.5 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-[var(--border-primary)] transition-colors flex items-center space-x-1.5"
+            className="px-3.5 py-2.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 transition-colors flex items-center space-x-1.5 disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-500 disabled:cursor-not-allowed shadow-2xs"
           >
             <UploadCloud className="w-4 h-4" />
             <span>Impor CSV</span>
@@ -152,10 +210,23 @@ export const SCurveActualView: React.FC = () => {
 
           <button
             onClick={handleExportCSV}
-            className="px-3.5 py-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-[var(--border-primary)] transition-colors flex items-center space-x-1.5"
+            className="px-3.5 py-2.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 transition-colors flex items-center space-x-1.5 disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-500 disabled:cursor-not-allowed shadow-2xs"
           >
             <Download className="w-4 h-4" />
             <span>Ekspor CSV</span>
+          </button>
+
+          <button
+            onClick={handleExportPDF}
+            disabled={isExportingPDF}
+            className="px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl shadow-xs transition-colors flex items-center space-x-1.5 disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
+          >
+            {isExportingPDF ? (
+              <Loader2 className="w-4 h-4 animate-spin text-white" />
+            ) : (
+              <Printer className="w-4 h-4 text-white" />
+            )}
+            <span>{isExportingPDF ? 'Mencetak...' : 'Cetak PDF'}</span>
           </button>
 
           <button
@@ -169,12 +240,12 @@ export const SCurveActualView: React.FC = () => {
       </div>
 
       {!scurve ? (
-        <div className="bg-[var(--bg-elevated)] rounded-2xl p-12 border border-[var(--border-primary)] text-center space-y-4 max-w-xl mx-auto shadow-xs">
+        <div className="bg-[var(--bg-elevated)] rounded-2xl p-12 border border-slate-200 dark:border-[var(--border-primary)] text-center space-y-4 max-w-xl mx-auto shadow-xs">
           <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto">
             <Clock className="w-7 h-7" />
           </div>
-          <h3 className="text-base font-bold text-[var(--text-primary)]">Jadwal Rencana Kurva S Belum Ada</h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
+          <h3 className="text-base font-bold text-slate-900 dark:text-white">Jadwal Rencana Kurva S Belum Ada</h3>
+          <p className="text-xs text-slate-600 dark:text-slate-300 max-w-sm mx-auto">
             Buat jadwal rencana Kurva S terlebih dahulu sebelum memasukkan progres aktual lapangan.
           </p>
           <button
@@ -186,45 +257,45 @@ export const SCurveActualView: React.FC = () => {
           </button>
         </div>
       ) : (
-        <div className="space-y-6" id="scurve-actual-view">
+        <div className="space-y-6 bg-white dark:bg-slate-900 p-2 sm:p-4 rounded-2xl" id="kurvas-export-area">
           {/* Status KPI Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Target Kumulatif (Sd. Saat Ini)</span>
-              <div className="text-xl font-extrabold text-[var(--text-primary)] mt-1">
+            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-[var(--border-primary)] shadow-2xs">
+              <span className="text-xs text-slate-700 dark:text-slate-200 font-medium">Target Kumulatif (Sd. Saat Ini)</span>
+              <div className="text-xl font-extrabold text-slate-900 dark:text-white mt-1">
                 {currentPlannedCum.toFixed(2)} %
               </div>
-              <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">Target rencana yang harus dicapai</p>
+              <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-0.5">Target rencana yang harus dicapai</p>
             </div>
 
-            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Realisasi Fisik Aktual</span>
-              <div className="text-xl font-extrabold text-blue-900 mt-1">
+            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-[var(--border-primary)] shadow-2xs">
+              <span className="text-xs text-slate-700 dark:text-slate-200 font-medium">Realisasi Fisik Aktual</span>
+              <div className="text-xl font-extrabold text-blue-900 dark:text-blue-400 mt-1">
                 {currentActualCum.toFixed(2)} %
               </div>
-              <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">Capaian fisik aktual lapangan</p>
+              <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-0.5">Capaian fisik aktual lapangan</p>
             </div>
 
-            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Deviasi Progres</span>
+            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-[var(--border-primary)] shadow-2xs">
+              <span className="text-xs text-slate-700 dark:text-slate-200 font-medium">Deviasi Progres</span>
               <div
                 className={`text-xl font-extrabold mt-1 ${
                   currentDeviation >= 0.5
-                    ? 'text-blue-600'
+                    ? 'text-blue-600 dark:text-blue-400'
                     : currentDeviation <= -2.0
-                    ? 'text-rose-600'
-                    : 'text-emerald-600'
+                    ? 'text-rose-600 dark:text-rose-400'
+                    : 'text-emerald-600 dark:text-emerald-400'
                 }`}
               >
                 {currentDeviation >= 0 ? `+${currentDeviation.toFixed(2)} %` : `${currentDeviation.toFixed(2)} %`}
               </div>
-              <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">
+              <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-0.5">
                 {currentDeviation >= 0.5 ? 'Lebih cepat dari jadwal' : currentDeviation <= -2.0 ? 'Mengalami keterlambatan' : 'Sesuai dengan target rencana'}
               </p>
             </div>
 
-            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-[var(--border-primary)] shadow-2xs">
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Status Kesehatan Proyek</span>
+            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-[var(--border-primary)] shadow-2xs">
+              <span className="text-xs text-slate-700 dark:text-slate-200 font-medium">Status Kesehatan Proyek</span>
               <div className="mt-1 flex items-center space-x-2">
                 {currentDeviation >= 0.5 ? (
                   <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-100 text-blue-800 border border-blue-300 flex items-center gap-1">
@@ -240,19 +311,19 @@ export const SCurveActualView: React.FC = () => {
                   </span>
                 )}
               </div>
-              <p className="text-[11px] text-[var(--text-secondary)] mt-1">Berdasarkan deviasi kumulatif</p>
+              <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-1">Berdasarkan deviasi kumulatif</p>
             </div>
           </div>
 
           {/* Table of Period Progress */}
-          <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] shadow-xs overflow-hidden">
-            <div className="p-4 border-b border-[var(--border-primary)] bg-[var(--bg-elevated-hover)] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="bg-[var(--bg-elevated)] rounded-2xl border border-slate-200 dark:border-[var(--border-primary)] shadow-xs overflow-hidden">
+            <div className="p-4 border-b border-slate-200 dark:border-[var(--border-primary)] bg-slate-50 dark:bg-slate-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h3 className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-2">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
                   <Activity className="w-4 h-4 text-blue-600" />
                   Daftar Laporan Capaian Progres per Periode
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-slate-600 dark:text-slate-300">
                   Klik tombol "Input / Edit Progres" pada baris periode untuk memperbarui capaian mingguan/bulanan.
                 </p>
               </div>
@@ -260,7 +331,7 @@ export const SCurveActualView: React.FC = () => {
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] font-bold border-b border-[var(--border-primary)] uppercase tracking-wider">
+                <thead className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-bold border-b border-slate-200 dark:border-[var(--border-primary)] uppercase tracking-wider">
                   <tr>
                     <th className="p-3 w-14 text-center">Periode</th>
                     <th className="p-3">Rentang Tanggal</th>
@@ -274,12 +345,12 @@ export const SCurveActualView: React.FC = () => {
                     <th className="p-3 text-center">Aksi</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200">
+                <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
                   {scurve.periodRecords.map((rec) => {
                     const hasData = rec.status !== 'Belum ada data';
 
                     let statusBadge = (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[var(--bg-elevated-hover)] text-slate-500 dark:text-slate-400 border border-[var(--border-primary)]">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-slate-600">
                         Belum Diisi
                       </span>
                     );
@@ -306,37 +377,37 @@ export const SCurveActualView: React.FC = () => {
                     return (
                       <tr
                         key={rec.period}
-                        className={`hover:bg-[var(--bg-elevated-hover)] transition-colors ${
-                          hasData ? 'bg-[var(--bg-elevated)]' : 'bg-[var(--bg-elevated-hover)]'
+                        className={`hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors ${
+                          hasData ? 'bg-white dark:bg-slate-900' : 'bg-slate-50/50 dark:bg-slate-900/40'
                         }`}
                       >
-                        <td className="p-3 text-center font-bold text-[var(--text-primary)]">
+                        <td className="p-3 text-center font-bold text-slate-900 dark:text-white">
                           {scurve.periodType === 'weekly' ? 'M' : 'B'}-{rec.period}
                         </td>
-                        <td className="p-3 text-[var(--text-secondary)] font-medium">
+                        <td className="p-3 text-slate-700 dark:text-slate-300 font-medium">
                           {rec.periodLabel}
                         </td>
-                        <td className="p-3 text-right font-mono text-[var(--text-primary)]">
+                        <td className="p-3 text-right font-mono text-slate-900 dark:text-white">
                           {rec.plannedProgress.toFixed(2)} %
                         </td>
-                        <td className="p-3 text-right font-mono font-semibold text-[var(--text-primary)]">
+                        <td className="p-3 text-right font-mono font-semibold text-slate-900 dark:text-white">
                           {rec.plannedCumulative.toFixed(2)} %
                         </td>
-                        <td className="p-3 text-right font-mono font-bold text-blue-900">
+                        <td className="p-3 text-right font-mono font-bold text-blue-900 dark:text-blue-400">
                           {hasData ? `${rec.actualProgress.toFixed(2)} %` : '-'}
                         </td>
-                        <td className="p-3 text-right font-mono font-black text-blue-900">
+                        <td className="p-3 text-right font-mono font-black text-blue-900 dark:text-blue-400">
                           {hasData ? `${rec.actualCumulative.toFixed(2)} %` : '-'}
                         </td>
                         <td
                           className={`p-3 text-right font-mono font-extrabold ${
                             !hasData
-                              ? 'text-[var(--text-secondary)]'
+                              ? 'text-slate-500 dark:text-slate-400'
                               : rec.deviation >= 0.5
-                              ? 'text-blue-600'
+                              ? 'text-blue-600 dark:text-blue-400'
                               : rec.deviation <= -2.0
-                              ? 'text-rose-600'
-                              : 'text-emerald-600'
+                              ? 'text-rose-600 dark:text-rose-400'
+                              : 'text-emerald-600 dark:text-emerald-400'
                           }`}
                         >
                           {hasData
@@ -346,7 +417,7 @@ export const SCurveActualView: React.FC = () => {
                             : '-'}
                         </td>
                         <td className="p-3 text-center">{statusBadge}</td>
-                        <td className="p-3 text-xs text-[var(--text-secondary)] max-w-xs truncate" title={rec.notes || rec.issuesObstacles}>
+                        <td className="p-3 text-xs text-slate-700 dark:text-slate-300 max-w-xs truncate" title={rec.notes || rec.issuesObstacles}>
                           {rec.notes ? (
                             <div>
                               <span>{rec.notes}</span>
@@ -355,7 +426,7 @@ export const SCurveActualView: React.FC = () => {
                               )}
                             </div>
                           ) : (
-                            <span className="text-[var(--text-secondary)] italic">-</span>
+                            <span className="text-slate-500 dark:text-slate-400 italic">-</span>
                           )}
                         </td>
                         <td className="p-3 text-center">
