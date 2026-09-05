@@ -2394,7 +2394,7 @@ export const LUXURY_RESIDENCE_TEMPLATE: RABTemplate = {
   id: 'tpl_luxury_residence_3fl',
   ownerId: 'usr_admin_saipul',
   ownerName: 'Saipul Abe (Admin)',
-  name: 'Template Rumah Mewah 3 Lantai (Sub-Total I - XVIII Lengkap)',
+  name: 'Proyek Template Rumah Mewah 3 Lantai (Sub-Total I - XVIII Lengkap)',
   description: 'Template master RAB dan Spesifikasi Teknis Rumah Mewah 3 Lantai + Dak Atap mencakup 18 Sub-Total pekerjaan lengkap: Persiapan, Lahan, Pondasi Tiang Pancang, Beton Bertulang, Atap Kaca & Genteng Cisangkan, Dinding Bata, Kusen YKK & Pintu Kamper, Plafond Gypsum Shadow Line, Homogeneous Tile Roman & Parquet, Cat Mowilex/Vinilex, Waterproofing Sika 107, Handrailing & WPC, Sanitair TOTO & Blanco, Plumbing Air Bersih CPR & Kotor Wavin, Elektrikal Schneider/Panasonic, Tata Udara AC Inverter, Lansekap Rumput Gajah Mini, hingga Smart Home CCTV & Solar Water Heater.',
   projectType: 'Rumah Mewah 3 Lantai',
   category: 'Residensial Mewah',

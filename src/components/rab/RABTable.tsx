@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useApp } from '../../context/AppContext';
 import { RABItem, RABCategory, RABCalculationResult, RAB_CATEGORIES } from '../../types';
 import { formatRupiah, formatNumber } from '../../utils/formatters';
 import {
@@ -34,8 +35,12 @@ export const RABTable: React.FC<RABTableProps> = ({
   onDuplicateItem,
   onDeleteItem,
 }) => {
+  const { updateRABItem } = useApp();
+
   // Collapsed categories tracking
   const [collapsedCategories, setCollapsedCategories] = useState<{ [cat: string]: boolean }>({});
+  // Local state for inline floor name edits
+  const [floorValues, setFloorValues] = useState<{ [key: string]: string }>({});
 
   const toggleCategory = (cat: string) => {
     setCollapsedCategories((prev) => ({
@@ -171,20 +176,42 @@ export const RABTable: React.FC<RABTableProps> = ({
                         const prevItem = itemIdx > 0 ? catItems[itemIdx - 1] : null;
                         const isNewFloor = Boolean(item.floor && (!prevItem || prevItem.floor !== item.floor));
                         const isNewSubcategory = Boolean(item.subcategory && (!prevItem || prevItem.subcategory !== item.subcategory || isNewFloor));
+                        const floorKey = `${cat}_${item.floor || 'floor'}_${itemIdx}`;
+
+                        // Find all items in this category that belong to this floor section
+                        const floorItems = catItems.filter((it) => it.floor === item.floor);
 
                         return (
                           <React.Fragment key={item.id}>
-                            {/* Floor / Level Header */}
+                            {/* Floor / Level Header (Inline Editable) */}
                             {isNewFloor && (
-                              <tr className="bg-gradient-to-r from-blue-100/90 via-blue-50/70 to-slate-50 border-y-2 border-blue-300/80">
+                              <tr className="bg-gradient-to-r from-blue-100/90 via-blue-50/70 to-slate-50 dark:from-blue-950/40 dark:via-blue-900/20 dark:to-slate-900/40 border-y-2 border-blue-300/80 dark:border-blue-700/60">
                                 <td colSpan={10} className="px-4 py-2">
                                   <div className="flex items-center space-x-2">
-                                    <span className="px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider bg-blue-700 text-white rounded-md shadow-2xs">
-                                      LANTAI
-                                    </span>
-                                    <span className="font-black text-xs text-blue-950 uppercase tracking-wide">
-                                      {item.floor}
-                                    </span>
+                                    <input
+                                      type="text"
+                                      value={floorValues[floorKey] !== undefined ? floorValues[floorKey] : (item.floor || '')}
+                                      onChange={(e) => {
+                                        const val = e.target.value;
+                                        setFloorValues((prev) => ({ ...prev, [floorKey]: val }));
+                                      }}
+                                      onBlur={(e) => {
+                                        const newVal = (floorValues[floorKey] !== undefined ? floorValues[floorKey] : (item.floor || '')).trim();
+                                        const oldFloor = item.floor || '';
+                                        if (newVal !== oldFloor && floorItems.length > 0) {
+                                          floorItems.forEach((it) => {
+                                            updateRABItem(it.id, { floor: newVal });
+                                          });
+                                        }
+                                      }}
+                                      onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                          (e.target as HTMLInputElement).blur();
+                                        }
+                                      }}
+                                      placeholder="Nama Lantai / Elevasi (contoh: LANTAI 1 (ELEV +0.00))"
+                                      className="bg-transparent border-b border-transparent hover:border-blue-400 focus:border-blue-600 focus:ring-0 font-bold text-blue-900 dark:text-blue-100 outline-none w-full max-w-md px-1 py-0.5 transition-all cursor-text"
+                                    />
                                   </div>
                                 </td>
                               </tr>

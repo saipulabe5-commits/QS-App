@@ -659,9 +659,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setProjects((prev) => [newProject, ...prev]);
     setActiveProjectId(newProject.id);
 
-    if (templateId) {
+    const effectiveTemplateId =
+      templateId === 'empty' || templateId === 'none'
+        ? null
+        : (templateId || 'tpl_luxury_residence_3fl');
+
+    if (effectiveTemplateId) {
       setTimeout(() => {
-        applyRABTemplate(templateId, newProject.id, 'append');
+        applyRABTemplate(effectiveTemplateId, newProject.id, 'append');
       }, 0);
     }
 

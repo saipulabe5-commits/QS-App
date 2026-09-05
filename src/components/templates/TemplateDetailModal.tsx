@@ -394,9 +394,6 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                                   <tr className="bg-gradient-to-r from-blue-100/90 via-blue-50/70 to-slate-50 border-y-2 border-blue-300/80">
                                     <td colSpan={7} className="py-2.5 px-4">
                                       <div className="flex items-center space-x-2">
-                                        <span className="px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider bg-blue-700 text-white rounded-md shadow-2xs">
-                                          LANTAI
-                                        </span>
                                         <span className="font-black text-xs text-blue-950 uppercase tracking-wide">
                                           {item.floor}
                                         </span>

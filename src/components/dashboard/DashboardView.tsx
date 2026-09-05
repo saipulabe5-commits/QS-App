@@ -145,7 +145,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   }
 
   return (
-    <div className="space-y-6" id="dashboard-view">
+    <div className="space-y-6" id="export-pdf-container">
       {/* 1. Header Banner */}
       <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 sm:p-7 relative border border-slate-200 dark:border-[var(--border-primary)] shadow-sm">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
@@ -164,7 +164,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
             {/* Action Buttons */}
             <div className="mt-5 flex flex-wrap items-center gap-2.5">
-            <PdfExportButton elementId="dashboard-view" filename="Dashboard_RAB" title="Dashboard Eksekutif" isLandscape={true} />
+            <PdfExportButton elementId="export-pdf-container" filename="Dashboard_RAB" title="Dashboard Eksekutif" isLandscape={true} />
               <button
                 onClick={() => {
                   if (onOpenNewProjectModal) onOpenNewProjectModal();

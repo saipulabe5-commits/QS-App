@@ -75,7 +75,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
         overheadPercent: settings.defaultOverhead,
         profitPercent: settings.defaultProfit,
         taxPercent: settings.defaultTax,
-        selectedTemplateId: '',
+        selectedTemplateId: 'tpl_luxury_residence_3fl',
       });
     }
     setErrors({});
@@ -382,12 +382,12 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                 onChange={(e) => setFormData({ ...formData, selectedTemplateId: e.target.value })}
                 className="w-full px-3 py-2 text-xs bg-[var(--bg-elevated)] border border-blue-200 rounded-lg text-[var(--text-primary)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
               >
-                <option value="">-- Mulai dengan RAB Kosong --</option>
                 {rabTemplates.map((tpl) => (
                   <option key={tpl.id} value={tpl.id}>
-                    {tpl.name} ({tpl.items?.length || 0} item pekerjaan)
+                    {tpl.id === 'tpl_luxury_residence_3fl' ? '★ ' : ''}{tpl.name} ({tpl.items?.length || 0} item pekerjaan)
                   </option>
                 ))}
+                <option value="empty">-- Mulai dengan RAB Kosong (Tanpa Template) --</option>
               </select>
               <p className="text-[11px] text-blue-700/80 mt-1">
                 Memilih template akan otomatis mengisikan item pekerjaan standar beserta satuan dan harga unit.
