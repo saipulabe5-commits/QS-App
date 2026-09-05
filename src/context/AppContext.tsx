@@ -171,6 +171,7 @@ export interface AppContextType {
   updateDrawing: (id: string, updates: Partial<ProjectDrawing>) => void;
   deleteDrawing: (id: string) => void;
   analyzeDrawingWithAI: (drawingId: string, forceTwoPass?: boolean) => Promise<DrawingAnalysis>;
+  saveDrawingAnalysis: (analysis: DrawingAnalysis) => void;
   updateAnalysisItem: (analysisId: string, itemId: string, updates: Partial<EstimatedDrawingItem>) => void;
   updateEstimatedItem: (analysisId: string, itemId: string, updates: Partial<EstimatedDrawingItem>) => void;
   verifyAnalysisItem: (analysisId: string, itemId: string, status: VerificationStatus, notes?: string) => void;
@@ -1708,6 +1709,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
   };
 
+  const saveDrawingAnalysis = (analysis: DrawingAnalysis) => {
+    setDrawingAnalyses((prev) => [analysis, ...prev.filter((a) => a.drawingId !== analysis.drawingId)]);
+    updateDrawing(analysis.drawingId, { analysisStatus: 'completed' });
+  };
+
   const updateEstimatedItem = (analysisId: string, itemId: string, updates: Partial<EstimatedDrawingItem>) => {
     setDrawingAnalyses((prev) =>
       prev.map((ana) => {
@@ -2077,6 +2083,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     updateDrawing,
     deleteDrawing,
     analyzeDrawingWithAI,
+    saveDrawingAnalysis,
     updateAnalysisItem,
     updateEstimatedItem,
     verifyAnalysisItem,
