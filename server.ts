@@ -2,25 +2,81 @@ import dotenv from "dotenv"; dotenv.config({ override: true });
 import express from "express";
 import path from "path";
 import fs from "fs";
+import fsSync from "fs";
 import crypto from "crypto";
 import { GoogleGenAI } from "@google/genai";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
+import helmet from "helmet";
+import cors from "cors";
+
+// ==========================================
+// Comprehensive Environment Variable Validation
+// Validates ALL required variables at once to avoid iterative deploy failures
+// ==========================================
+function validateAllRequiredEnv(): void {
+  const isProd = process.env.NODE_ENV === "production";
+  const checks: { name: string; minLength: number; description: string }[] = [
+    { name: "JWT_SECRET", minLength: 32, description: "Token signature secret (min 32 karakter)" },
+    { name: "ADMIN_EMAIL", minLength: 5, description: "Email administrator akun utama (min 5 karakter)" },
+    { name: "ADMIN_INITIAL_PASSWORD", minLength: 8, description: "Password administrator awal (min 8 karakter)" },
+    { name: "OWNER_EMAIL", minLength: 5, description: "Email pemilik sistem / akun master (min 5 karakter)" },
+  ];
+
+  const missing: string[] = [];
+  for (const { name, minLength } of checks) {
+    const value = process.env[name];
+    if (!value || value.trim().length < minLength) {
+      missing.push(name);
+    }
+  }
+
+  if (isProd && (!process.env.ALLOWED_ORIGIN || process.env.ALLOWED_ORIGIN.trim().length === 0)) {
+    missing.push("ALLOWED_ORIGIN");
+  }
+
+  if (isProd && missing.length > 0) {
+    console.error(`\n================================================================================`);
+    console.error(`❌ FATAL: ${missing.length} environment variable wajib belum diset atau tidak valid:`);
+    missing.forEach((varName) => {
+      const check = checks.find((c) => c.name === varName);
+      const desc = check
+        ? ` - ${check.description}`
+        : varName === "ALLOWED_ORIGIN"
+        ? " - URL domain frontend yang diizinkan untuk CORS (e.g. https://your-app.onrender.com)"
+        : "";
+      console.error(`   • ${varName}${desc}`);
+    });
+    console.error(`\nHarap lengkapi seluruh variabel di atas sekaligus melalui dashboard hosting (misal: Render Environment Settings).`);
+    console.error(`Lihat panduan lengkap dan contoh nilai pada file: DEPLOY_CHECKLIST.md`);
+    console.error(`Server dihentikan demi keamanan.`);
+    console.error(`================================================================================\n`);
+    process.exit(1);
+  }
+
+  if (!isProd && missing.length > 0) {
+    console.warn(`[DEV WARNING] ${missing.length} environment variable wajib belum diset: ${missing.join(", ")}. Mode development akan menggunakan nilai fallback acak.`);
+  }
+}
+
+validateAllRequiredEnv();
+
 function requireEnv(name: string, minLength = 1, fallback?: string): string {
   const value = process.env[name];
   if (!value || value.trim().length < minLength) {
     if (fallback !== undefined) {
       return fallback;
     }
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === "production") {
       console.error(`FATAL: Environment variable ${name} tidak diset atau tidak valid (min ${minLength} karakter). Server dihentikan demi keamanan.`);
       process.exit(1);
     }
     console.warn(`[DEV WARNING] Environment variable ${name} tidak diset. Menggunakan nilai dev fallback (dihasilkan secara acak).`);
-    if (name === 'ADMIN_EMAIL') return `admin-${crypto.randomBytes(4).toString('hex')}@localhost`;
-    if (name === 'ADMIN_INITIAL_PASSWORD') return crypto.randomBytes(8).toString('hex');
-    if (name === 'JWT_SECRET') return crypto.randomBytes(32).toString('hex');
-    return `dev_fallback_${name.toLowerCase()}_${crypto.randomBytes(4).toString('hex')}`;
+    if (name === "ADMIN_EMAIL") return `admin-${crypto.randomBytes(4).toString("hex")}@localhost`;
+    if (name === "ADMIN_INITIAL_PASSWORD") return crypto.randomBytes(8).toString("hex");
+    if (name === "JWT_SECRET") return crypto.randomBytes(32).toString("hex");
+    if (name === "OWNER_EMAIL") return `owner-${crypto.randomBytes(4).toString("hex")}@localhost`;
+    return `dev_fallback_${name.toLowerCase()}_${crypto.randomBytes(4).toString("hex")}`;
   }
   return value;
 }
@@ -41,12 +97,8 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE"],
 }));
 
-import helmet from "helmet";
-import cors from "cors";
-
 const PORT = 3000;
 
-import fsSync from 'fs';
 interface BugLogEntry {
   id: string;
   timestamp: string;
