@@ -425,7 +425,7 @@ export const DrawingAnalysisView: React.FC = () => {
   return (
     <div className="space-y-6" id="drawing-analysis-view">
       {/* Top Banner & Stats */}
-      <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 border border-slate-200 dark:border-[var(--border-primary)] shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 border border-slate-200 dark:border-slate-500/30 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <div className="flex items-center space-x-2.5 mb-1.5">
             <span className="p-1.5 bg-blue-600 rounded-lg text-white">
@@ -500,7 +500,7 @@ export const DrawingAnalysisView: React.FC = () => {
 
       
             {batchAnalysisState.isBatching && (
-              <div className="mb-4 bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-800 rounded-xl p-4">
+              <div className="mb-4 bg-indigo-50 dark:bg-indigo-500/15 border border-indigo-200 dark:border-indigo-500/30 rounded-xl p-4">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-bold text-indigo-800 dark:text-indigo-300">
                     <Sparkles className="w-4 h-4 inline-block mr-2 animate-pulse" />
@@ -510,19 +510,19 @@ export const DrawingAnalysisView: React.FC = () => {
                     {Math.round((batchAnalysisState.current / batchAnalysisState.total) * 100)}%
                   </span>
                 </div>
-                <div className="w-full bg-indigo-100 dark:bg-indigo-950 rounded-full h-2">
+                <div className="w-full bg-indigo-100 dark:bg-indigo-500/15 rounded-full h-2">
                   <div className="bg-indigo-600 h-2 rounded-full transition-all duration-300" style={{ width: `${(batchAnalysisState.current / batchAnalysisState.total) * 100}%` }}></div>
                 </div>
               </div>
             )}
             
             {!batchAnalysisState.isBatching && batchAnalysisState.total > 0 && batchAnalysisState.current === batchAnalysisState.total && (
-              <div className={`mb-4 border rounded-xl p-4 ${batchAnalysisState.failed.length > 0 ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800' : 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'}`}>
-                <p className={`text-sm font-bold ${batchAnalysisState.failed.length > 0 ? 'text-amber-800 dark:text-amber-400' : 'text-green-800 dark:text-green-400'}`}>
+              <div className={`mb-4 border rounded-xl p-4 ${batchAnalysisState.failed.length > 0 ? 'bg-amber-50 dark:bg-amber-500/15 border-amber-200 dark:border-amber-500/30' : 'bg-emerald-50 dark:bg-emerald-500/15 border-emerald-200 dark:border-emerald-500/30'}`}>
+                <p className={`text-sm font-bold ${batchAnalysisState.failed.length > 0 ? 'text-amber-800 dark:text-amber-300' : 'text-emerald-800 dark:text-emerald-300'}`}>
                   {batchAnalysisState.success} dari {batchAnalysisState.total} lembar berhasil dianalisa. 0 lembar dilewati.
                 </p>
                 {batchAnalysisState.failed.length > 0 && (
-                  <p className="text-xs text-amber-700 dark:text-amber-500 mt-1">
+                  <p className="text-xs text-amber-700 dark:text-amber-300 mt-1">
                     Gagal diproses: {batchAnalysisState.failed.join(', ')}
                   </p>
                 )}
@@ -552,11 +552,7 @@ export const DrawingAnalysisView: React.FC = () => {
                 <button
                   key={cat.value}
                   onClick={() => setSelectedCategory(cat.value)}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
-                    selectedCategory === cat.value
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700'
-                  }`}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${ selectedCategory === cat.value ? 'bg-blue-600' : 'bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-500/15' }`}
                 >
                   {cat.label}
                 </button>
@@ -592,11 +588,7 @@ export const DrawingAnalysisView: React.FC = () => {
                   <div
                     key={drawing.id}
                     onClick={() => setSelectedDrawingId(drawing.id)}
-                    className={`bg-[var(--bg-elevated)] rounded-2xl border transition-all cursor-pointer overflow-hidden p-3 relative ${
-                      isSelected
-                        ? 'border-blue-600 ring-2 ring-blue-500/20 shadow-sm bg-blue-50/20'
-                        : 'border-[var(--border-primary)] hover:border-[var(--border-primary)] shadow-2xs'
-                    }`}
+                    className={`bg-[var(--bg-elevated)] rounded-2xl border transition-all cursor-pointer overflow-hidden p-3 relative ${ isSelected ? 'border-blue-600' : 'border-[var(--border-primary)] hover:border-[var(--border-primary)] shadow-2xs' }`}
                   >
                     <div className="flex items-start space-x-3">
                       {/* Image Thumbnail with zoom trigger */}
@@ -648,11 +640,11 @@ export const DrawingAnalysisView: React.FC = () => {
                               <RefreshCw className="w-3 h-3 animate-spin" /> Sedang Dianalisis AI...
                             </span>
                           ) : analysis ? (
-                            <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-sm flex items-center gap-1">
+                            <span className="text-[10px] bg-emerald-100 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 font-bold px-2 py-0.5 rounded-sm flex items-center gap-1">
                               <CheckCircle2 className="w-3 h-3" /> {(analysis.estimatedItems || []).length} Pekerjaan Terdeteksi
                             </span>
                           ) : (
-                            <span className="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-sm flex items-center gap-1">
+                            <span className="text-[10px] bg-amber-100 dark:bg-amber-500/15 text-amber-800 dark:text-amber-300 font-bold px-2 py-0.5 rounded-sm flex items-center gap-1">
                               <Clock className="w-3 h-3" /> Belum Dianalisis AI
                             </span>
                           )}
@@ -676,9 +668,9 @@ export const DrawingAnalysisView: React.FC = () => {
                     {deleteConfirmId === drawing.id && (
                       <div
                         onClick={(e) => e.stopPropagation()}
-                        className="mt-3 p-3 bg-rose-50 border border-rose-200 rounded-xl space-y-2"
+                        className="mt-3 p-3 bg-rose-50 dark:bg-rose-500/15 border border-rose-200 dark:border-rose-500/30 rounded-xl space-y-2"
                       >
-                        <p className="text-xs text-rose-800 font-semibold">
+                        <p className="text-xs text-rose-800 dark:text-rose-300 font-semibold">
                           Hapus gambar & hasil analisis ini?
                         </p>
                         <div className="flex items-center space-x-2">
@@ -693,7 +685,7 @@ export const DrawingAnalysisView: React.FC = () => {
                           </button>
                           <button
                             onClick={() => setDeleteConfirmId(null)}
-                            className="px-2.5 py-1 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 text-[var(--text-primary)] text-xs font-bold rounded-lg"
+                            className="px-2.5 py-1 bg-slate-200 dark:bg-slate-500/15 hover:bg-slate-300 text-[var(--text-primary)] text-xs font-bold rounded-lg"
                           >
                             Batal
                           </button>
@@ -712,7 +704,7 @@ export const DrawingAnalysisView: React.FC = () => {
           {activeDrawing ? (
             <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] shadow-xs overflow-hidden">
               {/* Active Drawing Header & Preview */}
-              <div className="p-5 border-b border-slate-100 bg-[var(--bg-elevated-hover)] flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+              <div className="p-5 border-b border-slate-100 dark:border-slate-700 bg-[var(--bg-elevated-hover)] flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                 <div className="flex items-center space-x-3">
                   <div
                     className="w-14 h-14 rounded-xl border border-[var(--border-primary)] overflow-hidden bg-[var(--bg-elevated)] flex-shrink-0 cursor-pointer relative group"
@@ -733,7 +725,7 @@ export const DrawingAnalysisView: React.FC = () => {
                   </div>
                   <div>
                     <div className="flex items-center space-x-2">
-                      <span className="text-xs font-extrabold text-blue-800 uppercase bg-blue-100 px-2 py-0.5 rounded-sm">
+                      <span className="text-xs font-extrabold text-blue-800 dark:text-blue-300 uppercase bg-blue-100 dark:bg-blue-500/15 px-2 py-0.5 rounded-sm">
                         {activeDrawing.category}
                       </span>
                       <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Skala: {activeDrawing.scale || '1:100'}</span>
@@ -793,7 +785,7 @@ export const DrawingAnalysisView: React.FC = () => {
 
               {/* Active Task Queue Polling Progress Bar over Image Preview */}
               {isAnalyzing[activeDrawing.id] && (
-                <div className="bg-[var(--bg-elevated)] border-b border-indigo-200 dark:border-indigo-800/60 p-4 bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-transparent">
+                <div className="bg-[var(--bg-elevated)] border-b border-indigo-200 dark:border-indigo-500/30 p-4 bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-transparent">
                   <div className="flex items-center justify-between text-xs mb-2">
                     <div className="flex items-center space-x-2">
                       <span className="relative flex h-2.5 w-2.5">
@@ -829,8 +821,8 @@ export const DrawingAnalysisView: React.FC = () => {
               )}
 
               {/* Interactive Image Preview Box with Zoom Controls */}
-              <div className="bg-[var(--bg-elevated)] border-b border-slate-200 dark:border-[var(--border-primary)] p-3">
-                <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 pb-2 px-2 border-b border-slate-200 dark:border-[var(--border-primary)]">
+              <div className="bg-[var(--bg-elevated)] border-b border-slate-200 dark:border-slate-500/30 p-3">
+                <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 pb-2 px-2 border-b border-slate-200 dark:border-slate-500/30">
                   <span className="font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
                     <ImageIcon className="w-3.5 h-3.5 text-blue-400" />
                     Pratinjau Gambar Kerja Konstruksi
@@ -915,11 +907,11 @@ export const DrawingAnalysisView: React.FC = () => {
               ) : activeAnalysis ? (
                 <div className="p-6 space-y-6">
                   {/* Anti-Hallucination & AI Integrity Banner */}
-                  <div className="p-3.5 bg-blue-50/80 rounded-xl border border-blue-200 flex items-start space-x-3 text-xs">
-                    <ShieldCheck className="w-4 h-4 text-blue-700 flex-shrink-0 mt-0.5" />
+                  <div className="p-3.5 bg-blue-50/80 dark:bg-blue-500/15 rounded-xl border border-blue-200 dark:border-blue-500/30 flex items-start space-x-3 text-xs">
+                    <ShieldCheck className="w-4 h-4 text-blue-700 dark:text-blue-300 flex-shrink-0 mt-0.5" />
                     <div>
-                      <h4 className="font-bold text-blue-900">Integritas Dimensi & Rekayasa QS:</h4>
-                      <p className="text-blue-800 mt-0.5 leading-relaxed">
+                      <h4 className="font-bold text-blue-900 dark:text-blue-300">Integritas Dimensi & Rekayasa QS:</h4>
+                      <p className="text-blue-800 dark:text-blue-300 mt-0.5 leading-relaxed">
                         AI hanya mengekstrak dimensi dan notasi yang terlihat pada dokumen gambar. Dimensi tersembunyi/tidak tercantum ditandai sebagai asumsi standar teknik dan wajib diverifikasi sebelum transfer ke RAB.
                       </p>
                     </div>
@@ -927,11 +919,11 @@ export const DrawingAnalysisView: React.FC = () => {
 
                   {/* Quality Warning if applicable */}
                   {qualityWarning && (
-                    <div className="p-3.5 bg-amber-50 rounded-xl border border-amber-300 flex items-start space-x-3 text-xs">
-                      <AlertTriangle className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" />
+                    <div className="p-3.5 bg-amber-50 dark:bg-amber-500/15 rounded-xl border border-amber-300 dark:border-amber-500/30 flex items-start space-x-3 text-xs">
+                      <AlertTriangle className="w-4 h-4 text-amber-700 dark:text-amber-300 flex-shrink-0 mt-0.5" />
                       <div>
-                        <h4 className="font-bold text-amber-900">Catatan Kualitas Gambar:</h4>
-                        <p className="text-amber-800 mt-0.5">{qualityWarning}</p>
+                        <h4 className="font-bold text-amber-900 dark:text-amber-300">Catatan Kualitas Gambar:</h4>
+                        <p className="text-amber-800 dark:text-amber-300 mt-0.5">{qualityWarning}</p>
                       </div>
                     </div>
                   )}
@@ -1051,8 +1043,7 @@ export const DrawingAnalysisView: React.FC = () => {
                             onClick={() => setStatusFilter('all')}
                             className={`px-2.5 py-1 rounded-md font-semibold transition-colors ${
                               statusFilter === 'all'
-                                ? 'bg-[var(--bg-elevated)] text-[var(--text-primary)] shadow-xs'
-                                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                                ? 'bg-[var(--bg-elevated)] text-[var(--text-primary)] shadow-xs' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                             }`}
                           >
                             Semua ({activeEstimatedItems.length})
@@ -1061,19 +1052,14 @@ export const DrawingAnalysisView: React.FC = () => {
                             onClick={() => setStatusFilter('unverified')}
                             className={`px-2.5 py-1 rounded-md font-semibold transition-colors ${
                               statusFilter === 'unverified'
-                                ? 'bg-[var(--bg-elevated)] text-[var(--text-primary)] shadow-xs'
-                                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                                ? 'bg-[var(--bg-elevated)] text-[var(--text-primary)] shadow-xs' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                             }`}
                           >
                             Belum Cek ({activeEstimatedItems.filter((i) => i.verificationStatus === 'unverified').length})
                           </button>
                           <button
                             onClick={() => setStatusFilter('verified')}
-                            className={`px-2.5 py-1 rounded-md font-semibold transition-colors ${
-                              statusFilter === 'verified'
-                                ? 'bg-[var(--bg-elevated)] text-emerald-800 shadow-xs'
-                                : 'text-[var(--text-secondary)] hover:text-emerald-800'
-                            }`}
+                            className={`px-2.5 py-1 rounded-md font-semibold transition-colors ${ statusFilter === 'verified' ? 'bg-[var(--bg-elevated)] text-emerald-800' : 'text-[var(--text-secondary)] hover:text-emerald-800' }`}
                           >
                             Disetujui ({activeEstimatedItems.filter((i) => i.verificationStatus === 'verified').length})
                           </button>
@@ -1083,14 +1069,14 @@ export const DrawingAnalysisView: React.FC = () => {
                         <div className="flex items-center space-x-1.5">
                           <button
                             onClick={() => bulkVerifyAnalysisItems(activeAnalysis.id, 'verified')}
-                            className="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1"
+                            className="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-500/15 hover:bg-emerald-100 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1"
                           >
                             <Check className="w-3.5 h-3.5" />
                             <span>Setujui Semua</span>
                           </button>
                           <button
                             onClick={() => bulkVerifyAnalysisItems(activeAnalysis.id, 'unverified')}
-                            className="px-3 py-1.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-lg transition-colors"
+                            className="px-3 py-1.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 text-[var(--text-primary)] text-xs font-semibold rounded-lg transition-colors"
                           >
                             Reset
                           </button>
@@ -1142,19 +1128,19 @@ export const DrawingAnalysisView: React.FC = () => {
                               );
                               if (item.verificationStatus === 'verified') {
                                 statusBadge = (
-                                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30">
                                     Disetujui
                                   </span>
                                 );
                               } else if (item.verificationStatus === 'adjusted') {
                                 statusBadge = (
-                                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-300">
+                                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 dark:bg-blue-500/15 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-500/30">
                                     Disesuaikan
                                   </span>
                                 );
                               } else if (item.verificationStatus === 'rejected') {
                                 statusBadge = (
-                                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-300">
+                                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 dark:bg-rose-500/15 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-500/30">
                                     Ditolak
                                   </span>
                                 );
@@ -1163,9 +1149,7 @@ export const DrawingAnalysisView: React.FC = () => {
                               return (
                                 <tr
                                   key={item.id}
-                                  className={`hover:bg-[var(--bg-elevated-hover)] transition-colors ${
-                                    isChecked ? 'bg-blue-50/40' : ''
-                                  }`}
+                                  className={`hover:bg-[var(--bg-elevated-hover)] transition-colors ${ isChecked ? 'bg-blue-50/40 dark:bg-blue-500/15' : '' }`}
                                 >
                                   <td className="p-3 text-center">
                                     <input
@@ -1183,7 +1167,7 @@ export const DrawingAnalysisView: React.FC = () => {
                                       <span>{item.workName}</span>
                                     </div>
                                     {item.userNotes && (
-                                      <p className="text-[10px] text-blue-700 italic mt-0.5 font-normal">
+                                      <p className="text-[10px] text-blue-700 dark:text-blue-300 italic mt-0.5 font-normal">
                                         Catatan: {item.userNotes}
                                       </p>
                                     )}
@@ -1195,7 +1179,7 @@ export const DrawingAnalysisView: React.FC = () => {
                                   <td className="p-3 text-right text-[var(--text-primary)] font-mono">
                                     {formatRupiah(item.unitPrice)}
                                   </td>
-                                  <td className="p-3 text-right font-extrabold text-blue-900 font-mono">
+                                  <td className="p-3 text-right font-extrabold text-blue-900 dark:text-blue-300 font-mono">
                                     {formatRupiah(item.totalPrice)}
                                   </td>
                                   <td className="p-3 text-slate-500 dark:text-slate-400 text-[11px] max-w-xs truncate" title={item.formulaExplanation}>
@@ -1213,11 +1197,7 @@ export const DrawingAnalysisView: React.FC = () => {
                                             item.verificationStatus === 'verified' ? 'unverified' : 'verified'
                                           )
                                         }
-                                        className={`p-1.5 rounded-lg transition-colors ${
-                                          item.verificationStatus === 'verified'
-                                            ? 'text-emerald-700 bg-emerald-100 hover:bg-emerald-200'
-                                            : 'text-[var(--text-secondary)] hover:text-emerald-600 hover:bg-emerald-50'
-                                        }`}
+                                        className={`p-1.5 rounded-lg transition-colors ${ item.verificationStatus === 'verified' ? 'text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-500/15 hover:bg-emerald-200' : 'text-[var(--text-secondary)] hover:text-emerald-600 hover:bg-emerald-50' }`}
                                         title="Setujui Item"
                                       >
                                         <Check className="w-3.5 h-3.5" />
@@ -1231,7 +1211,7 @@ export const DrawingAnalysisView: React.FC = () => {
                                             item,
                                           })
                                         }
-                                        className="p-1.5 text-[var(--text-secondary)] hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                        className="p-1.5 text-[var(--text-secondary)] hover:text-blue-600 hover:bg-blue-50 dark:bg-blue-500/15 rounded-lg transition-colors"
                                         title="Edit Volume / Harga"
                                       >
                                         <Edit3 className="w-3.5 h-3.5" />
@@ -1246,11 +1226,7 @@ export const DrawingAnalysisView: React.FC = () => {
                                             item.verificationStatus === 'rejected' ? 'unverified' : 'rejected'
                                           )
                                         }
-                                        className={`p-1.5 rounded-lg transition-colors ${
-                                          item.verificationStatus === 'rejected'
-                                            ? 'text-rose-700 bg-rose-100 hover:bg-rose-200'
-                                            : 'text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50'
-                                        }`}
+                                        className={`p-1.5 rounded-lg transition-colors ${ item.verificationStatus === 'rejected' ? 'text-rose-700 dark:text-rose-300 bg-rose-100 dark:bg-rose-500/15 hover:bg-rose-200' : 'text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50' }`}
                                         title="Tolak Item"
                                       >
                                         <X className="w-3.5 h-3.5" />
@@ -1386,7 +1362,7 @@ export const DrawingAnalysisView: React.FC = () => {
             className="relative max-w-4xl w-full bg-[var(--bg-elevated)] rounded-2xl overflow-hidden shadow-2xl p-2"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-3 border-b border-slate-100 flex items-center justify-between">
+            <div className="p-3 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
               <h4 className="text-sm font-bold text-[var(--text-primary)]">Preview Dokumen Gambar Konstruksi</h4>
               <button
                 onClick={() => setPreviewModalUrl(null)}

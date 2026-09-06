@@ -149,11 +149,7 @@ export const ProjectSwitcherModal: React.FC<ProjectSwitcherModalProps> = ({
                     key={proj.id}
                     onClick={() => handleSelect(proj.id, proj.name)}
                     onMouseEnter={() => setSelectedIndex(idx)}
-                    className={`w-full p-3 rounded-xl text-left transition-all border flex items-center justify-between ${
-                      isSelected
-                        ? 'bg-blue-50 border-blue-300 shadow-xs'
-                        : 'bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] border-[var(--border-primary)]/70'
-                    }`}
+                    className={`w-full p-3 rounded-xl text-left transition-all border flex items-center justify-between ${ isSelected ? 'bg-blue-50/70 dark:bg-blue-500/15 border-blue-300 dark:border-blue-500/30' : 'bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] border-[var(--border-primary)]/70' }`}
                   >
                     <div className="min-w-0 pr-3">
                       <div className="flex items-center space-x-2 mb-0.5">
@@ -164,13 +160,7 @@ export const ProjectSwitcherModal: React.FC<ProjectSwitcherModalProps> = ({
                           </span>
                         )}
                         <span
-                          className={`text-[10px] px-1.5 py-0.2 rounded-sm font-semibold ${
-                            proj.status === 'Berjalan'
-                              ? 'bg-emerald-100 text-emerald-800'
-                              : proj.status === 'Selesai'
-                              ? 'bg-blue-100 text-blue-800'
-                              : 'bg-amber-100 text-amber-800'
-                          }`}
+                          className={`text-[10px] px-1.5 py-0.2 rounded-sm font-semibold ${ proj.status === 'Berjalan' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300' : proj.status === 'Selesai' ? 'bg-blue-100 text-blue-800 dark:bg-blue-500/15 dark:text-blue-300' : 'bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-300' }`}
                         >
                           {proj.status}
                         </span>

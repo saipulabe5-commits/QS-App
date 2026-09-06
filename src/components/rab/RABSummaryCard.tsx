@@ -62,7 +62,7 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[var(--border-primary)]">
         <div>
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400 flex items-center justify-center border border-blue-200 dark:border-blue-800">
+            <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 flex items-center justify-center border border-blue-200 dark:border-blue-500/30">
               <Calculator className="w-4 h-4" />
             </div>
             <h3 className="text-base font-bold text-[var(--text-primary)] tracking-tight">
@@ -79,8 +79,7 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
             onClick={() => setIsEditingRates(!isEditingRates)}
             className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all flex items-center space-x-1.5 ${
               isEditingRates
-                ? 'bg-blue-600 border-blue-500 text-white'
-                : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated-hover)]'
+                ? 'bg-blue-600' : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated-hover)]'
             }`}
           >
             <Building2 className="w-3.5 h-3.5" />
@@ -89,7 +88,7 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
 
           <button
             onClick={onSaveAsTemplate}
-            className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:hover:bg-slate-700 text-blue-700 dark:text-blue-300 border border-[var(--border-primary)] transition-colors flex items-center space-x-1.5"
+            className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 dark:hover:bg-slate-700 text-blue-700 dark:text-blue-300 border border-[var(--border-primary)] transition-colors flex items-center space-x-1.5"
             title="Simpan susunan RAB ini sebagai template master"
           >
             <FolderPlus className="w-3.5 h-3.5" />
@@ -201,7 +200,7 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
           {/* A. Total Biaya Langsung */}
           <div className="flex justify-between items-center py-1 text-[var(--text-secondary)]">
             <div className="flex items-center space-x-2">
-              <span className="w-5 h-5 rounded-md bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 border border-blue-200 dark:border-blue-800 flex items-center justify-center font-bold text-[10px]">
+              <span className="w-5 h-5 rounded-md bg-blue-100 dark:bg-blue-500/15 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-500/30 flex items-center justify-center font-bold text-[10px]">
                 A
               </span>
               <span className="font-semibold text-[var(--text-primary)]">Total Biaya Langsung (Direct Cost)</span>
@@ -218,7 +217,7 @@ export const RABSummaryCard: React.FC<RABSummaryCardProps> = ({
                 B
               </span>
               <span>Pajak Pertambahan Nilai (PPN)</span>
-              <span className="text-[11px] font-bold text-blue-700 bg-blue-100 dark:text-blue-400 dark:bg-blue-950 px-1.5 py-0.5 rounded-sm border border-blue-200 dark:border-blue-800">
+              <span className="text-[11px] font-bold text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-500/15 px-1.5 py-0.5 rounded-sm border border-blue-200 dark:border-blue-500/30">
                 {project.taxPercent}%
               </span>
             </div>

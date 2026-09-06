@@ -48,7 +48,7 @@ export const ImportHistoryModal: React.FC<ImportHistoryModalProps> = ({
         {/* Header */}
         <div className="px-6 py-4 bg-[var(--bg-elevated-hover)] border-b border-[var(--border-primary)] flex items-center justify-between flex-shrink-0">
           <div className="flex items-center space-x-2.5">
-            <div className="p-2 bg-purple-100 text-purple-700 rounded-xl">
+            <div className="p-2 bg-purple-100 dark:bg-purple-500/15 text-purple-700 dark:text-purple-300 rounded-xl">
               <History className="w-5 h-5" />
             </div>
             <div>
@@ -60,7 +60,7 @@ export const ImportHistoryModal: React.FC<ImportHistoryModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-[var(--text-secondary)] hover:text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700 rounded-lg transition-colors"
+            className="p-1.5 text-[var(--text-secondary)] hover:text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-500/15 rounded-lg transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -85,7 +85,7 @@ export const ImportHistoryModal: React.FC<ImportHistoryModalProps> = ({
               return (
                 <div
                   key={job.id}
-                  className="p-4 bg-[var(--bg-elevated-hover)] hover:bg-[var(--bg-elevated)] border border-[var(--border-primary)] hover:border-blue-300 rounded-2xl transition-all shadow-2xs space-y-2.5"
+                  className="p-4 bg-[var(--bg-elevated-hover)] hover:bg-[var(--bg-elevated)] border border-[var(--border-primary)] hover:border-blue-300 dark:border-blue-500/30 rounded-2xl transition-all shadow-2xs space-y-2.5"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3 truncate">
@@ -97,7 +97,7 @@ export const ImportHistoryModal: React.FC<ImportHistoryModalProps> = ({
                           <h4 className="text-xs font-bold text-[var(--text-primary)] truncate">
                             {job.fileName}
                           </h4>
-                          <span className="text-[10px] font-mono uppercase bg-slate-200 dark:bg-slate-700 px-1.5 py-0.2 rounded-sm text-[var(--text-primary)]">
+                          <span className="text-[10px] font-mono uppercase bg-slate-200 dark:bg-slate-500/15 px-1.5 py-0.2 rounded-sm text-[var(--text-primary)]">
                             {job.fileType}
                           </span>
                         </div>
@@ -108,11 +108,7 @@ export const ImportHistoryModal: React.FC<ImportHistoryModalProps> = ({
                     </div>
 
                     <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
-                        job.status === 'saved'
-                          ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                          : 'bg-blue-50 text-blue-700 border-blue-200'
-                      }`}
+                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${ job.status === 'saved' ? 'bg-emerald-50 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-500/30' : 'bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-500/30' }`}
                     >
                       {job.status === 'saved' ? 'Tersimpan' : 'Draft Siap'}
                     </span>
@@ -126,7 +122,7 @@ export const ImportHistoryModal: React.FC<ImportHistoryModalProps> = ({
                         {formatRupiah(job.systemCalculatedTotal)}
                       </span>
                       {needsCheckCount > 0 && (
-                        <span className="text-amber-700 font-semibold flex items-center space-x-1">
+                        <span className="text-amber-700 dark:text-amber-300 font-semibold flex items-center space-x-1">
                           <AlertTriangle className="w-3 h-3" />
                           <span>{needsCheckCount} Perlu Cek</span>
                         </span>
@@ -154,7 +150,7 @@ export const ImportHistoryModal: React.FC<ImportHistoryModalProps> = ({
         <div className="px-6 py-3 bg-[var(--bg-elevated-hover)] border-t border-[var(--border-primary)] flex justify-end flex-shrink-0">
           <button
             onClick={onClose}
-            className="px-4 py-1.5 text-xs font-semibold text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl"
+            className="px-4 py-1.5 text-xs font-semibold text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-500/15 rounded-xl"
           >
             Tutup
           </button>

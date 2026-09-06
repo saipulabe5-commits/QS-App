@@ -1,6 +1,8 @@
 import { PriceItem, PriceItemType } from '../types';
-import { StorageAdapter, defaultStorage } from '../db/storageAdapter';
+import { StorageAdapter, defaultStorage, STORAGE_KEYS } from '../db/storageAdapter';
+import { idbStorage, DB_STORES } from '../db/indexedDBAdapter';
 import { INITIAL_PRICE_DATABASE } from '../data/initialData';
+import { safeLocalStorageGet, safeLocalStorageSet } from '../utils/storageUtils';
 
 const STORAGE_KEY = 'price_items';
 
@@ -12,6 +14,21 @@ export class PriceService {
   }
 
   async getAll(): Promise<PriceItem[]> {
+    try {
+      if (idbStorage.isSupported()) {
+        const idb = await idbStorage.getAll<PriceItem>(DB_STORES.PRICES);
+        if (idb && idb.length > 0) return idb;
+      }
+    } catch {}
+
+    const raw = safeLocalStorageGet(STORAGE_KEYS.PRICES);
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch {}
+    }
+
     return this.storage.getItem<PriceItem[]>(STORAGE_KEY, INITIAL_PRICE_DATABASE);
   }
 
@@ -23,6 +40,16 @@ export class PriceService {
   async getById(id: string): Promise<PriceItem | null> {
     const list = await this.getAll();
     return list.find((i) => i.id === id) || null;
+  }
+
+  private async persistList(list: PriceItem[]): Promise<void> {
+    await this.storage.setItem(STORAGE_KEY, list);
+    safeLocalStorageSet(STORAGE_KEYS.PRICES, JSON.stringify(list));
+    if (idbStorage.isSupported()) {
+      try {
+        await idbStorage.setAll(DB_STORES.PRICES, list);
+      } catch {}
+    }
   }
 
   async addItem(data: Omit<PriceItem, 'id' | 'updatedAt'>): Promise<PriceItem> {
@@ -41,7 +68,7 @@ export class PriceService {
     };
 
     const updatedList = [newItem, ...list];
-    await this.storage.setItem(STORAGE_KEY, updatedList);
+    await this.persistList(updatedList);
     return newItem;
   }
 
@@ -63,14 +90,14 @@ export class PriceService {
     };
 
     list[index] = updated;
-    await this.storage.setItem(STORAGE_KEY, list);
+    await this.persistList(list);
     return updated;
   }
 
   async deleteItem(id: string): Promise<void> {
     const list = await this.getAll();
     const filtered = list.filter((i) => i.id !== id);
-    await this.storage.setItem(STORAGE_KEY, filtered);
+    await this.persistList(filtered);
   }
 
   async bulkImport(items: Array<Omit<PriceItem, 'id' | 'userId' | 'updatedAt'>>, userId: string): Promise<number> {
@@ -82,7 +109,8 @@ export class PriceService {
       updatedAt: new Date().toISOString().slice(0, 10),
     }));
 
-    await this.storage.setItem(STORAGE_KEY, [...newItems, ...list]);
+    const updatedList = [...newItems, ...list];
+    await this.persistList(updatedList);
     return newItems.length;
   }
 }

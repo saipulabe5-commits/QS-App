@@ -1,6 +1,8 @@
 import { RABItem } from '../types';
-import { StorageAdapter, defaultStorage } from '../db/storageAdapter';
+import { StorageAdapter, defaultStorage, STORAGE_KEYS } from '../db/storageAdapter';
+import { idbStorage, DB_STORES } from '../db/indexedDBAdapter';
 import { INITIAL_RAB_ITEMS } from '../data/initialData';
+import { safeLocalStorageGet, safeLocalStorageSet } from '../utils/storageUtils';
 
 const STORAGE_KEY = 'rab_items';
 
@@ -12,12 +14,37 @@ export class RABService {
   }
 
   async getAll(): Promise<RABItem[]> {
+    try {
+      if (idbStorage.isSupported()) {
+        const idb = await idbStorage.getAll<RABItem>(DB_STORES.RAB_ITEMS);
+        if (idb && idb.length > 0) return idb;
+      }
+    } catch {}
+
+    const raw = safeLocalStorageGet(STORAGE_KEYS.RAB_ITEMS);
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch {}
+    }
+
     return this.storage.getItem<RABItem[]>(STORAGE_KEY, INITIAL_RAB_ITEMS);
   }
 
   async getByProjectId(projectId: string): Promise<RABItem[]> {
     const list = await this.getAll();
     return list.filter((item) => item.projectId === projectId);
+  }
+
+  private async persistList(list: RABItem[]): Promise<void> {
+    await this.storage.setItem(STORAGE_KEY, list);
+    safeLocalStorageSet(STORAGE_KEYS.RAB_ITEMS, JSON.stringify(list));
+    if (idbStorage.isSupported()) {
+      try {
+        await idbStorage.setAll(DB_STORES.RAB_ITEMS, list);
+      } catch {}
+    }
   }
 
   async addItem(itemData: Omit<RABItem, 'id' | 'totalCost'>): Promise<RABItem> {
@@ -39,7 +66,7 @@ export class RABService {
     };
 
     const updatedList = [...list, newItem];
-    await this.storage.setItem(STORAGE_KEY, updatedList);
+    await this.persistList(updatedList);
     return newItem;
   }
 
@@ -70,20 +97,20 @@ export class RABService {
     };
 
     list[index] = updatedItem;
-    await this.storage.setItem(STORAGE_KEY, list);
+    await this.persistList(list);
     return updatedItem;
   }
 
   async deleteItem(id: string): Promise<void> {
     const list = await this.getAll();
     const filtered = list.filter((item) => item.id !== id);
-    await this.storage.setItem(STORAGE_KEY, filtered);
+    await this.persistList(filtered);
   }
 
   async deleteByProjectId(projectId: string): Promise<void> {
     const list = await this.getAll();
     const filtered = list.filter((item) => item.projectId !== projectId);
-    await this.storage.setItem(STORAGE_KEY, filtered);
+    await this.persistList(filtered);
   }
 
   async bulkAddItems(itemsData: Array<Omit<RABItem, 'id' | 'totalCost'>>): Promise<RABItem[]> {
@@ -95,7 +122,7 @@ export class RABService {
     }));
 
     const updatedList = [...list, ...newItems];
-    await this.storage.setItem(STORAGE_KEY, updatedList);
+    await this.persistList(updatedList);
     return newItems;
   }
 }

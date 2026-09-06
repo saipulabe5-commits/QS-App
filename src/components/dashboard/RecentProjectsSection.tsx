@@ -54,10 +54,10 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
   return (
     <div className="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border-primary)] shadow-2xs overflow-hidden">
       {/* Section Header */}
-      <div className="p-5 sm:p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-5 sm:p-6 border-b border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center border border-blue-100">
+            <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 flex items-center justify-center border border-blue-100 dark:border-blue-500/30">
               <Briefcase className="w-4 h-4" />
             </div>
             <h3 className="text-base font-bold text-[var(--text-primary)]">Daftar Proyek Terbaru</h3>
@@ -77,7 +77,7 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
           </button>
           <button
             onClick={onNavigateToProjects}
-            className="text-xs font-bold text-[var(--text-primary)] hover:text-blue-700 hover:bg-[var(--bg-elevated-hover)] px-3 py-2 rounded-xl border border-[var(--border-primary)] transition-colors flex items-center space-x-1"
+            className="text-xs font-bold text-[var(--text-primary)] hover:text-blue-700 dark:text-blue-300 hover:bg-[var(--bg-elevated-hover)] px-3 py-2 rounded-xl border border-[var(--border-primary)] transition-colors flex items-center space-x-1"
           >
             <span>Semua Proyek</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -86,7 +86,7 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="px-5 py-3 bg-[var(--bg-elevated-hover)] border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="px-5 py-3 bg-[var(--bg-elevated-hover)] border-b border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         {/* Search Field */}
         <div className="relative flex-1 max-w-md">
           <Search className="w-4 h-4 text-[var(--text-secondary)] absolute left-3 top-1/2 -translate-y-1/2" />
@@ -107,8 +107,7 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
               onClick={() => setStatusFilter(status)}
               className={`px-3 py-1 rounded-lg font-semibold transition-all ${
                 statusFilter === status
-                  ? 'bg-blue-600 text-white shadow-2xs'
-                  : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border-primary)] hover:bg-[var(--bg-elevated-hover)]'
+                  ? 'bg-blue-600' : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border-primary)] hover:bg-[var(--bg-elevated-hover)]'
               }`}
             >
               {status}
@@ -165,9 +164,7 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
                 return (
                   <tr
                     key={proj.id}
-                    className={`hover:bg-[var(--bg-elevated-hover)] transition-colors ${
-                      isSelected ? 'bg-blue-50/40' : ''
-                    }`}
+                    className={`hover:bg-[var(--bg-elevated-hover)] transition-colors ${ isSelected ? 'bg-blue-50/40 dark:bg-blue-500/15' : '' }`}
                   >
                     {/* Nama Proyek */}
                     <td className="px-5 py-4">
@@ -176,7 +173,7 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
                           {proj.name}
                         </span>
                         {isSelected && (
-                          <span className="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-sm border border-blue-200">
+                          <span className="text-[10px] bg-blue-100 dark:bg-blue-500/15 text-blue-800 dark:text-blue-300 font-bold px-2 py-0.5 rounded-sm border border-blue-200 dark:border-blue-500/30">
                             Aktif
                           </span>
                         )}
@@ -205,13 +202,7 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
                     {/* Status Badge */}
                     <td className="px-4 py-4">
                       <span
-                        className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold ${
-                          proj.status === 'Berjalan'
-                            ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                            : proj.status === 'Selesai'
-                            ? 'bg-blue-50 text-blue-800 border border-blue-200'
-                            : 'bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] border border-[var(--border-primary)]'
-                        }`}
+                        className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold ${ proj.status === 'Berjalan' ? 'bg-emerald-50 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30' : proj.status === 'Selesai' ? 'bg-blue-50 text-blue-800 border border-blue-200' : 'bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] border border-[var(--border-primary)]' }`}
                       >
                         {proj.status}
                       </span>
@@ -245,7 +236,7 @@ export const RecentProjectsSection: React.FC<RecentProjectsSectionProps> = ({
                             onSelectProject(proj.id);
                             onOpenReport(proj.id);
                           }}
-                          className="px-2.5 py-1.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] font-semibold rounded-lg text-xs transition-colors border border-[var(--border-primary)]"
+                          className="px-2.5 py-1.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 text-[var(--text-primary)] font-semibold rounded-lg text-xs transition-colors border border-[var(--border-primary)]"
                           title="Lihat & Cetak Laporan"
                         >
                           <Printer className="w-3.5 h-3.5" />

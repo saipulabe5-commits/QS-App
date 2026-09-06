@@ -73,7 +73,7 @@ export const KeyboardShortcutsModal: React.FC<KeyboardShortcutsModalProps> = ({
             </div>
             <button
               onClick={onClose}
-              className="p-1 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700/60 transition-colors cursor-pointer"
+              className="p-1 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-500/15 transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>

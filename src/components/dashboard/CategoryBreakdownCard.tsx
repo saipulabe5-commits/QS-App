@@ -32,10 +32,10 @@ export const CategoryBreakdownCard: React.FC<CategoryBreakdownCardProps> = ({
     <div className="bg-[var(--bg-elevated)] p-5 sm:p-6 rounded-2xl border border-[var(--border-primary)] shadow-2xs flex flex-col justify-between">
       <div>
         {/* Card Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 dark:border-slate-700">
           <div>
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center border border-blue-100">
+              <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 flex items-center justify-center border border-blue-100 dark:border-blue-500/30">
                 <Layers className="w-4 h-4" />
               </div>
               <h3 className="text-base font-bold text-[var(--text-primary)]">
@@ -49,7 +49,7 @@ export const CategoryBreakdownCard: React.FC<CategoryBreakdownCardProps> = ({
 
           <button
             onClick={onNavigateToRAB}
-            className="text-xs font-bold text-blue-700 hover:text-blue-800 flex items-center space-x-1.5 self-start sm:self-auto bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg border border-blue-200 transition-colors"
+            className="text-xs font-bold text-blue-700 dark:text-blue-300 hover:text-blue-800 flex items-center space-x-1.5 self-start sm:self-auto bg-blue-50 dark:bg-blue-500/15 hover:bg-blue-100 px-3 py-1.5 rounded-lg border border-blue-200 dark:border-blue-500/30 transition-colors"
           >
             <FileSpreadsheet className="w-3.5 h-3.5" />
             <span>Kelola di RAB</span>
@@ -71,7 +71,7 @@ export const CategoryBreakdownCard: React.FC<CategoryBreakdownCardProps> = ({
           </div>
           <button
             onClick={() => setSortBy(sortBy === 'cost' ? 'name' : 'cost')}
-            className="flex items-center space-x-1 px-2.5 py-1.5 text-xs bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] rounded-lg border border-[var(--border-primary)] font-medium transition-colors"
+            className="flex items-center space-x-1 px-2.5 py-1.5 text-xs bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 text-[var(--text-primary)] rounded-lg border border-[var(--border-primary)] font-medium transition-colors"
             title="Ubah Urutan"
           >
             <ArrowUpDown className="w-3 h-3 text-slate-500 dark:text-slate-400" />
@@ -110,7 +110,7 @@ export const CategoryBreakdownCard: React.FC<CategoryBreakdownCardProps> = ({
                       <span className="font-bold text-[var(--text-primary)]">
                         {formatRupiah(cat.subtotal)}
                       </span>
-                      <span className="text-xs font-black text-blue-700 w-12 text-right">
+                      <span className="text-xs font-black text-blue-700 dark:text-blue-300 w-12 text-right">
                         {formatNumber(pct, 1)}%
                       </span>
                     </div>
@@ -131,7 +131,7 @@ export const CategoryBreakdownCard: React.FC<CategoryBreakdownCardProps> = ({
 
       {/* Subtotal Summary Footer */}
       {categorySummaries.length > 0 && (
-        <div className="mt-5 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs">
+        <div className="mt-5 pt-3.5 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-xs">
           <span className="text-slate-500 dark:text-slate-400 font-medium">
             Total Biaya Langsung ({categorySummaries.length} Divisi):
           </span>

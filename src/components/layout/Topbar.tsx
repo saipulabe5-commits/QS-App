@@ -98,7 +98,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                 {getPageTitle()}
               </h1>
               {selectedProject && activeTab === 'rab' && (
-                <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+                <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-500/30">
                   {selectedProject.documentNo}
                 </span>
               )}
@@ -123,7 +123,7 @@ export const Topbar: React.FC<TopbarProps> = ({
               >
                 <Building2 className="w-4 h-4 text-blue-600 flex-shrink-0" />
                 <span className="truncate text-left font-medium">
-                  {selectedProject ? selectedProject.name : 'Pilih Proyek'}
+                  {selectedProject ? selectedProject.name: 'Pilih Proyek'}
                 </span>
                 <ChevronDown className="w-3.5 h-3.5 text-[var(--text-secondary)] flex-shrink-0" />
               </button>
@@ -146,35 +146,27 @@ export const Topbar: React.FC<TopbarProps> = ({
                             setActiveProjectId(proj.id);
                             setIsProjectDropdownOpen(false);
                           }}
-                          className={`w-full text-left px-3.5 py-2.5 text-xs hover:bg-[var(--bg-elevated-hover)] flex items-start justify-between ${
-                            proj.id === activeProjectId ? 'bg-blue-50/80 font-bold text-blue-900' : 'text-[var(--text-primary)]'
-                          }`}
+                          className={`w-full text-left px-3.5 py-2.5 text-xs hover:bg-[var(--bg-elevated-hover)] flex items-start justify-between ${ proj.id === activeProjectId ? 'bg-blue-50/80 dark:bg-blue-500/15 font-bold' : 'text-[var(--text-primary)]' }`}
                         >
                           <div className="truncate pr-2">
                             <div className="truncate font-semibold">{proj.name}</div>
                             <div className="text-[11px] text-slate-500 dark:text-slate-400">{proj.documentNo}</div>
                           </div>
                           <span
-                            className={`text-[10px] px-1.5 py-0.5 rounded-sm font-medium ${
-                              proj.status === 'Berjalan'
-                                ? 'bg-emerald-100 text-emerald-800'
-                                : proj.status === 'Selesai'
-                                ? 'bg-blue-100 text-blue-800'
-                                : 'bg-[var(--bg-elevated-hover)] text-[var(--text-primary)]'
-                            }`}
+                            className={`text-[10px] px-1.5 py-0.5 rounded-sm font-medium ${ proj.status === 'Berjalan' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300' : proj.status === 'Selesai' ? 'bg-blue-100 text-blue-800 dark:bg-blue-500/15 dark:text-blue-300' : 'bg-slate-100 text-slate-700 dark:bg-slate-500/15 dark:text-slate-300' }`}
                           >
                             {proj.status}
                           </span>
                         </button>
                       ))}
                     </div>
-                    <div className="border-t border-slate-100 pt-1 mt-1 px-2">
+                    <div className="border-t border-slate-100 dark:border-slate-700 pt-1 mt-1 px-2">
                       <button
                         onClick={() => {
                           setIsProjectDropdownOpen(false);
                           if (handleOpenNewProject) handleOpenNewProject();
                         }}
-                        className="w-full flex items-center justify-center space-x-1.5 py-2 text-xs font-semibold text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        className="w-full flex items-center justify-center space-x-1.5 py-2 text-xs font-semibold text-blue-600 hover:bg-blue-50 dark:bg-blue-500/15 rounded-lg transition-colors"
                       >
                         <Plus className="w-3.5 h-3.5" />
                         <span>Buat Proyek Baru</span>
@@ -203,7 +195,7 @@ export const Topbar: React.FC<TopbarProps> = ({
             onClick={() => {
               if (handleOpenAI) handleOpenAI();
             }}
-            className="hidden md:flex items-center space-x-1.5 px-3 py-2 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-xl shadow-2xs transition-colors"
+            className="hidden md:flex items-center space-x-1.5 px-3 py-2 text-xs font-bold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-500/15 hover:bg-blue-100 border border-blue-200 dark:border-blue-500/30 rounded-xl shadow-2xs transition-colors"
             title="Asisten Cerdas Gemini AI"
           >
             <Sparkles className="w-3.5 h-3.5 text-blue-600" />
@@ -244,23 +236,23 @@ export const Topbar: React.FC<TopbarProps> = ({
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setIsUserMenuOpen(false)} />
                 <div className="absolute right-0 mt-2 w-56 bg-[var(--bg-elevated)] rounded-xl shadow-xl border border-[var(--border-primary)] py-2 z-50">
-                  <div className="px-4 py-2 border-b border-slate-100">
+                  <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-700">
                     <div className="flex items-center justify-between gap-1">
                       <p className="text-xs font-bold text-[var(--text-primary)] truncate">
-                        {user ? user.name : 'Pengguna Demo'}
+                        {user ? user.name: 'Pengguna Demo'}
                       </p>
                       {user?.role === 'administrator' && (
-                        <span className="text-[9px] bg-amber-100 text-amber-800 border border-amber-300 px-1.5 py-0.5 rounded-full font-bold uppercase">
+                        <span className="text-[9px] bg-amber-100 dark:bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30 px-1.5 py-0.5 rounded-full font-bold uppercase">
                           Admin
                         </span>
                       )}
                     </div>
                     <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
-                      {user ? user.email : 'demo@rabpro.id'}
+                      {user ? user.email: 'demo@rabpro.id'}
                     </p>
                     <div className="flex items-center justify-between mt-1 text-[10px]">
                       <span className="text-blue-600 font-medium truncate">
-                        {user ? user.companyName : 'PT. Citra Kusuma Development'}
+                        {user ? user.companyName: 'PT. Citra Kusuma Development'}
                       </span>
                       {user?.permissions && (
                         <span className="text-[var(--text-secondary)] font-mono text-[9px]">
@@ -291,14 +283,14 @@ export const Topbar: React.FC<TopbarProps> = ({
                       <span>Profil Perusahaan</span>
                     </button>
                   </div>
-                  <div className="border-t border-slate-100 pt-1">
+                  <div className="border-t border-slate-100 dark:border-slate-700 pt-1">
                     {user ? (
                       <button
                         onClick={() => {
                           logout();
                           setIsUserMenuOpen(false);
                         }}
-                        className="w-full text-left px-4 py-2 text-xs text-rose-600 hover:bg-rose-50 flex items-center space-x-2"
+                        className="w-full text-left px-4 py-2 text-xs text-rose-600 hover:bg-rose-50 dark:bg-rose-500/15 flex items-center space-x-2"
                       >
                         <LogOut className="w-4 h-4" />
                         <span>Keluar (Logout)</span>
@@ -309,7 +301,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                           setIsUserMenuOpen(false);
                           onOpenAuthModal();
                         }}
-                        className="w-full text-left px-4 py-2 text-xs text-blue-600 hover:bg-blue-50 font-semibold"
+                        className="w-full text-left px-4 py-2 text-xs text-blue-600 hover:bg-blue-50 dark:bg-blue-500/15 font-semibold"
                       >
                         Login / Daftar Akun
                       </button>

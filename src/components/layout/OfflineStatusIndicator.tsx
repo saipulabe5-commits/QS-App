@@ -27,7 +27,7 @@ export const OfflineStatusIndicator: React.FC = () => {
   const getStatusBadge = () => {
     if (!status.isOnline) {
       return {
-        bg: 'bg-[var(--traffic-yellow)]/10 text-amber-700 border-amber-300',
+        bg: 'bg-[var(--traffic-yellow)]/10 text-amber-700 dark:text-amber-300 border-amber-300 dark:border-amber-500/30',
         icon: WifiOff,
         text: 'Mode Offline (PWA Aktif)',
         count: status.pendingCount > 0 ? `${status.pendingCount} antrian` : null,
@@ -35,7 +35,7 @@ export const OfflineStatusIndicator: React.FC = () => {
     }
     if (status.isSyncing) {
       return {
-        bg: 'bg-blue-500/10 text-blue-700 border-blue-300',
+        bg: 'bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-500/30',
         icon: RefreshCw,
         iconClass: 'animate-spin',
         text: 'Menyinkronkan...',
@@ -44,7 +44,7 @@ export const OfflineStatusIndicator: React.FC = () => {
     }
     if (status.conflictCount > 0) {
       return {
-        bg: 'bg-rose-500/10 text-rose-700 border-rose-300',
+        bg: 'bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-300 dark:border-rose-500/30',
         icon: AlertTriangle,
         text: 'Ada Konflik Data',
         count: `${status.conflictCount} konflik`,
@@ -52,16 +52,16 @@ export const OfflineStatusIndicator: React.FC = () => {
     }
     if (status.pendingCount > 0) {
       return {
-        bg: 'bg-indigo-500/10 text-indigo-700 border-indigo-300',
+        bg: 'bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border-indigo-300 dark:border-indigo-500/30',
         icon: RefreshCw,
         text: 'Antrian Sync',
         count: `${status.pendingCount}`,
       };
     }
     return {
-      bg: 'bg-emerald-500/10 text-emerald-700 border-emerald-300',
+      bg: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/30',
       icon: Wifi,
-      text: 'Tersinkron',
+      text: 'Tersimpan Lokal',
       count: null,
     };
   };

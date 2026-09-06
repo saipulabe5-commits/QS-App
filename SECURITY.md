@@ -3,6 +3,8 @@
 Sistem RAB PRO dirancang dengan prinsip **Local-First**, **Zero-Trust**, dan **Zero-Cost**. Berikut adalah lapisan keamanan komprehensif yang aktif di aplikasi:
 
 ## 1. Manajemen Kredensial & Autentikasi (Zero-Trust)
+
+> **PERINGATAN KRITIS:** Anda **WAJIB** men-generate ulang `JWT_SECRET` (minimal 32 karakter) dan mengganti password admin (`ADMIN_INITIAL_PASSWORD`) sebelum men-deploy aplikasi ini ke production. Versi terdahulu sempat menggunakan kredensial default yang bisa ditebak pihak luar. Pastikan Anda menyetel environment variable ini di platform deployment Anda (misal: Cloud Run, Vercel, dll).
 - **Tanpa Hardcode (Fail-Fast)**: Server mewajibkan environment variables (`JWT_SECRET`, `ADMIN_EMAIL`, `ADMIN_INITIAL_PASSWORD`). Jika hilang atau tidak valid, server akan langsung berhenti (crash) saat proses boot, mencegah kebocoran _fallback credential_.
 - **Persistensi Otentikasi Lintas-Sesi**: Hashing password diatur menggunakan iterasi yang kuat dan dimuat secara aman dari `.data/users_store.json`. Skenario penggantian password (change password) akan memperbarui berkas ini sehingga di-recover secara otomatis apabila container Cloud Run me-restart (Telah teruji lulus *End-to-End Persistence Test*).
 - **Offline Session TTL (72 Jam)**: Klien menyimpan JWT (token) di LocalStorage untuk mendukung fitur _offline-first_. Namun, sistem memberlakukan batas waktu (TTL) validasi terakhir dengan server. Jika pengguna offline lebih dari 72 jam, sesi ditolak (`safeLocalStorageRemove`) untuk menghindari pencurian perangkat dengan token lama yang kadaluwarsa.

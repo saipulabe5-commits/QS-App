@@ -194,12 +194,12 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
         initial={{ opacity: 0, scale: 0.97, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.97, y: 20 }}
-        className="relative bg-[var(--bg-elevated)] w-full max-w-4xl rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-10 flex flex-col max-h-[90vh]"
+        className="relative bg-[var(--bg-elevated)] w-full max-w-4xl rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-700 overflow-hidden z-10 flex flex-col max-h-[90vh]"
       >
         {/* HEADER: Lebih Elegan dengan Latar Terang & Garis Halus */}
-        <div className="px-8 py-5 border-b border-slate-100 flex items-center justify-between bg-[var(--bg-elevated)]/80 sticky top-0 z-20">
+        <div className="px-8 py-5 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between bg-[var(--bg-elevated)]/80 sticky top-0 z-20">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-500/15 text-indigo-600 flex items-center justify-center">
               <Layers className="w-5 h-5" />
             </div>
             <div>
@@ -223,7 +223,7 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto custom-scrollbar p-8 space-y-8 bg-[var(--bg-elevated-hover)]">
           
           {/* SECTION 1: Identifikasi Pekerjaan (Lebih lapang dan terstruktur) */}
-          <div className="bg-[var(--bg-elevated)] p-6 rounded-2xl border border-slate-100 shadow-sm space-y-5">
+          <div className="bg-[var(--bg-elevated)] p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-5">
             <div className="flex items-center space-x-2 border-b border-slate-50 pb-3">
               <FolderTree className="w-4 h-4 text-indigo-500" />
               <h4 className="text-sm font-bold text-[var(--text-primary)]">Kategori & Identitas Pekerjaan</h4>
@@ -272,11 +272,7 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
                           key={s}
                           type="button"
                           onClick={() => setSubCategory(s)}
-                          className={`text-[10px] px-2 py-0.5 rounded-md font-medium transition-colors ${
-                            subCategory === s
-                              ? 'bg-indigo-600 text-white'
-                              : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:bg-indigo-50 border border-[var(--border-primary)]'
-                          }`}
+                          className={`text-[10px] px-2 py-0.5 rounded-md font-medium transition-colors ${ subCategory === s ? 'bg-indigo-600 text-white' : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:bg-indigo-50 dark:bg-indigo-500/15 border border-[var(--border-primary)]' }`}
                         >
                           {s}
                         </button>
@@ -347,7 +343,7 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
           </div>
 
           {/* SECTION 2: Formulasi Koefisien (Dilengkapi Tooltip Edukasi) */}
-          <div className="bg-[var(--bg-elevated)] p-6 rounded-2xl border border-slate-100 shadow-sm space-y-5">
+          <div className="bg-[var(--bg-elevated)] p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-5">
             <div className="flex items-center justify-between border-b border-slate-50 pb-3">
               <div className="flex items-center space-x-2">
                 <Database className="w-4 h-4 text-emerald-500" />
@@ -375,7 +371,7 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
                   key={p.id}
                   type="button"
                   onClick={() => handleSelectFromPriceDb(p)}
-                  className="px-2.5 py-1 bg-[var(--bg-elevated-hover)] hover:bg-indigo-50 border border-[var(--border-primary)] rounded-lg text-[var(--text-secondary)] hover:text-indigo-700 flex-shrink-0 truncate max-w-[140px] transition-colors"
+                  className="px-2.5 py-1 bg-[var(--bg-elevated-hover)] hover:bg-indigo-50 dark:bg-indigo-500/15 border border-[var(--border-primary)] rounded-lg text-[var(--text-secondary)] hover:text-indigo-700 dark:text-indigo-300 flex-shrink-0 truncate max-w-[140px] transition-colors"
                   title={`Pilih ${p.name}`}
                 >
                   {p.name}
@@ -417,7 +413,7 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
                 placeholder="Koefisien"
                 value={compCoefficient}
                 onChange={(e) => setCompCoefficient(e.target.value)}
-                className="w-24 px-3 py-2 text-xs text-right font-mono font-bold text-indigo-700 bg-indigo-50/50 border border-indigo-100 rounded-lg outline-none focus:border-indigo-400 focus:bg-indigo-50"
+                className="w-24 px-3 py-2 text-xs text-right font-mono font-bold text-indigo-700 dark:text-indigo-300 bg-indigo-50/50 dark:bg-indigo-500/15 border border-indigo-100 dark:border-indigo-500/30 rounded-lg outline-none focus:border-indigo-400 focus:bg-indigo-50"
                 title="Jumlah kebutuhan per satuan pekerjaan"
               />
 
@@ -472,13 +468,7 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
                       <tr key={c.id} className="hover:bg-[var(--bg-elevated-hover)] group transition-colors">
                         <td className="px-5 py-3">
                           <span
-                            className={`text-[10px] font-bold px-2 py-1 rounded-md capitalize ${
-                              c.type === 'material'
-                                ? 'bg-blue-100 text-blue-800'
-                                : c.type === 'labor'
-                                ? 'bg-emerald-100 text-emerald-800'
-                                : 'bg-amber-100 text-amber-800'
-                            }`}
+                            className={`text-[10px] font-bold px-2 py-1 rounded-md capitalize ${ c.type === 'material' ? 'bg-blue-100 dark:bg-blue-500/15 text-blue-800 dark:text-blue-300' : c.type === 'labor' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800' }`}
                           >
                             {c.type === 'material' ? 'Bahan' : c.type === 'labor' ? 'Upah' : 'Alat'}
                           </span>
@@ -494,7 +484,7 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
                           <button
                             type="button"
                             onClick={() => handleRemoveComponent(c.id)}
-                            className="p-1.5 text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                            className="p-1.5 text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50 dark:bg-rose-500/15 rounded-lg transition-colors"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -506,7 +496,7 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
                     <>
                       <tr className="bg-[var(--bg-elevated-hover)]">
                         <td className="px-5 py-3">
-                          <span className="text-[10px] font-bold px-2 py-1 rounded-md bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)]">
+                          <span className="text-[10px] font-bold px-2 py-1 rounded-md bg-slate-200 dark:bg-slate-500/15 text-[var(--text-primary)]">
                             Overhead
                           </span>
                         </td>
@@ -521,7 +511,7 @@ export const AHSPModal: React.FC<AHSPModalProps> = ({
                       </tr>
                       <tr className="bg-[var(--bg-elevated-hover)]">
                         <td className="px-5 py-3">
-                          <span className="text-[10px] font-bold px-2 py-1 rounded-md bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)]">
+                          <span className="text-[10px] font-bold px-2 py-1 rounded-md bg-slate-200 dark:bg-slate-500/15 text-[var(--text-primary)]">
                             Profit
                           </span>
                         </td>

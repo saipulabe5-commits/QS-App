@@ -162,15 +162,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             {mode === 'login'
               ? 'Masuk ke RAB Pro'
               : mode === 'register'
-              ? 'Daftar Akun Baru'
-              : 'Atur Ulang Password'}
+              ? 'Daftar Akun Baru' : 'Atur Ulang Password'}
           </h3>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             {mode === 'login'
               ? 'Akses proyek konstruksi dan estimasi anggaran Anda'
               : mode === 'register'
-              ? 'Kelola RAB profesional bersama tim Anda'
-              : 'Masukkan email akun Anda untuk menerima tautan pemulihan'}
+              ? 'Kelola RAB profesional bersama tim Anda' : 'Masukkan email akun Anda untuk menerima tautan pemulihan'}
           </p>
         </div>
 
@@ -365,7 +363,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
         {mode === 'reset-code' && (
           <form onSubmit={handleResetPassword} className="space-y-3.5">
-            <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl text-blue-800 text-xs flex items-start gap-2">
+            <div className="p-3 bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 rounded-xl text-blue-800 dark:text-blue-300 text-xs flex items-start gap-2">
               <Mail className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
               <span>
                 Kode verifikasi 6-digit telah dikirim ke <strong>{email}</strong>. Silakan periksa inbox / spam email Anda.

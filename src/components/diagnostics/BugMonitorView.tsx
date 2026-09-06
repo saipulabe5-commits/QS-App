@@ -148,7 +148,7 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
       } else {
         await fetch('/api/bugs/resolve', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type' : 'application/json' },
           body: JSON.stringify({
             id: resolvingBug.id,
             fingerprint: resolvingBug.fingerprint,
@@ -172,7 +172,7 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
       } else {
         await fetch('/api/bugs/reopen', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type' : 'application/json' },
           body: JSON.stringify({
             id: log.id,
             fingerprint: log.fingerprint,
@@ -271,16 +271,16 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden relative">
+    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-950 overflow-hidden relative">
       {/* Top Header */}
-      <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4 flex-shrink-0">
+      <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col md:flex-row md:items-center justify-between gap-4 flex-shrink-0">
         <div>
           <div className="flex items-center gap-2">
             <h2 className="text-lg font-bold flex items-center gap-2 text-slate-900 dark:text-slate-100">
               <Bug className="w-5 h-5 text-indigo-500" />
               Bug & Error Monitor
             </h2>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/30">
               V20 Lifecycle
             </span>
           </div>
@@ -313,7 +313,7 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
           <button 
             id="btn-clear-bug-logs"
             onClick={handleClearLogs}
-            className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-red-600 dark:text-red-400 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-3 py-1.5 bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-red-600 dark:text-red-400 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
             title="Bersihkan riwayat catatan bug"
           >
             <Trash2 className="w-4 h-4" /> Bersihkan Log
@@ -322,24 +322,16 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
       </div>
 
       {/* Primary Tabs: Bug Aktif vs Riwayat Selesai */}
-      <div className="px-4 pt-3 pb-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between flex-shrink-0">
+      <div className="px-4 pt-3 pb-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center gap-2">
           <button
             id="tab-active-bugs"
             onClick={() => setActiveTab('active')}
-            className={`flex items-center gap-2 pb-3 px-3 text-xs font-bold border-b-2 transition-colors cursor-pointer ${
-              activeTab === 'active'
-                ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400'
-                : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
-            }`}
+            className={`flex items-center gap-2 pb-3 px-3 text-xs font-bold border-b-2 transition-colors cursor-pointer ${ activeTab === 'active' ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200' }`}
           >
             <AlertTriangle className="w-3.5 h-3.5" />
             Bug Aktif
-            <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
-              activeBugs.length > 0
-                ? 'bg-red-100 text-red-700 dark:bg-red-950/80 dark:text-red-400'
-                : 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300'
-            }`}>
+            <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${ activeBugs.length > 0 ? 'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300' : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300' }`}>
               {activeBugs.length}
             </span>
           </button>
@@ -347,15 +339,11 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
           <button
             id="tab-resolved-bugs"
             onClick={() => setActiveTab('resolved')}
-            className={`flex items-center gap-2 pb-3 px-3 text-xs font-bold border-b-2 transition-colors cursor-pointer ${
-              activeTab === 'resolved'
-                ? 'border-emerald-600 text-emerald-600 dark:text-emerald-400'
-                : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
-            }`}
+            className={`flex items-center gap-2 pb-3 px-3 text-xs font-bold border-b-2 transition-colors cursor-pointer ${ activeTab === 'resolved' ? 'border-emerald-600 text-emerald-600 dark:text-emerald-400' : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200' }`}
           >
             <CheckCircle2 className="w-3.5 h-3.5" />
             Riwayat Selesai
-            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-400">
+            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-emerald-100 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-300">
               {resolvedBugs.length}
             </span>
           </button>
@@ -367,7 +355,7 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="p-4 flex flex-col md:flex-row items-center gap-3 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex-shrink-0">
+      <div className="p-4 flex flex-col md:flex-row items-center gap-3 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex-shrink-0">
         <div className="relative flex-1 w-full">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input 
@@ -375,19 +363,15 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
             placeholder="Cari pesan error, kategori, fingerprint, atau catatan resolusi..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 bg-slate-100 dark:bg-slate-900 border-none rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-9 pr-3 py-2 bg-slate-100 dark:bg-slate-800 border border-transparent dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div className="flex bg-slate-100 dark:bg-slate-900 rounded-xl p-1">
+        <div className="flex bg-slate-100 dark:bg-slate-800 rounded-xl p-1 border border-transparent dark:border-slate-700">
           {['all', 'error', 'warning', 'info'].map((sev) => (
             <button
               key={sev}
               onClick={() => setFilterSeverity(sev)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-colors ${
-                filterSeverity === sev 
-                  ? 'bg-white dark:bg-slate-800 shadow-sm text-blue-600 dark:text-blue-400 font-bold' 
-                  : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-colors ${ filterSeverity === sev ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs font-bold' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200' }`}
             >
               {sev}
             </button>
@@ -396,12 +380,12 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
       </div>
 
       {/* Bug List Container */}
-      <div className="flex-1 overflow-y-auto p-4 custom-scrollbar bg-slate-50 dark:bg-slate-900">
+      <div className="flex-1 overflow-y-auto p-4 custom-scrollbar bg-slate-50 dark:bg-slate-950">
         {loading && logs.length === 0 ? (
           <div className="h-full flex items-center justify-center text-slate-400 text-sm">Loading bug logs...</div>
         ) : displayedLogs.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-slate-400 space-y-3">
-            <ShieldAlert className="w-12 h-12 text-slate-300 dark:text-slate-600" />
+            <ShieldAlert className="w-12 h-12 text-slate-300 dark:text-slate-500" />
             <p className="text-sm font-medium">
               {activeTab === 'active' 
                 ? 'Tidak ada bug aktif yang tercatat. Sistem beroperasi normal.' 
@@ -415,11 +399,7 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
               return (
                 <div 
                   key={log.id} 
-                  className={`bg-white dark:bg-slate-800 rounded-xl p-4 border shadow-sm flex flex-col gap-3 transition-all ${
-                    isResolved 
-                      ? 'border-emerald-200 dark:border-emerald-900/40 bg-emerald-50/10 dark:bg-emerald-950/10' 
-                      : 'border-slate-200 dark:border-slate-700'
-                  }`}
+                  className={`bg-white dark:bg-slate-900 rounded-xl p-4 border shadow-sm flex flex-col gap-3 transition-all ${ isResolved ? 'border-emerald-200 dark:border-emerald-500/30' : 'border-slate-200 dark:border-slate-800' }`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start gap-3 flex-1">
@@ -431,22 +411,18 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
                           <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">{log.message}</h3>
                           
                           {/* Occurrence Badge */}
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-100 dark:bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-500/30">
                             Terjadi {log.occurrenceCount || 1}x
                           </span>
 
                           {/* Status Badge */}
-                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                            isResolved
-                              ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700'
-                              : 'bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300 border border-red-300 dark:border-red-700'
-                          }`}>
+                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${ isResolved ? 'bg-emerald-100 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30' : 'bg-red-100 dark:bg-red-500/15 text-red-800 dark:text-red-300 border border-red-300 dark:border-red-500/30' }`}>
                             {log.status || 'open'}
                           </span>
                         </div>
 
                         <div className="flex flex-wrap items-center gap-2 text-[11px] text-slate-500 dark:text-slate-400">
-                          <span className="font-mono bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-slate-700 dark:text-slate-300">{log.source.toUpperCase()}</span>
+                          <span className="font-mono bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-700 dark:text-slate-300 border border-transparent dark:border-slate-700">{log.source.toUpperCase()}</span>
                           <span>•</span>
                           <span className="capitalize">{log.category.replace(/-/g, ' ')}</span>
                           <span>•</span>
@@ -464,7 +440,7 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
                           <button
                             onClick={() => handleAnalyzeBug(log)}
                             disabled={analyzingIds.has(log.id)}
-                            className="flex items-center gap-1.5 px-2.5 py-1.5 border border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 rounded-lg text-xs font-semibold shadow-xs transition-colors cursor-pointer disabled:opacity-60"
+                            className="flex items-center gap-1.5 px-2.5 py-1.5 border border-indigo-500 hover:bg-indigo-50 dark:bg-indigo-500/15 dark:hover:bg-indigo-500/25 text-indigo-600 dark:text-indigo-400 rounded-lg text-xs font-semibold shadow-xs transition-colors cursor-pointer disabled:opacity-60"
                             title="Analisis akar masalah & instruksi perbaikan teknis dengan AI"
                           >
                             {analyzingIds.has(log.id) ? (
@@ -484,7 +460,7 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
                       ) : (
                         <button
                           onClick={() => handleReopenBug(log)}
-                          className="flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
+                          className="flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
                           title="Buka kembali bug ini ke daftar aktif"
                         >
                           <RotateCcw className="w-3.5 h-3.5" />
@@ -493,8 +469,8 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
                       )}
 
                       {log.requestUrl && (
-                        <div className="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded-lg text-[10px] font-mono">
-                          <span className={log.responseStatus && log.responseStatus >= 500 ? 'text-red-500 font-bold' : 'text-amber-500 font-bold'}>
+                        <div className="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-lg text-[10px] font-mono border border-transparent dark:border-slate-700">
+                          <span className={log.responseStatus && log.responseStatus >= 500 ? 'text-red-500' : 'text-amber-500 font-bold' }>
                             {log.responseStatus || 'ERR'}
                           </span>
                           <span className="text-slate-500 dark:text-slate-400">{log.requestMethod}</span>
@@ -505,7 +481,7 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
 
                   {/* Fingerprint info */}
                   {log.fingerprint && (
-                    <div className="text-[10px] font-mono text-slate-400 dark:text-slate-500 flex items-center gap-1.5 truncate">
+                    <div className="text-[10px] font-mono text-slate-400 dark:text-slate-400 flex items-center gap-1.5 truncate">
                       <span className="font-semibold text-slate-500 dark:text-slate-400">FINGERPRINT:</span>
                       <span className="truncate">{log.fingerprint}</span>
                     </div>
@@ -513,8 +489,8 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
 
                   {/* Resolution note if resolved */}
                   {isResolved && log.resolutionNote && (
-                    <div className="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-lg p-2.5 text-xs text-emerald-900 dark:text-emerald-200">
-                      <div className="font-bold flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400 mb-0.5">
+                    <div className="bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/30 rounded-lg p-2.5 text-xs text-emerald-900 dark:text-emerald-300">
+                      <div className="font-bold flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300 mb-0.5">
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         Catatan Perbaikan:
                       </div>
@@ -528,17 +504,17 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
                   )}
                   
                   {(log.route || log.requestUrl) && (
-                    <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-2.5 text-[11px] font-mono text-slate-600 dark:text-slate-400 overflow-x-auto border border-slate-100 dark:border-slate-800">
+                    <div className="bg-slate-50 dark:bg-slate-800/80 rounded-lg p-2.5 text-[11px] font-mono text-slate-600 dark:text-slate-300 overflow-x-auto border border-slate-200 dark:border-slate-700/80">
                       <div className="flex gap-4">
-                        {log.route && <div><span className="text-slate-400 dark:text-slate-500 select-none">ROUTE: </span>{log.route}</div>}
-                        {log.requestUrl && <div><span className="text-slate-400 dark:text-slate-500 select-none">URL: </span>{log.requestUrl}</div>}
+                        {log.route && <div><span className="text-slate-400 dark:text-slate-400 select-none">ROUTE: </span>{log.route}</div>}
+                        {log.requestUrl && <div><span className="text-slate-400 dark:text-slate-400 select-none">URL: </span>{log.requestUrl}</div>}
                       </div>
                     </div>
                   )}
                   
                   {log.stack && (
                     <details className="text-xs group">
-                      <summary className="font-semibold text-slate-600 dark:text-slate-400 cursor-pointer select-none hover:text-slate-900 dark:hover:text-slate-200 inline-flex items-center gap-1">
+                      <summary className="font-semibold text-slate-600 cursor-pointer select-none hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-200 inline-flex items-center gap-1">
                         Lihat Stack Trace
                       </summary>
                       <pre className="mt-2 p-3 bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-200 rounded-lg overflow-x-auto text-[10px] leading-relaxed border border-slate-300 dark:border-slate-800">
@@ -550,21 +526,21 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
 
                   {/* AI Diagnostic Agent Expandable Panel */}
                   {aiAnalyses[log.id] && (
-                    <div className="bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800/50 rounded-xl p-3.5 space-y-2">
+                    <div className="bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-500/30 rounded-xl p-3.5 space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <div className="p-1 rounded bg-indigo-600 text-white">
                             <Sparkles className="w-3.5 h-3.5" />
                           </div>
-                          <span className="text-xs font-bold text-indigo-700 dark:text-indigo-200">
+                          <span className="text-xs font-bold text-indigo-700 dark:text-indigo-300">
                             Analisis AI Diagnostic Agent (Root Cause & Perbaikan)
                           </span>
                         </div>
-                        <span className="text-[10px] font-mono text-indigo-700 dark:text-indigo-300 bg-indigo-100/80 dark:bg-indigo-900/60 px-2 py-0.5 rounded border border-indigo-200 dark:border-indigo-700/50">
+                        <span className="text-[10px] font-mono text-indigo-700 dark:text-indigo-300 bg-indigo-100/80 dark:bg-indigo-500/15 px-2 py-0.5 rounded border border-indigo-200 dark:border-indigo-500/30">
                           Senior DevOps & Engineer
                         </span>
                       </div>
-                      <div className="text-xs text-indigo-900 dark:text-indigo-100 whitespace-pre-wrap leading-relaxed bg-white/70 dark:bg-slate-950/40 p-3 rounded-lg border border-indigo-100 dark:border-indigo-900/40 font-sans">
+                      <div className="text-xs text-indigo-900 dark:text-indigo-200 whitespace-pre-wrap leading-relaxed bg-white/80 dark:bg-slate-900/90 p-3 rounded-lg border border-indigo-100 dark:border-indigo-500/30 font-sans">
                         {aiAnalyses[log.id]}
                       </div>
                     </div>
@@ -578,8 +554,8 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
 
       {/* Modal: Resolve Bug with Notes */}
       {resolvingBug && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/70 backdrop-blur-xs p-4">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 max-w-lg w-full p-5 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/80 backdrop-blur-xs p-4">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 max-w-lg w-full p-5 shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5 text-emerald-500" />
@@ -593,9 +569,9 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
               </button>
             </div>
 
-            <div className="p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 text-xs">
+            <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 text-xs">
               <div className="font-semibold text-slate-900 dark:text-slate-100 mb-1">{resolvingBug.message}</div>
-              <div className="text-slate-500 text-[11px]">
+              <div className="text-slate-500 dark:text-slate-400 text-[11px]">
                 Kategori: {resolvingBug.category} • Terjadi {resolvingBug.occurrenceCount || 1}x
               </div>
             </div>
@@ -608,14 +584,14 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
                 value={resolutionNote}
                 onChange={(e) => setResolutionNote(e.target.value)}
                 placeholder="Tuliskan tindakan koreksi yang dilakukan, commit hash, atau alasan penutupan..."
-                className="w-full h-24 p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500 outline-none resize-none"
+                className="w-full h-24 p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-emerald-500 outline-none resize-none"
               />
             </div>
 
             <div className="flex items-center justify-end gap-2 pt-2">
               <button
                 onClick={() => setResolvingBug(null)}
-                className="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold hover:bg-slate-200 dark:hover:bg-slate-600 cursor-pointer"
+                className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer"
               >
                 Batal
               </button>
@@ -634,11 +610,11 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
 
       {/* Modal: Automated Audit Report */}
       {showAuditModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/70 backdrop-blur-xs p-4">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 max-w-2xl w-full p-6 shadow-2xl flex flex-col max-h-[90vh]">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-700 flex-shrink-0">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/80 backdrop-blur-xs p-4">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 max-w-2xl w-full p-6 shadow-2xl flex flex-col max-h-[90vh]">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800 flex-shrink-0">
               <div className="flex items-center gap-2.5">
-                <div className="p-2 bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-400 rounded-xl">
+                <div className="p-2 bg-purple-100 dark:bg-purple-500/15 text-purple-600 dark:text-purple-400 rounded-xl">
                   <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
@@ -660,21 +636,15 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
 
             <div className="flex-1 overflow-y-auto py-4 space-y-4 custom-scrollbar">
               {isRunningAudit ? (
-                <div className="py-12 flex flex-col items-center justify-center space-y-3 text-slate-500">
-                  <RefreshCw className="w-8 h-8 animate-spin text-purple-600" />
+                <div className="py-12 flex flex-col items-center justify-center space-y-3 text-slate-500 dark:text-slate-400">
+                  <RefreshCw className="w-8 h-8 animate-spin text-purple-600 dark:text-purple-400" />
                   <p className="text-sm font-medium">Sedang menjalankan audit sistem menyeluruh...</p>
-                  <span className="text-xs text-slate-400">Memeriksa rekonsiliasi finansial, token CSS, dan konektivitas API</span>
+                  <span className="text-xs text-slate-400 dark:text-slate-400">Memeriksa rekonsiliasi finansial, token CSS, dan konektivitas API</span>
                 </div>
               ) : auditReport ? (
                 <>
                   {/* Overall Status Banner */}
-                  <div className={`p-4 rounded-xl border flex items-start gap-3 ${
-                    auditReport.overallStatus === 'PASS'
-                      ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200'
-                      : auditReport.overallStatus === 'WARNING'
-                        ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-200'
-                        : 'bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-800 text-red-900 dark:text-red-200'
-                  }`}>
+                  <div className={`p-4 rounded-xl border flex items-start gap-3 ${ auditReport.overallStatus === 'PASS' ? 'bg-emerald-50 dark:bg-emerald-500/15 border-emerald-200 dark:border-emerald-500/30 text-emerald-900 dark:text-emerald-300' : auditReport.overallStatus === 'WARNING' ? 'bg-amber-50 dark:bg-amber-500/15 border-amber-200 dark:border-amber-500/30 text-amber-900 dark:text-amber-300' : 'bg-red-50 dark:bg-red-500/15 border-red-200 dark:border-red-500/30 text-red-900 dark:text-red-300' }`}>
                     {auditReport.overallStatus === 'PASS' ? (
                       <CheckCircle2 className="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" />
                     ) : (
@@ -693,65 +663,53 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
                   {/* Metric Cards Grid */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {/* Financial */}
-                    <div className="p-3.5 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
+                    <div className="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700/80 space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Integritas Finansial</span>
-                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                          auditReport.financialIntegrity.issuesFound === 0
-                            ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400'
-                            : 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400'
-                        }`}>
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${ auditReport.financialIntegrity.issuesFound === 0 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300' : 'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300' }`}>
                           {auditReport.financialIntegrity.issuesFound === 0 ? 'KONSISTEN' : `${auditReport.financialIntegrity.issuesFound} SELISIH`}
                         </span>
                       </div>
-                      <div className="text-[11px] text-slate-500">
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400">
                         {auditReport.financialIntegrity.projectsChecked} Proyek diperiksa via Canonical Reconciler.
                       </div>
                     </div>
 
                     {/* Theme */}
-                    <div className="p-3.5 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
+                    <div className="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700/80 space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Konsistensi Tema</span>
-                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                          auditReport.themeConsistency.violationsFound === 0
-                            ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400'
-                            : 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400'
-                        }`}>
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${ auditReport.themeConsistency.violationsFound === 0 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300' }`}>
                           {auditReport.themeConsistency.violationsFound === 0 ? '100% KONSISTEN' : `${auditReport.themeConsistency.violationsFound} ISU`}
                         </span>
                       </div>
-                      <div className="text-[11px] text-slate-500">
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400">
                         Pemeriksaan {auditReport.themeConsistency.checkedFiles || 119} berkas kode Tailwind.
                       </div>
                     </div>
 
                     {/* API Health */}
-                    <div className="p-3.5 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
+                    <div className="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700/80 space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Health Endpoint API</span>
-                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                          auditReport.apiHealth.allEndpointsOk
-                            ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400'
-                            : 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400'
-                        }`}>
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${ auditReport.apiHealth.allEndpointsOk ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300' : 'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300' }`}>
                           {auditReport.apiHealth.allEndpointsOk ? 'SEMUA NORMAL' : 'ADA GAGAL'}
                         </span>
                       </div>
-                      <div className="text-[11px] text-slate-500">
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400">
                         {auditReport.apiHealth.endpointsChecked.map(ep => `${ep.endpoint} (${ep.latencyMs}ms)`).join(', ')}
                       </div>
                     </div>
 
                     {/* Bug Tracker Summary */}
-                    <div className="p-3.5 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
+                    <div className="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700/80 space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Status Bug Tracker</span>
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-400">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 dark:bg-indigo-500/15 text-indigo-700 dark:text-indigo-300">
                           {auditReport.bugTrackerSummary.activeBugs} AKTIF / {auditReport.bugTrackerSummary.resolvedBugs} SELESAI
                         </span>
                       </div>
-                      <div className="text-[11px] text-slate-500">
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400">
                         {auditReport.bugTrackerSummary.staleOpenBugs} bug kadaluarsa (&gt;3 hari).
                       </div>
                     </div>
@@ -760,20 +718,16 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
                   {/* Financial Projects Breakdown */}
                   {auditReport.financialIntegrity.details.length > 0 && (
                     <div className="space-y-2">
-                      <div className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                      <div className="text-xs font-bold text-slate-800 dark:text-slate-300">
                         Detail Verifikasi Tiap Proyek:
                       </div>
                       <div className="space-y-1.5 max-h-40 overflow-y-auto custom-scrollbar">
                         {auditReport.financialIntegrity.details.map((d, i) => (
-                          <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-slate-100 dark:bg-slate-900/60 text-xs">
-                            <span className="font-medium text-slate-800 dark:text-slate-200 truncate mr-2">{d.projectName}</span>
+                          <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs">
+                            <span className="font-medium text-slate-800 dark:text-slate-300 truncate mr-2">{d.projectName}</span>
                             <div className="flex items-center gap-2 flex-shrink-0">
                               <span className="font-mono text-slate-500">Rp {Math.round(d.calculatedGrandTotal).toLocaleString('id-ID')}</span>
-                              <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
-                                d.isReconciled 
-                                  ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300' 
-                                  : 'bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300'
-                              }`}>
+                              <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${ d.isReconciled ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300' : 'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300' }`}>
                                 {d.validationStatus}
                               </span>
                             </div>
@@ -786,11 +740,11 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
               ) : null}
             </div>
 
-            <div className="pt-4 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between flex-shrink-0">
+            <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between flex-shrink-0">
               <button
                 onClick={handleRunAudit}
                 disabled={isRunningAudit}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold cursor-pointer"
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${isRunningAudit ? 'animate-spin' : ''}`} />
                 Ulangi Audit
@@ -799,7 +753,7 @@ export const BugMonitorView: React.FC<BugMonitorViewProps> = ({ onClose }) => {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setShowAuditModal(false)}
-                  className="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold hover:bg-slate-200 dark:hover:bg-slate-600 cursor-pointer"
+                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer"
                 >
                   Tutup
                 </button>

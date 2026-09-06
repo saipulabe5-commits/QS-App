@@ -25,8 +25,7 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
 
   const titleScope =
     scope === 'selected' && selectedProjectName
-      ? selectedProjectName
-      : 'Akumulasi Seluruh Proyek (Portofolio)';
+      ? selectedProjectName: 'Akumulasi Seluruh Proyek (Portofolio)';
 
   // Data komponen biaya
   const costItems = [
@@ -36,8 +35,8 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
       cost: data.materialCost,
       percent: data.materialPercent,
       color: 'bg-blue-600',
-      textColor: 'text-blue-700',
-      badgeBg: 'bg-blue-50 border-blue-200',
+      textColor: 'text-blue-700 dark:text-blue-300',
+      badgeBg: 'bg-blue-50 dark:bg-blue-500/15 border-blue-200 dark:border-blue-500/30',
       icon: Layers,
       description: 'Semen, pasir, bata, besi beton, granit, atap, cat, dll.',
     },
@@ -47,8 +46,8 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
       cost: data.laborCost,
       percent: data.laborPercent,
       color: 'bg-emerald-600',
-      textColor: 'text-emerald-700',
-      badgeBg: 'bg-emerald-50 border-emerald-200',
+      textColor: 'text-emerald-700 dark:text-emerald-300',
+      badgeBg: 'bg-emerald-50 dark:bg-emerald-500/15 border-emerald-200 dark:border-emerald-500/30',
       icon: HardHat,
       description: 'Upah pekerja, tukang batu/kayu/besi, kepala tukang, mandor.',
     },
@@ -58,8 +57,8 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
       cost: data.equipmentCost,
       percent: data.equipmentPercent,
       color: 'bg-amber-600',
-      textColor: 'text-amber-700',
-      badgeBg: 'bg-amber-50 border-amber-200',
+      textColor: 'text-amber-700 dark:text-amber-300',
+      badgeBg: 'bg-amber-50 dark:bg-amber-500/15 border-amber-200 dark:border-amber-500/30',
       icon: Wrench,
       description: 'Molen cor, stamper, scaffolding, vibrator, dump truck.',
     },
@@ -69,8 +68,8 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
       cost: data.overheadCost,
       percent: data.overheadPercent,
       color: 'bg-indigo-600',
-      textColor: 'text-indigo-700',
-      badgeBg: 'bg-indigo-50 border-indigo-200',
+      textColor: 'text-indigo-700 dark:text-indigo-300',
+      badgeBg: 'bg-indigo-50 dark:bg-indigo-500/15 border-indigo-200 dark:border-indigo-500/30',
       icon: ShieldAlert,
       description: 'Operasional kantor, administrasi lapangan, listrik & air kerja.',
     },
@@ -80,8 +79,8 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
       cost: data.profitCost,
       percent: data.profitPercent,
       color: 'bg-sky-600',
-      textColor: 'text-sky-700',
-      badgeBg: 'bg-sky-50 border-sky-200',
+      textColor: 'text-sky-700 dark:text-sky-300',
+      badgeBg: 'bg-sky-50 dark:bg-sky-500/15 border-sky-200 dark:border-sky-500/30',
       icon: BadgePercent,
       description: 'Keuntungan jasa pemborong / kontraktor pelaksana.',
     },
@@ -91,8 +90,8 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
       cost: data.taxCost,
       percent: data.taxPercent,
       color: 'bg-slate-700',
-      textColor: 'text-slate-800',
-      badgeBg: 'bg-slate-50 border-slate-200',
+      textColor: 'text-slate-800 dark:text-slate-300',
+      badgeBg: 'bg-slate-50 dark:bg-slate-500/15 border-slate-200 dark:border-slate-500/30',
       icon: Receipt,
       description: 'Pajak Pertambahan Nilai (PPN) resmi negara.',
     },
@@ -101,10 +100,10 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
   return (
     <div className="bg-[var(--bg-elevated)] p-5 sm:p-6 rounded-2xl border border-[var(--border-primary)] shadow-2xs">
       {/* Header & Toggle Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 dark:border-slate-700">
         <div>
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center border border-blue-100">
+            <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 flex items-center justify-center border border-blue-100 dark:border-blue-500/30">
               <PieChart className="w-4 h-4" />
             </div>
             <h3 className="text-base font-bold text-[var(--text-primary)]">
@@ -121,22 +120,14 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
           {selectedProjectBreakdown && (
             <button
               onClick={() => setScope('selected')}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
-                scope === 'selected'
-                  ? 'bg-[var(--bg-elevated)] text-blue-700 shadow-2xs font-bold'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-              }`}
+              className={`px-3 py-1.5 rounded-lg transition-all ${ scope === 'selected' ? 'bg-[var(--bg-elevated)] text-blue-700' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]' }`}
             >
               Proyek Terpilih
             </button>
           )}
           <button
             onClick={() => setScope('portfolio')}
-            className={`px-3 py-1.5 rounded-lg transition-all ${
-              scope === 'portfolio'
-                ? 'bg-[var(--bg-elevated)] text-blue-700 shadow-2xs font-bold'
-                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-            }`}
+            className={`px-3 py-1.5 rounded-lg transition-all ${ scope === 'portfolio' ? 'bg-[var(--bg-elevated)] text-blue-700' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]' }`}
           >
             Semua Proyek
           </button>
@@ -153,7 +144,7 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
         </div>
         <div className="text-right flex items-center justify-between sm:justify-end gap-3 text-xs">
           <span className="text-slate-500 dark:text-slate-400">Grand Total RAB:</span>
-          <span className="text-sm font-black text-blue-700">
+          <span className="text-sm font-black text-blue-700 dark:text-blue-300">
             {formatRupiah(data.grandTotal)}
           </span>
         </div>
@@ -203,25 +194,24 @@ export const CostBreakdownChart: React.FC<CostBreakdownChartProps> = ({
           return (
             <div
               key={item.id}
-              className={`p-3.5 rounded-xl border ${item.badgeBg} flex flex-col justify-between`}
-            >
+              className={`p-3.5 rounded-xl border ${item.badgeBg} flex flex-col justify-between`}>
               <div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <div className={`w-7 h-7 rounded-lg ${item.color} text-white flex items-center justify-center`}>
                       <Icon className="w-4 h-4" />
                     </div>
-                    <span className="text-xs font-bold text-slate-900">{item.name}</span>
+                    <span className="text-xs font-bold text-slate-900 dark:text-slate-300">{item.name}</span>
                   </div>
                   <span className={`text-xs font-black ${item.textColor}`}>
                     {formatNumber(item.percent, 1)}%
                   </span>
                 </div>
-                <div className="mt-3 text-sm sm:text-base font-bold text-slate-900">
+                <div className="mt-3 text-sm sm:text-base font-bold text-slate-900 dark:text-slate-300">
                   {formatRupiah(item.cost)}
                 </div>
               </div>
-              <p className="mt-2 text-[11px] text-slate-700 leading-tight">
+              <p className="mt-2 text-[11px] text-slate-700 dark:text-slate-300 leading-tight">
                 {item.description}
               </p>
             </div>

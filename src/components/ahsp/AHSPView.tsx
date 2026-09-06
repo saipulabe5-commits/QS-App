@@ -237,7 +237,7 @@ export const AHSPView: React.FC = () => {
   return (
     <div className="space-y-6" id="ahsp-view">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-md border border-slate-200 dark:border-[var(--border-primary)] relative overflow-hidden">
+      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-md border border-slate-200 dark:border-slate-500/30 relative overflow-hidden">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2 max-w-2xl">
             <div className="inline-flex items-center space-x-2 px-3 py-1 bg-blue-500/20 border border-blue-400/30 rounded-full text-blue-300 text-xs font-semibold">
@@ -318,7 +318,7 @@ export const AHSPView: React.FC = () => {
           <div className="flex items-center space-x-2 text-xs">
             <button
               onClick={() => setViewMode(viewMode === 'grouped' ? 'list' : 'grouped')}
-              className="px-2.5 py-1.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] rounded-lg font-medium flex items-center space-x-1.5 transition-colors"
+              className="px-2.5 py-1.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 text-[var(--text-primary)] rounded-lg font-medium flex items-center space-x-1.5 transition-colors"
             >
               {viewMode === 'grouped' ? (
                 <>
@@ -466,7 +466,7 @@ export const AHSPView: React.FC = () => {
                     </div>
                     <div>
                       <div className="flex items-center space-x-2">
-                        <span className="text-[11px] font-mono font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
+                        <span className="text-[11px] font-mono font-bold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-500/15 px-2 py-0.5 rounded-md border border-blue-100 dark:border-blue-500/30">
                           {def?.codePrefix || `DIVISI 0${groupIdx + 1}`}
                         </span>
                         <h3 className="text-base font-bold text-[var(--text-primary)]">
@@ -482,7 +482,7 @@ export const AHSPView: React.FC = () => {
                   </div>
 
                   <div className="flex items-center space-x-3">
-                    <span className="px-2.5 py-1 bg-slate-200 dark:bg-slate-700/80 text-[var(--text-primary)] rounded-lg text-xs font-bold font-mono">
+                    <span className="px-2.5 py-1 bg-slate-200 dark:bg-slate-500/15 text-[var(--text-primary)] rounded-lg text-xs font-bold font-mono">
                       {group.items.length} Item
                     </span>
                     <div
@@ -588,7 +588,7 @@ export const AHSPView: React.FC = () => {
             <form onSubmit={handleInsertToRAB} className="mt-4 space-y-3">
               <div className="p-3.5 bg-[var(--bg-elevated-hover)] rounded-xl border border-[var(--border-primary)] space-y-1">
                 <div className="flex items-center space-x-2">
-                  <span className="text-[10px] font-mono font-bold bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded">
+                  <span className="text-[10px] font-mono font-bold bg-blue-100 dark:bg-blue-500/15 text-blue-800 dark:text-blue-300 px-1.5 py-0.5 rounded">
                     {itemToInsert.code}
                   </span>
                   <span className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">
@@ -596,7 +596,7 @@ export const AHSPView: React.FC = () => {
                   </span>
                 </div>
                 <div className="text-xs font-bold text-[var(--text-primary)]">{itemToInsert.name}</div>
-                <div className="text-xs text-blue-700 font-mono font-semibold pt-1">
+                <div className="text-xs text-blue-700 dark:text-blue-300 font-mono font-semibold pt-1">
                   Harga Satuan: {formatRupiah(itemToInsert.unitPrice)} / {itemToInsert.unit}
                 </div>
               </div>
@@ -616,9 +616,9 @@ export const AHSPView: React.FC = () => {
                 />
               </div>
 
-              <div className="p-3 bg-blue-50 rounded-xl border border-blue-200 flex justify-between items-center text-xs">
-                <span className="font-semibold text-blue-900">Total Biaya Pos Ini:</span>
-                <span className="text-sm font-black text-blue-900 font-mono">
+              <div className="p-3 bg-blue-50 dark:bg-blue-500/15 rounded-xl border border-blue-200 dark:border-blue-500/30 flex justify-between items-center text-xs">
+                <span className="font-semibold text-blue-900 dark:text-blue-300">Total Biaya Pos Ini:</span>
+                <span className="text-sm font-black text-blue-900 dark:text-blue-300 font-mono">
                   {formatRupiah((Number(insertVolume) || 0) * itemToInsert.unitPrice)}
                 </span>
               </div>
@@ -627,7 +627,7 @@ export const AHSPView: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setItemToInsert(null)}
-                  className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl"
+                  className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 rounded-xl"
                 >
                   Batal
                 </button>
@@ -682,11 +682,11 @@ const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
   const computedProfit = subtotal * (actualProfitPercent / 100);
 
   return (
-    <div className="rounded-xl border border-slate-100 hover:border-blue-200 bg-[var(--bg-elevated)] overflow-hidden transition-all">
+    <div className="rounded-xl border border-slate-100 hover:border-blue-200 dark:border-blue-500/30 bg-[var(--bg-elevated)] overflow-hidden transition-all">
       {/* Header Row */}
       <div className="p-4 sm:p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div className="flex items-start space-x-3">
-          <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-mono font-bold text-xs flex-shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 flex items-center justify-center font-mono font-bold text-xs flex-shrink-0">
             {item.unit}
           </div>
           <div>
@@ -694,7 +694,7 @@ const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
               <span className="font-mono text-xs font-bold text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] px-2 py-0.5 rounded-md">
                 {item.code}
               </span>
-              <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md">
+              <span className="text-[11px] font-semibold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-500/15 px-2 py-0.5 rounded-md">
                 {item.category}
               </span>
               {item.subCategory && (
@@ -712,12 +712,12 @@ const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center justify-between md:justify-end space-x-4 pt-2 md:pt-0 border-t md:border-t-0 border-slate-100">
+        <div className="flex items-center justify-between md:justify-end space-x-4 pt-2 md:pt-0 border-t md:border-t-0 border-slate-100 dark:border-slate-700">
           <div className="text-left md:text-right">
             <div className="text-[10px] text-[var(--text-secondary)] uppercase font-semibold">
               Harga Satuan Pekerjaan
             </div>
-            <div className="text-sm sm:text-base font-black text-blue-900 font-mono">
+            <div className="text-sm sm:text-base font-black text-blue-900 dark:text-blue-300 font-mono">
               {formatRupiah(item.unitPrice)}{' '}
               <span className="text-xs font-normal text-slate-500 dark:text-slate-400">/ {item.unit}</span>
             </div>
@@ -737,7 +737,7 @@ const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
 
             <button
               onClick={onEdit}
-              className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+              className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:bg-blue-500/15 rounded-lg transition-colors"
               title="Edit Analisis"
             >
               <Edit2 className="w-3.5 h-3.5" />
@@ -745,7 +745,7 @@ const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
 
             <button
               onClick={onDelete}
-              className="p-1.5 text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+              className="p-1.5 text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50 dark:bg-rose-500/15 rounded-lg transition-colors"
               title="Hapus"
             >
               <Trash2 className="w-3.5 h-3.5" />
@@ -754,8 +754,7 @@ const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
             <button
               onClick={onToggleExpand}
               className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated-hover)] rounded-lg transition-colors"
-              title={isExpanded ? 'Tutup Rincian Koefisien' : 'Lihat Rincian Koefisien'}
-            >
+              title={isExpanded ? 'Tutup Rincian Koefisien' : 'Lihat Rincian Koefisien' }>
               {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             </button>
           </div>
@@ -764,7 +763,7 @@ const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
 
       {/* Expanded Components Details */}
       {isExpanded && (
-        <div className="bg-[var(--bg-elevated-hover)] p-4 border-t border-slate-100 space-y-4 animate-in fade-in duration-150">
+        <div className="bg-[var(--bg-elevated-hover)] p-4 border-t border-slate-100 dark:border-slate-700 space-y-4 animate-in fade-in duration-150">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs text-[var(--text-secondary)] bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] overflow-hidden">
               <thead className="bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] font-semibold uppercase text-[10px]">
@@ -851,7 +850,7 @@ const AHSPItemCard: React.FC<AHSPItemCardProps> = ({
                 )}
 
                 {/* Subtotal Biaya Langsung */}
-                <tr className="bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] font-bold text-xs border-t-2 border-[var(--border-primary)]">
+                <tr className="bg-slate-200 dark:bg-slate-500/15 text-[var(--text-primary)] font-bold text-xs border-t-2 border-[var(--border-primary)]">
                   <td colSpan={5} className="px-4 py-2 uppercase tracking-wide">
                     D. SUBTOTAL BIAYA LANGSUNG (A + B + C)
                   </td>

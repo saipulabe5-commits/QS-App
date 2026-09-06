@@ -45,7 +45,7 @@ export const AIEstimatorModal: React.FC<AIEstimatorModalProps> = ({
     try {
       const response = await fetch('/api/ai/estimate', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type' : 'application/json' },
         body: JSON.stringify({
           prompt: projectPrompt,
           buildingArea: Number(buildingArea) || 100,
@@ -337,7 +337,7 @@ export const AIEstimatorModal: React.FC<AIEstimatorModalProps> = ({
                 <h4 className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider">
                   Hasil Rekomendasi Item Pekerjaan ({suggestedItems.length})
                 </h4>
-                <span className="text-xs font-black text-blue-700 font-mono">
+                <span className="text-xs font-black text-blue-700 dark:text-blue-300 font-mono">
                   Total Estimasi: {formatRupiah(totalAIEstimate)}
                 </span>
               </div>
@@ -377,11 +377,11 @@ export const AIEstimatorModal: React.FC<AIEstimatorModalProps> = ({
           )}
 
           {/* Footer actions */}
-          <div className="pt-3 border-t border-slate-100 flex items-center justify-end space-x-2">
+          <div className="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-end space-x-2">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl"
+              className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 rounded-xl"
             >
               Batal
             </button>

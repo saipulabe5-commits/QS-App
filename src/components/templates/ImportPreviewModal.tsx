@@ -305,12 +305,12 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
               Status Verifikasi
             </div>
             <div className="flex items-center space-x-2 mt-0.5">
-              <span className="text-emerald-700 font-bold text-sm flex items-center space-x-1">
+              <span className="text-emerald-700 dark:text-emerald-300 font-bold text-sm flex items-center space-x-1">
                 <CheckCircle2 className="w-4 h-4" />
                 <span>{verifiedItems.length} Valid</span>
               </span>
               {needsVerificationItems.length > 0 && (
-                <span className="text-amber-700 font-bold text-sm flex items-center space-x-1">
+                <span className="text-amber-700 dark:text-amber-300 font-bold text-sm flex items-center space-x-1">
                   <AlertTriangle className="w-4 h-4" />
                   <span>{needsVerificationItems.length} Perlu Cek</span>
                 </span>
@@ -318,8 +318,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
             </div>
             <div className="text-[11px] text-slate-500 dark:text-slate-400">
               {needsVerificationItems.length === 0
-                ? 'Semua data lengkap & valid'
-                : 'Harap periksa baris bertanda kuning'}
+                ? 'Semua data lengkap & valid' : 'Harap periksa baris bertanda kuning'}
             </div>
           </div>
 
@@ -328,7 +327,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
             <div className="text-[10px] uppercase font-bold text-[var(--text-secondary)] tracking-wider">
               Total Hitungan Sistem
             </div>
-            <div className="text-base font-black text-blue-900 font-mono mt-0.5">
+            <div className="text-base font-black text-blue-900 dark:text-blue-300 font-mono mt-0.5">
               {formatRupiah(systemCalculatedTotal)}
             </div>
             <div className="text-[11px] text-slate-500 dark:text-slate-400">
@@ -338,11 +337,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
 
           {/* Card 4: Discrepancy / Math Integrity Card */}
           <div
-            className={`p-3 rounded-xl border shadow-2xs ${
-              totalDifference > 500
-                ? 'bg-amber-50/70 border-amber-300 text-amber-900'
-                : 'bg-emerald-50/70 border-emerald-300 text-emerald-900'
-            }`}
+            className={`p-3 rounded-xl border shadow-2xs ${ totalDifference > 500 ? 'bg-amber-50/70 dark:bg-amber-500/15 border-amber-300 dark:border-amber-500/30 text-amber-900 dark:text-amber-300' : 'bg-emerald-50/70 dark:bg-emerald-500/15 border-emerald-300 dark:border-emerald-500/30 text-emerald-900 dark:text-emerald-300' }`}
           >
             <div className="text-[10px] uppercase font-bold tracking-wider opacity-80">
               Perbandingan Nilai File
@@ -368,7 +363,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
 
         {/* Global Warnings Banner if any */}
         {warnings && warnings.length > 0 && (
-          <div className="px-6 py-2 bg-amber-100/70 border-b border-amber-200 flex items-center space-x-2 text-xs text-amber-900">
+          <div className="px-6 py-2 bg-amber-100/70 dark:bg-amber-500/15 border-b border-amber-200 dark:border-amber-500/30 flex items-center space-x-2 text-xs text-amber-900 dark:text-amber-300">
             <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0" />
             <div className="truncate">
               <strong>Peringatan Verifikasi:</strong> {warnings.join(' &middot; ')}
@@ -385,30 +380,21 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                 onClick={() => setActiveFilter('all')}
                 className={`px-3 py-1.5 rounded-lg transition-colors ${
                   activeFilter === 'all'
-                    ? 'bg-[var(--bg-elevated)] text-[var(--text-primary)] shadow-xs'
-                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                    ? 'bg-[var(--bg-elevated)] text-[var(--text-primary)] shadow-xs' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
               >
                 Semua ({parsedItems.length})
               </button>
               <button
                 onClick={() => setActiveFilter('needs_verification')}
-                className={`px-3 py-1.5 rounded-lg transition-colors flex items-center space-x-1.5 ${
-                  activeFilter === 'needs_verification'
-                    ? 'bg-[var(--traffic-yellow)] text-white shadow-xs font-bold'
-                    : 'text-amber-700 hover:bg-amber-50'
-                }`}
+                className={`px-3 py-1.5 rounded-lg transition-colors flex items-center space-x-1.5 ${ activeFilter === 'needs_verification' ? 'bg-[var(--traffic-yellow)] text-white' : 'text-amber-700 dark:text-amber-300 hover:bg-amber-50 dark:bg-amber-500/15' }`}
               >
                 <AlertTriangle className="w-3.5 h-3.5" />
                 <span>Perlu Cek ({needsVerificationItems.length})</span>
               </button>
               <button
                 onClick={() => setActiveFilter('verified')}
-                className={`px-3 py-1.5 rounded-lg transition-colors flex items-center space-x-1.5 ${
-                  activeFilter === 'verified'
-                    ? 'bg-emerald-600 text-white shadow-xs font-bold'
-                    : 'text-emerald-700 hover:bg-emerald-50'
-                }`}
+                className={`px-3 py-1.5 rounded-lg transition-colors flex items-center space-x-1.5 ${ activeFilter === 'verified' ? 'bg-emerald-600' : 'text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:bg-emerald-500/15' }`}
               >
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 <span>Valid ({verifiedItems.length})</span>
@@ -447,7 +433,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
             {needsVerificationItems.length > 0 && (
               <button
                 onClick={handleMarkAllVerified}
-                className="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs font-semibold rounded-xl flex items-center space-x-1 transition-colors"
+                className="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-500/15 hover:bg-emerald-100 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30 text-xs font-semibold rounded-xl flex items-center space-x-1 transition-colors"
                 title="Tandai semua item sebagai valid jika Anda sudah memeriksa secara visual"
               >
                 <Check className="w-3.5 h-3.5" />
@@ -457,7 +443,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
 
             <button
               onClick={() => setShowAddItemDialog(true)}
-              className="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-semibold rounded-xl flex items-center space-x-1 transition-colors"
+              className="px-3 py-1.5 bg-blue-50 dark:bg-blue-500/15 hover:bg-blue-100 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-500/30 text-xs font-semibold rounded-xl flex items-center space-x-1 transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Tambah Baris</span>
@@ -499,11 +485,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                     return (
                       <tr
                         key={item.id}
-                        className={`transition-colors ${
-                          isNeedsCheck
-                            ? 'bg-amber-50/50 hover:bg-amber-50'
-                            : 'hover:bg-[var(--bg-elevated-hover)]'
-                        }`}
+                        className={`transition-colors ${ isNeedsCheck ? 'bg-amber-50/50 dark:bg-amber-500/15 hover:bg-amber-50' : 'hover:bg-[var(--bg-elevated-hover)]' }`}
                       >
                         {/* No */}
                         <td className="py-2.5 px-3 text-center text-[var(--text-secondary)] font-mono text-[11px]">
@@ -552,7 +534,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                             className="w-full px-2 py-1 bg-transparent hover:bg-[var(--bg-elevated)] focus:bg-[var(--bg-elevated)] border border-transparent hover:border-[var(--border-primary)] focus:border-blue-400 rounded-lg text-xs font-medium text-[var(--text-primary)]"
                           />
                           {item.validationWarnings && item.validationWarnings.length > 0 && (
-                            <div className="text-[10px] text-amber-700 mt-0.5 flex items-center space-x-1 pl-2">
+                            <div className="text-[10px] text-amber-700 dark:text-amber-300 mt-0.5 flex items-center space-x-1 pl-2">
                               <AlertTriangle className="w-3 h-3 shrink-0" />
                               <span>{item.validationWarnings.join(', ')}</span>
                             </div>
@@ -602,7 +584,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                         </td>
 
                         {/* Total Biaya (Auto Calculated) */}
-                        <td className="py-2.5 px-3 text-right font-mono font-bold text-blue-900">
+                        <td className="py-2.5 px-3 text-right font-mono font-bold text-blue-900 dark:text-blue-300">
                           {formatRupiah(item.calculatedAmount)}
                         </td>
 
@@ -615,11 +597,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                                 validationWarnings: isNeedsCheck ? undefined : ['Diverifikasi ulang secara manual'],
                               })
                             }
-                            className={`px-2 py-0.5 rounded-md text-[10px] font-bold border transition-colors flex items-center justify-center space-x-1 mx-auto ${
-                              !isNeedsCheck
-                                ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
-                                : 'bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-200'
-                            }`}
+                            className={`px-2 py-0.5 rounded-md text-[10px] font-bold border transition-colors flex items-center justify-center space-x-1 mx-auto ${ !isNeedsCheck ? 'bg-emerald-50 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-500/30 hover:bg-emerald-100 dark:hover:bg-emerald-500/25' : 'bg-amber-100 dark:bg-amber-500/15 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-500/30 hover:bg-amber-200 dark:hover:bg-amber-500/25' }`}
                             title="Klik untuk mengubah status verifikasi"
                           >
                             {!isNeedsCheck ? (
@@ -640,7 +618,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                         <td className="py-2.5 px-2 text-center">
                           <button
                             onClick={() => removeImportJobItem(jobId, item.id)}
-                            className="p-1 text-slate-600 dark:text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                            className="p-1 text-slate-600 dark:text-slate-300 hover:text-rose-600 hover:bg-rose-50 dark:bg-rose-500/15 rounded-lg transition-colors"
                             title="Hapus baris ini"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -661,7 +639,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
             <span className="font-semibold text-[var(--text-primary)]">Total Validasi:</span>
             <span>{parsedItems.length} Pos Pekerjaan</span>
             <span>&middot;</span>
-            <span className="font-mono font-bold text-blue-900 text-sm">
+            <span className="font-mono font-bold text-blue-900 dark:text-blue-300 text-sm">
               {formatRupiah(systemCalculatedTotal)}
             </span>
           </div>
@@ -672,7 +650,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                 clearActiveImportJob();
                 onClose();
               }}
-              className="flex-1 sm:flex-none px-4 py-2 text-xs font-semibold text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl transition-colors"
+              className="flex-1 sm:flex-none px-4 py-2 text-xs font-semibold text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-500/15 rounded-xl transition-colors"
             >
               Buang Draft
             </button>
@@ -706,9 +684,9 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
             onClick={() => setShowSaveTemplateDialog(false)}
           />
           <div className="relative bg-[var(--bg-elevated)] w-full max-w-lg rounded-2xl shadow-2xl border border-[var(--border-primary)] p-6 z-10 space-y-4 animate-in fade-in zoom-in-95 duration-150">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-3">
               <div className="flex items-center space-x-2">
-                <div className="p-2 bg-blue-100 text-blue-700 rounded-xl">
+                <div className="p-2 bg-blue-100 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 rounded-xl">
                   <Save className="w-5 h-5" />
                 </div>
                 <div>
@@ -830,33 +808,21 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                   <button
                     type="button"
                     onClick={() => setTemplateVisibility('private')}
-                    className={`p-2 rounded-xl border text-center font-semibold transition-all ${
-                      templateVisibility === 'private'
-                        ? 'bg-blue-50 border-blue-500 text-blue-700'
-                        : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]'
-                    }`}
+                    className={`p-2 rounded-xl border text-center font-semibold transition-all ${ templateVisibility === 'private' ? 'bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-500/30' : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]' }`}
                   >
                     Privat (Saya)
                   </button>
                   <button
                     type="button"
                     onClick={() => setTemplateVisibility('team')}
-                    className={`p-2 rounded-xl border text-center font-semibold transition-all ${
-                      templateVisibility === 'team'
-                        ? 'bg-blue-50 border-blue-500 text-blue-700'
-                        : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]'
-                    }`}
+                    className={`p-2 rounded-xl border text-center font-semibold transition-all ${ templateVisibility === 'team' ? 'bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-500/30' : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]' }`}
                   >
                     Tim Perusahaan
                   </button>
                   <button
                     type="button"
                     onClick={() => setTemplateVisibility('public')}
-                    className={`p-2 rounded-xl border text-center font-semibold transition-all ${
-                      templateVisibility === 'public'
-                        ? 'bg-blue-50 border-blue-500 text-blue-700'
-                        : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]'
-                    }`}
+                    className={`p-2 rounded-xl border text-center font-semibold transition-all ${ templateVisibility === 'public' ? 'bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-500/30' : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]' }`}
                   >
                     Publik
                   </button>
@@ -864,7 +830,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
               </div>
             </div>
 
-            <div className="flex items-center justify-end space-x-2 pt-2 border-t border-slate-100">
+            <div className="flex items-center justify-end space-x-2 pt-2 border-t border-slate-100 dark:border-slate-700">
               <button
                 type="button"
                 onClick={() => setShowSaveTemplateDialog(false)}
@@ -901,11 +867,11 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
 
             <div className="space-y-3 text-xs">
               {selectedProject && (
-                <div className="p-3 bg-blue-50/70 border border-blue-200 rounded-xl space-y-2">
-                  <div className="font-bold text-blue-950">
+                <div className="p-3 bg-blue-50/70 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 rounded-xl space-y-2">
+                  <div className="font-bold text-blue-950 dark:text-blue-300">
                     Proyek Aktif: {selectedProject.name}
                   </div>
-                  <div className="text-[11px] text-blue-800">
+                  <div className="text-[11px] text-blue-800 dark:text-blue-300">
                     Pilih opsi bagaimana item hasil import digabungkan ke RAB proyek saat ini:
                   </div>
                   <div className="grid grid-cols-2 gap-2 pt-1">
@@ -914,8 +880,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                       onClick={() => setApplyMode('append')}
                       className={`p-2 rounded-lg border text-center font-semibold ${
                         applyMode === 'append'
-                          ? 'bg-blue-600 text-white border-blue-600 font-bold shadow-2xs'
-                          : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border-[var(--border-primary)]'
+                          ? 'bg-blue-600' : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border-[var(--border-primary)]'
                       }`}
                     >
                       Tambahkan ke Akhir
@@ -925,8 +890,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
                       onClick={() => setApplyMode('replace')}
                       className={`p-2 rounded-lg border text-center font-semibold ${
                         applyMode === 'replace'
-                          ? 'bg-rose-600 text-white border-rose-600 font-bold shadow-2xs'
-                          : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border-[var(--border-primary)]'
+                          ? 'bg-rose-600' : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border-[var(--border-primary)]'
                       }`}
                     >
                       Ganti Semua RAB
@@ -1070,7 +1034,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
               </div>
             </div>
 
-            <div className="flex items-center justify-end space-x-2 pt-2 border-t border-slate-100">
+            <div className="flex items-center justify-end space-x-2 pt-2 border-t border-slate-100 dark:border-slate-700">
               <button
                 type="button"
                 onClick={() => setShowAddItemDialog(false)}

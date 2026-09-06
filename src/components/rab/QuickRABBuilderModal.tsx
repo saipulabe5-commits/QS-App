@@ -380,7 +380,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
               <h3 className="text-sm font-semibold text-[var(--text-primary)] tracking-wide">
                 Quick RAB Builder
               </h3>
-              <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 bg-blue-100 text-blue-700 border border-blue-200 rounded-full">
+              <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 bg-blue-100 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-500/30 rounded-full">
                 Wizard
               </span>
             </div>
@@ -403,29 +403,19 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
               <div key={s.num} className="flex items-center">
                 <div className="flex items-center space-x-2">
                   <div
-                    className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
-                      step === s.num
-                        ? 'bg-blue-600 text-white shadow-2xs'
-                        : step > s.num
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-slate-200 dark:bg-slate-700 text-[var(--text-secondary)]'
-                    }`}
+                    className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${ step === s.num ? 'bg-blue-600 text-white shadow-2xs' : step > s.num ? 'bg-emerald-600' : 'bg-slate-200 dark:bg-slate-500/15 text-[var(--text-secondary)]' }`}
                   >
                     {step > s.num ? <CheckCircle2 className="w-4 h-4" /> : s.num}
                   </div>
                   <span
-                    className={`text-xs font-medium hidden sm:inline ${
-                      step === s.num ? 'text-blue-900 font-bold' : 'text-slate-500 dark:text-slate-400'
-                    }`}
+                    className={`text-xs font-medium hidden sm:inline ${ step === s.num ? 'text-blue-900' : 'text-slate-500' }`}
                   >
                     {s.label}
                   </span>
                 </div>
                 {idx < 4 && (
                   <div
-                    className={`w-6 sm:w-12 h-0.5 mx-2 ${
-                      step > s.num ? 'bg-emerald-500' : 'bg-slate-200 dark:bg-slate-700'
-                    }`}
+                    className={`w-6 sm:w-12 h-0.5 mx-2 ${ step > s.num ? 'bg-emerald-500' : 'bg-slate-200 dark:bg-slate-500/15' }`}
                   />
                 )}
               </div>
@@ -435,7 +425,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
 
         {/* Errors & Warnings Notification Box */}
         {(stepErrors.length > 0 || stepWarnings.length > 0) && (
-          <div className="mx-6 mt-4 p-3 rounded-xl border space-y-1 text-xs bg-rose-50 border-rose-200 text-rose-800">
+          <div className="mx-6 mt-4 p-3 rounded-xl border space-y-1 text-xs bg-rose-50 dark:bg-rose-500/15 border-rose-200 dark:border-rose-500/30 text-rose-800 dark:text-rose-300">
             {stepErrors.map((err, i) => (
               <div key={i} className="flex items-center gap-1.5 font-semibold">
                 <AlertTriangle className="w-4 h-4 text-rose-600 flex-shrink-0" />
@@ -443,7 +433,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
               </div>
             ))}
             {stepWarnings.map((w, i) => (
-              <div key={i} className="flex items-center gap-1.5 text-amber-800 font-medium">
+              <div key={i} className="flex items-center gap-1.5 text-amber-800 dark:text-amber-300 font-medium">
                 <Info className="w-4 h-4 text-amber-600 flex-shrink-0" />
                 <span>{w}</span>
               </div>
@@ -456,7 +446,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
           {/* STEP 1: INFORMASI PROYEK */}
           {step === 1 && (
             <div className="space-y-4">
-              <div className="border-b border-slate-100 pb-3">
+              <div className="border-b border-slate-100 dark:border-slate-700 pb-3">
                 <h3 className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-2">
                   <Building2 className="w-4 h-4 text-blue-600" />
                   Langkah 1 dari 5: Informasi Umum & Plafon Anggaran Proyek
@@ -624,7 +614,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
           {/* STEP 2: METODE / TEMPLATE */}
           {step === 2 && (
             <div className="space-y-4">
-              <div className="border-b border-slate-100 pb-3">
+              <div className="border-b border-slate-100 dark:border-slate-700 pb-3">
                 <h3 className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-2">
                   <Boxes className="w-4 h-4 text-blue-600" />
                   Langkah 2 dari 5: Pilih Metode & Template Penyusunan RAB
@@ -678,16 +668,12 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                     <button
                       key={opt.id}
                       onClick={() => setMethod(opt.id)}
-                      className={`p-3.5 rounded-xl border text-left transition-all ${
-                        isSelected
-                          ? 'border-blue-600 bg-blue-50/70 dark:bg-blue-950/60 ring-2 ring-blue-500/20 shadow-xs'
-                          : 'border-[var(--border-primary)] hover:border-[var(--border-primary)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)]'
-                      }`}
+                      className={`p-3.5 rounded-xl border text-left transition-all ${ isSelected ? 'border-blue-600' : 'border-[var(--border-primary)] hover:border-[var(--border-primary)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)]' }`}
                     >
                       <div className="flex items-center justify-between mb-2">
                         <div
                           className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                            isSelected ? 'bg-blue-600 text-white' : 'bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)]'
+                            isSelected ? 'bg-blue-600' : 'bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)]'
                           }`}
                         >
                           <Icon className="w-4 h-4" />
@@ -712,11 +698,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                       <button
                         key={preset.id}
                         onClick={() => setSelectedBuildingType(preset.id)}
-                        className={`p-2.5 rounded-lg border text-left text-xs transition-colors ${
-                          selectedBuildingType === preset.id
-                            ? 'border-blue-600 bg-[var(--bg-elevated)] font-bold text-blue-600 dark:text-blue-400 shadow-2xs'
-                            : 'border-[var(--border-primary)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] text-[var(--text-primary)]'
-                        }`}
+                        className={`p-2.5 rounded-lg border text-left text-xs transition-colors ${ selectedBuildingType === preset.id ? 'border-blue-600 bg-[var(--bg-elevated)] font-bold' : 'border-[var(--border-primary)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] text-[var(--text-primary)]' }`}
                       >
                         <div className="font-semibold text-[var(--text-primary)]">{preset.name}</div>
                         <div className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">{preset.description}</div>
@@ -740,11 +722,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                         <button
                           key={tpl.id}
                           onClick={() => setSelectedTemplateId(tpl.id)}
-                          className={`w-full p-2.5 rounded-lg border text-left text-xs flex items-center justify-between transition-colors ${
-                            selectedTemplateId === tpl.id
-                              ? 'border-blue-600 bg-[var(--bg-elevated)] font-bold text-blue-600 dark:text-blue-400 shadow-2xs'
-                              : 'border-[var(--border-primary)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] text-[var(--text-primary)]'
-                          }`}
+                          className={`w-full p-2.5 rounded-lg border text-left text-xs flex items-center justify-between transition-colors ${ selectedTemplateId === tpl.id ? 'border-blue-600 bg-[var(--bg-elevated)] font-bold' : 'border-[var(--border-primary)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] text-[var(--text-primary)]' }`}
                         >
                           <div>
                             <div className="font-semibold text-[var(--text-primary)]">{tpl.name}</div>
@@ -753,7 +731,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                             </div>
                           </div>
                           <div className="text-right">
-                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">
+                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 font-bold">
                               Terverifikasi
                             </span>
                           </div>
@@ -765,28 +743,28 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
               )}
 
               {method === 'ai_estimator' && (
-                <div className="p-4 bg-amber-50 rounded-xl border border-amber-200 mt-4 space-y-3">
+                <div className="p-4 bg-amber-50 dark:bg-amber-500/15 rounded-xl border border-amber-200 dark:border-amber-500/30 mt-4 space-y-3">
                   <div className="flex items-start gap-2.5">
                     <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
                     <div>
-                      <h4 className="text-xs font-bold text-amber-900">
+                      <h4 className="text-xs font-bold text-amber-900 dark:text-amber-300">
                         Pemberitahuan Wajib Asisten AI Estimator
                       </h4>
-                      <p className="text-[11px] text-amber-800 leading-relaxed mt-1">
+                      <p className="text-[11px] text-amber-800 dark:text-amber-300 leading-relaxed mt-1">
                         1. Hasil estimasi AI merupakan prakiraan awal matematis berbasis parameter input.<br />
                         2. Setiap volume dan harga wajib diverifikasi oleh tenaga ahli Quantity Surveyor di lapangan.<br />
                         3. Asumsi dan tingkat keyakinan (confidence score) akan dicantumkan pada masing-masing item.
                       </p>
                     </div>
                   </div>
-                  <label className="flex items-center gap-2 cursor-pointer pt-2 border-t border-amber-200">
+                  <label className="flex items-center gap-2 cursor-pointer pt-2 border-t border-amber-200 dark:border-amber-500/30">
                     <input
                       type="checkbox"
                       checked={aiDisclaimerAccepted}
                       onChange={(e) => setAiDisclaimerAccepted(e.target.checked)}
                       className="rounded-sm text-blue-600 focus:ring-blue-500 w-4 h-4"
                     />
-                    <span className="text-xs font-bold text-amber-950">
+                    <span className="text-xs font-bold text-amber-950 dark:text-amber-300">
                       Saya memahami dan menyetujui bahwa hasil AI merupakan estimasi awal yang perlu verifikasi teknis.
                     </span>
                   </label>
@@ -798,7 +776,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
           {/* STEP 3: PILIH KATEGORI PEKERJAAN */}
           {step === 3 && (
             <div className="space-y-4">
-              <div className="border-b border-slate-100 pb-3">
+              <div className="border-b border-slate-100 dark:border-slate-700 pb-3">
                 <h3 className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-2">
                   <Layers className="w-4 h-4 text-blue-600" />
                   Langkah 3 dari 5: Pilih Kategori Pekerjaan RAB
@@ -835,11 +813,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                   return (
                     <label
                       key={cat}
-                      className={`flex items-center justify-between p-2.5 rounded-xl border text-xs cursor-pointer transition-colors ${
-                        isChecked
-                          ? 'border-blue-600 bg-blue-50/60 dark:bg-blue-950/60 font-semibold text-blue-900 dark:text-blue-200'
-                          : 'border-[var(--border-primary)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] text-[var(--text-primary)]'
-                      }`}
+                      className={`flex items-center justify-between p-2.5 rounded-xl border text-xs cursor-pointer transition-colors ${ isChecked ? 'border-blue-600' : 'border-[var(--border-primary)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated-hover)] text-[var(--text-primary)]' }`}
                     >
                       <div className="flex items-center space-x-2.5">
                         <input
@@ -858,7 +832,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                 {customCategories.map((c) => (
                   <div
                     key={c.id}
-                    className="flex items-center justify-between p-2.5 rounded-xl border border-indigo-200 bg-indigo-50/50 text-xs font-semibold text-indigo-900"
+                    className="flex items-center justify-between p-2.5 rounded-xl border border-indigo-200 dark:border-indigo-500/30 bg-indigo-50/50 dark:bg-indigo-500/15 text-xs font-semibold text-indigo-900 dark:text-indigo-300"
                   >
                     <span>{c.name} (Kustom)</span>
                     <button
@@ -866,7 +840,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                         setCustomCategories(customCategories.filter((x) => x.id !== c.id));
                         setSelectedCategories(selectedCategories.filter((x) => x !== (c.name as any)));
                       }}
-                      className="text-rose-500 hover:text-rose-700"
+                      className="text-rose-500 hover:text-rose-700 dark:text-rose-300"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -898,7 +872,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
           {/* STEP 4: GENERATE ITEM & PREVIEW TABEL */}
           {step === 4 && (
             <div className="space-y-4">
-              <div className="border-b border-slate-100 pb-3 flex items-center justify-between">
+              <div className="border-b border-slate-100 dark:border-slate-700 pb-3 flex items-center justify-between">
                 <div>
                   <h3 className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-2">
                     <FileSpreadsheet className="w-4 h-4 text-blue-600" />
@@ -911,7 +885,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                 <div className="flex items-center gap-2">
                   <button
                     onClick={toggleAllItems}
-                    className="text-xs px-2.5 py-1 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-lg text-[var(--text-primary)] font-semibold"
+                    className="text-xs px-2.5 py-1 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 rounded-lg text-[var(--text-primary)] font-semibold"
                   >
                     {selectedItemIds.size === draftItems.length ? 'Batal Pilih Semua' : 'Pilih Semua'}
                   </button>
@@ -975,7 +949,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                                   className="w-full px-1.5 py-0.5 border border-[var(--border-primary)] rounded-sm text-xs font-medium"
                                 />
                                 {item.warnings && item.warnings.length > 0 && (
-                                  <div className="text-[10px] text-amber-700 mt-0.5 flex items-center gap-1">
+                                  <div className="text-[10px] text-amber-700 dark:text-amber-300 mt-0.5 flex items-center gap-1">
                                     <AlertTriangle className="w-3 h-3" />
                                     <span>{item.warnings[0]}</span>
                                   </div>
@@ -1030,7 +1004,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
           {/* STEP 5: REVIEW DAN KONFIRMASI */}
           {step === 5 && (
             <div className="space-y-4">
-              <div className="border-b border-slate-100 pb-3">
+              <div className="border-b border-slate-100 dark:border-slate-700 pb-3">
                 <h3 className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-2">
                   <FileCheck className="w-4 h-4 text-emerald-600" />
                   Langkah 5 dari 5: Rekapitulasi Akhir & Konfirmasi Penerapan
@@ -1060,9 +1034,9 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                     {formatRupiah(summary.overheadCost + summary.profitCost)}
                   </div>
                 </div>
-                <div className="p-3 bg-blue-50 rounded-xl border border-blue-200">
-                  <span className="text-[11px] text-blue-700 font-bold">Grand Total (Inc. PPN)</span>
-                  <div className="text-sm font-black text-blue-950 mt-1">
+                <div className="p-3 bg-blue-50 dark:bg-blue-500/15 rounded-xl border border-blue-200 dark:border-blue-500/30">
+                  <span className="text-[11px] text-blue-700 dark:text-blue-300 font-bold">Grand Total (Inc. PPN)</span>
+                  <div className="text-sm font-black text-blue-950 dark:text-blue-300 mt-1">
                     {formatRupiah(summary.grandTotal)}
                   </div>
                 </div>
@@ -1075,7 +1049,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                     <span className="font-bold text-[var(--text-primary)]">Analisis Plafon Target Anggaran:</span>
                     <span className="font-bold text-[var(--text-primary)]">{formatRupiah(summary.targetBudget)}</span>
                   </div>
-                  <div className="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-slate-200 dark:bg-slate-500/15 h-2 rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all ${
                         summary.budgetUsagePercent > 100
@@ -1105,7 +1079,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
               )}
 
               {/* Consent Checkbox */}
-              <div className="p-4 bg-emerald-50/70 rounded-xl border border-emerald-200">
+              <div className="p-4 bg-emerald-50/70 dark:bg-emerald-500/15 rounded-xl border border-emerald-200 dark:border-emerald-500/30">
                 <label className="flex items-start gap-2.5 cursor-pointer">
                   <input
                     type="checkbox"
@@ -1114,10 +1088,10 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                     className="mt-0.5 rounded-sm text-emerald-600 focus:ring-emerald-500 w-4 h-4"
                   />
                   <div>
-                    <span className="text-xs font-bold text-emerald-950">
+                    <span className="text-xs font-bold text-emerald-950 dark:text-emerald-300">
                       Konfirmasi Persetujuan Penerapan RAB Resmi
                     </span>
-                    <p className="text-[11px] text-emerald-800 mt-0.5 leading-relaxed">
+                    <p className="text-[11px] text-emerald-800 dark:text-emerald-300 mt-0.5 leading-relaxed">
                       Saya telah meninjau uraian, volume, dan harga satuan di atas. Dengan menekan tombol &quot;Terapkan ke Proyek&quot;, sistem akan membuat proyek baru, mencatat snapshot audit trail revision history, dan mengunci transaksi awal secara otomatis.
                     </p>
                   </div>
@@ -1167,8 +1141,7 @@ export const QuickRABBuilderModal: React.FC<QuickRABBuilderModalProps> = ({ isOp
                 onClick={handleApplyToProject}
                 className={`px-6 py-2 text-xs font-bold text-white rounded-xl flex items-center gap-2 transition-colors shadow-xs ${
                   userConsentChecked && !isApplying
-                    ? 'bg-emerald-600 hover:bg-emerald-700 cursor-pointer'
-                    : 'bg-slate-400 cursor-not-allowed'
+                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'bg-slate-400 dark:bg-slate-700 text-slate-200 dark:text-slate-400 cursor-not-allowed'
                 }`}
               >
                 <ShieldCheck className="w-4 h-4" />

@@ -201,17 +201,11 @@ export const RABView: React.FC<RABViewProps> = ({
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="px-2.5 py-1 bg-blue-50 text-blue-700 font-mono text-[11px] font-bold rounded-lg border border-blue-200">
+              <span className="px-2.5 py-1 bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 font-mono text-[11px] font-bold rounded-lg border border-blue-200 dark:border-blue-500/30">
                 {selectedProject.docNumber}
               </span>
               <span
-                className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border ${
-                  selectedProject.status === 'Berjalan'
-                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                    : selectedProject.status === 'Selesai'
-                    ? 'bg-blue-50 text-blue-700 border-blue-200'
-                    : 'bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] border-[var(--border-primary)]'
-                }`}
+                className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border ${ selectedProject.status === 'Berjalan' ? 'bg-emerald-50 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-500/30' : selectedProject.status === 'Selesai' ? 'bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-500/30' : 'bg-[var(--bg-elevated-hover)] text-[var(--text-primary)] border-[var(--border-primary)]' }`}
               >
                 {selectedProject.status}
               </span>
@@ -247,7 +241,7 @@ export const RABView: React.FC<RABViewProps> = ({
           </div>
 
           {/* Quick Grand Total Badge */}
-          <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] p-4 sm:p-5 rounded-xl border border-slate-200 dark:border-[var(--border-primary)] flex-shrink-0 min-w-[240px] text-right">
+          <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] p-4 sm:p-5 rounded-xl border border-slate-200 dark:border-slate-500/30 flex-shrink-0 min-w-[240px] text-right">
             <span className="text-[10px] text-blue-400 uppercase font-extrabold tracking-wider block">
               Nilai Kontrak RAB (Grand Total)
             </span>
@@ -324,7 +318,7 @@ export const RABView: React.FC<RABViewProps> = ({
 
           <button
             onClick={() => setIsRevisionHistoryOpen(true)}
-            className="px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
+            className="px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
             title="Lihat riwayat revisi dan audit perubahan data RAB"
           >
             <History className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
@@ -333,7 +327,7 @@ export const RABView: React.FC<RABViewProps> = ({
 
           <button
             onClick={() => setIsApplyTemplateOpen(true)}
-            className="px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
+            className="px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
             title="Gunakan template pekerjaan siap pakai"
           >
             <FileSpreadsheet className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
@@ -342,7 +336,7 @@ export const RABView: React.FC<RABViewProps> = ({
 
           <button
             onClick={onOpenCalculator}
-            className="px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
+            className="px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
             title="Buka kalkulator volume pekerjaan"
           >
             <Ruler className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
@@ -351,7 +345,7 @@ export const RABView: React.FC<RABViewProps> = ({
 
                     <button
             onClick={() => setIsFinancialReviewOpen(true)}
-            className="px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
+            className="px-3 py-2 bg-indigo-50 dark:bg-indigo-500/15 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
             title="Review Kewajaran Anggaran via AI"
           >
             <ShieldCheck className="w-3.5 h-3.5 text-indigo-600" />
@@ -359,7 +353,7 @@ export const RABView: React.FC<RABViewProps> = ({
           </button>
           <button
             onClick={handleExportCSV}
-            className="px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
+            className="px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
             title="Ekspor ke CSV / Excel"
           >
             <Download className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
@@ -369,7 +363,7 @@ export const RABView: React.FC<RABViewProps> = ({
           <PdfExportButton elementId="rab-view" filename="RAB_Lengkap" title="Rencana Anggaran Biaya" isLandscape={true} />
           <button
             onClick={() => setActiveTab('reports')}
-            className="px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
+            className="px-3 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5"
             title="Lihat dan cetak dokumen laporan RAB"
           >
             <Printer className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
@@ -379,7 +373,7 @@ export const RABView: React.FC<RABViewProps> = ({
           {projectRABItems.length > 0 && (
             <button
               onClick={() => setIsClearConfirmOpen(true)}
-              className="p-2 text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
+              className="p-2 text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50 dark:bg-rose-500/15 rounded-xl transition-colors"
               title="Kosongkan seluruh item RAB pada proyek ini"
             >
               <Trash2 className="w-4 h-4" />
@@ -487,22 +481,14 @@ export const RABView: React.FC<RABViewProps> = ({
                   <button
                     type="button"
                     onClick={() => setTemplateApplyMode('append')}
-                    className={`p-2.5 rounded-xl border text-center font-medium ${
-                      templateApplyMode === 'append'
-                        ? 'bg-blue-50 border-blue-500 text-blue-700 font-bold'
-                        : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]'
-                    }`}
+                    className={`p-2.5 rounded-xl border text-center font-medium ${ templateApplyMode === 'append' ? 'bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-500/30 font-bold' : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]' }`}
                   >
                     Tambahkan ke RAB
                   </button>
                   <button
                     type="button"
                     onClick={() => setTemplateApplyMode('replace')}
-                    className={`p-2.5 rounded-xl border text-center font-medium ${
-                      templateApplyMode === 'replace'
-                        ? 'bg-rose-50 border-rose-500 text-rose-700 font-bold'
-                        : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]'
-                    }`}
+                    className={`p-2.5 rounded-xl border text-center font-medium ${ templateApplyMode === 'replace' ? 'bg-rose-50 dark:bg-rose-500/15 text-rose-700 dark:text-rose-300 border-rose-300 dark:border-rose-500/30 font-bold' : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]' }`}
                   >
                     Timpa (Ganti Total)
                   </button>
@@ -513,7 +499,7 @@ export const RABView: React.FC<RABViewProps> = ({
             <div className="mt-6 flex items-center justify-end space-x-2">
               <button
                 onClick={() => setIsApplyTemplateOpen(false)}
-                className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl"
+                className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 rounded-xl"
               >
                 Batal
               </button>
@@ -590,7 +576,7 @@ export const RABView: React.FC<RABViewProps> = ({
             <div className="mt-6 flex items-center justify-end space-x-2">
               <button
                 onClick={() => setIsSaveTemplateOpen(false)}
-                className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl"
+                className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 rounded-xl"
               >
                 Batal
               </button>

@@ -88,7 +88,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700/60 transition-colors cursor-pointer"
+            className="p-1 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-500/15 transition-colors cursor-pointer"
             title="Tutup Inspector"
           >
             <X className="w-4 h-4" />
@@ -107,14 +107,14 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                 {selectedProject?.status || 'Aktif'}
               </span>
             </div>
-            <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100 mb-1 leading-snug line-clamp-2">
+            <h3 className="font-bold text-sm text-slate-900 dark:text-slate-300 mb-1 leading-snug line-clamp-2">
               {selectedProject?.name || 'Pilih Proyek'}
             </h3>
             <p className="text-[var(--text-secondary)] text-[11px] mb-3">
               {selectedProject?.client || 'Klien Proyek'} {selectedProject?.location ? `• ${selectedProject.location}` : ''}
             </p>
 
-            <div className="pt-3 border-t border-slate-200 dark:border-[var(--border-primary)]">
+            <div className="pt-3 border-t border-slate-200 dark:border-slate-500/30">
               <div className="text-[11px] text-[var(--text-secondary)]">Total Anggaran (Grand Total)</div>
               <div className="text-xl font-bold text-white tracking-tight tabular-nums mt-0.5">
                 {formatCurrency(grandTotal)}
@@ -128,16 +128,16 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
           </div>
 
           {/* Canonical Financial Engine Lock & SOT */}
-          <div className="bg-blue-50/80 border border-blue-200 rounded-xl p-3">
-            <div className="flex items-center space-x-2 text-blue-900 font-bold mb-1.5">
+          <div className="bg-blue-50/80 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 rounded-xl p-3">
+            <div className="flex items-center space-x-2 text-blue-900 dark:text-blue-300 font-bold mb-1.5">
               <ShieldCheck className="w-4 h-4 text-blue-600 flex-shrink-0" />
               <span>Canonical Financial Engine</span>
             </div>
-            <p className="text-[11px] text-blue-800 leading-relaxed">
+            <p className="text-[11px] text-blue-800 dark:text-blue-300 leading-relaxed">
               Semua perhitungan bersumber dari Single Source of Truth (SOT) V10 dengan audit checksum otomatis.
             </p>
             <div className="mt-2.5 grid grid-cols-2 gap-2 text-[10px]">
-              <div className="bg-[var(--bg-elevated)]/80 p-2 rounded-lg border border-blue-100">
+              <div className="bg-[var(--bg-elevated)]/80 p-2 rounded-lg border border-blue-100 dark:border-blue-500/30">
                 <span className="text-slate-500 dark:text-slate-400 block">Metode Pajak</span>
                 <span className="font-bold text-[var(--text-primary)]">PPN {taxPercent}% (SNI)</span>
               </div>
@@ -198,7 +198,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
               onClick={() => {
                 setActiveTab('reports');
               }}
-              className="w-full flex items-center justify-between p-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700/80 rounded-xl text-[var(--text-primary)] font-semibold transition-colors cursor-pointer"
+              className="w-full flex items-center justify-between p-2.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 rounded-xl text-[var(--text-primary)] font-semibold transition-colors cursor-pointer"
             >
               <div className="flex items-center space-x-2">
                 <Printer className="w-4 h-4 text-[var(--text-secondary)]" />
@@ -210,7 +210,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
             {onOpenAIEstimator && (
               <button
                 onClick={onOpenAIEstimator}
-                className="w-full flex items-center justify-between p-2.5 bg-blue-50 hover:bg-blue-100 rounded-xl text-blue-900 font-semibold transition-colors border border-blue-200 cursor-pointer"
+                className="w-full flex items-center justify-between p-2.5 bg-blue-50 dark:bg-blue-500/15 hover:bg-blue-100 rounded-xl text-blue-900 dark:text-blue-300 font-semibold transition-colors border border-blue-200 dark:border-blue-500/30 cursor-pointer"
               >
                 <div className="flex items-center space-x-2">
                   <Sparkles className="w-4 h-4 text-blue-600" />

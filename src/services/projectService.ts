@@ -1,6 +1,8 @@
 import { Project, ProjectStatus } from '../types';
-import { StorageAdapter, defaultStorage } from '../db/storageAdapter';
+import { StorageAdapter, defaultStorage, STORAGE_KEYS } from '../db/storageAdapter';
+import { idbStorage, DB_STORES } from '../db/indexedDBAdapter';
 import { INITIAL_PROJECTS } from '../data/initialData';
+import { safeLocalStorageGet, safeLocalStorageSet } from '../utils/storageUtils';
 
 const STORAGE_KEY = 'projects';
 
@@ -12,12 +14,37 @@ export class ProjectService {
   }
 
   async getAll(): Promise<Project[]> {
+    try {
+      if (idbStorage.isSupported()) {
+        const idb = await idbStorage.getAll<Project>(DB_STORES.PROJECTS);
+        if (idb && idb.length > 0) return idb;
+      }
+    } catch {}
+
+    const raw = safeLocalStorageGet(STORAGE_KEYS.PROJECTS);
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch {}
+    }
+
     return this.storage.getItem<Project[]>(STORAGE_KEY, INITIAL_PROJECTS);
   }
 
   async getById(id: string): Promise<Project | null> {
     const list = await this.getAll();
     return list.find((p) => p.id === id) || null;
+  }
+
+  private async persistList(list: Project[]): Promise<void> {
+    await this.storage.setItem(STORAGE_KEY, list);
+    safeLocalStorageSet(STORAGE_KEYS.PROJECTS, JSON.stringify(list));
+    if (idbStorage.isSupported()) {
+      try {
+        await idbStorage.setAll(DB_STORES.PROJECTS, list);
+      } catch {}
+    }
   }
 
   async create(data: Omit<Project, 'id' | 'createdAt'>): Promise<Project> {
@@ -34,7 +61,7 @@ export class ProjectService {
     };
 
     const updatedList = [newProject, ...list];
-    await this.storage.setItem(STORAGE_KEY, updatedList);
+    await this.persistList(updatedList);
     return newProject;
   }
 
@@ -47,14 +74,14 @@ export class ProjectService {
 
     const updatedProject = { ...list[index], ...updates };
     list[index] = updatedProject;
-    await this.storage.setItem(STORAGE_KEY, list);
+    await this.persistList(list);
     return updatedProject;
   }
 
   async delete(id: string): Promise<void> {
     const list = await this.getAll();
     const filtered = list.filter((p) => p.id !== id);
-    await this.storage.setItem(STORAGE_KEY, filtered);
+    await this.persistList(filtered);
   }
 
   async updateStatus(id: string, status: ProjectStatus): Promise<Project> {

@@ -33,11 +33,25 @@ import {
 } from 'lucide-react';
 
 export const SCurveComparisonView: React.FC = () => {
-  const { selectedProject, projectSCurve, exportSCurveCSV, showToast } = useApp();
+  const { selectedProject, projectSCurve, exportSCurveCSV, showToast, isDarkMode } = useApp();
   const printRef = useRef<HTMLDivElement>(null);
   const [isExportingPDF, setIsExportingPDF] = useState(false);
 
   const scurve = projectSCurve;
+
+  // Chart Colors
+  const gridColor = isDarkMode ? '#3A3A3C' : '#e2e8f0';
+  const axisTextColor = isDarkMode ? 'rgba(235,235,245,0.6)' : '#64748b';
+  const tooltipBg = isDarkMode ? '#1E1E1E' : '#0f172a';
+  const tooltipBorder = isDarkMode ? 'rgba(255,255,255,0.1)' : 'none';
+  const tooltipTextColor = isDarkMode ? '#ffffff' : '#ffffff';
+  const plannedWeeklyFill = isDarkMode ? '#1e3a8a' : '#bfdbfe';
+  const actualWeeklyFill = isDarkMode ? '#065f46' : '#a7f3d0';
+  const plannedCumStroke = isDarkMode ? '#60a5fa' : '#2563eb';
+  const actualCumStrokeDevNegative = isDarkMode ? '#fb7185' : '#e11d48';
+  const actualCumStrokeDevPositive = isDarkMode ? '#34d399' : '#059669';
+  const dotFillPlanned = isDarkMode ? '#60a5fa' : '#2563eb';
+  const dotStroke = isDarkMode ? '#1E1E1E' : '#ffffff';
 
   // High-Resolution PDF Export Engine
   const handleExportPDF = async () => {
@@ -108,11 +122,11 @@ export const SCurveComparisonView: React.FC = () => {
 
   if (!scurve) {
     return (
-      <div className="bg-[var(--bg-elevated)] rounded-2xl p-12 border border-slate-200 dark:border-[var(--border-primary)] text-center space-y-4 max-w-xl mx-auto shadow-xs">
-        <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto">
+      <div className="bg-[var(--bg-elevated)] rounded-2xl p-12 border border-slate-200 dark:border-slate-500/30 text-center space-y-4 max-w-xl mx-auto shadow-xs">
+        <div className="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-500/15 text-blue-600 flex items-center justify-center mx-auto">
           <TrendingUp className="w-7 h-7" />
         </div>
-        <h3 className="text-base font-bold text-slate-900 dark:text-white">Kurva S Belum Tersedia</h3>
+        <h3 className="text-base font-bold text-slate-900 dark:text-slate-300">Kurva S Belum Tersedia</h3>
         <p className="text-xs text-slate-600 dark:text-slate-300 max-w-sm mx-auto">
           Silakan buat jadwal rencana Kurva S terlebih dahulu pada menu Rencana Kurva S.
         </p>
@@ -144,33 +158,33 @@ export const SCurveComparisonView: React.FC = () => {
   return (
     <div className="space-y-6" id="scurve-compare-view" ref={printRef}>
       {/* Header Banner */}
-      <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 border border-slate-200 dark:border-[var(--border-primary)] shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4 print:bg-[var(--bg-elevated)] print:text-[var(--text-primary)] print:border-none print:p-0">
+      <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 border border-slate-200 dark:border-slate-500/30 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4 print:bg-[var(--bg-elevated)] print:text-[var(--text-primary)] print:border-none print:p-0">
         <div>
           <div className="flex items-center space-x-2.5 mb-1.5">
             <span className="p-1.5 bg-blue-600 rounded-lg text-white print:hidden">
               <TrendingUp className="w-5 h-5" />
             </span>
-            <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Evaluasi & Perbandingan Kurva S (Rencana vs Realisasi)</h1>
+            <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-300">Evaluasi & Perbandingan Kurva S (Rencana vs Realisasi)</h1>
           </div>
           <p className="text-xs text-slate-600 dark:text-slate-300 max-w-2xl">
             Laporan visual komparasi progres fisik konstruksi mingguan & kumulatif untuk pelaporan owner, konsultan manajemen konstruksi, dan kontraktor.
           </p>
-          <div className="flex items-center space-x-3 mt-3 text-xs text-slate-700 dark:text-slate-200">
+          <div className="flex items-center space-x-3 mt-3 text-xs text-slate-700 dark:text-slate-300">
             <span className="flex items-center gap-1.5">
               <Building2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-              Proyek: <strong className="text-slate-900 dark:text-white">{selectedProject?.name}</strong>
+              Proyek: <strong className="text-slate-900 dark:text-slate-300">{selectedProject?.name}</strong>
             </span>
             <span>•</span>
-            <span>No. Dok: <strong className="text-slate-900 dark:text-white">{selectedProject?.documentNumber || 'PRJ-2025-001'}</strong></span>
+            <span>No. Dok: <strong className="text-slate-900 dark:text-slate-300">{selectedProject?.documentNumber || 'PRJ-2025-001'}</strong></span>
             <span>•</span>
-            <span>Kontraktor: <strong className="text-slate-900 dark:text-white">{selectedProject?.contractor || '-'}</strong></span>
+            <span>Kontraktor: <strong className="text-slate-900 dark:text-slate-300">{selectedProject?.contractor || '-'}</strong></span>
           </div>
         </div>
 
         <div className="flex items-center space-x-3 flex-wrap print:hidden">
           <button
             onClick={handleExportCSV}
-            className="px-3.5 py-2.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 transition-colors flex items-center space-x-1.5 disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-600 disabled:cursor-not-allowed shadow-2xs"
+            className="px-3.5 py-2.5 bg-white hover:bg-slate-50 dark:bg-slate-500/15 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-500/30 transition-colors flex items-center space-x-1.5 disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-600 disabled:cursor-not-allowed shadow-2xs"
           >
             <Download className="w-4 h-4" />
             <span>Ekspor CSV</span>
@@ -179,7 +193,7 @@ export const SCurveComparisonView: React.FC = () => {
           <button
             onClick={handleExportPDF}
             disabled={isExportingPDF}
-            className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors flex items-center space-x-1.5 disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-600 disabled:cursor-not-allowed"
+            className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors flex items-center space-x-1.5 disabled:bg-slate-100 dark:bg-slate-500/15 disabled:text-slate-500 disabled:border-slate-300 dark:border-slate-500/30 dark:disabled:bg-slate-800 dark:disabled:text-slate-600 disabled:cursor-not-allowed"
           >
             {isExportingPDF ? (
               <Loader2 className="w-4 h-4 animate-spin text-white" />
@@ -194,32 +208,26 @@ export const SCurveComparisonView: React.FC = () => {
       <div className="space-y-6 bg-white dark:bg-slate-900 p-2 sm:p-4 rounded-2xl" id="kurvas-export-area">
         {/* KPI Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-[var(--border-primary)] shadow-2xs">
-            <span className="text-xs text-slate-700 dark:text-slate-200 font-medium">Rencana Kumulatif Saat Ini</span>
-            <div className="text-xl font-extrabold text-slate-900 dark:text-white mt-1">
+          <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-slate-500/30 shadow-2xs">
+            <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">Rencana Kumulatif Saat Ini</span>
+            <div className="text-xl font-extrabold text-slate-900 dark:text-slate-300 mt-1">
               {currentPlanned.toFixed(2)} %
             </div>
             <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-0.5">Target schedule baseline</p>
           </div>
 
-          <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-[var(--border-primary)] shadow-2xs">
-            <span className="text-xs text-slate-700 dark:text-slate-200 font-medium">Realisasi Aktual Kumulatif</span>
-            <div className="text-xl font-extrabold text-blue-900 dark:text-blue-400 mt-1">
+          <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-slate-500/30 shadow-2xs">
+            <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">Realisasi Aktual Kumulatif</span>
+            <div className="text-xl font-extrabold text-blue-900 dark:text-blue-300 mt-1">
               {currentActual.toFixed(2)} %
             </div>
             <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-0.5">Fisik lapangan tercapai</p>
           </div>
 
-          <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-[var(--border-primary)] shadow-2xs">
-            <span className="text-xs text-slate-700 dark:text-slate-200 font-medium">Deviasi Kumulatif</span>
+          <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-slate-500/30 shadow-2xs">
+            <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">Deviasi Kumulatif</span>
             <div
-              className={`text-xl font-extrabold mt-1 flex items-center gap-1 ${
-                currentDev >= 0.5
-                  ? 'text-blue-600 dark:text-blue-400'
-                  : currentDev <= -2.0
-                  ? 'text-rose-600 dark:text-rose-400'
-                  : 'text-emerald-600 dark:text-emerald-400'
-              }`}
+              className={`text-xl font-extrabold mt-1 flex items-center gap-1 ${ currentDev >= 0.5 ? 'text-blue-600 dark:text-blue-400' : currentDev <= -2.0 ? 'text-rose-600' : 'text-emerald-600' }`}
             >
               {currentDev >= 0.5 ? (
                 <ArrowUpRight className="w-5 h-5" />
@@ -235,19 +243,19 @@ export const SCurveComparisonView: React.FC = () => {
             </p>
           </div>
 
-          <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-[var(--border-primary)] shadow-2xs">
-            <span className="text-xs text-slate-700 dark:text-slate-200 font-medium">Status Pengendalian</span>
+          <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-slate-500/30 shadow-2xs">
+            <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">Status Pengendalian</span>
             <div className="mt-1">
               {currentDev >= 0.5 ? (
-                <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-100 text-blue-800 border border-blue-300 inline-flex items-center gap-1">
+                <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-100 dark:bg-blue-500/15 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-500/30 inline-flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5" /> Lebih Cepat
                 </span>
               ) : currentDev <= -2.0 ? (
-                <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-100 text-rose-800 border border-rose-300 inline-flex items-center gap-1">
+                <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-100 dark:bg-rose-500/15 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-500/30 inline-flex items-center gap-1">
                   <AlertTriangle className="w-3.5 h-3.5" /> Keterlambatan Fisik
                 </span>
               ) : (
-                <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 inline-flex items-center gap-1">
+                <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-100 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30 inline-flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5" /> Proyek Sesuai Target
                 </span>
               )}
@@ -257,10 +265,10 @@ export const SCurveComparisonView: React.FC = () => {
         </div>
 
         {/* Multi-Series S-Curve Interactive Recharts */}
-        <div className="bg-[var(--bg-elevated)] rounded-2xl p-6 border border-slate-200 dark:border-[var(--border-primary)] shadow-xs space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+        <div className="bg-[var(--bg-elevated)] rounded-2xl p-6 border border-slate-200 dark:border-slate-500/30 shadow-xs space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-500/30 pb-3">
             <div>
-              <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <h3 className="text-base font-bold text-slate-900 dark:text-slate-300 flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-blue-600" />
                 Kurva S Komparasi (Rencana vs Aktual Lapangan)
               </h3>
@@ -272,11 +280,11 @@ export const SCurveComparisonView: React.FC = () => {
             <div className="flex items-center space-x-4 text-xs">
               <div className="flex items-center space-x-1.5">
                 <span className="w-3 h-3 bg-blue-600 rounded-xs inline-block" />
-                <span className="text-slate-700 dark:text-slate-200 font-semibold">Rencana Kum. (%)</span>
+                <span className="text-slate-700 dark:text-slate-300 font-semibold">Rencana Kum. (%)</span>
               </div>
               <div className="flex items-center space-x-1.5">
                 <span className="w-3 h-3 bg-emerald-600 rounded-xs inline-block" />
-                <span className="text-slate-700 dark:text-slate-200 font-semibold">Aktual Kum. (%)</span>
+                <span className="text-slate-700 dark:text-slate-300 font-semibold">Aktual Kum. (%)</span>
               </div>
               <div className="flex items-center space-x-1.5">
                 <span className="w-3 h-3 bg-blue-300 rounded-xs inline-block" />
@@ -292,11 +300,11 @@ export const SCurveComparisonView: React.FC = () => {
           <div className="h-80 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart data={chartData} margin={{ top: 10, right: 20, left: -10, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="periodName" stroke="#64748b" tick={{ fontSize: 11 }} />
-                <YAxis stroke="#64748b" tick={{ fontSize: 11 }} domain={[0, 100]} unit="%" />
+                <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+                <XAxis dataKey="periodName" stroke={axisTextColor} tick={{ fontSize: 11 }} />
+                <YAxis stroke={axisTextColor} tick={{ fontSize: 11 }} domain={[0, 100]} unit="%" />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#0f172a', borderRadius: '8px', border: 'none', color: '#fff', fontSize: '12px' }}
+                  contentStyle={{ backgroundColor: tooltipBg, borderRadius: '8px', border: tooltipBorder, color: tooltipTextColor, fontSize: '12px' }}
                   formatter={(value: any, name: any) => {
                     if (value === null || value === undefined) return ['-', ''];
                     const labelMap: Record<string, string> = {
@@ -312,21 +320,21 @@ export const SCurveComparisonView: React.FC = () => {
                     return it ? it.fullName : label;
                   }}
                 />
-                <Bar dataKey="plannedWeekly" fill="#bfdbfe" radius={[3, 3, 0, 0]} barSize={12} />
-                <Bar dataKey="actualWeekly" fill="#a7f3d0" radius={[3, 3, 0, 0]} barSize={12} />
+                <Bar dataKey="plannedWeekly" fill={plannedWeeklyFill} radius={[3, 3, 0, 0]} barSize={12} />
+                <Bar dataKey="actualWeekly" fill={actualWeeklyFill} radius={[3, 3, 0, 0]} barSize={12} />
                 <Line
                   type="monotone"
                   dataKey="plannedCum"
-                  stroke="#2563eb"
+                  stroke={plannedCumStroke}
                   strokeWidth={3}
-                  dot={{ r: 4, fill: '#2563eb', stroke: '#ffffff', strokeWidth: 2 }}
+                  dot={{ r: 4, fill: dotFillPlanned, stroke: dotStroke, strokeWidth: 2 }}
                 />
                 <Line
                   type="monotone"
                   dataKey="actualCum"
-                  stroke={currentDev < -2.0 ? '#e11d48' : '#059669'}
+                  stroke={currentDev < -2.0 ? actualCumStrokeDevNegative : actualCumStrokeDevPositive}
                   strokeWidth={3.5}
-                  dot={{ r: 5, fill: currentDev < -2.0 ? '#e11d48' : '#059669', stroke: '#ffffff', strokeWidth: 2 }}
+                  dot={{ r: 5, fill: currentDev < -2.0 ? actualCumStrokeDevNegative : actualCumStrokeDevPositive, stroke: dotStroke, strokeWidth: 2 }}
                   connectNulls={false}
                 />
               </ComposedChart>
@@ -335,10 +343,10 @@ export const SCurveComparisonView: React.FC = () => {
         </div>
 
         {/* Comparison Matrix Table */}
-        <div className="bg-[var(--bg-elevated)] rounded-2xl border border-slate-200 dark:border-[var(--border-primary)] shadow-xs overflow-hidden">
-          <div className="p-4 border-b border-slate-200 dark:border-[var(--border-primary)] bg-slate-50 dark:bg-slate-800/60 flex items-center justify-between">
+        <div className="bg-[var(--bg-elevated)] rounded-2xl border border-slate-200 dark:border-slate-500/30 shadow-xs overflow-hidden">
+          <div className="p-4 border-b border-slate-200 dark:border-slate-500/30 bg-slate-50 dark:bg-slate-500/15 flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-300 flex items-center gap-2">
                 <FileSpreadsheet className="w-4 h-4 text-blue-600" />
                 Tabel Rekapitulasi Rencana vs Realisasi Progres
               </h3>
@@ -350,7 +358,7 @@ export const SCurveComparisonView: React.FC = () => {
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-bold border-b border-slate-200 dark:border-[var(--border-primary)] uppercase tracking-wider">
+              <thead className="bg-slate-100 dark:bg-slate-500/15 text-slate-900 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-500/30 uppercase tracking-wider">
                 <tr>
                   <th className="p-3 w-14 text-center">Periode</th>
                   <th className="p-3">Rentang Waktu</th>
@@ -368,58 +376,50 @@ export const SCurveComparisonView: React.FC = () => {
                   const hasData = rec.status !== 'Belum ada data';
 
                   let statusBadge = (
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-slate-600">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 dark:bg-slate-500/15 text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-slate-500/30">
                       Belum Lapor
                     </span>
                   );
                   if (rec.status === 'Lebih cepat') {
                     statusBadge = (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-300">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 dark:bg-blue-500/15 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-500/30">
                         Lebih Cepat
                       </span>
                     );
                   } else if (rec.status === 'Terlambat') {
                     statusBadge = (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-300">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 dark:bg-rose-500/15 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-500/30">
                         Terlambat
                       </span>
                     );
                   } else if (rec.status === 'Sesuai rencana') {
                     statusBadge = (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30">
                         Sesuai Target
                       </span>
                     );
                   }
 
                   return (
-                    <tr key={rec.period} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
-                      <td className="p-3 text-center font-bold text-slate-900 dark:text-white">
+                    <tr key={rec.period} className="hover:bg-slate-50 dark:bg-slate-500/15 dark:hover:bg-slate-800/40 transition-colors">
+                      <td className="p-3 text-center font-bold text-slate-900 dark:text-slate-300">
                         {scurve.periodType === 'weekly' ? 'M' : 'B'}-{rec.period}
                       </td>
                       <td className="p-3 text-slate-700 dark:text-slate-300 font-medium">{rec.periodLabel}</td>
-                      <td className="p-3 text-right font-mono text-slate-900 dark:text-white">
+                      <td className="p-3 text-right font-mono text-slate-900 dark:text-slate-300">
                         {rec.plannedProgress.toFixed(2)} %
                       </td>
-                      <td className="p-3 text-right font-mono font-bold text-slate-900 dark:text-white">
+                      <td className="p-3 text-right font-mono font-bold text-slate-900 dark:text-slate-300">
                         {hasData ? `${rec.actualProgress.toFixed(2)} %` : '-'}
                       </td>
-                      <td className="p-3 text-right font-mono font-semibold text-blue-900 dark:text-blue-400">
+                      <td className="p-3 text-right font-mono font-semibold text-blue-900 dark:text-blue-300">
                         {rec.plannedCumulative.toFixed(2)} %
                       </td>
                       <td className="p-3 text-right font-mono font-black text-blue-950 dark:text-blue-300">
                         {hasData ? `${rec.actualCumulative.toFixed(2)} %` : '-'}
                       </td>
                       <td
-                        className={`p-3 text-right font-mono font-extrabold ${
-                          !hasData
-                            ? 'text-slate-500 dark:text-slate-400'
-                            : rec.deviation >= 0.5
-                            ? 'text-blue-600 dark:text-blue-400'
-                            : rec.deviation <= -2.0
-                            ? 'text-rose-600 dark:text-rose-400'
-                            : 'text-emerald-600 dark:text-emerald-400'
-                        }`}
+                        className={`p-3 text-right font-mono font-extrabold ${ !hasData ? 'text-slate-500 dark:text-slate-400' : rec.deviation >= 0.5 ? 'text-blue-600' : rec.deviation <= -2.0 ? 'text-rose-600' : 'text-emerald-600' }`}
                       >
                         {hasData
                           ? rec.deviation >= 0
@@ -428,7 +428,7 @@ export const SCurveComparisonView: React.FC = () => {
                           : '-'}
                       </td>
                       <td className="p-3 text-center">{statusBadge}</td>
-                      <td className="p-3 text-right font-mono text-slate-900 dark:text-white">
+                      <td className="p-3 text-right font-mono text-slate-900 dark:text-slate-300">
                         {hasData && rec.actualCost ? formatRupiah(rec.actualCost) : '-'}
                       </td>
                     </tr>

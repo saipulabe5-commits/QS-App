@@ -29,10 +29,13 @@ import { ZeroMistakeEngine } from '../src/services/zeroMistakeEngine';
 import { normalizeProject, normalizeRABItem } from '../src/utils/normalizers';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
+import fs from 'fs';
+import path from 'path';
 
 let totalTests = 0;
 let passedTests = 0;
 let failedTests = 0;
+const failedTestList: string[] = [];
 
 function assert(condition: boolean, message: string) {
   totalTests++;
@@ -41,6 +44,7 @@ function assert(condition: boolean, message: string) {
     console.log(`  [TEST #${totalTests}] ✅ PASS: ${message}`);
   } else {
     failedTests++;
+    failedTestList.push(`[TEST #${totalTests}] ${message}`);
     console.error(`  [TEST #${totalTests}] ❌ FAIL: ${message}`);
     throw new Error(`Assertion failed at test #${totalTests}: ${message}`);
   }
@@ -970,9 +974,42 @@ async function runV5ForensicAuditTestSuite() {
   console.log(`  Target Achievement: ${totalTests >= 250 ? 'PASS (≥250)' : 'UNDER TARGET'} (${totalTests} total tests)`);
   console.log('  Status: ZERO DIVERGENCE | PRODUCTION-READY VERIFIED');
   console.log('================================================================================\n');
+
+  // Record test results to test-results/.last-run.json
+  try {
+    const testResultsDir = path.join(process.cwd(), 'test-results');
+    if (!fs.existsSync(testResultsDir)) {
+      fs.mkdirSync(testResultsDir, { recursive: true });
+    }
+    fs.writeFileSync(
+      path.join(testResultsDir, '.last-run.json'),
+      JSON.stringify({ status: 'passed', failedTests: [] }, null, 2)
+    );
+  } catch (fsErr) {
+    console.error('Warning: could not write test-results/.last-run.json:', fsErr);
+  }
 }
 
 runV5ForensicAuditTestSuite().catch((err) => {
   console.error('Fatal Forensic Test Error:', err);
+  try {
+    const testResultsDir = path.join(process.cwd(), 'test-results');
+    if (!fs.existsSync(testResultsDir)) {
+      fs.mkdirSync(testResultsDir, { recursive: true });
+    }
+    fs.writeFileSync(
+      path.join(testResultsDir, '.last-run.json'),
+      JSON.stringify(
+        {
+          status: 'failed',
+          failedTests: failedTestList.length > 0 ? failedTestList : [err?.message || 'Fatal Test Error']
+        },
+        null,
+        2
+      )
+    );
+  } catch (fsErr) {
+    console.error('Warning: could not write test-results/.last-run.json:', fsErr);
+  }
   process.exit(1);
 });

@@ -14,7 +14,7 @@ export function formatRupiah(amount: number, decimalPlaces: number = 0): string 
   const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   const decimalPart = parts[1] ? `,${parts[1]}` : '';
 
-  return `${isNegative ? '- ' : ''}Rp ${integerPart}${decimalPart}`;
+  return `${isNegative ? '-' : ''}Rp ${integerPart}${decimalPart}`;
 }
 
 export const formatCurrency = formatRupiah;

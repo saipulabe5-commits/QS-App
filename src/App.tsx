@@ -179,42 +179,7 @@ const MainLayout: React.FC = () => {
             <ReportView />
           </Suspense>
         );
-      case 'settings':
-        return (
-          <Suspense fallback={<ViewFallback label="Memuat Pengaturan Perusahaan..." />}>
-            <SettingsView />
-          </Suspense>
-        );
-      default:
-        return (
-          <Suspense fallback={<ViewFallback label="Memuat Dasbor..." />}>
-            <DashboardView />
-          </Suspense>
-        );
-    }
-  };
-
-  return (
-    <div className="flex flex-col h-screen bg-slate-100 dark:bg-[var(--bg-elevated)] text-slate-900 dark:text-slate-100 overflow-hidden antialiased select-none font-sans transition-colors">
-      {/* SAFE MODE BANNER IF ACTIVATED */}
-      {isSafeMode && (
-        <div className="no-print bg-[var(--traffic-yellow)] text-slate-950 font-bold px-4 py-1 text-xs text-center flex items-center justify-between shadow-sm z-50 flex-shrink-0">
-          <span>SAFE MODE AKTIF: Fitur berat diisolasi untuk keandalan maksimal.</span>
-          <button
-            onClick={() => { window.location.href = window.location.pathname; }}
-            className="underline hover:text-white ml-2 text-xs cursor-pointer"
-          >
-            Keluar dari Safe Mode
-          </button>
-        </div>
-      )}
-
-      {/* Primary Workspace Window */}
-      <div className="flex-1 flex overflow-hidden min-h-0 relative">
-        {/* Sidebar Navigation (Collapsible in focus mode) */}
-        {!isFocusMode && (
-          <Sidebar
-            onOpenAIEstimator={() => handleOpenAIWithTab('chat')}
+      case 'settings': return ( <Suspense fallback={<ViewFallback label="Memuat Pengaturan Perusahaan..." />}> <SettingsView /> </Suspense> ); default: return ( <Suspense fallback={<ViewFallback label="Memuat Dasbor..." />}> <DashboardView /> </Suspense> ); } }; return ( <div className="flex flex-col h-screen bg-slate-100 dark:bg-slate-500/15 text-slate-900 dark:text-slate-300 overflow-hidden antialiased select-none font-sans transition-colors"> {/* SAFE MODE BANNER IF ACTIVATED */} {isSafeMode && ( <div className="no-print bg-[var(--traffic-yellow)] text-slate-950 font-bold px-4 py-1 text-xs text-center flex items-center justify-between shadow-sm z-50 flex-shrink-0"> <span>SAFE MODE AKTIF: Fitur berat diisolasi untuk keandalan maksimal.</span> <button onClick={() => { window.location.href = window.location.pathname; }} className="underline hover:text-white ml-2 text-xs cursor-pointer" > Keluar dari Safe Mode </button> </div> )} {/* Primary Workspace Window */} <div className="flex-1 flex overflow-hidden min-h-0 relative"> {/* Sidebar Navigation (Collapsible in focus mode) */} {!isFocusMode && ( <Sidebar onOpenAIEstimator={() => handleOpenAIWithTab('chat')}
             onOpenNewProject={() => setIsProjectModalOpen(true)}
             onOpenAuthModal={() => setIsAuthModalOpen(true)}
             onOpenQuickBuilder={() => setIsQuickBuilderOpen(true)}

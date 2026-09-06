@@ -37,7 +37,7 @@ export const PdfExportButton: React.FC<PdfExportButtonProps> = ({ elementId, fil
       onClick={handleExport}
       disabled={isExporting}
       data-html2canvas-ignore="true"
-      className="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-sm no-print"
+      className="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 bg-white border border-slate-200 dark:border-slate-500/30 rounded-lg hover:bg-slate-50 dark:bg-slate-500/15 dark:hover:bg-slate-700 transition-colors shadow-sm no-print"
       title="Ekspor ke PDF"
     >
       {isExporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileText className="w-4 h-4 text-rose-500" />}

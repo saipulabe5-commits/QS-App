@@ -137,20 +137,20 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
         {/* Header */}
         <div className="px-6 py-4 bg-[var(--bg-elevated-hover)] border-b border-[var(--border-primary)] flex items-center justify-between flex-shrink-0">
           <div className="flex items-center space-x-3">
-            <div className="p-2.5 bg-blue-100 text-blue-700 rounded-xl">
+            <div className="p-2.5 bg-blue-100 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 rounded-xl">
               <FileSpreadsheet className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
                 <h3 className="text-base font-bold text-[var(--text-primary)]">{template.name}</h3>
-                <span className="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full">
+                <span className="text-[11px] font-bold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 px-2 py-0.5 rounded-full">
                   {template.category}
                 </span>
-                <span className="text-[10px] font-mono font-bold text-purple-700 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-md">
+                <span className="text-[10px] font-mono font-bold text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-500/15 border border-purple-200 dark:border-purple-500/30 px-2 py-0.5 rounded-md">
                   v{template.version}
                 </span>
                 {template.sourceFileName && (
-                  <span className="text-[10px] text-slate-500 dark:text-slate-400 bg-slate-200 dark:bg-slate-700/70 px-2 py-0.5 rounded-md truncate max-w-[150px]">
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 bg-slate-200 dark:bg-slate-500/15 px-2 py-0.5 rounded-md truncate max-w-[150px]">
                     Dari: {template.sourceFileName}
                   </span>
                 )}
@@ -164,7 +164,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
           <div className="flex items-center space-x-2">
             <button
               onClick={onClose}
-              className="p-1.5 text-[var(--text-secondary)] hover:text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700 rounded-lg transition-colors"
+              className="p-1.5 text-[var(--text-secondary)] hover:text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-500/15 rounded-lg transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -176,21 +176,13 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setActiveTab('items')}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors ${
-                activeTab === 'items'
-                  ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                  : 'text-[var(--text-secondary)] hover:bg-[var(--bg-elevated-hover)]'
-              }`}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors ${ activeTab === 'items' ? 'bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-200' : 'text-[var(--text-secondary)] hover:bg-[var(--bg-elevated-hover)]' }`}
             >
               Daftar Pos Pekerjaan ({displayItems.length})
             </button>
             <button
               onClick={() => setActiveTab('versions')}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1 ${
-                activeTab === 'versions'
-                  ? 'bg-purple-50 text-purple-700 border border-purple-200'
-                  : 'text-[var(--text-secondary)] hover:bg-[var(--bg-elevated-hover)]'
-              }`}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1 ${ activeTab === 'versions' ? 'bg-purple-50 dark:bg-purple-500/15 text-purple-700 dark:text-purple-300 border border-purple-200' : 'text-[var(--text-secondary)] hover:bg-[var(--bg-elevated-hover)]' }`}
             >
               <History className="w-3.5 h-3.5" />
               <span>Riwayat Versi ({template.versions?.length || 1})</span>
@@ -207,11 +199,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                   setEditTax(template.defaultTax);
                   setActiveTab('edit');
                 }}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors ${
-                  activeTab === 'edit'
-                    ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                    : 'text-[var(--text-secondary)] hover:bg-[var(--bg-elevated-hover)]'
-                }`}
+                className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors ${ activeTab === 'edit' ? 'bg-amber-50 dark:bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-200' : 'text-[var(--text-secondary)] hover:bg-[var(--bg-elevated-hover)]' }`}
               >
                 Ubah Parameter
               </button>
@@ -222,7 +210,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
             {/* Sync with Price DB */}
             <button
               onClick={handleSyncPrice}
-              className="px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs font-semibold rounded-xl flex items-center space-x-1.5 transition-colors"
+              className="px-2.5 py-1.5 bg-emerald-50 dark:bg-emerald-500/15 hover:bg-emerald-100 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30 text-xs font-semibold rounded-xl flex items-center space-x-1.5 transition-colors"
               title="Perbarui harga satuan berdasarkan Database Harga terkini"
             >
               <RefreshCw className="w-3.5 h-3.5" />
@@ -232,7 +220,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
             {/* Export Dropdown / Buttons */}
             <button
               onClick={() => exportTemplateToExcel(template)}
-              className="px-2.5 py-1.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-xl flex items-center space-x-1 transition-colors"
+              className="px-2.5 py-1.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 text-[var(--text-primary)] text-xs font-semibold rounded-xl flex items-center space-x-1 transition-colors"
               title="Export ke file Excel .xlsx"
             >
               <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
@@ -240,7 +228,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
             </button>
             <button
               onClick={() => exportTemplateToCSV(template)}
-              className="px-2.5 py-1.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-xl flex items-center space-x-1 transition-colors"
+              className="px-2.5 py-1.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 text-[var(--text-primary)] text-xs font-semibold rounded-xl flex items-center space-x-1 transition-colors"
               title="Export ke file CSV .csv"
             >
               <Download className="w-3.5 h-3.5" />
@@ -250,7 +238,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
             {/* Duplicate */}
             <button
               onClick={() => duplicateRABTemplate(template.id)}
-              className="px-2.5 py-1.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-xl flex items-center space-x-1 transition-colors"
+              className="px-2.5 py-1.5 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 text-[var(--text-primary)] text-xs font-semibold rounded-xl flex items-center space-x-1 transition-colors"
               title="Gandakan sebagai template baru"
             >
               <Copy className="w-3.5 h-3.5" />
@@ -319,7 +307,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                     <select
                       value={selectedVersion}
                       onChange={(e) => setSelectedVersion(e.target.value)}
-                      className="text-xs bg-purple-50 border border-purple-200 text-purple-800 rounded-xl px-3 py-1.5 font-bold"
+                      className="text-xs bg-purple-50 dark:bg-purple-500/15 border border-purple-200 dark:border-purple-500/30 text-purple-800 dark:text-purple-300 rounded-xl px-3 py-1.5 font-bold"
                     >
                       <option value="latest">Versi Terkini (v{template.version})</option>
                       {template.versions.map((v) => (
@@ -354,17 +342,17 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                       key={cat}
                       className="border border-[var(--border-primary)] rounded-2xl overflow-hidden shadow-2xs bg-[var(--bg-elevated)]"
                     >
-                      <div className="px-4 py-3 bg-slate-300 border-b border-slate-400 flex items-center justify-between shadow-2xs">
+                      <div className="px-4 py-3 bg-slate-300 dark:bg-slate-700/60 border-b border-slate-400 dark:border-slate-600 flex items-center justify-between shadow-2xs">
                         <div className="flex items-center space-x-2">
                           <span className="w-2.5 h-2.5 rounded-full bg-blue-700"></span>
-                          <span className="font-black text-xs sm:text-[13px] text-slate-950 uppercase tracking-wider">
+                          <span className="font-black text-xs sm:text-[13px] text-slate-950 dark:text-slate-300 uppercase tracking-wider">
                             {cat}
                           </span>
-                          <span className="text-[11px] font-bold text-[var(--text-primary)] bg-[var(--bg-elevated)]/90 px-2 py-0.5 rounded-full border border-slate-400 shadow-2xs">
+                          <span className="text-[11px] font-bold text-[var(--text-primary)] bg-[var(--bg-elevated)]/90 px-2 py-0.5 rounded-full border border-slate-400 dark:border-slate-600 shadow-2xs">
                             {catItems.length} pos
                           </span>
                         </div>
-                        <span className="font-mono font-black text-xs sm:text-sm text-slate-950">
+                        <span className="font-mono font-black text-xs sm:text-sm text-slate-950 dark:text-slate-300">
                           Subtotal: {formatRupiah(catSubtotal)}
                         </span>
                       </div>
@@ -381,7 +369,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                             <th className="py-2 px-4 w-36 text-right">Jumlah Harga</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-100">
+                        <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                           {catItems.map((item, idx) => {
                             const prevItem = idx > 0 ? catItems[idx - 1] : null;
                             const isNewFloor = Boolean(item.floor && (!prevItem || prevItem.floor !== item.floor));
@@ -391,10 +379,10 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                               <React.Fragment key={item.id || idx}>
                                 {/* Floor / Level Divider Header */}
                                 {isNewFloor && (
-                                  <tr className="bg-gradient-to-r from-blue-100/90 via-blue-50/70 to-slate-50 border-y-2 border-blue-300/80">
+                                  <tr className="bg-gradient-to-r from-blue-100/90 via-blue-50/70 to-slate-50 dark:from-blue-950/40 dark:via-blue-900/20 dark:to-slate-900/40 border-y-2 border-blue-300/80 dark:border-blue-700/60">
                                     <td colSpan={7} className="py-2.5 px-4">
                                       <div className="flex items-center space-x-2">
-                                        <span className="font-black text-xs text-blue-950 uppercase tracking-wide">
+                                        <span className="font-black text-xs text-blue-950 dark:text-blue-300 uppercase tracking-wide">
                                           {item.floor}
                                         </span>
                                       </div>
@@ -417,7 +405,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                                 )}
 
                                 {/* Item Row */}
-                                <tr className="hover:bg-blue-50/40 transition-colors">
+                                <tr className="hover:bg-blue-50/40 dark:hover:bg-blue-500/15 transition-colors">
                                   <td className="py-2.5 px-3 text-center text-[var(--text-secondary)] font-mono text-[11px]">
                                     {idx + 1}
                                   </td>
@@ -443,7 +431,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                                   <td className="py-2.5 px-3 text-right font-mono text-[var(--text-primary)]">
                                     {formatRupiah(item.unitPrice)}
                                   </td>
-                                  <td className="py-2.5 px-4 text-right font-mono font-bold text-blue-900">
+                                  <td className="py-2.5 px-4 text-right font-mono font-bold text-blue-900 dark:text-blue-300">
                                     {formatRupiah(item.calculatedAmount)}
                                   </td>
                                 </tr>
@@ -485,7 +473,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <span className="text-xs font-mono font-bold bg-purple-100 text-purple-800 px-2 py-0.5 rounded-md border border-purple-200">
+                        <span className="text-xs font-mono font-bold bg-purple-100 dark:bg-purple-500/15 text-purple-800 dark:text-purple-300 px-2 py-0.5 rounded-md border border-purple-200 dark:border-purple-500/30">
                           v{v.versionNumber}
                         </span>
                         <span className="text-xs font-bold text-[var(--text-primary)]">{v.changeSummary}</span>
@@ -600,7 +588,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
                 <div className="pt-3 flex justify-end space-x-2">
                   <button
                     onClick={() => setActiveTab('items')}
-                    className="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 font-semibold rounded-xl text-[var(--text-primary)]"
+                    className="px-4 py-2 bg-slate-200 dark:bg-slate-500/15 hover:bg-slate-300 font-semibold rounded-xl text-[var(--text-primary)]"
                   >
                     Batal
                   </button>
@@ -625,7 +613,7 @@ export const TemplateDetailModal: React.FC<TemplateDetailModalProps> = ({
           <div className="flex items-center space-x-2">
             <button
               onClick={onClose}
-              className="px-4 py-2 text-xs font-semibold text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl"
+              className="px-4 py-2 text-xs font-semibold text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-500/15 rounded-xl"
             >
               Tutup
             </button>

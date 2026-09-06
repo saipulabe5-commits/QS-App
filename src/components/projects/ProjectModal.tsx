@@ -372,15 +372,15 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
 
           {/* If creating new: Optional Template Selection */}
           {!projectToEdit && (
-            <div className="p-4 bg-blue-50/60 rounded-xl border border-blue-100">
-              <label className="block text-xs font-bold text-blue-950 mb-1.5 flex items-center space-x-1.5">
+            <div className="p-4 bg-blue-50/60 dark:bg-blue-500/15 rounded-xl border border-blue-100 dark:border-blue-500/30">
+              <label className="block text-xs font-bold text-blue-950 dark:text-blue-300 mb-1.5 flex items-center space-x-1.5">
                 <Boxes className="w-3.5 h-3.5 text-blue-600" />
                 <span>Gunakan Template Pekerjaan (Opsional)</span>
               </label>
               <select
                 value={formData.selectedTemplateId}
                 onChange={(e) => setFormData({ ...formData, selectedTemplateId: e.target.value })}
-                className="w-full px-3 py-2 text-xs bg-[var(--bg-elevated)] border border-blue-200 rounded-lg text-[var(--text-primary)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
+                className="w-full px-3 py-2 text-xs bg-[var(--bg-elevated)] border border-blue-200 dark:border-blue-500/30 rounded-lg text-[var(--text-primary)] focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
               >
                 {rabTemplates.map((tpl) => (
                   <option key={tpl.id} value={tpl.id}>
@@ -410,11 +410,11 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
           </div>
 
           {/* Submit Footer */}
-          <div className="pt-4 border-t border-slate-100 flex items-center justify-end space-x-3">
+          <div className="pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-end space-x-3">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 text-sm font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl transition-colors"
+              className="px-4 py-2.5 text-sm font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 rounded-xl transition-colors"
             >
               Batal
             </button>

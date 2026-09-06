@@ -131,8 +131,7 @@ export const ReportView: React.FC = () => {
               onClick={() => setReportType('detail')}
               className={`px-3 py-1.5 rounded-lg font-medium transition-colors ${
                 reportType === 'detail'
-                  ? 'bg-[var(--bg-elevated)] text-blue-700 font-bold shadow-2xs'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  ? 'bg-[var(--bg-elevated)] text-blue-700' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
               RAB Rinci
@@ -141,8 +140,7 @@ export const ReportView: React.FC = () => {
               onClick={() => setReportType('recap')}
               className={`px-3 py-1.5 rounded-lg font-medium transition-colors ${
                 reportType === 'recap'
-                  ? 'bg-[var(--bg-elevated)] text-blue-700 font-bold shadow-2xs'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  ? 'bg-[var(--bg-elevated)] text-blue-700' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
               Rekapitulasi Saja

@@ -14,16 +14,16 @@ export const PasswordStrengthMeter: React.FC<{ password: string }> = ({ password
   const score = evaluateStrength(password);
   
   let strengthLabel = 'Sangat Lemah';
-  let barColors = ['bg-slate-200 dark:bg-slate-700', 'bg-slate-200 dark:bg-slate-700', 'bg-slate-200 dark:bg-slate-700', 'bg-slate-200 dark:bg-slate-700'];
+  let barColors = ['bg-slate-200 dark:bg-slate-500/15', 'bg-slate-200 dark:bg-slate-500/15', 'bg-slate-200 dark:bg-slate-500/15', 'bg-slate-200 dark:bg-slate-500/15'];
   
   if (password.length === 0) {
     strengthLabel = 'Belum diisi';
   } else if (score <= 2) {
     strengthLabel = 'Lemah';
-    barColors = ['bg-rose-500', 'bg-slate-200 dark:bg-slate-700', 'bg-slate-200 dark:bg-slate-700', 'bg-slate-200 dark:bg-slate-700'];
+    barColors = ['bg-rose-500', 'bg-slate-200 dark:bg-slate-500/15', 'bg-slate-200 dark:bg-slate-500/15', 'bg-slate-200 dark:bg-slate-500/15'];
   } else if (score === 3 || score === 4) {
     strengthLabel = 'Sedang';
-    barColors = ['bg-amber-400', 'bg-amber-400', 'bg-slate-200 dark:bg-slate-700', 'bg-slate-200 dark:bg-slate-700'];
+    barColors = ['bg-amber-400', 'bg-amber-400', 'bg-slate-200 dark:bg-slate-500/15', 'bg-slate-200 dark:bg-slate-500/15'];
   } else if (score === 5) {
     strengthLabel = 'Kuat';
     barColors = ['bg-emerald-500', 'bg-emerald-500', 'bg-emerald-500', 'bg-emerald-500'];

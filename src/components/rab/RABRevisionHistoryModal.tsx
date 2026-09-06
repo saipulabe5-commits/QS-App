@@ -76,7 +76,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
   const getActorBadge = (actorType: string, actorName: string) => {
     if (actorType === 'ai') {
       return (
-        <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-purple-100 text-purple-800 flex items-center gap-1">
+        <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-purple-100 dark:bg-purple-500/15 text-purple-800 dark:text-purple-300 flex items-center gap-1">
           <Bot className="w-3 h-3 text-purple-600" />
           AI Assistant
         </span>
@@ -91,7 +91,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
       );
     }
     return (
-      <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-blue-100 text-blue-800 flex items-center gap-1">
+      <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-blue-100 dark:bg-blue-500/15 text-blue-800 dark:text-blue-300 flex items-center gap-1">
         <User className="w-3 h-3 text-blue-600" />
         {actorName || 'User'}
       </span>
@@ -101,7 +101,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
   const getActionBadge = (action: string, isRollback?: boolean) => {
     if (isRollback) {
       return (
-        <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-amber-100 text-amber-800 border border-amber-300">
+        <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-amber-100 dark:bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30">
           Rollback
         </span>
       );
@@ -109,25 +109,25 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
     switch (action) {
       case 'create':
         return (
-          <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-100 text-emerald-800">
+          <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-100 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300">
             Tambah Item
           </span>
         );
       case 'update':
         return (
-          <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-blue-100 text-blue-800">
+          <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-blue-100 dark:bg-blue-500/15 text-blue-800 dark:text-blue-300">
             Edit Item
           </span>
         );
       case 'delete':
         return (
-          <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-rose-100 text-rose-800">
+          <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-rose-100 dark:bg-rose-500/15 text-rose-800 dark:text-rose-300">
             Hapus Item
           </span>
         );
       case 'bulk_apply':
         return (
-          <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-indigo-100 text-indigo-800">
+          <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-indigo-100 dark:bg-indigo-500/15 text-indigo-800 dark:text-indigo-300">
             Bulk / Batch
           </span>
         );
@@ -220,7 +220,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-[var(--bg-elevated)]/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 md:p-6 animate-in fade-in duration-200">
       <div className="bg-[var(--bg-elevated)] w-full max-w-4xl rounded-2xl shadow-2xl border border-[var(--border-primary)] overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] px-6 py-4 flex items-center justify-between border-b border-slate-200 dark:border-[var(--border-primary)]">
+        <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] px-6 py-4 flex items-center justify-between border-b border-slate-200 dark:border-slate-500/30">
           <div className="flex items-center space-x-3">
             <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white">
               <History className="w-5 h-5" />
@@ -267,11 +267,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
               <button
                 key={act}
                 onClick={() => setFilterAction(act)}
-                className={`px-2.5 py-1 rounded-md text-[11px] font-semibold capitalize transition-colors ${
-                  filterAction === act
-                    ? 'bg-blue-600 text-white'
-                    : 'text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700'
-                }`}
+                className={`px-2.5 py-1 rounded-md text-[11px] font-semibold capitalize transition-colors ${ filterAction === act ? 'bg-blue-600' : 'text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-500/15' }`}
               >
                 {act === 'all' ? 'Semua' : act}
               </button>
@@ -303,8 +299,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
                     onClick={() => setSelectedRevision(rev)}
                     className={`w-full p-3 rounded-xl border text-left transition-all ${
                       isSelected
-                        ? 'border-blue-600 bg-[var(--bg-elevated)] ring-2 ring-blue-500/20 shadow-xs'
-                        : 'border-[var(--border-primary)] bg-[var(--bg-elevated)] hover:border-[var(--border-primary)] hover:bg-[var(--bg-elevated-hover)]'
+                        ? 'border-blue-600 bg-[var(--bg-elevated)] ring-2' : 'border-[var(--border-primary)] bg-[var(--bg-elevated)] hover:border-[var(--border-primary)] hover:bg-[var(--bg-elevated-hover)]'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1.5">
@@ -324,7 +319,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
                       {rev.reason || `Perubahan RAB #${rev.id.slice(-6)}`}
                     </div>
 
-                    <div className="flex items-center justify-between mt-2 text-[10px] text-slate-500 dark:text-slate-400 border-t border-slate-100 pt-1.5">
+                    <div className="flex items-center justify-between mt-2 text-[10px] text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700 pt-1.5">
                       <span>
                         {new Date(rev.timestamp).toLocaleDateString('id-ID', {
                           day: 'numeric',
@@ -360,7 +355,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
           <div className="md:col-span-7 overflow-y-auto p-6 custom-scrollbar max-h-[50vh] md:max-h-full space-y-4">
             {selectedRevision ? (
               <div className="space-y-4">
-                <div className="flex items-start justify-between border-b border-slate-100 pb-3">
+                <div className="flex items-start justify-between border-b border-slate-100 dark:border-slate-700 pb-3">
                   <div>
                     <div className="flex items-center gap-2">
                       <h3 className="text-sm font-bold text-[var(--text-primary)]">
@@ -427,7 +422,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
                               <td className="p-2.5 font-semibold text-[var(--text-primary)]">
                                 {diff.fieldLabel || diff.field}
                               </td>
-                              <td className="p-2.5 text-rose-700 bg-rose-50/50 font-medium">
+                              <td className="p-2.5 text-rose-700 dark:text-rose-300 bg-rose-50/50 dark:bg-rose-500/15 font-medium">
                                 {diff.oldValue !== null && diff.oldValue !== undefined
                                   ? typeof diff.oldValue === 'number'
                                     ? diff.field.includes('Price') || diff.field.includes('Cost')
@@ -436,7 +431,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
                                     : String(diff.oldValue)
                                   : '-'}
                               </td>
-                              <td className="p-2.5 text-emerald-700 bg-emerald-50/50 font-semibold">
+                              <td className="p-2.5 text-emerald-700 dark:text-emerald-300 bg-emerald-50/50 dark:bg-emerald-500/15 font-semibold">
                                 {diff.newValue !== null && diff.newValue !== undefined
                                   ? typeof diff.newValue === 'number'
                                     ? diff.field.includes('Price') || diff.field.includes('Cost')
@@ -452,8 +447,7 @@ export const RABRevisionHistoryModal: React.FC<RABRevisionHistoryModalProps> = (
                                       diff.differenceNominal > 0
                                         ? 'text-rose-600'
                                         : diff.differenceNominal < 0
-                                        ? 'text-emerald-600'
-                                        : 'text-[var(--text-secondary)]'
+                                        ? 'text-emerald-600' : 'text-[var(--text-secondary)]'
                                     }
                                   >
                                     {diff.differenceNominal > 0 ? '+' : ''}

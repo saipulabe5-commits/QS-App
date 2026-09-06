@@ -54,7 +54,7 @@ export const NotificationBell: React.FC = () => {
         {unreadCount > 0 && (
           <span
             className={`absolute top-1 right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-black text-white rounded-full transition-transform scale-100 ${
-              hasCritical ? 'bg-rose-600 animate-pulse' : 'bg-blue-600'
+              hasCritical ? 'bg-rose-600' : 'bg-blue-600'
             }`}
           >
             {unreadCount > 99 ? '99+' : unreadCount}

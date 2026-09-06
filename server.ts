@@ -16,11 +16,11 @@ function requireEnv(name: string, minLength = 1, fallback?: string): string {
       console.error(`FATAL: Environment variable ${name} tidak diset atau tidak valid (min ${minLength} karakter). Server dihentikan demi keamanan.`);
       process.exit(1);
     }
-    console.warn(`[DEV WARNING] Environment variable ${name} tidak diset. Menggunakan nilai dev fallback.`);
-    if (name === 'ADMIN_EMAIL') return 'saipulabe@gmail.com';
-    if (name === 'ADMIN_INITIAL_PASSWORD') return 'tanyasaya01';
-    if (name === 'JWT_SECRET') return 'dev_secret_rab_pro_fallback_key_32_chars_minimum_length_safe!';
-    return `dev_fallback_${name.toLowerCase()}`;
+    console.warn(`[DEV WARNING] Environment variable ${name} tidak diset. Menggunakan nilai dev fallback (dihasilkan secara acak).`);
+    if (name === 'ADMIN_EMAIL') return `admin-${crypto.randomBytes(4).toString('hex')}@localhost`;
+    if (name === 'ADMIN_INITIAL_PASSWORD') return crypto.randomBytes(8).toString('hex');
+    if (name === 'JWT_SECRET') return crypto.randomBytes(32).toString('hex');
+    return `dev_fallback_${name.toLowerCase()}_${crypto.randomBytes(4).toString('hex')}`;
   }
   return value;
 }
@@ -35,7 +35,9 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false,
 }));
 app.use(cors({
-  origin: process.env.NODE_ENV === "production" ? ["https://your-production-domain.com"] : "*",
+  origin: process.env.NODE_ENV === "production" 
+    ? (process.env.ALLOWED_ORIGIN ? process.env.ALLOWED_ORIGIN.split(',') : []) 
+    : "*",
   methods: ["GET", "POST", "PUT", "DELETE"],
 }));
 
@@ -480,6 +482,8 @@ const usersDb = new Map<string, ServerUser>();
 
 // Security Protocol V14: Seed admin from environment variables, no hardcoded credentials.
 const adminEmail = requireEnv("ADMIN_EMAIL", 5).trim().toLowerCase();
+const OWNER_EMAIL = requireEnv("OWNER_EMAIL", 5).trim().toLowerCase();
+const OWNER_EMAIL_ALIAS = process.env.OWNER_EMAIL_ALIAS ? process.env.OWNER_EMAIL_ALIAS.trim().toLowerCase() : OWNER_EMAIL;
 const initialPassword = requireEnv("ADMIN_INITIAL_PASSWORD", 8);
 
 const USERS_STORE_PATH = path.join(process.cwd(), '.data', 'users_store.json');
@@ -547,7 +551,7 @@ const ADMIN_USER_CONTEXT = {
   userId: "usr_admin_main",
   id: "usr_admin_main",
   name: "Administrator (Saipul Abe)",
-  email: "saipulabe@gmail.com",
+  email: OWNER_EMAIL,
   role: "administrator",
   companyName: "RAB Pro Enterprise",
   permissions: [
@@ -594,7 +598,7 @@ app.use("/api/ai", requireAuth, aiRateLimit);
 app.use("/api/rab", requireAuth);
 
 // ==========================================
-// AUTHENTICATION ENDPOINTS (Strict Single-Account Policy: saipulabe@gmail.com)
+// AUTHENTICATION ENDPOINTS (Strict Single-Account Policy: OWNER_EMAIL)
 // ==========================================
 
 // Removed insecure /api/auth/token endpoint that allowed unconditional token generation.
@@ -704,10 +708,10 @@ app.post("/api/auth/change-password", requireAuth, (req: any, res) => {
     usersDb.set(userEmail, user);
 
     // Synchronize both Saipul email aliases
-    if (userEmail === "saipulabe@gmail.com" || userEmail === "saipulabe5@gmail.com") {
-      const alias1 = usersDb.get("saipulabe@gmail.com");
+    if (userEmail === OWNER_EMAIL || userEmail === OWNER_EMAIL_ALIAS) {
+      const alias1 = usersDb.get(OWNER_EMAIL);
       if (alias1) alias1.passwordHash = newHash;
-      const alias2 = usersDb.get("saipulabe5@gmail.com");
+      const alias2 = usersDb.get(OWNER_EMAIL_ALIAS);
       if (alias2) alias2.passwordHash = newHash;
     }
     
@@ -765,7 +769,7 @@ async function sendPasswordRecoveryEmail(toEmail: string, code: string): Promise
     if (smtpHost.includes("gmail") || smtpUser.includes("@gmail.com")) {
       smtpPass = smtpPass.replace(/\s+/g, "");
     }
-    const smtpFrom = process.env.SMTP_FROM || `"RAB Pro Security" <${smtpUser || "saipulabe5@gmail.com"}>`;
+    const smtpFrom = process.env.SMTP_FROM || `"RAB Pro Security" <${smtpUser || "noreply@localhost"}>`;
 
     let transporter: nodemailer.Transporter;
 
@@ -809,7 +813,7 @@ async function sendPasswordRecoveryEmail(toEmail: string, code: string): Promise
         <div style="padding: 28px 24px; text-align: center;">
           <h3 style="color: #ffffff; margin-top: 0; font-size: 18px;">Kode Pemulihan Kata Sandi</h3>
           <p style="color: #cbd5e1; font-size: 13px; line-height: 1.6;">
-            Halo <strong>Saipul Abe</strong>, berikut adalah kode 6-digit untuk mengatur ulang kata sandi akun Anda:
+            Halo, berikut adalah kode 6-digit untuk mengatur ulang kata sandi akun Anda:
           </p>
           <div style="display: inline-block; background-color: #1e293b; border: 2px dashed #38bdf8; border-radius: 10px; padding: 14px 28px; margin: 16px 0;">
             <span style="font-family: monospace; font-size: 32px; font-weight: 800; letter-spacing: 6px; color: #38bdf8;">${code}</span>
@@ -828,7 +832,7 @@ async function sendPasswordRecoveryEmail(toEmail: string, code: string): Promise
       from: smtpFrom,
       to: toEmail,
       subject: `[RAB Pro] Kode Pemulihan Kata Sandi Akun Anda: ${code}`,
-      text: `Halo Saipul Abe,\n\nKode pemulihan kata sandi akun RAB Pro Anda adalah: ${code}\n\nKode ini berlaku selama 15 menit.\n\nSalam,\nTim Keamanan RAB Pro`,
+      text: `Halo,\n\nKode pemulihan kata sandi akun RAB Pro Anda adalah: ${code}\n\nKode ini berlaku selama 15 menit.\n\nSalam,\nTim Keamanan RAB Pro`,
       html: htmlBody,
     });
 
@@ -862,9 +866,9 @@ app.post("/api/auth/forgot-password", authRateLimit, async (req, res) => {
       return res.status(400).json({ error: "Alamat email wajib diisi.", success: false });
     }
 
-    if (normalizedEmail !== "saipulabe@gmail.com" && normalizedEmail !== "saipulabe5@gmail.com") {
+    if (normalizedEmail !== OWNER_EMAIL && normalizedEmail !== OWNER_EMAIL_ALIAS) {
       return res.status(403).json({
-        error: "Akses Ditolak: Hanya akun resmi saipulabe@gmail.com yang terdaftar di sistem ini.",
+        error: `Akses Ditolak: Hanya akun resmi ${OWNER_EMAIL} yang terdaftar di sistem ini.`,
         success: false,
       });
     }
@@ -910,9 +914,9 @@ app.post("/api/auth/reset-password", authRateLimit, (req, res) => {
       });
     }
 
-    if (normalizedEmail !== "saipulabe@gmail.com" && normalizedEmail !== "saipulabe5@gmail.com") {
+    if (normalizedEmail !== OWNER_EMAIL && normalizedEmail !== OWNER_EMAIL_ALIAS) {
       return res.status(403).json({
-        error: "Akses Ditolak: Hanya akun resmi saipulabe@gmail.com yang diizinkan.",
+        error: `Akses Ditolak: Hanya akun resmi ${OWNER_EMAIL} yang diizinkan.`,
         success: false,
       });
     }
@@ -970,9 +974,9 @@ app.post("/api/auth/reset-password", authRateLimit, (req, res) => {
     }
 
     // Sync aliases
-    const alias1 = usersDb.get("saipulabe@gmail.com");
+    const alias1 = usersDb.get(OWNER_EMAIL);
     if (alias1) alias1.passwordHash = newHash;
-    const alias2 = usersDb.get("saipulabe5@gmail.com");
+    const alias2 = usersDb.get(OWNER_EMAIL_ALIAS);
     if (alias2) alias2.passwordHash = newHash;
 
     saveUsersStore();
@@ -1035,9 +1039,79 @@ function getGeminiClient() {
   return aiClient;
 }
 
+// Helper: Call Gemini with automatic model fallback (gemini-3.8-flash -> gemini-3.6-flash)
+async function generateGeminiContent(
+  ai: GoogleGenAI,
+  params: {
+    contents: any;
+    config?: any;
+    primaryModel?: string;
+  }
+) {
+  const models = [params.primaryModel || "gemini-3.8-flash", "gemini-3.6-flash"];
+  let lastError: any = null;
+  for (const model of models) {
+    try {
+      const response = await ai.models.generateContent({
+        model,
+        contents: params.contents,
+        config: params.config,
+      });
+      return { response, modelUsed: model };
+    } catch (err: any) {
+      lastError = err;
+      console.warn(`[AI Engine] Model ${model} returned error: ${err?.message || err}. Attempting fallback...`);
+    }
+  }
+  throw lastError;
+}
+
 // Health check endpoint
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
+// AI Health & Status check endpoint
+app.get("/api/ai/health", async (req, res) => {
+  const hasKey = !!process.env.GEMINI_API_KEY;
+  if (!hasKey) {
+    return res.status(503).json({
+      status: "unavailable",
+      active: false,
+      message: "GEMINI_API_KEY belum dikonfigurasi pada server.",
+    });
+  }
+
+  const ai = getGeminiClient();
+  if (!ai) {
+    return res.status(503).json({
+      status: "error",
+      active: false,
+      message: "Gagal menginisialisasi Gemini AI client.",
+    });
+  }
+
+  try {
+    const t0 = Date.now();
+    const { response, modelUsed } = await generateGeminiContent(ai, {
+      contents: "Ping test. Reply with 'PONG: AI Agent is active and functioning properly.'",
+    });
+    const latencyMs = Date.now() - t0;
+    return res.json({
+      status: "ok",
+      active: true,
+      model: modelUsed,
+      latencyMs,
+      response: response.text?.trim() || "PONG",
+      timestamp: new Date().toISOString(),
+    });
+  } catch (err: any) {
+    return res.status(500).json({
+      status: "error",
+      active: false,
+      error: err?.message || String(err),
+    });
+  }
 });
 
 // 1. AI Interactive QS Assistant Chat
@@ -1126,8 +1200,7 @@ DETAIL LOG ERROR:
 ${stack ? `\nSTACK TRACE:\n${stack}` : ''}
 `.trim();
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+    const { response } = await generateGeminiContent(ai, {
       contents: [
         { role: "user", parts: [{ text: bugContext }] }
       ],
@@ -1188,8 +1261,7 @@ ${categoryBreakdown}
 ${anomaliesText}
 `;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+    const { response } = await generateGeminiContent(ai, {
       contents: [
         { role: "user", parts: [{ text: systemPrompt + "\n\n" + prompt }] }
       ],
@@ -1286,8 +1358,7 @@ ${itemsSummary || "(Belum ada item terdaftar)"}
 Pertanyaan/Permintaan Pengguna:
 ${message}`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.7-flash",
+    const { response } = await generateGeminiContent(ai, {
       contents: contextPrompt,
       config: {
         systemInstruction,
@@ -1351,8 +1422,7 @@ Kembalikan respon JSON murni dengan format:
   ]
 }`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.7-flash",
+    const { response } = await generateGeminiContent(ai, {
       contents: prompt,
       config: {
         systemInstruction: "Anda adalah auditor teknik sipil dan quantity surveyor ahli di Indonesia. Berikan rekomendasi item pekerjaan yang kurang secara terinci dan akurat.",
@@ -1419,8 +1489,7 @@ Kembalikan format JSON:
   ]
 }`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.8-flash",
+    const { response } = await generateGeminiContent(ai, {
       contents: prompt,
       config: {
         systemInstruction: "Anda adalah QS Senior dan Auditor Estimasi Biaya Konstruksi di Indonesia.",
@@ -1589,7 +1658,7 @@ Kembalikan hasil dalam format JSON persis seperti skema berikut:
 
     let aiResult: any = null;
     let aiSuccess = false;
-    const modelsToTry = ['gemini-3.7-flash', 'gemini-2.5-flash', 'gemini-1.5-flash'];
+    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.6-flash'];
     
     for (const modelName of modelsToTry) {
       try {
@@ -1744,8 +1813,7 @@ Kembalikan JSON format:
   "assumptions": string
 }`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.7-flash",
+    const { response } = await generateGeminiContent(ai, {
       contents: prompt,
       config: {
         systemInstruction: "Anda adalah insinyur quantity surveyor spesialis perhitungan volume teknis sipil.",
@@ -1799,8 +1867,7 @@ Kembalikan format JSON:
   ]
 }`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.7-flash",
+    const { response } = await generateGeminiContent(ai, {
       contents: prompt,
       config: {
         systemInstruction: "Anda adalah Konsultan Value Engineering Konstruksi dan Estimator Senior.",
@@ -1855,8 +1922,7 @@ Kembalikan format JSON:
   "riskHighlights": [string]
 }`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.7-flash",
+    const { response } = await generateGeminiContent(ai, {
       contents: prompt,
       config: {
         systemInstruction: "Anda adalah Direktur Estimasi Biaya & Ahli Quantity Surveying bersertifikasi.",
@@ -1927,8 +1993,7 @@ ${budgetTarget ? `- Target Anggaran: Rp ${budgetTarget}` : ""}
 
 Pastikan estimasi volume dan harga satuan realistis sesuai standar harga konstruksi Indonesia tahun 2024-2026. Berikan minimal 10-25 item pekerjaan utama dari persiapan hingga penyelesaian.`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.7-flash",
+    const { response } = await generateGeminiContent(ai, {
       contents: promptText,
       config: {
         systemInstruction,
@@ -1987,8 +2052,7 @@ Berikan analisis profesional dalam format JSON dengan struktur:
   "recommendations": array of string (saran optimasi biaya dan efisiensi)
 }`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.7-flash",
+    const { response } = await generateGeminiContent(ai, {
       contents: prompt,
       config: {
         systemInstruction: "Anda adalah auditor teknik sipil dan quantity surveyor senior di Indonesia. Berikan tinjauan kritis dan solutif.",
@@ -2056,7 +2120,7 @@ Skema:
 
         // PASS 1: Extraction
         const response1 = await ai.models.generateContent({
-          model: "gemini-2.5-flash",
+          model: "gemini-3.8-flash",
           contents: [{
             role: "user",
             parts: [
@@ -2093,7 +2157,7 @@ Hasil Pass 1:
 ${JSON.stringify(resultObj, null, 2)}`;
 
           const response2 = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
+            model: "gemini-3.8-flash",
             contents: [{
               role: "user",
               parts: [
@@ -2191,7 +2255,7 @@ Format: ${fileType || mimeType}
 ${userPrompt ? `Instruksi tambahan: ${userPrompt}` : ""}`;
 
         const geminiResponse = await ai.models.generateContent({
-          model: "gemini-3.7-flash",
+          model: "gemini-3.8-flash",
           contents: [
             {
               role: "user",
@@ -2239,11 +2303,11 @@ ${userPrompt ? `Instruksi tambahan: ${userPrompt}` : ""}`;
         detectedHeaders: ["No", "Uraian Pekerjaan", "Volume", "Satuan", "Harga Satuan (Rp)", "Jumlah Harga (Rp)"],
         fileTotal: 45000000,
         items: [
-          { code: "PSP-01", name: "Pembersihan lapangan dan pasang patok", category: "Pekerjaan Persiapan", unit: "m²", volume: 100,  totalAmount: 2500000, confidenceScore: 95, needsVerification: false },
-          { code: "TNH-01", name: "Galian tanah pondasi batu kali", category: "Pekerjaan Tanah", unit: "m³", volume: 24,  totalAmount: 2520000, confidenceScore: 92, needsVerification: false },
-          { code: "PND-01", name: "Pasangan pondasi batu belah 1:4", category: "Pekerjaan Pondasi", unit: "m³", volume: 16,  totalAmount: 17840000, confidenceScore: 94, needsVerification: false },
-          { code: "STR-01", name: "Sloof beton bertulang 15/20 cm K-225", category: "Pekerjaan Struktur", unit: "m³", volume: 2.4,  totalAmount: 12288000, confidenceScore: 90, needsVerification: false },
-          { code: "DND-01", name: "Pasangan bata ringan hebel t=10cm", category: "Pekerjaan Dinding", unit: "m²", volume: 65,  totalAmount: 9750000, confidenceScore: 88, needsVerification: false },
+          { code: "PSP-01", name: "Pembersihan lapangan dan pasang patok", category: "Pekerjaan Persiapan", unit: "m²", volume: 100, unitPrice: 25000, totalAmount: 2500000, confidenceScore: 95, needsVerification: false },
+          { code: "TNH-01", name: "Galian tanah pondasi batu kali", category: "Pekerjaan Tanah", unit: "m³", volume: 24, unitPrice: 105000, totalAmount: 2520000, confidenceScore: 92, needsVerification: false },
+          { code: "PND-01", name: "Pasangan pondasi batu belah 1:4", category: "Pekerjaan Pondasi", unit: "m³", volume: 16, unitPrice: 1115000, totalAmount: 17840000, confidenceScore: 94, needsVerification: false },
+          { code: "STR-01", name: "Sloof beton bertulang 15/20 cm K-225", category: "Pekerjaan Struktur", unit: "m³", volume: 2.4, unitPrice: 5120000, totalAmount: 12288000, confidenceScore: 90, needsVerification: false },
+          { code: "DND-01", name: "Pasangan bata ringan hebel t=10cm", category: "Pekerjaan Dinding", unit: "m²", volume: 65, unitPrice: 150000, totalAmount: 9750000, confidenceScore: 88, needsVerification: false },
         ],
       },
     });
@@ -2317,8 +2381,7 @@ Kembalikan format JSON:
   "additionalBudgetNeeded": number
 }`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.7-flash",
+    const { response } = await generateGeminiContent(ai, {
       contents: prompt,
       config: {
         systemInstruction: "Anda adalah ekonom konstruksi senior Indonesia dengan spesialisasi analisis prediktif harga material dan eskalasi biaya proyek.",
@@ -2383,8 +2446,7 @@ Kembalikan JSON:
   "suggestedCode": string (kode singkat pekerjaan, misal: STR-01, DND-02, ATP-01)
 }`;
 
-      const response = await ai.models.generateContent({
-        model: "gemini-3.7-flash",
+      const { response } = await generateGeminiContent(ai, {
         contents: prompt,
         config: {
           responseMimeType: "application/json",
@@ -2750,7 +2812,7 @@ Format respon JSON wajib memenuhi skema:
       : "application/pdf";
 
     let geminiResponse;
-    const candidateModels = ["gemini-3.6-flash", "gemini-3.7-flash", "gemini-2.5-flash"];
+    const candidateModels = ["gemini-3.8-flash", "gemini-3.6-flash"];
     let lastErr: any = null;
     for (const modelCandidate of candidateModels) {
       try {
@@ -2849,7 +2911,7 @@ Kembalikan data dalam struktur JSON array yang sama persis (code, name, category
 ]`;
 
     let pass2Response;
-    const pass2CandidateModels = ["gemini-2.5-flash", "gemini-3.7-flash", "gemini-3.6-flash"];
+    const pass2CandidateModels = ["gemini-3.8-flash", "gemini-3.6-flash"];
     for (const modelCandidate of pass2CandidateModels) {
       try {
         pass2Response = await ai.models.generateContent({

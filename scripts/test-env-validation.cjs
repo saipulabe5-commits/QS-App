@@ -25,6 +25,14 @@ if (!pwdMatch) {
 if (errors.length > 0) {
   console.error("❌ Environment validation tests FAILED:");
   errors.forEach(e => console.error("  - " + e));
+  const testResultsDir = path.join(__dirname, '..', 'test-results');
+  if (!fs.existsSync(testResultsDir)) {
+    fs.mkdirSync(testResultsDir, { recursive: true });
+  }
+  fs.writeFileSync(
+    path.join(testResultsDir, '.last-run.json'),
+    JSON.stringify({ status: 'failed', failedTests: errors }, null, 2)
+  );
   process.exit(1);
 } else {
   console.log("✅ Environment validation tests PASSED (JWT_SECRET >= 32, ADMIN_INITIAL_PASSWORD >= 8).");

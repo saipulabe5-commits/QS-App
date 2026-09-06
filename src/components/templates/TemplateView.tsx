@@ -136,7 +136,7 @@ export const TemplateView: React.FC = () => {
             <h2 className="text-xl font-bold text-[var(--text-primary)] tracking-tight">
               Template Master & Import RAB
             </h2>
-            <span className="px-2.5 py-0.5 text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 rounded-full">
+            <span className="px-2.5 py-0.5 text-xs font-bold bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-500/30 rounded-full">
               {rabTemplates.length} Template
             </span>
           </div>
@@ -183,7 +183,7 @@ export const TemplateView: React.FC = () => {
           <div className="text-[10px] uppercase font-bold text-[var(--text-secondary)] tracking-wider">
             Template Kustom / Import
           </div>
-          <div className="text-xl font-black text-purple-900 mt-0.5">
+          <div className="text-xl font-black text-purple-900 dark:text-purple-300 mt-0.5">
             {customCount}
           </div>
           <div className="text-[11px] text-purple-600 font-medium">Milik Anda & Hasil Ekstraksi</div>
@@ -193,7 +193,7 @@ export const TemplateView: React.FC = () => {
           <div className="text-[10px] uppercase font-bold text-[var(--text-secondary)] tracking-wider">
             Standar Referensi SNI
           </div>
-          <div className="text-xl font-black text-blue-900 mt-0.5">
+          <div className="text-xl font-black text-blue-900 dark:text-blue-300 mt-0.5">
             {builtInCount}
           </div>
           <div className="text-[11px] text-blue-600 font-medium">Baku & Terverifikasi</div>
@@ -203,7 +203,7 @@ export const TemplateView: React.FC = () => {
           <div className="text-[10px] uppercase font-bold text-[var(--text-secondary)] tracking-wider">
             Draft Berkas Import
           </div>
-          <div className="text-xl font-black text-emerald-900 mt-0.5">
+          <div className="text-xl font-black text-emerald-900 dark:text-emerald-300 mt-0.5">
             {importJobs.length}
           </div>
           <div className="text-[11px] text-emerald-600 font-medium">Excel, CSV, PDF & Scan</div>
@@ -218,29 +218,20 @@ export const TemplateView: React.FC = () => {
             onClick={() => setActiveTabFilter('all')}
             className={`px-3 py-1.5 rounded-lg transition-colors flex-1 md:flex-none ${
               activeTabFilter === 'all'
-                ? 'bg-[var(--bg-elevated)] text-[var(--text-primary)] shadow-xs'
-                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                ? 'bg-[var(--bg-elevated)] text-[var(--text-primary)] shadow-xs' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
             }`}
           >
             Semua ({rabTemplates.length})
           </button>
           <button
             onClick={() => setActiveTabFilter('custom')}
-            className={`px-3 py-1.5 rounded-lg transition-colors flex-1 md:flex-none ${
-              activeTabFilter === 'custom'
-                ? 'bg-[var(--bg-elevated)] text-purple-700 shadow-xs font-bold'
-                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-            }`}
+            className={`px-3 py-1.5 rounded-lg transition-colors flex-1 md:flex-none ${ activeTabFilter === 'custom' ? 'bg-[var(--bg-elevated)] text-purple-700' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]' }`}
           >
             Kustom & Import ({customCount})
           </button>
           <button
             onClick={() => setActiveTabFilter('builtin')}
-            className={`px-3 py-1.5 rounded-lg transition-colors flex-1 md:flex-none ${
-              activeTabFilter === 'builtin'
-                ? 'bg-[var(--bg-elevated)] text-blue-700 shadow-xs font-bold'
-                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-            }`}
+            className={`px-3 py-1.5 rounded-lg transition-colors flex-1 md:flex-none ${ activeTabFilter === 'builtin' ? 'bg-[var(--bg-elevated)] text-blue-700' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]' }`}
           >
             Standar SNI ({builtInCount})
           </button>
@@ -276,16 +267,16 @@ export const TemplateView: React.FC = () => {
 
       {/* Active Import Job Banner (if any active draft awaiting action) */}
       {activeImportJob && activeImportJob.status === 'parsed' && (
-        <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl flex items-center justify-between shadow-2xs">
+        <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 dark:border-blue-500/30 rounded-2xl flex items-center justify-between shadow-2xs">
           <div className="flex items-center space-x-3 truncate">
             <div className="p-2.5 bg-blue-600 text-white rounded-xl shadow-xs">
               <Sparkles className="w-5 h-5" />
             </div>
             <div className="truncate">
-              <h4 className="text-xs font-bold text-blue-950">
+              <h4 className="text-xs font-bold text-blue-950 dark:text-blue-300">
                 Ada Berkas RAB Hasil Ekstraksi yang Siap Diverifikasi!
               </h4>
-              <p className="text-[11px] text-blue-700 truncate">
+              <p className="text-[11px] text-blue-700 dark:text-blue-300 truncate">
                 Berkas: <strong>{activeImportJob.fileName}</strong> &middot; {activeImportJob.parsedItems.length} item pekerjaan ditemukan.
               </p>
             </div>
@@ -334,10 +325,10 @@ export const TemplateView: React.FC = () => {
                 <div className="p-5">
                   <div className="flex items-center justify-between gap-2 mb-2">
                     <div className="flex items-center space-x-1.5">
-                      <span className="text-[11px] font-bold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">
+                      <span className="text-[11px] font-bold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-500/15 px-2.5 py-0.5 rounded-full border border-blue-200 dark:border-blue-500/30">
                         {tpl.category}
                       </span>
-                      <span className="text-[10px] font-mono font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-md border border-purple-200">
+                      <span className="text-[10px] font-mono font-bold text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-500/15 px-2 py-0.5 rounded-md border border-purple-200 dark:border-purple-500/30">
                         v{tpl.version}
                       </span>
                     </div>
@@ -347,7 +338,7 @@ export const TemplateView: React.FC = () => {
                         Standar SNI
                       </span>
                     ) : (
-                      <span className="text-[10px] uppercase font-bold tracking-wider text-purple-700 bg-purple-50 px-2 py-0.5 rounded-md border border-purple-200">
+                      <span className="text-[10px] uppercase font-bold tracking-wider text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-500/15 px-2 py-0.5 rounded-md border border-purple-200 dark:border-purple-500/30">
                         Kustom / Import
                       </span>
                     )}
@@ -367,12 +358,12 @@ export const TemplateView: React.FC = () => {
                   )}
 
                   {/* Financial & Counts Card */}
-                  <div className="mt-4 p-3 bg-[var(--bg-elevated-hover)] rounded-xl border border-slate-100 flex items-center justify-between text-xs">
+                  <div className="mt-4 p-3 bg-[var(--bg-elevated-hover)] rounded-xl border border-slate-100 dark:border-slate-700 flex items-center justify-between text-xs">
                     <div>
                       <div className="text-[10px] text-[var(--text-secondary)] uppercase font-semibold">
                         Estimasi Biaya Dasar
                       </div>
-                      <div className="text-sm font-black text-blue-900 font-mono">
+                      <div className="text-sm font-black text-blue-900 dark:text-blue-300 font-mono">
                         {formatRupiah(approxTotal)}
                       </div>
                     </div>
@@ -390,7 +381,7 @@ export const TemplateView: React.FC = () => {
                   <div className="mt-3 flex items-center justify-between">
                     <button
                       onClick={() => setExpandedTemplateId(isExpanded ? null : tpl.id)}
-                      className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center space-x-1"
+                      className="text-xs font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-300 flex items-center space-x-1"
                     >
                       <span>{isExpanded ? 'Sembunyikan' : `Pratinjau ${tpl.items.length} Item`}</span>
                       {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
@@ -410,13 +401,13 @@ export const TemplateView: React.FC = () => {
                       {tpl.items.map((it, idx) => (
                         <div
                           key={idx}
-                          className="flex items-center justify-between text-[11px] p-1.5 bg-[var(--bg-elevated)] rounded-lg border border-slate-100"
+                          className="flex items-center justify-between text-[11px] p-1.5 bg-[var(--bg-elevated)] rounded-lg border border-slate-100 dark:border-slate-700"
                         >
                           <div className="truncate pr-2">
                             <span className="font-mono text-[var(--text-secondary)] mr-1.5">{it.itemCode}</span>
                             <span className="font-medium text-[var(--text-primary)]">{it.description}</span>
                           </div>
-                          <div className="font-mono font-semibold text-blue-800 flex-shrink-0">
+                          <div className="font-mono font-semibold text-blue-800 dark:text-blue-300 flex-shrink-0">
                             {formatNumber(it.volume, 2)} {it.unit} &middot; {formatRupiah(it.unitPrice)}
                           </div>
                         </div>
@@ -426,12 +417,12 @@ export const TemplateView: React.FC = () => {
                 </div>
 
                 {/* Card Actions */}
-                <div className="px-5 py-3 bg-[var(--bg-elevated-hover)] border-t border-slate-100 flex items-center justify-between gap-2">
+                <div className="px-5 py-3 bg-[var(--bg-elevated-hover)] border-t border-slate-100 dark:border-slate-700 flex items-center justify-between gap-2">
                   <div className="flex items-center space-x-1">
                     {/* Quick Sync */}
                     <button
                       onClick={() => syncTemplateWithPriceDatabase(tpl.id)}
-                      className="p-2 text-slate-500 dark:text-slate-400 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors"
+                      className="p-2 text-slate-500 hover:text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:bg-emerald-500/15 rounded-lg transition-colors"
                       title="Sinkronkan Harga dengan Database Harga"
                     >
                       <RefreshCw className="w-4 h-4" />
@@ -440,7 +431,7 @@ export const TemplateView: React.FC = () => {
                     {/* Quick Excel Export */}
                     <button
                       onClick={() => exportTemplateToExcel(tpl)}
-                      className="p-2 text-slate-500 dark:text-slate-400 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors"
+                      className="p-2 text-slate-500 hover:text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:bg-emerald-500/15 rounded-lg transition-colors"
                       title="Export Excel .xlsx"
                     >
                       <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
@@ -449,7 +440,7 @@ export const TemplateView: React.FC = () => {
                     {/* Quick Duplicate */}
                     <button
                       onClick={() => duplicateRABTemplate(tpl.id)}
-                      className="p-2 text-slate-500 dark:text-slate-400 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
+                      className="p-2 text-slate-500 hover:text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:bg-blue-500/15 rounded-lg transition-colors"
                       title="Duplikasi Template"
                     >
                       <Copy className="w-4 h-4" />
@@ -459,7 +450,7 @@ export const TemplateView: React.FC = () => {
                     {!tpl.isBuiltIn && (
                       <button
                         onClick={() => setTemplateToDelete(tpl)}
-                        className="p-2 text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                        className="p-2 text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50 dark:bg-rose-500/15 rounded-lg transition-colors"
                         title="Hapus Template"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -559,7 +550,7 @@ export const TemplateView: React.FC = () => {
                 </label>
                 <div className="space-y-2 text-xs">
                   {selectedProject && (
-                    <label className="flex items-start space-x-3 p-3 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl cursor-pointer hover:bg-blue-50/50">
+                    <label className="flex items-start space-x-3 p-3 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl cursor-pointer hover:bg-blue-50/50 dark:bg-blue-500/15">
                       <input
                         type="radio"
                         name="applyAction"
@@ -578,7 +569,7 @@ export const TemplateView: React.FC = () => {
                     </label>
                   )}
 
-                  <label className="flex items-start space-x-3 p-3 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl cursor-pointer hover:bg-blue-50/50">
+                  <label className="flex items-start space-x-3 p-3 bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)] rounded-xl cursor-pointer hover:bg-blue-50/50 dark:bg-blue-500/15">
                     <input
                       type="radio"
                       name="applyAction"
@@ -607,22 +598,14 @@ export const TemplateView: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setApplyMode('append')}
-                      className={`p-2.5 rounded-xl border text-center font-medium ${
-                        applyMode === 'append'
-                          ? 'bg-blue-50 border-blue-500 text-blue-700 font-bold'
-                          : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]'
-                      }`}
+                      className={`p-2.5 rounded-xl border text-center font-medium ${ applyMode === 'append' ? 'bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-500/30 font-bold' : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]' }`}
                     >
                       Tambahkan ke Akhir
                     </button>
                     <button
                       type="button"
                       onClick={() => setApplyMode('replace')}
-                      className={`p-2.5 rounded-xl border text-center font-medium ${
-                        applyMode === 'replace'
-                          ? 'bg-rose-50 border-rose-500 text-rose-700 font-bold'
-                          : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]'
-                      }`}
+                      className={`p-2.5 rounded-xl border text-center font-medium ${ applyMode === 'replace' ? 'bg-rose-50 dark:bg-rose-500/15 text-rose-700 dark:text-rose-300 border-rose-300 dark:border-rose-500/30 font-bold' : 'bg-[var(--bg-elevated-hover)] border-[var(--border-primary)] text-[var(--text-secondary)]' }`}
                     >
                       Ganti Semua Item
                     </button>
@@ -635,7 +618,7 @@ export const TemplateView: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setTemplateToApply(null)}
-                className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl"
+                className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 rounded-xl"
               >
                 Batal
               </button>

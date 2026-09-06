@@ -10,6 +10,15 @@
     // sebagai entry bug sungguhan di 12+ sesi pengujian. Jangan investigasi ulang
     // kecuali muncul di console Render production (bukan preview AI Studio).
     window.addEventListener('unhandledrejection', function(e) {
+      // Hanya aktif di environment development / preview AI Studio agar error WebSocket di production tidak tertelan
+      const isDevOrPreview = location.hostname === 'localhost' ||
+        location.hostname === '127.0.0.1' ||
+        location.hostname.endsWith('.run.app') ||
+        location.hostname.includes('googleusercontent.com') ||
+        location.hostname.includes('webcontainer') ||
+        location.hostname.includes('ai.studio');
+      if (!isDevOrPreview) return;
+
       const reasonStr = e.reason ? (e.reason.message || String(e.reason)) : '';
       if (reasonStr.includes('WebSocket') || reasonStr.includes('closed without opened')) {
         e.preventDefault();

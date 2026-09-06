@@ -128,7 +128,7 @@ export const SettingsView: React.FC = () => {
 
       showToast('Backup Berhasil', 'File cadangan JSON seluruh database RAB berhasil diunduh.', 'success');
     } catch (err: any) {
-      console.error('Backup download error:', err);
+      console.error('Backup download error', err);
       showToast('Gagal Mengunduh', err?.message || 'Terjadi kesalahan saat mengekspor cadangan data.', 'error');
     }
   };
@@ -164,7 +164,7 @@ export const SettingsView: React.FC = () => {
 
       showToast('Export Source Code Berhasil', 'Berkas JSON source code lengkap berhasil diunduh.', 'success');
     } catch (err: any) {
-      console.error('Download source error:', err);
+      console.error('Download source error', err);
       showToast('Gagal Mengunduh', err?.message || 'Terjadi kesalahan saat mengekspor source code.', 'error');
     } finally {
       setIsDownloadingSource(false);
@@ -186,7 +186,7 @@ export const SettingsView: React.FC = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Section 1: Perusahaan */}
         <div className="bg-[var(--bg-elevated)] p-6 rounded-2xl border border-[var(--border-primary)] shadow-2xs space-y-4">
-          <div className="flex items-center space-x-2.5 pb-3 border-b border-slate-100">
+          <div className="flex items-center space-x-2.5 pb-3 border-b border-slate-100 dark:border-slate-700">
             <Building2 className="w-5 h-5 text-blue-600" />
             <div>
               <h3 className="text-sm font-bold text-[var(--text-primary)]">Identitas Perusahaan (Kop Surat)</h3>
@@ -254,7 +254,7 @@ export const SettingsView: React.FC = () => {
 
         {/* Section 2: Default Biaya & Pajak */}
         <div className="bg-[var(--bg-elevated)] p-6 rounded-2xl border border-[var(--border-primary)] shadow-2xs space-y-4">
-          <div className="flex items-center space-x-2.5 pb-3 border-b border-slate-100">
+          <div className="flex items-center space-x-2.5 pb-3 border-b border-slate-100 dark:border-slate-700">
             <Percent className="w-5 h-5 text-blue-600" />
             <div>
               <h3 className="text-sm font-bold text-[var(--text-primary)]">
@@ -315,7 +315,7 @@ export const SettingsView: React.FC = () => {
 
         {/* Section 3: Format Penomoran */}
         <div className="bg-[var(--bg-elevated)] p-6 rounded-2xl border border-[var(--border-primary)] shadow-2xs space-y-4">
-          <div className="flex items-center space-x-2.5 pb-3 border-b border-slate-100">
+          <div className="flex items-center space-x-2.5 pb-3 border-b border-slate-100 dark:border-slate-700">
             <FileText className="w-5 h-5 text-blue-600" />
             <div>
               <h3 className="text-sm font-bold text-[var(--text-primary)]">Format Penomoran Dokumen</h3>
@@ -361,9 +361,9 @@ export const SettingsView: React.FC = () => {
 
         {/* Section 4: Keamanan Akun & Ganti Kata Sandi */}
         <div className="bg-[var(--bg-elevated)] p-6 rounded-2xl border border-[var(--border-primary)] shadow-2xs space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
             <div className="flex items-center space-x-2.5">
-              <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-500/15 border border-amber-200 dark:border-amber-500/30 text-amber-600 flex items-center justify-center">
                 <Key className="w-5 h-5" />
               </div>
               <div>
@@ -373,20 +373,20 @@ export const SettingsView: React.FC = () => {
                 </p>
               </div>
             </div>
-            <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
+            <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md bg-emerald-50 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30">
               Terenkripsi Salted Scrypt
             </span>
           </div>
 
           {passError && (
-            <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+            <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-500/15 border border-rose-200 dark:border-rose-500/30 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 text-rose-500 flex-shrink-0" />
               <span>{passError}</span>
             </div>
           )}
 
           {passSuccess && (
-            <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs flex items-center gap-2">
+            <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-xs flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
               <span>{passSuccess}</span>
             </div>
@@ -479,7 +479,7 @@ export const SettingsView: React.FC = () => {
           </div>
 
           {/* Card 1: Source Code JSON Export */}
-          <div className="bg-gradient-to-br from-slate-900 to-slate-950 p-6 rounded-2xl border border-slate-200 dark:border-[var(--border-primary)] shadow-md text-white flex flex-col md:flex-row md:items-center justify-between gap-5">
+          <div className="bg-gradient-to-br from-slate-900 to-slate-950 p-6 rounded-2xl border border-slate-200 dark:border-slate-500/30 shadow-md text-white flex flex-col md:flex-row md:items-center justify-between gap-5">
             <div className="flex items-start space-x-4">
               <div className="w-12 h-12 rounded-2xl bg-blue-600/30 border border-blue-500/40 text-blue-400 flex items-center justify-center flex-shrink-0 mt-0.5">
                 <Code2 className="w-6 h-6" />
@@ -552,7 +552,7 @@ export const SettingsView: React.FC = () => {
             <button
               type="button"
               onClick={handleExportBackup}
-              className="px-4 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5 flex-shrink-0"
+              className="px-4 py-2 bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 text-[var(--text-primary)] text-xs font-semibold rounded-xl transition-colors flex items-center space-x-1.5 flex-shrink-0"
             >
               <Download className="w-4 h-4" />
               <span>Download Backup Data JSON</span>
@@ -561,19 +561,19 @@ export const SettingsView: React.FC = () => {
         </div>
 
         {/* Section 6: Local-First Security Notice */}
-        <div className="bg-indigo-50/50 p-6 rounded-2xl border border-indigo-100 shadow-2xs space-y-3">
+        <div className="bg-indigo-50/50 dark:bg-indigo-500/15 p-6 rounded-2xl border border-indigo-100 dark:border-indigo-500/30 shadow-2xs space-y-3">
           <div className="flex items-center space-x-2.5">
-            <div className="w-9 h-9 rounded-xl bg-indigo-100 border border-indigo-200 text-indigo-700 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-indigo-100 dark:bg-indigo-500/15 border border-indigo-200 dark:border-indigo-500/30 text-indigo-700 dark:text-indigo-300 flex items-center justify-center">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-indigo-900">Privasi & Keamanan Data (Local-First)</h3>
-              <p className="text-[11px] text-indigo-700">
+              <h3 className="text-sm font-bold text-indigo-900 dark:text-indigo-300">Privasi & Keamanan Data (Local-First)</h3>
+              <p className="text-[11px] text-indigo-700 dark:text-indigo-300">
                 Aplikasi ini mengadopsi arsitektur <strong>Local-First</strong>.
               </p>
             </div>
           </div>
-          <div className="text-xs text-indigo-800 space-y-2 pl-11">
+          <div className="text-xs text-indigo-800 dark:text-indigo-300 space-y-2 pl-11">
             <p>
               Seluruh data proyek, AHSP, dan material Anda <strong>disimpan secara eksklusif di dalam memori perangkat ini (IndexedDB)</strong> dan tidak pernah dikirim ke server pusat untuk disimpan. Mode sinkronisasi cloud saat ini dinonaktifkan secara permanen.
             </p>

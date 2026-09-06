@@ -186,11 +186,7 @@ export const DrawingUploadModal: React.FC<DrawingUploadModalProps> = ({
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
-              className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all ${
-                isDragging
-                  ? 'border-blue-500 bg-blue-50/60 scale-[0.99]'
-                  : 'border-[var(--border-primary)] hover:border-blue-400 hover:bg-[var(--bg-elevated-hover)]'
-              }`}
+              className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all ${ isDragging ? 'border-blue-500 bg-blue-50/60 dark:bg-blue-500/15 scale-[0.99]' : 'border-[var(--border-primary)] hover:border-blue-400 hover:bg-[var(--bg-elevated-hover)]' }`}
             >
               <input
                 ref={fileInputRef}
@@ -198,7 +194,7 @@ export const DrawingUploadModal: React.FC<DrawingUploadModalProps> = ({
                   if (e.target.files && e.target.files.length > 0) { Array.from(e.target.files).forEach((f: any) => handleFile(f)); }
                 }}
               />
-              <div className="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
+              <div className="w-14 h-14 bg-blue-100 dark:bg-blue-500/15 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
                 <UploadCloud className="w-7 h-7" />
               </div>
               <h4 className="text-sm font-bold text-[var(--text-primary)]">
@@ -221,7 +217,7 @@ export const DrawingUploadModal: React.FC<DrawingUploadModalProps> = ({
                 <div className="overflow-hidden">
                   <div className="flex items-center space-x-2">
                     <span className="text-xs font-bold text-[var(--text-primary)] truncate max-w-xs">{fileData?.name}</span>
-                    <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-sm font-semibold flex items-center gap-0.5">
+                    <span className="text-[10px] bg-emerald-100 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 px-1.5 py-0.5 rounded-sm font-semibold flex items-center gap-0.5">
                       <Check className="w-3 h-3" /> Siap
                     </span>
                   </div>
@@ -236,7 +232,7 @@ export const DrawingUploadModal: React.FC<DrawingUploadModalProps> = ({
                   setPreviewUrl(null);
                   setFileData(null);
                 }}
-                className="p-2 text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
+                className="p-2 text-rose-600 hover:bg-rose-50 dark:bg-rose-500/15 rounded-xl transition-colors"
                 title="Ganti Berkas"
               >
                 <Trash2 className="w-4 h-4" />
@@ -251,7 +247,7 @@ export const DrawingUploadModal: React.FC<DrawingUploadModalProps> = ({
                 <span>Memproses dan mengompres dokumen gambar...</span>
                 <span>{uploadProgress}%</span>
               </div>
-              <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+              <div className="w-full h-2 bg-slate-200 dark:bg-slate-500/15 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-blue-600 rounded-full transition-all duration-300"
                   style={{ width: `${uploadProgress}%` }}

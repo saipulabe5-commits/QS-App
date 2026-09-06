@@ -236,18 +236,18 @@ export const PriceItemModal: React.FC<PriceItemModalProps> = ({
             </div>
           </div>
 
-          <div className="p-3 bg-blue-50 rounded-xl border border-blue-200 flex justify-between items-center text-xs">
-            <span className="text-blue-900 font-semibold">Tampilan Harga:</span>
-            <span className="text-sm font-black text-blue-900 font-mono">
+          <div className="p-3 bg-blue-50 dark:bg-blue-500/15 rounded-xl border border-blue-200 dark:border-blue-500/30 flex justify-between items-center text-xs">
+            <span className="text-blue-900 dark:text-blue-300 font-semibold">Tampilan Harga:</span>
+            <span className="text-sm font-black text-blue-900 dark:text-blue-300 font-mono">
               {formatRupiah(Number(price) || 0)} / {unit}
             </span>
           </div>
 
-          <div className="pt-3 border-t border-slate-100 flex items-center justify-end space-x-2">
+          <div className="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-end space-x-2">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl"
+              className="px-4 py-2 text-xs font-medium text-[var(--text-primary)] bg-[var(--bg-elevated-hover)] hover:bg-slate-200 dark:bg-slate-500/15 rounded-xl"
             >
               Batal
             </button>

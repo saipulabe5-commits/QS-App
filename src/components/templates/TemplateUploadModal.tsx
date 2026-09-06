@@ -101,7 +101,7 @@ export const TemplateUploadModal: React.FC<TemplateUploadModalProps> = ({
         const response = await fetch('/api/ai/extract-rab-document', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type' : 'application/json',
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
           },
           body: JSON.stringify({
@@ -128,7 +128,7 @@ export const TemplateUploadModal: React.FC<TemplateUploadModalProps> = ({
       showToast('Ekstraksi Berhasil', `Berhasil mengekstrak ${newJob.parsedItems.length} item pekerjaan dari ${selectedFile.name}.`, 'success');
       onImportReady();
     } catch (err: any) {
-      console.error('Import processing error:', err);
+      console.error('Import processing error', err);
       setErrorMessage(err.message || 'Terjadi kesalahan saat mengekstrak data dari dokumen.');
       showToast('Ekstraksi Gagal', err.message || 'Format dokumen tidak dapat diproses.', 'error');
     } finally {
@@ -143,7 +143,7 @@ export const TemplateUploadModal: React.FC<TemplateUploadModalProps> = ({
         {/* Header */}
         <div className="px-6 py-4 border-b border-[var(--border-primary)] flex items-center justify-between bg-[var(--bg-elevated-hover)]">
           <div className="flex items-center space-x-2.5">
-            <div className="p-2 bg-blue-100 text-blue-600 rounded-xl">
+            <div className="p-2 bg-blue-100 dark:bg-blue-500/15 text-blue-600 rounded-xl">
               <Upload className="w-5 h-5" />
             </div>
             <div>
@@ -170,13 +170,7 @@ export const TemplateUploadModal: React.FC<TemplateUploadModalProps> = ({
             onDragLeave={() => setIsDragOver(false)}
             onDrop={handleDrop}
             onClick={() => fileInputRef.current?.click()}
-            className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all ${
-              isDragOver
-                ? 'border-blue-500 bg-blue-50/50 scale-[0.99]'
-                : selectedFile
-                ? 'border-emerald-400 bg-emerald-50/30'
-                : 'border-[var(--border-primary)] hover:border-blue-400 hover:bg-[var(--bg-elevated-hover)]'
-            }`}
+            className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all ${ isDragOver ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-500/15 scale-[0.99]' : selectedFile ? 'border-emerald-400' : 'border-[var(--border-primary)] hover:border-blue-400 hover:bg-[var(--bg-elevated-hover)]' }`}
           >
             <input
               ref={fileInputRef}
@@ -192,7 +186,7 @@ export const TemplateUploadModal: React.FC<TemplateUploadModalProps> = ({
 
             {selectedFile ? (
               <div className="flex flex-col items-center space-y-2">
-                <div className="p-3 bg-emerald-100 text-emerald-700 rounded-2xl">
+                <div className="p-3 bg-emerald-100 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 rounded-2xl">
                   {fileType === 'xlsx' || fileType === 'xls' || fileType === 'csv' ? (
                     <FileSpreadsheet className="w-8 h-8" />
                   ) : fileType === 'pdf' ? (
@@ -213,7 +207,7 @@ export const TemplateUploadModal: React.FC<TemplateUploadModalProps> = ({
               </div>
             ) : (
               <div className="flex flex-col items-center space-y-3">
-                <div className="p-4 bg-blue-50 text-blue-600 rounded-full">
+                <div className="p-4 bg-blue-50 dark:bg-blue-500/15 text-blue-600 rounded-full">
                   <Upload className="w-7 h-7" />
                 </div>
                 <div>
@@ -230,17 +224,17 @@ export const TemplateUploadModal: React.FC<TemplateUploadModalProps> = ({
 
           {/* Info Feature Badges */}
           <div className="grid grid-cols-3 gap-2 text-center text-xs">
-            <div className="p-2.5 bg-[var(--bg-elevated-hover)] rounded-xl border border-slate-100 flex flex-col items-center">
+            <div className="p-2.5 bg-[var(--bg-elevated-hover)] rounded-xl border border-slate-100 dark:border-slate-700 flex flex-col items-center">
               <FileSpreadsheet className="w-4 h-4 text-emerald-600 mb-1" />
               <span className="font-semibold text-[var(--text-primary)]">Auto Formula</span>
               <span className="text-[10px] text-[var(--text-secondary)]">Deteksi Volume & Satuan</span>
             </div>
-            <div className="p-2.5 bg-[var(--bg-elevated-hover)] rounded-xl border border-slate-100 flex flex-col items-center">
+            <div className="p-2.5 bg-[var(--bg-elevated-hover)] rounded-xl border border-slate-100 dark:border-slate-700 flex flex-col items-center">
               <Sparkles className="w-4 h-4 text-purple-600 mb-1" />
               <span className="font-semibold text-[var(--text-primary)]">AI OCR Vision</span>
               <span className="text-[10px] text-[var(--text-secondary)]">Pindai PDF & Gambar</span>
             </div>
-            <div className="p-2.5 bg-[var(--bg-elevated-hover)] rounded-xl border border-slate-100 flex flex-col items-center">
+            <div className="p-2.5 bg-[var(--bg-elevated-hover)] rounded-xl border border-slate-100 dark:border-slate-700 flex flex-col items-center">
               <ShieldCheck className="w-4 h-4 text-blue-600 mb-1" />
               <span className="font-semibold text-[var(--text-primary)]">Validasi Data</span>
               <span className="text-[10px] text-[var(--text-secondary)]">Verifikasi & Normalisasi</span>
@@ -249,7 +243,7 @@ export const TemplateUploadModal: React.FC<TemplateUploadModalProps> = ({
 
           {/* Processing Indicator */}
           {isProcessing && (
-            <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl flex items-center space-x-3 text-xs text-blue-800">
+            <div className="p-4 bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 rounded-xl flex items-center space-x-3 text-xs text-blue-800 dark:text-blue-300">
               <Loader2 className="w-5 h-5 text-blue-600 animate-spin shrink-0" />
               <div>
                 <div className="font-semibold">Sedang Memproses Dokumen...</div>
@@ -260,7 +254,7 @@ export const TemplateUploadModal: React.FC<TemplateUploadModalProps> = ({
 
           {/* Error Message */}
           {errorMessage && (
-            <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-xl flex items-start space-x-2.5 text-xs text-rose-900">
+            <div className="p-3.5 bg-rose-50 dark:bg-rose-500/15 border border-rose-200 dark:border-rose-500/30 rounded-xl flex items-start space-x-2.5 text-xs text-rose-900 dark:text-rose-300">
               <AlertCircle className="w-4 h-4 text-rose-600 mt-0.5 shrink-0" />
               <div className="leading-relaxed">{errorMessage}</div>
             </div>
@@ -273,7 +267,7 @@ export const TemplateUploadModal: React.FC<TemplateUploadModalProps> = ({
             type="button"
             onClick={onClose}
             disabled={isProcessing}
-            className="px-4 py-2 text-xs font-semibold text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700 rounded-xl transition-colors disabled:opacity-50"
+            className="px-4 py-2 text-xs font-semibold text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-500/15 rounded-xl transition-colors disabled:opacity-50"
           >
             Batal
           </button>

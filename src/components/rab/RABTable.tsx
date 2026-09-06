@@ -121,7 +121,7 @@ export const RABTable: React.FC<RABTableProps> = ({
                 return (
                   <React.Fragment key={cat}>
                     {/* Category Divider Header Row (SUB-TOTAL) */}
-                    <tr className="bg-slate-300 hover:bg-slate-400/80 text-[var(--text-primary)] font-bold border-y-2 border-slate-400 transition-colors shadow-2xs">
+                    <tr className="bg-slate-300 dark:bg-slate-700/60 hover:bg-slate-400/80 dark:hover:bg-slate-600/70 text-[var(--text-primary)] font-bold border-y-2 border-slate-400 dark:border-slate-600 transition-colors shadow-2xs">
                       <td className="px-3 py-2.5 text-center">
                         <span className="inline-flex items-center justify-center min-w-6 px-1.5 py-0.5 rounded bg-blue-700 text-white font-mono text-xs font-black shadow-2xs">
                           {romanNum}
@@ -131,37 +131,36 @@ export const RABTable: React.FC<RABTableProps> = ({
                         <div className="flex items-center space-x-2.5">
                           <button
                             onClick={() => toggleCategory(cat)}
-                            className="p-1 rounded-md hover:bg-slate-400/60 text-[var(--text-primary)] transition-colors"
-                            title={isCollapsed ? 'Buka Divisi' : 'Lipat Divisi'}
-                          >
+                            className="p-1 rounded-md hover:bg-slate-400/60 dark:hover:bg-slate-500/40 text-[var(--text-primary)] transition-colors"
+                            title={isCollapsed ? 'Buka Divisi' : 'Lipat Divisi' }>
                             {isCollapsed ? (
                               <ChevronRight className="w-4 h-4" />
                             ) : (
                               <ChevronDown className="w-4 h-4" />
                             )}
                           </button>
-                          <span className="uppercase tracking-wider text-xs sm:text-[13px] font-black text-slate-950">
+                          <span className="uppercase tracking-wider text-xs sm:text-[13px] font-black text-slate-950 dark:text-slate-300">
                             {cat}
                           </span>
-                          <span className="text-[11px] font-bold text-[var(--text-primary)] bg-[var(--bg-elevated)]/90 px-2 py-0.5 rounded-full border border-slate-400 shadow-2xs">
+                          <span className="text-[11px] font-bold text-[var(--text-primary)] bg-[var(--bg-elevated)]/90 px-2 py-0.5 rounded-full border border-slate-400 dark:border-slate-600 shadow-2xs">
                             {catItems.length} pos
                           </span>
                         </div>
                       </td>
-                      <td className="px-4 py-2.5 text-right font-black text-slate-950 font-mono text-xs sm:text-sm">
+                      <td className="px-4 py-2.5 text-right font-black text-slate-950 dark:text-slate-300 font-mono text-xs sm:text-sm">
                         {formatRupiah(catSubtotal)}
                       </td>
-                      <td className="px-3 py-2.5 text-right font-bold text-blue-900 font-mono text-xs">
-                        <span className="px-2 py-0.5 bg-[var(--bg-elevated)]/95 text-blue-900 rounded border border-slate-400 shadow-2xs">
+                      <td className="px-3 py-2.5 text-right font-bold text-blue-900 dark:text-blue-300 font-mono text-xs">
+                        <span className="px-2 py-0.5 bg-[var(--bg-elevated)]/95 text-blue-900 dark:text-blue-300 rounded border border-slate-400 dark:border-slate-600 shadow-2xs">
                           {formatNumber(catWeight, 2)}%
                         </span>
                       </td>
                       <td colSpan={2} className="px-3 py-2.5 text-right">
                         <button
                           onClick={() => onAddItem(cat)}
-                          className="text-[11px] font-bold text-[var(--text-primary)] hover:text-blue-900 bg-[var(--bg-elevated)] hover:bg-blue-50 px-2.5 py-1 rounded-lg border border-slate-400 hover:border-blue-500 transition-colors shadow-2xs inline-flex items-center space-x-1"
+                          className="text-[11px] font-bold text-[var(--text-primary)] hover:text-blue-900 dark:text-blue-300 bg-[var(--bg-elevated)] hover:bg-blue-50 dark:hover:bg-blue-500/15 px-2.5 py-1 rounded-lg border border-slate-400 dark:border-slate-600 hover:border-blue-500 transition-colors shadow-2xs inline-flex items-center space-x-1"
                         >
-                          <Plus className="w-3 h-3 text-blue-700" />
+                          <Plus className="w-3 h-3 text-blue-700 dark:text-blue-300" />
                           <span>Item {cat.split(':')[0]}</span>
                         </button>
                       </td>
@@ -210,7 +209,7 @@ export const RABTable: React.FC<RABTableProps> = ({
                                         }
                                       }}
                                       placeholder="Nama Lantai / Elevasi (contoh: LANTAI 1 (ELEV +0.00))"
-                                      className="bg-transparent border-b border-transparent hover:border-blue-400 focus:border-blue-600 focus:ring-0 font-bold text-blue-900 dark:text-blue-100 outline-none w-full max-w-md px-1 py-0.5 transition-all cursor-text"
+                                      className="bg-transparent border-b border-transparent hover:border-blue-400 focus:border-blue-600 focus:ring-0 font-bold text-blue-900 dark:text-blue-300 outline-none w-full max-w-md px-1 py-0.5 transition-all cursor-text"
                                     />
                                   </div>
                                 </td>
@@ -231,7 +230,7 @@ export const RABTable: React.FC<RABTableProps> = ({
                               </tr>
                             )}
 
-                            <tr className="hover:bg-blue-50/50 transition-colors group">
+                            <tr className="hover:bg-blue-50/50 dark:hover:bg-blue-500/15 transition-colors group">
                               {/* Nomor Item */}
                               <td className="px-3 py-3 text-center text-[var(--text-secondary)] font-mono text-[11px]">
                                 {itemIdx + 1}
@@ -272,15 +271,14 @@ export const RABTable: React.FC<RABTableProps> = ({
                               </td>
 
                               {/* Bobot Pekerjaan (%) */}
-                              <td className="px-3 py-3 text-right font-mono font-bold text-blue-700 text-[11px]">
+                              <td className="px-3 py-3 text-right font-mono font-bold text-blue-700 dark:text-blue-300 text-[11px]">
                                 {formatNumber(itemWeight, 2)}%
                               </td>
 
                               {/* Keterangan */}
                               <td
                                 className="px-3 py-3 text-[11px] text-slate-500 dark:text-slate-400 truncate max-w-[150px]"
-                                title={item.notes || '-'}
-                              >
+                                title={item.notes || '-' }>
                                 {item.notes || '-'}
                               </td>
 
@@ -289,7 +287,7 @@ export const RABTable: React.FC<RABTableProps> = ({
                                 <div className="flex items-center justify-center space-x-1">
                                   <button
                                     onClick={() => onEditItem(item)}
-                                    className="p-1.5 text-[var(--text-secondary)] hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
+                                    className="p-1.5 text-[var(--text-secondary)] hover:text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:bg-blue-500/15 rounded-lg transition-colors"
                                     title="Edit Item"
                                   >
                                     <Edit2 className="w-3.5 h-3.5" />
@@ -303,7 +301,7 @@ export const RABTable: React.FC<RABTableProps> = ({
                                   </button>
                                   <button
                                     onClick={() => onDeleteItem(item)}
-                                    className="p-1.5 text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                                    className="p-1.5 text-[var(--text-secondary)] hover:text-rose-600 hover:bg-rose-50 dark:bg-rose-500/15 rounded-lg transition-colors"
                                     title="Hapus Item"
                                   >
                                     <Trash2 className="w-3.5 h-3.5" />
@@ -328,7 +326,7 @@ export const RABTable: React.FC<RABTableProps> = ({
               <td className="px-4 py-2 text-right font-black text-sm text-[var(--text-primary)] font-mono">
                 {formatRupiah(calc.directCost)}
               </td>
-              <td className="px-3 py-2 text-right font-black text-xs text-blue-700 font-mono">
+              <td className="px-3 py-2 text-right font-black text-xs text-blue-700 dark:text-blue-300 font-mono">
                 100,00%
               </td>
               <td colSpan={2} className="px-3 py-2 text-[11px] text-slate-500 dark:text-slate-400 font-normal">
@@ -350,11 +348,11 @@ export const RABTable: React.FC<RABTableProps> = ({
             )}
 
             {/* Grand Total */}
-            <tr className="bg-slate-200 dark:bg-slate-700 font-black border-t-2 border-slate-400 text-[var(--text-primary)]">
+            <tr className="bg-slate-200 dark:bg-slate-500/15 font-black border-t-2 border-slate-400 text-[var(--text-primary)]">
               <td colSpan={6} className="px-4 py-3 text-right uppercase tracking-wider text-sm">
                 GRAND TOTAL NILAI RAB:
               </td>
-              <td className="px-4 py-3 text-right font-black text-lg text-blue-900 font-mono">
+              <td className="px-4 py-3 text-right font-black text-lg text-blue-900 dark:text-blue-300 font-mono">
                 {formatRupiah(calc.grandTotal)}
               </td>
               <td colSpan={3} className="px-3 py-3"></td>

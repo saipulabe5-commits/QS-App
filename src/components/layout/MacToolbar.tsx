@@ -164,7 +164,7 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
           <button
             type="button"
             onClick={() => setIsMobileSidebarOpen(true)}
-            className="lg:hidden p-1.5 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-slate-200 dark:bg-slate-700/60 transition-colors"
+            className="lg:hidden p-1.5 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-slate-200 dark:bg-slate-500/15 transition-colors"
             aria-label="Buka Menu"
           >
             <Menu className="w-4 h-4" />
@@ -224,7 +224,7 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
           {handleOpenAI && (
             <button
               onClick={handleOpenAI}
-              className="hidden sm:flex items-center space-x-1 px-2.5 py-1 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg shadow-2xs transition-colors"
+              className="hidden sm:flex items-center space-x-1 px-2.5 py-1 text-xs font-bold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-500/15 hover:bg-blue-100 border border-blue-200 dark:border-blue-500/30 rounded-lg shadow-2xs transition-colors"
               title="Asisten Cerdas Gemini AI"
             >
               <Sparkles className="w-3 h-3 text-blue-600" />
@@ -238,7 +238,7 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
           {/* Theme Toggle */}
           <button
             onClick={toggleDarkMode}
-            className="p-1.5 rounded-lg text-slate-600 dark:text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:bg-slate-700/70 hover:bg-[var(--bg-elevated-hover)] transition-colors"
+            className="p-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:bg-slate-500/15 hover:bg-[var(--bg-elevated-hover)] transition-colors"
             title="Toggle Dark/Light Mode"
           >
             {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -254,11 +254,7 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
           {onToggleInspector && (
             <button
               onClick={onToggleInspector}
-              className={`p-1.5 rounded-lg transition-colors ${
-                isInspectorOpen
-                  ? 'bg-blue-600 text-white shadow-xs'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-slate-200 dark:bg-slate-700/70'
-              }`}
+              className={`p-1.5 rounded-lg transition-colors ${ isInspectorOpen ? 'bg-blue-600' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-slate-200 dark:bg-slate-500/15' }`}
               title="Buka / Tutup Inspector Panel (⌘I)"
             >
               <Sliders className="w-4 h-4" />
@@ -272,7 +268,7 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
                 setIsUserMenuOpen(!isUserMenuOpen);
                 setIsProjectDropdownOpen(false);
               }}
-              className="flex items-center space-x-1 p-1 rounded-lg hover:bg-slate-200 dark:bg-slate-700/70 transition-colors"
+              className="flex items-center space-x-1 p-1 rounded-lg hover:bg-slate-200 dark:bg-slate-500/15 transition-colors"
             >
               <div className="w-6 h-6 rounded-full bg-[var(--bg-elevated)] text-[var(--text-primary)] font-bold flex items-center justify-center text-[10px]">
                 {user ? user.name.charAt(0).toUpperCase() : <UserIcon className="w-3 h-3" />}
@@ -283,17 +279,17 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setIsUserMenuOpen(false)} />
                 <div className="absolute right-0 mt-2 w-60 bg-[var(--bg-elevated)]/95 backdrop-blur-xl rounded-xl shadow-2xl border border-[var(--border-primary)] py-2 z-50 animate-in fade-in zoom-in-95 duration-100">
-                  <div className="px-4 py-2 border-b border-slate-100">
+                  <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-700">
                     <div className="flex items-center justify-between gap-1">
                       <p className="text-xs font-bold text-[var(--text-primary)] truncate">
-                        {user ? user.name : 'Pengguna Demo'}
+                        {user ? user.name: 'Pengguna Demo'}
                       </p>
-                      <span className="text-[9px] bg-amber-100 text-amber-800 border border-amber-300 px-1.5 py-0.5 rounded-full font-bold uppercase">
+                      <span className="text-[9px] bg-amber-100 dark:bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30 px-1.5 py-0.5 rounded-full font-bold uppercase">
                         {user?.role || 'Admin'}
                       </span>
                     </div>
                     <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
-                      {user ? user.email : 'saipulabe@gmail.com'}
+                      {user ? user.email: 'saipulabe@gmail.com'}
                     </p>
                   </div>
                   <div className="py-1 text-xs">
@@ -348,13 +344,13 @@ export const MacToolbar: React.FC<MacToolbarProps> = ({
                       <kbd className="font-mono text-[10px] text-[var(--text-secondary)]">⌘/</kbd>
                     </button>
                   </div>
-                  <div className="border-t border-slate-100 pt-1">
+                  <div className="border-t border-slate-100 dark:border-slate-700 pt-1">
                     <button
                       onClick={() => {
                         logout();
                         setIsUserMenuOpen(false);
                       }}
-                      className="w-full text-left px-4 py-2 text-xs text-rose-600 hover:bg-rose-50 flex items-center space-x-2"
+                      className="w-full text-left px-4 py-2 text-xs text-rose-600 hover:bg-rose-50 dark:bg-rose-500/15 flex items-center space-x-2"
                     >
                       <LogOut className="w-4 h-4" />
                       <span>Keluar (Logout)</span>

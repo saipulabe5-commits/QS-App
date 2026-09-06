@@ -164,25 +164,25 @@ export const SCurveActualView: React.FC = () => {
   return (
     <div className="space-y-6" id="scurve-actual-view">
       {/* Header Banner */}
-      <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 border border-slate-200 dark:border-[var(--border-primary)] shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] rounded-2xl p-6 border border-slate-200 dark:border-slate-500/30 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <div className="flex items-center space-x-2.5 mb-1.5">
             <span className="p-1.5 bg-blue-600 rounded-lg text-white">
               <Activity className="w-5 h-5" />
             </span>
-            <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Progres Aktual & Pengendalian Lapangan</h1>
+            <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-300">Progres Aktual & Pengendalian Lapangan</h1>
           </div>
           <p className="text-xs text-slate-600 dark:text-slate-300 max-w-2xl">
             Input capaian fisik pekerjaan berkala, pantau deviasi (+/-) terhadap rencana, dan catat kendala teknis pelaksanaan proyek secara terstruktur.
           </p>
-          <div className="flex items-center space-x-3 mt-3 text-xs text-slate-700 dark:text-slate-200">
+          <div className="flex items-center space-x-3 mt-3 text-xs text-slate-700 dark:text-slate-300">
             <span>
-              Proyek: <strong className="font-bold text-slate-900 dark:text-white">{selectedProject?.name || 'Pilih Proyek'}</strong>
+              Proyek: <strong className="font-bold text-slate-900 dark:text-slate-300">{selectedProject?.name || 'Pilih Proyek'}</strong>
             </span>
             <span>•</span>
             <span>{reportedRecords.length} Periode Telah Dilaporkan</span>
             <span>•</span>
-            <span className="text-blue-700 dark:text-blue-400 font-bold">
+            <span className="text-blue-700 dark:text-blue-300 font-bold">
               Deviasi Terakhir: {currentDeviation > 0 ? `+${currentDeviation.toFixed(2)}%` : `${currentDeviation.toFixed(2)}%`}
             </span>
           </div>
@@ -202,7 +202,7 @@ export const SCurveActualView: React.FC = () => {
           />
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="px-3.5 py-2.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 transition-colors flex items-center space-x-1.5 disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-600 disabled:cursor-not-allowed shadow-2xs"
+            className="px-3.5 py-2.5 bg-white hover:bg-slate-50 dark:bg-slate-500/15 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-500/30 transition-colors flex items-center space-x-1.5 disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-600 disabled:cursor-not-allowed shadow-2xs"
           >
             <UploadCloud className="w-4 h-4" />
             <span>Impor CSV</span>
@@ -210,7 +210,7 @@ export const SCurveActualView: React.FC = () => {
 
           <button
             onClick={handleExportCSV}
-            className="px-3.5 py-2.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 transition-colors flex items-center space-x-1.5 disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-600 disabled:cursor-not-allowed shadow-2xs"
+            className="px-3.5 py-2.5 bg-white hover:bg-slate-50 dark:bg-slate-500/15 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-500/30 transition-colors flex items-center space-x-1.5 disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-600 disabled:cursor-not-allowed shadow-2xs"
           >
             <Download className="w-4 h-4" />
             <span>Ekspor CSV</span>
@@ -219,7 +219,7 @@ export const SCurveActualView: React.FC = () => {
           <button
             onClick={handleExportPDF}
             disabled={isExportingPDF}
-            className="px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl shadow-xs transition-colors flex items-center space-x-1.5 disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-600 disabled:cursor-not-allowed"
+            className="px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl shadow-xs transition-colors flex items-center space-x-1.5 disabled:bg-slate-100 dark:bg-slate-500/15 disabled:text-slate-500 disabled:border-slate-300 dark:border-slate-500/30 dark:disabled:bg-slate-800 dark:disabled:text-slate-600 disabled:cursor-not-allowed"
           >
             {isExportingPDF ? (
               <Loader2 className="w-4 h-4 animate-spin text-white" />
@@ -240,11 +240,11 @@ export const SCurveActualView: React.FC = () => {
       </div>
 
       {!scurve ? (
-        <div className="bg-[var(--bg-elevated)] rounded-2xl p-12 border border-slate-200 dark:border-[var(--border-primary)] text-center space-y-4 max-w-xl mx-auto shadow-xs">
-          <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto">
+        <div className="bg-[var(--bg-elevated)] rounded-2xl p-12 border border-slate-200 dark:border-slate-500/30 text-center space-y-4 max-w-xl mx-auto shadow-xs">
+          <div className="w-14 h-14 rounded-2xl bg-amber-50 dark:bg-amber-500/15 text-amber-600 flex items-center justify-center mx-auto">
             <Clock className="w-7 h-7" />
           </div>
-          <h3 className="text-base font-bold text-slate-900 dark:text-white">Jadwal Rencana Kurva S Belum Ada</h3>
+          <h3 className="text-base font-bold text-slate-900 dark:text-slate-300">Jadwal Rencana Kurva S Belum Ada</h3>
           <p className="text-xs text-slate-600 dark:text-slate-300 max-w-sm mx-auto">
             Buat jadwal rencana Kurva S terlebih dahulu sebelum memasukkan progres aktual lapangan.
           </p>
@@ -260,32 +260,26 @@ export const SCurveActualView: React.FC = () => {
         <div className="space-y-6 bg-white dark:bg-slate-900 p-2 sm:p-4 rounded-2xl" id="kurvas-export-area">
           {/* Status KPI Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-[var(--border-primary)] shadow-2xs">
-              <span className="text-xs text-slate-700 dark:text-slate-200 font-medium">Target Kumulatif (Sd. Saat Ini)</span>
-              <div className="text-xl font-extrabold text-slate-900 dark:text-white mt-1">
+            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-slate-500/30 shadow-2xs">
+              <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">Target Kumulatif (Sd. Saat Ini)</span>
+              <div className="text-xl font-extrabold text-slate-900 dark:text-slate-300 mt-1">
                 {currentPlannedCum.toFixed(2)} %
               </div>
               <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-0.5">Target rencana yang harus dicapai</p>
             </div>
 
-            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-[var(--border-primary)] shadow-2xs">
-              <span className="text-xs text-slate-700 dark:text-slate-200 font-medium">Realisasi Fisik Aktual</span>
-              <div className="text-xl font-extrabold text-blue-900 dark:text-blue-400 mt-1">
+            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-slate-500/30 shadow-2xs">
+              <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">Realisasi Fisik Aktual</span>
+              <div className="text-xl font-extrabold text-blue-900 dark:text-blue-300 mt-1">
                 {currentActualCum.toFixed(2)} %
               </div>
               <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-0.5">Capaian fisik aktual lapangan</p>
             </div>
 
-            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-[var(--border-primary)] shadow-2xs">
-              <span className="text-xs text-slate-700 dark:text-slate-200 font-medium">Deviasi Progres</span>
+            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-slate-500/30 shadow-2xs">
+              <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">Deviasi Progres</span>
               <div
-                className={`text-xl font-extrabold mt-1 ${
-                  currentDeviation >= 0.5
-                    ? 'text-blue-600 dark:text-blue-400'
-                    : currentDeviation <= -2.0
-                    ? 'text-rose-600 dark:text-rose-400'
-                    : 'text-emerald-600 dark:text-emerald-400'
-                }`}
+                className={`text-xl font-extrabold mt-1 ${ currentDeviation >= 0.5 ? 'text-blue-600 dark:text-blue-400' : currentDeviation <= -2.0 ? 'text-rose-600' : 'text-emerald-600' }`}
               >
                 {currentDeviation >= 0 ? `+${currentDeviation.toFixed(2)} %` : `${currentDeviation.toFixed(2)} %`}
               </div>
@@ -294,19 +288,19 @@ export const SCurveActualView: React.FC = () => {
               </p>
             </div>
 
-            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-[var(--border-primary)] shadow-2xs">
-              <span className="text-xs text-slate-700 dark:text-slate-200 font-medium">Status Kesehatan Proyek</span>
+            <div className="bg-[var(--bg-elevated)] p-4 rounded-xl border border-slate-200 dark:border-slate-500/30 shadow-2xs">
+              <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">Status Kesehatan Proyek</span>
               <div className="mt-1 flex items-center space-x-2">
                 {currentDeviation >= 0.5 ? (
-                  <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-100 text-blue-800 border border-blue-300 flex items-center gap-1">
+                  <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-100 dark:bg-blue-500/15 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-500/30 flex items-center gap-1">
                     <CheckCircle2 className="w-3.5 h-3.5" /> Lebih Cepat
                   </span>
                 ) : currentDeviation <= -2.0 ? (
-                  <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-100 text-rose-800 border border-rose-300 flex items-center gap-1">
+                  <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-100 dark:bg-rose-500/15 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-500/30 flex items-center gap-1">
                     <AlertTriangle className="w-3.5 h-3.5" /> Terlambat (Kritis)
                   </span>
                 ) : (
-                  <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1">
+                  <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-100 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30 flex items-center gap-1">
                     <CheckCircle2 className="w-3.5 h-3.5" /> Sesuai Rencana
                   </span>
                 )}
@@ -316,10 +310,10 @@ export const SCurveActualView: React.FC = () => {
           </div>
 
           {/* Table of Period Progress */}
-          <div className="bg-[var(--bg-elevated)] rounded-2xl border border-slate-200 dark:border-[var(--border-primary)] shadow-xs overflow-hidden">
-            <div className="p-4 border-b border-slate-200 dark:border-[var(--border-primary)] bg-slate-50 dark:bg-slate-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="bg-[var(--bg-elevated)] rounded-2xl border border-slate-200 dark:border-slate-500/30 shadow-xs overflow-hidden">
+            <div className="p-4 border-b border-slate-200 dark:border-slate-500/30 bg-slate-50 dark:bg-slate-500/15 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-slate-300 flex items-center gap-2">
                   <Activity className="w-4 h-4 text-blue-600" />
                   Daftar Laporan Capaian Progres per Periode
                 </h3>
@@ -331,7 +325,7 @@ export const SCurveActualView: React.FC = () => {
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-bold border-b border-slate-200 dark:border-[var(--border-primary)] uppercase tracking-wider">
+                <thead className="bg-slate-100 dark:bg-slate-500/15 text-slate-900 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-500/30 uppercase tracking-wider">
                   <tr>
                     <th className="p-3 w-14 text-center">Periode</th>
                     <th className="p-3">Rentang Tanggal</th>
@@ -350,25 +344,25 @@ export const SCurveActualView: React.FC = () => {
                     const hasData = rec.status !== 'Belum ada data';
 
                     let statusBadge = (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-slate-600">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 dark:bg-slate-500/15 text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-slate-500/30">
                         Belum Diisi
                       </span>
                     );
                     if (rec.status === 'Lebih cepat') {
                       statusBadge = (
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-300">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 dark:bg-blue-500/15 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-500/30">
                           Lebih Cepat
                         </span>
                       );
                     } else if (rec.status === 'Terlambat') {
                       statusBadge = (
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-300">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 dark:bg-rose-500/15 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-500/30">
                           Terlambat
                         </span>
                       );
                     } else if (rec.status === 'Sesuai rencana') {
                       statusBadge = (
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30">
                           Sesuai
                         </span>
                       );
@@ -377,38 +371,28 @@ export const SCurveActualView: React.FC = () => {
                     return (
                       <tr
                         key={rec.period}
-                        className={`hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors ${
-                          hasData ? 'bg-white dark:bg-slate-900' : 'bg-slate-50/50 dark:bg-slate-900/40'
-                        }`}
+                        className={`hover:bg-slate-50 dark:bg-slate-500/15 dark:hover:bg-slate-800/40 transition-colors ${ hasData ? 'bg-white' : 'bg-slate-50/50' }`}
                       >
-                        <td className="p-3 text-center font-bold text-slate-900 dark:text-white">
+                        <td className="p-3 text-center font-bold text-slate-900 dark:text-slate-300">
                           {scurve.periodType === 'weekly' ? 'M' : 'B'}-{rec.period}
                         </td>
                         <td className="p-3 text-slate-700 dark:text-slate-300 font-medium">
                           {rec.periodLabel}
                         </td>
-                        <td className="p-3 text-right font-mono text-slate-900 dark:text-white">
+                        <td className="p-3 text-right font-mono text-slate-900 dark:text-slate-300">
                           {rec.plannedProgress.toFixed(2)} %
                         </td>
-                        <td className="p-3 text-right font-mono font-semibold text-slate-900 dark:text-white">
+                        <td className="p-3 text-right font-mono font-semibold text-slate-900 dark:text-slate-300">
                           {rec.plannedCumulative.toFixed(2)} %
                         </td>
-                        <td className="p-3 text-right font-mono font-bold text-blue-900 dark:text-blue-400">
+                        <td className="p-3 text-right font-mono font-bold text-blue-900 dark:text-blue-300">
                           {hasData ? `${rec.actualProgress.toFixed(2)} %` : '-'}
                         </td>
-                        <td className="p-3 text-right font-mono font-black text-blue-900 dark:text-blue-400">
+                        <td className="p-3 text-right font-mono font-black text-blue-900 dark:text-blue-300">
                           {hasData ? `${rec.actualCumulative.toFixed(2)} %` : '-'}
                         </td>
                         <td
-                          className={`p-3 text-right font-mono font-extrabold ${
-                            !hasData
-                              ? 'text-slate-500 dark:text-slate-400'
-                              : rec.deviation >= 0.5
-                              ? 'text-blue-600 dark:text-blue-400'
-                              : rec.deviation <= -2.0
-                              ? 'text-rose-600 dark:text-rose-400'
-                              : 'text-emerald-600 dark:text-emerald-400'
-                          }`}
+                          className={`p-3 text-right font-mono font-extrabold ${ !hasData ? 'text-slate-500 dark:text-slate-400' : rec.deviation >= 0.5 ? 'text-blue-600' : rec.deviation <= -2.0 ? 'text-rose-600' : 'text-emerald-600' }`}
                         >
                           {hasData
                             ? rec.deviation >= 0
@@ -422,7 +406,7 @@ export const SCurveActualView: React.FC = () => {
                             <div>
                               <span>{rec.notes}</span>
                               {rec.issuesObstacles && (
-                                <p className="text-[10px] text-rose-700 italic">Kendala: {rec.issuesObstacles}</p>
+                                <p className="text-[10px] text-rose-700 dark:text-rose-300 italic">Kendala: {rec.issuesObstacles}</p>
                               )}
                             </div>
                           ) : (
@@ -433,7 +417,7 @@ export const SCurveActualView: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => openEditModal(rec)}
-                            className="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold rounded-lg text-xs transition-colors inline-flex items-center gap-1 border border-blue-200"
+                            className="px-2.5 py-1 bg-blue-50 dark:bg-blue-500/15 hover:bg-blue-100 text-blue-700 dark:text-blue-300 font-bold rounded-lg text-xs transition-colors inline-flex items-center gap-1 border border-blue-200 dark:border-blue-500/30"
                           >
                             <Edit3 className="w-3 h-3" />
                             <span>{hasData ? 'Edit' : 'Input Progres'}</span>
@@ -473,14 +457,14 @@ export const SCurveActualView: React.FC = () => {
 
             <form onSubmit={handleSaveProgress} className="p-6 space-y-4">
               {/* Planned Target Reference Banner */}
-              <div className="p-3.5 bg-blue-50 border border-blue-200 rounded-xl flex items-center justify-between text-xs">
+              <div className="p-3.5 bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 rounded-xl flex items-center justify-between text-xs">
                 <div>
-                  <span className="text-blue-700 font-semibold">Target Rencana Periode Ini:</span>
-                  <div className="text-sm font-bold text-blue-950">{editingPeriod.plannedProgress.toFixed(2)} %</div>
+                  <span className="text-blue-700 dark:text-blue-300 font-semibold">Target Rencana Periode Ini:</span>
+                  <div className="text-sm font-bold text-blue-950 dark:text-blue-300">{editingPeriod.plannedProgress.toFixed(2)} %</div>
                 </div>
                 <div className="text-right">
-                  <span className="text-blue-700 font-semibold">Target Kumulatif:</span>
-                  <div className="text-sm font-bold text-blue-950">{editingPeriod.plannedCumulative.toFixed(2)} %</div>
+                  <span className="text-blue-700 dark:text-blue-300 font-semibold">Target Kumulatif:</span>
+                  <div className="text-sm font-bold text-blue-950 dark:text-blue-300">{editingPeriod.plannedCumulative.toFixed(2)} %</div>
                 </div>
               </div>
 
@@ -497,7 +481,7 @@ export const SCurveActualView: React.FC = () => {
                   value={actualProgressInput}
                   onChange={(e) => setActualProgressInput(parseFloat(e.target.value) || 0)}
                   placeholder="Contoh: 8.50"
-                  className="w-full px-3.5 py-2.5 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-sm font-bold text-blue-900 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full px-3.5 py-2.5 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl text-sm font-bold text-blue-900 dark:text-blue-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
               </div>
 

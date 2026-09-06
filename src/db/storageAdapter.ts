@@ -63,3 +63,19 @@ export class LocalStorageAdapter implements StorageAdapter {
 }
 
 export const defaultStorage = new LocalStorageAdapter();
+
+export const STORAGE_KEYS = {
+  USER: 'rabpro_user_v1',
+  ACTIVE_PROJECT: 'rabpro_active_project_v1',
+  PROJECTS: 'rabpro_projects_v1',
+  RAB_ITEMS: 'rabpro_rab_items_v1',
+  PRICES: 'rabpro_prices_v1',
+  AHSP: 'rabpro_ahsp_v1',
+  TEMPLATES: 'rabpro_templates_v1',
+  RAB_TEMPLATES: 'rabpro_rab_templates_v1',
+  IMPORT_JOBS: 'rabpro_import_jobs_v1',
+  DRAWINGS: 'rabpro_drawings_v1',
+  ANALYSES: 'rabpro_analyses_v1',
+  SCURVES: 'rabpro_scurves_v1',
+  SETTINGS: 'rabpro_settings_v1',
+} as const;

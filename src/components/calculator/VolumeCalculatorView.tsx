@@ -205,8 +205,7 @@ export const VolumeCalculatorView: React.FC = () => {
               }}
               className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                 isActive
-                  ? 'bg-blue-600 text-white shadow-xs'
-                  : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)]'
+                  ? 'bg-blue-600' : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:bg-[var(--bg-elevated-hover)] border border-[var(--border-primary)]'
               }`}
             >
               <Icon className="w-3.5 h-3.5" />
@@ -223,11 +222,11 @@ export const VolumeCalculatorView: React.FC = () => {
           {/* Concrete Tab */}
           {calcTab === 'concrete' && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
                 <h3 className="text-sm font-bold text-[var(--text-primary)]">
                   Perhitungan Volume Pengecoran Beton (m³)
                 </h3>
-                <span className="text-[11px] text-blue-600 font-mono bg-blue-50 px-2 py-0.5 rounded-md">
+                <span className="text-[11px] text-blue-600 font-mono bg-blue-50 dark:bg-blue-500/15 px-2 py-0.5 rounded-md">
                   V = P &times; L &times; T &times; Jumlah Titik
                 </span>
               </div>
@@ -291,11 +290,11 @@ export const VolumeCalculatorView: React.FC = () => {
           {/* Wall Tab */}
           {calcTab === 'wall' && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
                 <h3 className="text-sm font-bold text-[var(--text-primary)]">
                   Perhitungan Luas Dinding & Plesteran Netto (m²)
                 </h3>
-                <span className="text-[11px] text-blue-600 font-mono bg-blue-50 px-2 py-0.5 rounded-md">
+                <span className="text-[11px] text-blue-600 font-mono bg-blue-50 dark:bg-blue-500/15 px-2 py-0.5 rounded-md">
                   Luas = (P &times; T) - Luas Bukaan Pintu/Jendela
                 </span>
               </div>
@@ -346,11 +345,11 @@ export const VolumeCalculatorView: React.FC = () => {
           {/* Floor Tab */}
           {calcTab === 'floor' && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
                 <h3 className="text-sm font-bold text-[var(--text-primary)]">
                   Perhitungan Luas Lantai & Keramik Granit (m²)
                 </h3>
-                <span className="text-[11px] text-blue-600 font-mono bg-blue-50 px-2 py-0.5 rounded-md">
+                <span className="text-[11px] text-blue-600 font-mono bg-blue-50 dark:bg-blue-500/15 px-2 py-0.5 rounded-md">
                   Luas = (P &times; L) &times; (1 + % Waste Pemotongan)
                 </span>
               </div>
@@ -401,11 +400,11 @@ export const VolumeCalculatorView: React.FC = () => {
           {/* Excavation Tab */}
           {calcTab === 'excavation' && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
                 <h3 className="text-sm font-bold text-[var(--text-primary)]">
                   Perhitungan Volume Galian Tanah (m³)
                 </h3>
-                <span className="text-[11px] text-blue-600 font-mono bg-blue-50 px-2 py-0.5 rounded-md">
+                <span className="text-[11px] text-blue-600 font-mono bg-blue-50 dark:bg-blue-500/15 px-2 py-0.5 rounded-md">
                   V = Panjang &times; Lebar &times; Kedalaman
                 </span>
               </div>
@@ -456,11 +455,11 @@ export const VolumeCalculatorView: React.FC = () => {
           {/* Foundation Tab */}
           {calcTab === 'foundation' && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
                 <h3 className="text-sm font-bold text-[var(--text-primary)]">
                   Perhitungan Volume Pondasi Batu Kali Trapesium (m³)
                 </h3>
-                <span className="text-[11px] text-blue-600 font-mono bg-blue-50 px-2 py-0.5 rounded-md">
+                <span className="text-[11px] text-blue-600 font-mono bg-blue-50 dark:bg-blue-500/15 px-2 py-0.5 rounded-md">
                   V = ((Lebar Atas + Bawah)/2) &times; Tinggi &times; Panjang
                 </span>
               </div>
@@ -524,11 +523,11 @@ export const VolumeCalculatorView: React.FC = () => {
           {/* Rebar Tab */}
           {calcTab === 'rebar' && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
                 <h3 className="text-sm font-bold text-[var(--text-primary)]">
                   Perhitungan Berat Besi Tulangan (kg)
                 </h3>
-                <span className="text-[11px] text-blue-600 font-mono bg-blue-50 px-2 py-0.5 rounded-md">
+                <span className="text-[11px] text-blue-600 font-mono bg-blue-50 dark:bg-blue-500/15 px-2 py-0.5 rounded-md">
                   Berat (kg) = 0.006165 &times; D² &times; Total Panjang (m)
                 </span>
               </div>
@@ -570,7 +569,7 @@ export const VolumeCalculatorView: React.FC = () => {
           {/* Rectangle Area & Box Volume Generic */}
           {(calcTab === 'rectangle_area' || calcTab === 'box_volume') && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
                 <h3 className="text-sm font-bold text-[var(--text-primary)]">
                   {calcTab === 'rectangle_area' ? 'Luas Bidang Persegi (m²)' : 'Kubikasi Balok (m³)'}
                 </h3>
@@ -651,7 +650,7 @@ export const VolumeCalculatorView: React.FC = () => {
         {/* Right: Direct Insert to RAB Form Card */}
         <div className="lg:col-span-5 bg-[var(--bg-elevated)] p-6 rounded-2xl border border-[var(--border-primary)] shadow-2xs flex flex-col justify-between">
           <div>
-            <div className="flex items-center space-x-2 pb-3 border-b border-slate-100">
+            <div className="flex items-center space-x-2 pb-3 border-b border-slate-100 dark:border-slate-700">
               <FileSpreadsheet className="w-4 h-4 text-blue-600" />
               <h3 className="text-sm font-bold text-[var(--text-primary)]">
                 Masukkan Hasil ke RAB Proyek
@@ -711,9 +710,9 @@ export const VolumeCalculatorView: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="p-3 bg-blue-50 rounded-xl border border-blue-200 text-xs flex items-center justify-between">
-                  <span className="font-semibold text-blue-900">Total Biaya Pos:</span>
-                  <span className="font-black text-blue-900 font-mono">
+                <div className="p-3 bg-blue-50 dark:bg-blue-500/15 rounded-xl border border-blue-200 dark:border-blue-500/30 text-xs flex items-center justify-between">
+                  <span className="font-semibold text-blue-900 dark:text-blue-300">Total Biaya Pos:</span>
+                  <span className="font-black text-blue-900 dark:text-blue-300 font-mono">
                     {formatRupiah(computedVolume * (Number(itemUnitPrice) || 0))}
                   </span>
                 </div>

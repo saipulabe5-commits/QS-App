@@ -108,7 +108,7 @@ export const SourceCodeExportModal: React.FC<SourceCodeExportModalProps> = ({
         setSelectedFile(preferred.path);
       }
     } catch (err: any) {
-      console.error('Fetch source code error:', err);
+      console.error('Fetch source code error', err);
       setError(err?.message || 'Gagal memuat struktur source code');
     } finally {
       setLoading(false);
@@ -183,7 +183,7 @@ export const SourceCodeExportModal: React.FC<SourceCodeExportModalProps> = ({
                 <h3 className="text-base font-bold text-[var(--text-primary)]">
                   Export Source Code Project (JSON File)
                 </h3>
-                <span className="px-2 py-0.5 text-[10px] font-bold bg-blue-100 text-blue-700 rounded-full">
+                <span className="px-2 py-0.5 text-[10px] font-bold bg-blue-100 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 rounded-full">
                   JSON Bundle v1.0
                 </span>
               </div>
@@ -197,14 +197,14 @@ export const SourceCodeExportModal: React.FC<SourceCodeExportModalProps> = ({
             <button
               onClick={fetchSourceCode}
               disabled={loading}
-              className="p-2 text-slate-500 dark:text-slate-400 hover:text-[var(--text-primary)] hover:bg-slate-200 dark:bg-slate-700/60 rounded-xl transition-colors"
+              className="p-2 text-slate-500 dark:text-slate-400 hover:text-[var(--text-primary)] hover:bg-slate-200 dark:bg-slate-500/15 rounded-xl transition-colors"
               title="Refresh Data"
             >
-              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-blue-600' : ''}`} />
+              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             </button>
             <button
               onClick={onClose}
-              className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700/60 rounded-xl transition-colors"
+              className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-500/15 rounded-xl transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -213,7 +213,7 @@ export const SourceCodeExportModal: React.FC<SourceCodeExportModalProps> = ({
 
         {/* Quick Stats Bar */}
         {data && (
-          <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] px-6 py-3 border-b border-slate-200 dark:border-[var(--border-primary)] flex flex-wrap items-center justify-between gap-3 text-xs flex-shrink-0">
+          <div className="bg-[var(--bg-elevated)] text-[var(--text-primary)] px-6 py-3 border-b border-slate-200 dark:border-slate-500/30 flex flex-wrap items-center justify-between gap-3 text-xs flex-shrink-0">
             <div className="flex flex-wrap items-center gap-4 text-slate-600 dark:text-slate-300">
               <div className="flex items-center space-x-1.5">
                 <span className="text-[var(--text-secondary)]">Total File:</span>
@@ -244,8 +244,7 @@ export const SourceCodeExportModal: React.FC<SourceCodeExportModalProps> = ({
                 onClick={() => setActiveTab('explorer')}
                 className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors flex items-center space-x-1.5 ${
                   activeTab === 'explorer'
-                    ? 'bg-blue-600 text-white shadow-xs'
-                    : 'text-[var(--text-secondary)] hover:text-white'
+                    ? 'bg-blue-600' : 'text-[var(--text-secondary)] hover:text-white'
                 }`}
               >
                 <FolderTree className="w-3.5 h-3.5" />
@@ -255,8 +254,7 @@ export const SourceCodeExportModal: React.FC<SourceCodeExportModalProps> = ({
                 onClick={() => setActiveTab('json_preview')}
                 className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors flex items-center space-x-1.5 ${
                   activeTab === 'json_preview'
-                    ? 'bg-blue-600 text-white shadow-xs'
-                    : 'text-[var(--text-secondary)] hover:text-white'
+                    ? 'bg-blue-600' : 'text-[var(--text-secondary)] hover:text-white'
                 }`}
               >
                 <FileCode className="w-3.5 h-3.5" />
@@ -276,7 +274,7 @@ export const SourceCodeExportModal: React.FC<SourceCodeExportModalProps> = ({
             </div>
           ) : error ? (
             <div className="flex-1 flex flex-col items-center justify-center p-8 space-y-3">
-              <div className="p-3 bg-rose-50 text-rose-600 rounded-2xl border border-rose-200">
+              <div className="p-3 bg-rose-50 dark:bg-rose-500/15 text-rose-600 rounded-2xl border border-rose-200 dark:border-rose-500/30">
                 <X className="w-8 h-8" />
               </div>
               <p className="text-sm font-bold text-[var(--text-primary)]">{error}</p>
@@ -317,11 +315,7 @@ export const SourceCodeExportModal: React.FC<SourceCodeExportModalProps> = ({
                       <button
                         key={cat.id}
                         onClick={() => setSelectedCategory(cat.id)}
-                        className={`px-2 py-0.5 text-[10px] font-semibold rounded-md transition-colors ${
-                          selectedCategory === cat.id
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700 border border-[var(--border-primary)]'
-                        }`}
+                        className={`px-2 py-0.5 text-[10px] font-semibold rounded-md transition-colors ${ selectedCategory === cat.id ? 'bg-blue-600 text-white' : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-500/15 border border-[var(--border-primary)]' }`}
                       >
                         {cat.label}
                       </button>
@@ -342,11 +336,7 @@ export const SourceCodeExportModal: React.FC<SourceCodeExportModalProps> = ({
                         <button
                           key={file.path}
                           onClick={() => setSelectedFile(file.path)}
-                          className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors flex items-center justify-between group ${
-                            isSelected
-                              ? 'bg-blue-100/80 text-blue-900 font-semibold shadow-2xs'
-                              : 'hover:bg-slate-200 dark:bg-slate-700/60 text-[var(--text-primary)]'
-                          }`}
+                          className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors flex items-center justify-between group ${ isSelected ? 'bg-blue-100/80 dark:bg-blue-500/15 text-blue-900' : 'hover:bg-slate-200 text-[var(--text-primary)]' }`}
                         >
                           <div className="flex items-center space-x-2 truncate pr-2">
                             <FileCode
@@ -360,8 +350,7 @@ export const SourceCodeExportModal: React.FC<SourceCodeExportModalProps> = ({
                                   : file.path.endsWith('.json')
                                   ? 'text-amber-500'
                                   : file.path.endsWith('.css')
-                                  ? 'text-pink-500'
-                                  : 'text-[var(--text-secondary)]'
+                                  ? 'text-pink-500' : 'text-[var(--text-secondary)]'
                               }`}
                             />
                             <span className="truncate">{file.path}</span>
@@ -380,7 +369,7 @@ export const SourceCodeExportModal: React.FC<SourceCodeExportModalProps> = ({
               <div className="flex-1 flex flex-col bg-[var(--bg-elevated)] overflow-hidden">
                 {activeFileData && selectedFile ? (
                   <>
-                    <div className="px-4 py-2.5 bg-[var(--bg-elevated)] border-b border-slate-200 dark:border-[var(--border-primary)] flex items-center justify-between flex-shrink-0">
+                    <div className="px-4 py-2.5 bg-[var(--bg-elevated)] border-b border-slate-200 dark:border-slate-500/30 flex items-center justify-between flex-shrink-0">
                       <div className="flex items-center space-x-2 truncate">
                         <FileCode className="w-4 h-4 text-blue-400 flex-shrink-0" />
                         <span className="text-xs font-mono font-semibold text-slate-200 truncate">
@@ -416,7 +405,7 @@ export const SourceCodeExportModal: React.FC<SourceCodeExportModalProps> = ({
           ) : (
             /* Raw JSON Preview Tab */
             <div className="flex-1 flex flex-col bg-[var(--bg-elevated)] overflow-hidden">
-              <div className="px-4 py-2.5 bg-[var(--bg-elevated)] border-b border-slate-200 dark:border-[var(--border-primary)] flex items-center justify-between flex-shrink-0">
+              <div className="px-4 py-2.5 bg-[var(--bg-elevated)] border-b border-slate-200 dark:border-slate-500/30 flex items-center justify-between flex-shrink-0">
                 <div className="flex items-center space-x-2">
                   <FileCode className="w-4 h-4 text-emerald-400" />
                   <span className="text-xs font-mono font-semibold text-slate-200">

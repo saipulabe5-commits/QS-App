@@ -312,12 +312,12 @@ export const CommandBar: React.FC<CommandBarProps> = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: -10 }}
             transition={{ type: 'spring', stiffness: 450, damping: 35 }}
-            className="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col max-h-[75vh] z-10"
+            className="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-500/30 overflow-hidden flex flex-col max-h-[75vh] z-10"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header & Search Input */}
-            <div className="flex items-center px-4 sm:px-5 py-3.5 sm:py-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
-              <Search className="w-5 h-5 text-slate-400 dark:text-slate-500 mr-3 flex-shrink-0" />
+            <div className="flex items-center px-4 sm:px-5 py-3.5 sm:py-4 border-b border-slate-200 dark:border-slate-500/30 bg-slate-50/50 dark:bg-slate-500/15">
+              <Search className="w-5 h-5 text-slate-400 dark:text-slate-400 mr-3 flex-shrink-0" />
               <input
                 ref={inputRef}
                 type="text"
@@ -328,12 +328,12 @@ export const CommandBar: React.FC<CommandBarProps> = ({
                 }}
                 onKeyDown={handleKeyDown}
                 placeholder="Cari fitur, navigasi menu, atau buat RAB..."
-                className="w-full bg-transparent border-none outline-none text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-base sm:text-lg font-medium"
+                className="w-full bg-transparent border-none outline-none text-slate-900 dark:text-slate-300 placeholder-slate-400 dark:placeholder-slate-500 text-base sm:text-lg font-medium"
               />
               {query && (
                 <button
                   onClick={() => setQuery('')}
-                  className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 px-2 py-1 rounded-md bg-slate-200 dark:bg-slate-800 font-medium"
+                  className="text-xs text-slate-500 hover:text-slate-700 dark:text-slate-300 dark:hover:text-slate-200 px-2 py-1 rounded-md bg-slate-200 dark:bg-slate-500/15 font-medium"
                 >
                   Clear
                 </button>
@@ -355,28 +355,18 @@ export const CommandBar: React.FC<CommandBarProps> = ({
                       key={cmd.id}
                       onClick={cmd.action}
                       onMouseEnter={() => setSelectedIndex(idx)}
-                      className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left text-xs sm:text-sm transition-all ${
-                        isSelected
-                          ? 'bg-blue-600 text-white shadow-sm'
-                          : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/60'
-                      }`}
+                      className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left text-xs sm:text-sm transition-all ${ isSelected ? 'bg-blue-600' : 'text-slate-800 dark:text-slate-300 hover:bg-slate-100 dark:bg-slate-500/15 dark:hover:bg-slate-800/60' }`}
                     >
                       <div className="flex items-center space-x-3 min-w-0 pr-2">
                         <div
-                          className={`p-1.5 rounded-lg flex items-center justify-center ${
-                            isSelected
-                              ? 'bg-white/20 text-white'
-                              : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
-                          }`}
+                          className={`p-1.5 rounded-lg flex items-center justify-center ${ isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-500/15 text-slate-600 dark:text-slate-300' }`}
                         >
                           <Icon className="w-4 h-4" />
                         </div>
                         <div className="truncate">
                           <span className="font-semibold block truncate">{cmd.title}</span>
                           <span
-                            className={`text-[11px] block truncate ${
-                              isSelected ? 'text-blue-100' : 'text-slate-500 dark:text-slate-400'
-                            }`}
+                            className={`text-[11px] block truncate ${ isSelected ? 'text-blue-100' : 'text-slate-500 dark:text-slate-400' }`}
                           >
                             {cmd.category}
                           </span>
@@ -386,22 +376,14 @@ export const CommandBar: React.FC<CommandBarProps> = ({
                       <div className="flex items-center space-x-2 flex-shrink-0">
                         {cmd.badge && (
                           <span
-                            className={`px-2 py-0.5 rounded-md text-[10px] font-bold ${
-                              isSelected
-                                ? 'bg-white/20 text-white'
-                                : 'bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800'
-                            }`}
+                            className={`px-2 py-0.5 rounded-md text-[10px] font-bold ${ isSelected ? 'bg-white/20 text-white' : 'bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-500/30' }`}
                           >
                             {cmd.badge}
                           </span>
                         )}
                         {cmd.shortcut && (
                           <span
-                            className={`font-mono text-[11px] px-1.5 py-0.5 rounded-sm ${
-                              isSelected
-                                ? 'bg-blue-700 text-blue-100 border border-blue-500'
-                                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700'
-                            }`}
+                            className={`font-mono text-[11px] px-1.5 py-0.5 rounded-sm ${ isSelected ? 'bg-blue-700 text-blue-100 border border-blue-500' : 'bg-slate-100 dark:bg-slate-500/15 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-500/30' }`}
                           >
                             {cmd.shortcut}
                           </span>
@@ -415,19 +397,19 @@ export const CommandBar: React.FC<CommandBarProps> = ({
             </div>
 
             {/* Footer Navigation Hints */}
-            <div className="px-4 py-2.5 bg-slate-50 dark:bg-slate-900/90 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-400">
+            <div className="px-4 py-2.5 bg-slate-50 dark:bg-slate-500/15 border-t border-slate-200 dark:border-slate-500/30 flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-400">
               <div className="flex items-center space-x-3">
                 <span className="flex items-center space-x-1">
-                  <kbd className="px-1.5 py-0.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded font-mono shadow-2xs">↑</kbd>
-                  <kbd className="px-1.5 py-0.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded font-mono shadow-2xs">↓</kbd>
+                  <kbd className="px-1.5 py-0.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-500/30 rounded font-mono shadow-2xs">↑</kbd>
+                  <kbd className="px-1.5 py-0.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-500/30 rounded font-mono shadow-2xs">↓</kbd>
                   <span>Navigasi</span>
                 </span>
                 <span className="flex items-center space-x-1">
-                  <kbd className="px-1.5 py-0.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded font-mono shadow-2xs">↵</kbd>
+                  <kbd className="px-1.5 py-0.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-500/30 rounded font-mono shadow-2xs">↵</kbd>
                   <span>Pilih</span>
                 </span>
                 <span className="flex items-center space-x-1">
-                  <kbd className="px-1.5 py-0.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded font-mono shadow-2xs">ESC</kbd>
+                  <kbd className="px-1.5 py-0.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-500/30 rounded font-mono shadow-2xs">ESC</kbd>
                   <span>Tutup</span>
                 </span>
               </div>

@@ -192,10 +192,9 @@ export interface PdfTaskStatusResponse {
 const getHeaders = () => {
   const token =
     typeof window !== 'undefined'
-      ? safeLocalStorageGet('rabpro_token') || safeLocalStorageGet('token') || 'bypass_token_admin_permanen'
-      : 'bypass_token_admin_permanen';
+      ? safeLocalStorageGet('rabpro_token') || safeLocalStorageGet('token') || 'bypass_token_admin_permanen' : 'bypass_token_admin_permanen';
   const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
+    'Content-Type' : 'application/json',
     'Authorization': `Bearer ${token || 'bypass_token_admin_permanen'}`,
   };
   return headers;
@@ -300,7 +299,7 @@ Silakan ajukan pertanyaan atau gunakan tombol pintas yang tersedia.`,
       if (!res.ok) throw new Error('Gagal scan item');
       const data = await res.json();
       return {
-        summary: data.summary || 'Berikut pos pekerjaan penting yang direkomendasikan untuk ditambahkan:',
+        summary: data.summary || 'Berikut pos pekerjaan penting yang direkomendasikan untuk ditambahkan',
         missingItems: data.missingItems || [],
       };
     } catch {

@@ -145,8 +145,7 @@ export function parsePriceCSV(csvText: string): Omit<PriceItem, 'id' | 'userId'>
         typeRaw === 'labor' || typeRaw === 'upah' || typeRaw === 'tenaga'
           ? 'labor'
           : typeRaw === 'equipment' || typeRaw === 'alat'
-          ? 'equipment'
-          : 'material';
+          ? 'equipment' : 'material';
 
       const price = Number(priceRaw ? priceRaw.replace(/[^0-9.-]+/g, '') : 0) || 0;
 

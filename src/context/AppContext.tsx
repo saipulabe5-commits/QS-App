@@ -38,24 +38,10 @@ import {
 } from '../data/initialData';
 import { buildSCurveFromRAB, recalculateSCurve, syncSCurveWithRAB } from '../utils/scurveUtils';
 import { idbStorage, DB_STORES } from '../db/indexedDBAdapter';
+import { STORAGE_KEYS } from '../db/storageAdapter';
+export { STORAGE_KEYS };
 import { normalizeProject, normalizeRABItem, normalizePriceItem, normalizeAHSPItem } from '../utils/normalizers';
 import { safeLocalStorageGet, safeLocalStorageSet, safeLocalStorageRemove } from '../utils/storageUtils';
-
-const STORAGE_KEYS = {
-  USER: 'rabpro_user_v1',
-  ACTIVE_PROJECT: 'rabpro_active_project_v1',
-  PROJECTS: 'rabpro_projects_v1',
-  RAB_ITEMS: 'rabpro_rab_items_v1',
-  PRICES: 'rabpro_prices_v1',
-  AHSP: 'rabpro_ahsp_v1',
-  TEMPLATES: 'rabpro_templates_v1',
-  RAB_TEMPLATES: 'rabpro_rab_templates_v1',
-  IMPORT_JOBS: 'rabpro_import_jobs_v1',
-  DRAWINGS: 'rabpro_drawings_v1',
-  ANALYSES: 'rabpro_analyses_v1',
-  SCURVES: 'rabpro_scurves_v1',
-  SETTINGS: 'rabpro_settings_v1',
-};
 
 export type AuthResult = {
   success: boolean;
@@ -414,7 +400,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         }
 
       } catch (e) {
-        console.error('Error during DB boot:', e);
+        console.error('Error during DB boot', e);
       } finally {
         setIsDbBooting(false);
       }
@@ -513,7 +499,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type' : 'application/json' },
         body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
@@ -542,13 +528,13 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     passwordOrCompany?: string,
     passwordParam?: string
   ): Promise<AuthResult> => {
-    const password = passwordParam || (passwordOrCompany && !passwordOrCompany.includes(' ') && passwordOrCompany.length > 5 ? passwordOrCompany : 'password123');
-    const company = passwordParam ? passwordOrCompany : 'PT. Citra Kusuma Development';
+    const password = passwordParam || (passwordOrCompany && !passwordOrCompany.includes(' ') && passwordOrCompany.length > 5 ? passwordOrCompany: 'password123');
+    const company = passwordParam ? passwordOrCompany: 'PT. Citra Kusuma Development';
 
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type' : 'application/json' },
         body: JSON.stringify({ name, email, password, company }),
       });
       const data = await res.json();
@@ -582,7 +568,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       const res = await fetch('/api/auth/change-password', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type' : 'application/json',
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify({ oldPassword: oldPass, newPassword: newPass }),
@@ -603,7 +589,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     try {
       const res = await fetch('/api/auth/forgot-password', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type' : 'application/json' },
         body: JSON.stringify({ email }),
       });
       const data = await res.json();
@@ -623,7 +609,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     try {
       const res = await fetch('/api/auth/reset-password', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type' : 'application/json' },
         body: JSON.stringify({ email, resetCode: code, newPassword: newPass }),
       });
       const data = await res.json();
@@ -1733,7 +1719,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       const res = await fetch('/api/ai/analyze-drawing', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type' : 'application/json',
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify({

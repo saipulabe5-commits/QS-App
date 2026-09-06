@@ -227,8 +227,7 @@ export async function parseSpreadsheetData(
   const fileType = isCSV
     ? 'csv'
     : fileName.toLowerCase().endsWith('.xls')
-    ? 'xls'
-    : 'xlsx';
+    ? 'xls' : 'xlsx';
 
   const ExcelJS = (await import("exceljs")).default; const workbook = new ExcelJS.Workbook();
   let rawMatrix: any[][] = [];

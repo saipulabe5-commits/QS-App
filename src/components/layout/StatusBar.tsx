@@ -42,7 +42,7 @@ export const StatusBar: React.FC<StatusBarProps> = ({
   );
 
   return (
-    <footer className="h-7 bg-[var(--bg-elevated)] text-[var(--text-secondary)] border-t border-slate-200 dark:border-[var(--border-primary)] text-[11px] px-3 flex items-center justify-between select-none z-20 flex-shrink-0">
+    <footer className="h-7 bg-[var(--bg-elevated)] text-[var(--text-secondary)] border-t border-slate-200 dark:border-slate-500/30 text-[11px] px-3 flex items-center justify-between select-none z-20 flex-shrink-0">
       {/* Left items: Engine & Storage status */}
       <div className="flex items-center space-x-3 overflow-hidden">
         {/* Engine Lock Status */}
@@ -115,8 +115,7 @@ export const StatusBar: React.FC<StatusBarProps> = ({
           onClick={onToggleInspector}
           className={`flex items-center space-x-1 px-1.5 py-0.5 rounded transition-colors ${
             isInspectorOpen
-              ? 'bg-blue-600/30 text-blue-300 font-bold'
-              : 'hover:bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)] hover:text-slate-200'
+              ? 'bg-blue-600/30 text-blue-300' : 'hover:bg-[var(--bg-elevated-hover)] text-[var(--text-secondary)] hover:text-slate-200'
           }`}
           title="Toggle Workspace Inspector (⌘I)"
         >

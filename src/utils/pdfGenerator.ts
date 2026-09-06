@@ -178,7 +178,7 @@ export const exportToPDF = async (options: PDFExportOptions): Promise<void> => {
 
     pdf.save(`${filename.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`);
   } catch (error) {
-    console.error('Failed to generate PDF:', error);
+    console.error('Failed to generate PDF', error);
     throw error;
   }
 };
@@ -273,7 +273,7 @@ export const exportTableToPDF = async (options: {
 
     pdf.save(`${filename.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`);
   } catch (error) {
-    console.error('Failed to export vector table to PDF:', error);
+    console.error('Failed to export vector table to PDF', error);
     throw error;
   }
 };
@@ -784,7 +784,7 @@ export const exportOfficialReportToPDF = async (options: OfficialReportPDFOption
     const cleanFilename = (filename || `RAB_${project.name}_${reportType}`).replace(/[^a-zA-Z0-9]/g, '_');
     pdf.save(`${cleanFilename}.pdf`);
   } catch (error) {
-    console.error('Failed to generate official vector PDF:', error);
+    console.error('Failed to generate official vector PDF', error);
     throw error;
   }
 };

@@ -135,7 +135,7 @@ export const AuthGate: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans">
+    <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-500/15 flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans">
       {/* Decorative Glow Elements */}
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-500/10 dark:bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
@@ -146,7 +146,7 @@ export const AuthGate: React.FC = () => {
         initial={{ opacity: 0, y: 12, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
-        className="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-8 z-10 relative"
+        className="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-500/30 rounded-2xl shadow-2xl p-8 z-10 relative"
       >
         {/* Logo & Header Section */}
         <div className="flex flex-col items-center text-center mb-6">
@@ -154,10 +154,10 @@ export const AuthGate: React.FC = () => {
             R
           </div>
           <div className="flex items-center gap-2 mb-1">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-300">
               RAB Pro
             </h1>
-            <span className="text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800">
+            <span className="text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-500/30">
               Enterprise V4
             </span>
           </div>
@@ -170,7 +170,7 @@ export const AuthGate: React.FC = () => {
 
         {/* Error Alert Message */}
         {errorMessage && (
-          <div className="mb-5 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900/60 text-rose-700 dark:text-rose-300 text-xs flex items-start gap-2.5">
+          <div className="mb-5 p-3 rounded-xl bg-rose-50 dark:bg-rose-500/15 border border-rose-200 dark:border-rose-500/30 text-rose-700 dark:text-rose-300 text-xs flex items-start gap-2.5">
             <AlertCircle className="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5" />
             <span className="leading-snug">{errorMessage}</span>
           </div>
@@ -178,7 +178,7 @@ export const AuthGate: React.FC = () => {
 
         {/* Success Alert Message */}
         {successMessage && (
-          <div className="mb-5 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-900/60 text-emerald-700 dark:text-emerald-300 text-xs flex items-start gap-2.5">
+          <div className="mb-5 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-xs flex items-start gap-2.5">
             <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
             <span className="leading-snug">{successMessage}</span>
           </div>
@@ -192,12 +192,12 @@ export const AuthGate: React.FC = () => {
                 Alamat Email
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Mail className="w-4 h-4 text-slate-400 dark:text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="email"
                   value={email}
                   readOnly
-                  className="w-full bg-slate-100 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 rounded-xl pl-10 pr-4 py-3 text-slate-500 dark:text-slate-400 text-sm font-medium cursor-not-allowed outline-none select-all"
+                  className="w-full bg-slate-100 dark:bg-slate-500/15 border border-slate-200 dark:border-slate-500/30 rounded-xl pl-10 pr-4 py-3 text-slate-500 dark:text-slate-400 text-sm font-medium cursor-not-allowed outline-none select-all"
                   title="Akun resmi single-user administrator"
                 />
               </div>
@@ -228,14 +228,13 @@ export const AuthGate: React.FC = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Masukkan kata sandi"
                   autoFocus
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 pr-11 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                  className="w-full bg-slate-50 dark:bg-slate-500/15 border border-slate-300 dark:border-slate-500/30 rounded-xl px-4 py-3 pr-11 text-sm text-slate-900 dark:text-slate-300 placeholder-slate-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
-                  tabIndex={-1}
-                >
+                  tabIndex={-1}>
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
@@ -266,17 +265,17 @@ export const AuthGate: React.FC = () => {
                 Alamat Email Administrator
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Mail className="w-4 h-4 text-slate-400 dark:text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="email"
                   value={email}
                   readOnly
-                  className="w-full bg-slate-100 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 rounded-xl pl-10 pr-4 py-3 text-slate-500 dark:text-slate-400 text-sm font-medium cursor-not-allowed outline-none"
+                  className="w-full bg-slate-100 dark:bg-slate-500/15 border border-slate-200 dark:border-slate-500/30 rounded-xl pl-10 pr-4 py-3 text-slate-500 dark:text-slate-400 text-sm font-medium cursor-not-allowed outline-none"
                 />
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/50 text-xs text-blue-700 dark:text-blue-300 leading-relaxed">
+            <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 text-xs text-blue-700 dark:text-blue-300 leading-relaxed">
               Kode verifikasi 6-digit akan dikirimkan ke email resmi Anda untuk konfirmasi identitas.
             </div>
 
@@ -303,7 +302,7 @@ export const AuthGate: React.FC = () => {
                   setErrorMessage('');
                   setSuccessMessage('');
                 }}
-                className="text-xs text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+                className="text-xs text-slate-500 hover:text-slate-800 dark:text-slate-300 dark:hover:text-slate-200 transition-colors inline-flex items-center gap-1.5 cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Kembali ke Halaman Login</span>
@@ -326,7 +325,7 @@ export const AuthGate: React.FC = () => {
                 onChange={(e) => setResetCode(e.target.value)}
                 placeholder="123456"
                 autoFocus
-                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-center text-base font-mono tracking-widest text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                className="w-full bg-slate-50 dark:bg-slate-500/15 border border-slate-300 dark:border-slate-500/30 rounded-xl px-4 py-3 text-center text-base font-mono tracking-widest text-slate-900 dark:text-slate-300 font-bold focus:ring-2 focus:ring-blue-500 outline-none transition-all"
               />
             </div>
 
@@ -341,14 +340,13 @@ export const AuthGate: React.FC = () => {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Minimal 10 karakter"
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 pr-11 text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                  className="w-full bg-slate-50 dark:bg-slate-500/15 border border-slate-300 dark:border-slate-500/30 rounded-xl px-4 py-3 pr-11 text-sm text-slate-900 dark:text-slate-300 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowNewPassword(!showNewPassword)}
                   className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
-                  tabIndex={-1}
-                >
+                  tabIndex={-1}>
                   {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
@@ -365,7 +363,7 @@ export const AuthGate: React.FC = () => {
                 value={confirmNewPassword}
                 onChange={(e) => setConfirmNewPassword(e.target.value)}
                 placeholder="Ulangi kata sandi baru"
-                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                className="w-full bg-slate-50 dark:bg-slate-500/15 border border-slate-300 dark:border-slate-500/30 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-slate-300 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
               />
             </div>
 
@@ -392,7 +390,7 @@ export const AuthGate: React.FC = () => {
                   setErrorMessage('');
                   setSuccessMessage('');
                 }}
-                className="text-xs text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+                className="text-xs text-slate-500 hover:text-slate-800 dark:text-slate-300 dark:hover:text-slate-200 transition-colors inline-flex items-center gap-1.5 cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Batal dan Kembali ke Login</span>
@@ -403,7 +401,7 @@ export const AuthGate: React.FC = () => {
       </motion.div>
 
       {/* Subtle Minimalist Footer */}
-      <footer className="mt-8 text-center text-xs text-slate-400 dark:text-slate-600 z-10 relative">
+      <footer className="mt-8 text-center text-xs text-slate-400 dark:text-slate-400 z-10 relative">
         &copy; {new Date().getFullYear()} RAB Pro Enterprise. Hak Cipta Dilindungi.
       </footer>
     </div>

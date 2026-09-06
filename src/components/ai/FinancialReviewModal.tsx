@@ -55,9 +55,9 @@ export const FinancialReviewModal: React.FC<FinancialReviewModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--bg-elevated)]/60 backdrop-blur-sm">
       <div className="bg-[var(--bg-elevated)] w-full max-w-3xl rounded-2xl shadow-xl overflow-hidden max-h-[90vh] flex flex-col">
-        <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-[var(--bg-elevated-hover)]">
+        <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center bg-[var(--bg-elevated-hover)]">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-500/15 text-indigo-600 flex items-center justify-center">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
@@ -65,7 +65,7 @@ export const FinancialReviewModal: React.FC<FinancialReviewModalProps> = ({
               <p className="text-xs text-slate-500 dark:text-slate-400">Zero-Mistake Engine (Deterministik & AI)</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-700 rounded-full transition-colors">
+          <button onClick={onClose} className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-secondary)] hover:bg-slate-200 dark:bg-slate-500/15 rounded-full transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -79,20 +79,20 @@ export const FinancialReviewModal: React.FC<FinancialReviewModalProps> = ({
             </h3>
             
             {isClean ? (
-              <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-4 flex items-start space-x-3">
+              <div className="bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-100 dark:border-emerald-500/30 rounded-xl p-4 flex items-start space-x-3">
                 <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0" />
                 <div>
-                  <h4 className="text-sm font-semibold text-emerald-800">Tidak ada anomali matematis fatal</h4>
+                  <h4 className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Tidak ada anomali matematis fatal</h4>
                   <p className="text-xs text-emerald-600 mt-1">Sistem tidak mendeteksi volume kosong, harga satuan nol, duplikasi, atau inkonsistensi kalkulasi (Overhead & Profit valid).</p>
                 </div>
               </div>
             ) : (
               <div className="space-y-3">
                 {anomalies.map((anomaly, idx) => (
-                  <div key={idx} className={`border rounded-xl p-4 flex items-start space-x-3 ${anomaly.severity === 'fatal' ? 'bg-rose-50 border-rose-100' : 'bg-amber-50 border-amber-100'}`}>
+                  <div key={idx} className={`border rounded-xl p-4 flex items-start space-x-3 ${anomaly.severity === 'fatal' ? 'bg-rose-50 dark:bg-rose-500/15 border-rose-100 dark:border-rose-500/30' : 'bg-amber-50 border-amber-100'}`}>
                     <AlertTriangle className={`w-5 h-5 shrink-0 ${anomaly.severity === 'fatal' ? 'text-rose-600' : 'text-amber-600'}`} />
                     <div>
-                      <h4 className={`text-sm font-semibold ${anomaly.severity === 'fatal' ? 'text-rose-800' : 'text-amber-800'}`}>
+                      <h4 className={`text-sm font-semibold ${anomaly.severity === 'fatal' ? 'text-rose-800 dark:text-rose-300' : 'text-amber-800'}`}>
                         {anomaly.type === 'oh_profit_inconsistency' ? 'Inkonsistensi Total' : anomaly.itemName}
                       </h4>
                       <p className={`text-xs mt-1 ${anomaly.severity === 'fatal' ? 'text-rose-600' : 'text-amber-600'}`}>{anomaly.message}</p>
@@ -103,13 +103,13 @@ export const FinancialReviewModal: React.FC<FinancialReviewModalProps> = ({
             )}
           </div>
 
-          <hr className="border-slate-100" />
+          <hr className="border-slate-100 dark:border-slate-700" />
 
           {/* AI Panel */}
           <div>
             <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3 flex items-center justify-between">
               <div className="flex items-center">
-                <span className="w-6 h-6 rounded-md bg-indigo-100 text-indigo-600 flex items-center justify-center mr-2">2</span>
+                <span className="w-6 h-6 rounded-md bg-indigo-100 dark:bg-indigo-500/15 text-indigo-600 flex items-center justify-center mr-2">2</span>
                 AI Financial Review
               </div>
               {!aiReviewResult && !isAiLoading && (
@@ -124,19 +124,19 @@ export const FinancialReviewModal: React.FC<FinancialReviewModalProps> = ({
             </h3>
 
             {isAiLoading ? (
-              <div className="bg-[var(--bg-elevated-hover)] border border-slate-100 rounded-xl p-8 flex flex-col items-center justify-center text-center">
+              <div className="bg-[var(--bg-elevated-hover)] border border-slate-100 dark:border-slate-700 rounded-xl p-8 flex flex-col items-center justify-center text-center">
                 <Loader2 className="w-8 h-8 text-indigo-500 animate-spin mb-3" />
                 <p className="text-sm font-medium text-[var(--text-primary)]">Menganalisis komposisi anggaran proyek...</p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Menggunakan AI Zero-Cost Safeguard</p>
               </div>
             ) : aiReviewResult ? (
-              <div className="bg-[var(--bg-elevated)] border border-indigo-100 rounded-xl p-5 shadow-sm">
+              <div className="bg-[var(--bg-elevated)] border border-indigo-100 dark:border-indigo-500/30 rounded-xl p-5 shadow-sm">
                 <div className="prose prose-sm prose-slate max-w-none whitespace-pre-wrap leading-relaxed">
                   {aiReviewResult}
                 </div>
               </div>
             ) : (
-              <div className="bg-[var(--bg-elevated-hover)] border border-slate-100 rounded-xl p-6 text-center">
+              <div className="bg-[var(--bg-elevated-hover)] border border-slate-100 dark:border-slate-700 rounded-xl p-6 text-center">
                 <p className="text-sm text-slate-500 dark:text-slate-400">
                   AI akan mengevaluasi kewajaran komposisi biaya material/pekerja dan kelengkapan kategori untuk skala proyek ini.
                 </p>
@@ -144,7 +144,7 @@ export const FinancialReviewModal: React.FC<FinancialReviewModalProps> = ({
             )}
 
             {error && (
-              <div className="mt-4 p-3 bg-rose-50 border border-rose-100 rounded-xl flex items-center space-x-2 text-rose-600 text-sm">
+              <div className="mt-4 p-3 bg-rose-50 dark:bg-rose-500/15 border border-rose-100 dark:border-rose-500/30 rounded-xl flex items-center space-x-2 text-rose-600 text-sm">
                 <AlertTriangle className="w-4 h-4 shrink-0" />
                 <span>{error}</span>
               </div>
@@ -152,7 +152,7 @@ export const FinancialReviewModal: React.FC<FinancialReviewModalProps> = ({
           </div>
         </div>
 
-        <div className="p-4 border-t border-slate-100 bg-[var(--bg-elevated-hover)] flex justify-end">
+        <div className="p-4 border-t border-slate-100 dark:border-slate-700 bg-[var(--bg-elevated-hover)] flex justify-end">
           <button
             onClick={onClose}
             className="px-5 py-2 bg-[var(--bg-elevated-hover)] text-white text-sm font-semibold rounded-xl hover:bg-[var(--bg-elevated)] transition-colors"

@@ -48,31 +48,45 @@ class BugTracker {
   private readonly DB_NAME = 'RabProBugTrackerDB';
   private readonly STORE_NAME = 'bug_log';
   private readonly MAX_ENTRIES = 500;
-  private dbPromise: Promise<IDBDatabase>;
+  private dbPromise: Promise<IDBDatabase | null>;
   private listenersAttached = false;
+  private memoryFallback: BugLogEntry[] = [];
 
   constructor() {
+    if (typeof indexedDB === 'undefined') {
+      this.dbPromise = Promise.resolve(null);
+      return;
+    }
+
     this.dbPromise = new Promise((resolve, reject) => {
-      const request = indexedDB.open(this.DB_NAME, 2);
-      request.onupgradeneeded = (event) => {
-        const db = (event.target as IDBOpenDBRequest).result;
-        if (!db.objectStoreNames.contains(this.STORE_NAME)) {
-          const store = db.createObjectStore(this.STORE_NAME, { keyPath: 'id' });
-          store.createIndex('fingerprint', 'fingerprint', { unique: false });
-        } else {
-          const store = (event.target as any).transaction.objectStore(this.STORE_NAME);
-          if (!store.indexNames.contains('fingerprint')) {
+      try {
+        const request = indexedDB.open(this.DB_NAME, 2);
+        request.onupgradeneeded = (event) => {
+          const db = (event.target as IDBOpenDBRequest).result;
+          if (!db.objectStoreNames.contains(this.STORE_NAME)) {
+            const store = db.createObjectStore(this.STORE_NAME, { keyPath: 'id' });
             store.createIndex('fingerprint', 'fingerprint', { unique: false });
+          } else {
+            const store = (event.target as any).transaction.objectStore(this.STORE_NAME);
+            if (!store.indexNames.contains('fingerprint')) {
+              store.createIndex('fingerprint', 'fingerprint', { unique: false });
+            }
           }
-        }
-      };
-      request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error);
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => {
+          console.warn('BugTracker IndexedDB open error, using memory fallback');
+          resolve(null);
+        };
+      } catch (err) {
+        console.warn('BugTracker IndexedDB exception, using memory fallback', err);
+        resolve(null);
+      }
     });
   }
 
   public attachListeners() {
-    if (this.listenersAttached) return;
+    if (this.listenersAttached || typeof window === 'undefined') return;
     this.listenersAttached = true;
 
     window.addEventListener('error', (event) => {
@@ -100,6 +114,30 @@ class BugTracker {
       const fingerprint = entryData.fingerprint || generateBugFingerprint(entryData.category, entryData.message, entryData.requestUrl);
 
       const db = await this.dbPromise;
+      if (!db) {
+        const existing = this.memoryFallback.find(i => i.fingerprint === fingerprint);
+        if (existing) {
+          existing.occurrenceCount = (existing.occurrenceCount || 1) + 1;
+          existing.lastSeenAt = now;
+          existing.timestamp = now;
+        } else {
+          this.memoryFallback.push({
+            id: typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `bug_${Date.now()}`,
+            timestamp: now,
+            firstSeenAt: now,
+            lastSeenAt: now,
+            occurrenceCount: 1,
+            fingerprint,
+            status: entryData.status || 'open',
+            source: 'client',
+            userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'Node/Test',
+            route: typeof window !== 'undefined' ? window.location.pathname : '/',
+            ...entryData,
+          });
+        }
+        return;
+      }
+
       const tx = db.transaction(this.STORE_NAME, 'readwrite');
       const store = tx.objectStore(this.STORE_NAME);
 
@@ -123,7 +161,7 @@ class BugTracker {
         } else {
           // Create brand new entry
           const newEntry: BugLogEntry = {
-            id: crypto.randomUUID(),
+            id: typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `bug_${Date.now()}`,
             timestamp: now,
             firstSeenAt: now,
             lastSeenAt: now,
@@ -131,8 +169,8 @@ class BugTracker {
             fingerprint,
             status: entryData.status || 'open',
             source: 'client',
-            userAgent: navigator.userAgent,
-            route: window.location.pathname,
+            userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'Node/Test',
+            route: typeof window !== 'undefined' ? window.location.pathname : '/',
             ...entryData,
           };
           store.add(newEntry);
@@ -146,13 +184,24 @@ class BugTracker {
         }
       };
     } catch (error) {
-      console.error('BugTracker failed to log:', error);
+      console.error('BugTracker failed to log', error);
     }
   }
 
   public async resolveBug(id: string, resolutionNote: string, commitHash?: string): Promise<boolean> {
     try {
       const db = await this.dbPromise;
+      if (!db) {
+        const item = this.memoryFallback.find(i => i.id === id);
+        if (item) {
+          item.status = 'resolved';
+          item.resolutionNote = resolutionNote;
+          item.resolvedAt = new Date().toISOString();
+          if (commitHash) item.resolvedInCommit = commitHash;
+          return true;
+        }
+        return false;
+      }
       return new Promise((resolve, reject) => {
         const tx = db.transaction(this.STORE_NAME, 'readwrite');
         const store = tx.objectStore(this.STORE_NAME);
@@ -173,7 +222,7 @@ class BugTracker {
         getReq.onerror = () => reject(getReq.error);
       });
     } catch (err) {
-      console.error('BugTracker resolveBug failed:', err);
+      console.error('BugTracker resolveBug failed', err);
       return false;
     }
   }
@@ -181,6 +230,14 @@ class BugTracker {
   public async reopenBug(id: string): Promise<boolean> {
     try {
       const db = await this.dbPromise;
+      if (!db) {
+        const item = this.memoryFallback.find(i => i.id === id);
+        if (item) {
+          item.status = 'open';
+          return true;
+        }
+        return false;
+      }
       return new Promise((resolve, reject) => {
         const tx = db.transaction(this.STORE_NAME, 'readwrite');
         const store = tx.objectStore(this.STORE_NAME);
@@ -198,7 +255,7 @@ class BugTracker {
         getReq.onerror = () => reject(getReq.error);
       });
     } catch (err) {
-      console.error('BugTracker reopenBug failed:', err);
+      console.error('BugTracker reopenBug failed', err);
       return false;
     }
   }
@@ -206,6 +263,9 @@ class BugTracker {
   public async getLogs(): Promise<BugLogEntry[]> {
     try {
       const db = await this.dbPromise;
+      if (!db) {
+        return [...this.memoryFallback];
+      }
       return new Promise((resolve, reject) => {
         const tx = db.transaction(this.STORE_NAME, 'readonly');
         const store = tx.objectStore(this.STORE_NAME);
@@ -225,7 +285,7 @@ class BugTracker {
         req.onerror = () => reject(req.error);
       });
     } catch (e) {
-      console.error('BugTracker getLogs failed:', e);
+      console.error('BugTracker getLogs failed', e);
       return [];
     }
   }
@@ -233,6 +293,10 @@ class BugTracker {
   public async clearLogs(): Promise<void> {
     try {
       const db = await this.dbPromise;
+      if (!db) {
+        this.memoryFallback = [];
+        return;
+      }
       return new Promise((resolve, reject) => {
         const tx = db.transaction(this.STORE_NAME, 'readwrite');
         const store = tx.objectStore(this.STORE_NAME);
@@ -241,7 +305,7 @@ class BugTracker {
         req.onerror = () => reject(req.error);
       });
     } catch (e) {
-      console.error('BugTracker clearLogs failed:', e);
+      console.error('BugTracker clearLogs failed', e);
     }
   }
 }
