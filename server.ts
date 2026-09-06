@@ -9,6 +9,7 @@ import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import helmet from "helmet";
 import cors from "cors";
+import { APP_SYSTEM_KNOWLEDGE } from "./src/config/appKnowledgeBase";
 
 // ==========================================
 // Comprehensive Environment Variable Validation
@@ -1236,7 +1237,9 @@ app.post("/api/ai/analyze-bug", requireAuth, async (req, res) => {
       return res.status(503).json({ error: "Kunci API Gemini belum dikonfigurasi." });
     }
 
-    const systemInstruction = "Anda adalah Senior DevOps & Software Engineer. Analisis log error dari aplikasi React + Node.js berikut. Jelaskan dengan singkat, padat, dan teknis: 1) Akar masalah (Root Cause). 2) Cara spesifik memperbaikinya. Gunakan bahasa Indonesia profesional.";
+    const systemInstruction = `${APP_SYSTEM_KNOWLEDGE}
+
+Anda adalah Senior DevOps & Software Engineer untuk aplikasi "RAB Pro Enterprise" di atas. Analisis log error dari aplikasi React + Node.js berikut dengan memahami arsitektur modul dan halaman terkait. Jelaskan dengan singkat, padat, dan teknis: 1) Akar masalah (Root Cause). 2) Cara spesifik memperbaikinya. Gunakan bahasa Indonesia profesional.`;
 
     const bugContext = `
 DETAIL LOG ERROR:
@@ -1292,7 +1295,9 @@ app.post("/api/ai/financial-review", requireAuth, async (req, res) => {
       ? `ANOMALI DETERMINISTIK YANG DITEMUKAN:\n${anomalies.map(a => `- [${a.severity.toUpperCase()}] ${a.itemName ? a.itemName + ': ' : ''}${a.message}`).join('\n')}`
       : "Tidak ada anomali matematis/deterministik.";
 
-    const systemPrompt = `Anda adalah Senior Cost Control Reviewer untuk proyek konstruksi di Indonesia.
+    const systemPrompt = `${APP_SYSTEM_KNOWLEDGE}
+
+Anda adalah Senior Cost Control Reviewer untuk proyek konstruksi di Indonesia pada aplikasi "RAB Pro Enterprise".
 Tugas Anda: Berikan 'narrative sanity check' terhadap struktur anggaran (RAB) ini.
 Fokus pada:
 1. Apakah rasio kategori (komposisi biaya) masuk akal secara industri untuk proyek ${project?.type || 'Bangunan'} skala ${project?.budget_range || 'standar'}?
@@ -1350,10 +1355,13 @@ app.post("/api/ai/chat", async (req, res) => {
       `- [${it.category}] ${it.code} ${it.name}: ${it.volume} ${it.unit} @ Rp ${Number(it.unitPrice).toLocaleString('id-ID')}`
     ).join("\n");
 
-    const systemInstruction = `Anda adalah AI Asisten Quantity Surveyor (QS) & Ahli RAB Konstruksi Indonesia di aplikasi "RAB Pro".
+    const systemInstruction = `${APP_SYSTEM_KNOWLEDGE}
+
+PERAN DAN TUGAS ANDA:
+Anda adalah AI Asisten Quantity Surveyor (QS) & Ahli RAB Konstruksi Indonesia di aplikasi "RAB Pro Enterprise".
 Gunakan bahasa Indonesia yang profesional, ramah, dan mudah dipahami oleh kontraktor, konsultan, maupun pemilik bangunan.
 
-Anda membantu pengguna dalam 8 hal utama:
+Anda menguasai SELURUH fitur dan menu di aplikasi "RAB Pro Enterprise", termasuk:
 1. Membuat uraian pekerjaan (WBS) berdasarkan jenis proyek
 2. Menyarankan item pekerjaan yang belum dimasukkan (missing items)
 3. Menyarankan satuan pekerjaan sesuai standar SNI & PUPR
@@ -1362,6 +1370,14 @@ Anda membantu pengguna dalam 8 hal utama:
 6. Membuat ringkasan eksekutif RAB
 7. Menjelaskan komponen biaya dan analisa harga satuan (AHSP)
 8. Memberikan rekomendasi penghematan biaya (value engineering)
+9. Memandu penggunaan seluruh menu aplikasi: Kurva S (Rencana, Aktual, Perbandingan, Gantt Chart), Template Pekerjaan, Ekspor/Cetak Laporan ke PDF/Excel, Kalkulator Volume, Database Harga Satuan, Pengaturan & Ganti Kata Sandi, dan Diagnostik Sistem.
+
+PANDUAN NAVIGASI SISTEM (navigate_hint):
+- Jika pengguna menanyakan "bagaimana cara...", "di mana menu...", atau cara penggunaan fitur apapun yang berada di luar halaman RAB saat ini (misalnya cara membuat Kurva S, di mana menyimpan RAB sebagai template, bagaimana cara export laporan ke PDF/Excel, bagaimana cara ganti kata sandi, cara pakai kalkulator volume, cara analisis gambar, dll):
+  1. Jelaskan langkah-langkah praktisnya dengan ramah, terstruktur, dan jelas di dalam field "reply".
+  2. Set "suggestedActionType": "navigate_hint".
+  3. Berikan "navigationTarget": tab ID yang sesuai (pilihan: "scurve-plan" | "scurve-actual" | "scurve-comparison" | "scurve-gantt" | "templates" | "calculator" | "reports" | "settings" | "ahsp" | "database" | "drawings" | "projects" | "dashboard" | "rab").
+  4. Berikan "navigationLabel": teks label tombol yang ringkas dan jelas (misal: "Buka Rencana Kurva S", "Buka Template Pekerjaan", "Buka Laporan & Cetak", "Buka Pengaturan", "Buka Kalkulator Volume", dll).
 
 ATURAN PENTING:
 - Jangan membuat perubahan data RAB tanpa persetujuan pengguna.
@@ -1370,7 +1386,9 @@ ATURAN PENTING:
 Format respon HARUS berupa JSON valid dengan struktur:
 {
   "reply": "Penjelasan rinci dan ramah dalam format markdown bahasa Indonesia...",
-  "suggestedActionType": "add_items" | "adjust_price" | "calculate_volume" | "none",
+  "suggestedActionType": "add_items" | "adjust_price" | "calculate_volume" | "navigate_hint" | "none",
+  "navigationTarget": "scurve-plan" | "scurve-actual" | "scurve-comparison" | "scurve-gantt" | "templates" | "calculator" | "reports" | "settings" | "ahsp" | "database" | "drawings" | "projects" | "dashboard" | "rab",
+  "navigationLabel": "Label tombol navigasi (misal: Buka Rencana Kurva S)",
   "suggestedItems": [
     {
       "code": string,
@@ -1477,7 +1495,7 @@ Kembalikan respon JSON murni dengan format:
     const { response } = await generateGeminiContent(ai, {
       contents: prompt,
       config: {
-        systemInstruction: "Anda adalah auditor teknik sipil dan quantity surveyor ahli di Indonesia. Berikan rekomendasi item pekerjaan yang kurang secara terinci dan akurat.",
+        systemInstruction: `${APP_SYSTEM_KNOWLEDGE}\n\nAnda adalah auditor teknik sipil dan quantity surveyor ahli di Indonesia. Berikan rekomendasi item pekerjaan yang kurang secara terinci dan akurat.`,
         responseMimeType: "application/json",
       },
     });
@@ -1544,7 +1562,7 @@ Kembalikan format JSON:
     const { response } = await generateGeminiContent(ai, {
       contents: prompt,
       config: {
-        systemInstruction: "Anda adalah QS Senior dan Auditor Estimasi Biaya Konstruksi di Indonesia.",
+        systemInstruction: `${APP_SYSTEM_KNOWLEDGE}\n\nAnda adalah QS Senior dan Auditor Estimasi Biaya Konstruksi di Indonesia.`,
         responseMimeType: "application/json",
       },
     });
@@ -1718,7 +1736,7 @@ Kembalikan hasil dalam format JSON persis seperti skema berikut:
           model: modelName,
           contents: prompt,
           config: {
-            systemInstruction: "Anda adalah pakar Quantity Surveyor (QS) senior, analis data harga konstruksi PUPR & BPS Indonesia tahun 2026. Berikan estimasi angka realistis dalam Rupiah (IDR).",
+            systemInstruction: `${APP_SYSTEM_KNOWLEDGE}\n\nAnda adalah pakar Quantity Surveyor (QS) senior, analis data harga konstruksi PUPR & BPS Indonesia tahun 2026. Berikan estimasi angka realistis dalam Rupiah (IDR).`,
             responseMimeType: "application/json",
           },
         });
@@ -1868,7 +1886,7 @@ Kembalikan JSON format:
     const { response } = await generateGeminiContent(ai, {
       contents: prompt,
       config: {
-        systemInstruction: "Anda adalah insinyur quantity surveyor spesialis perhitungan volume teknis sipil.",
+        systemInstruction: `${APP_SYSTEM_KNOWLEDGE}\n\nAnda adalah insinyur quantity surveyor spesialis perhitungan volume teknis sipil. Pahami juga bahwa aplikasi memiliki modul Kalkulator Volume mandiri di tab 'calculator'.`,
         responseMimeType: "application/json",
       },
     });
@@ -1922,7 +1940,7 @@ Kembalikan format JSON:
     const { response } = await generateGeminiContent(ai, {
       contents: prompt,
       config: {
-        systemInstruction: "Anda adalah Konsultan Value Engineering Konstruksi dan Estimator Senior.",
+        systemInstruction: `${APP_SYSTEM_KNOWLEDGE}\n\nAnda adalah Konsultan Value Engineering Konstruksi dan Estimator Senior pada aplikasi "RAB Pro Enterprise".`,
         responseMimeType: "application/json",
       },
     });
@@ -1977,7 +1995,7 @@ Kembalikan format JSON:
     const { response } = await generateGeminiContent(ai, {
       contents: prompt,
       config: {
-        systemInstruction: "Anda adalah Direktur Estimasi Biaya & Ahli Quantity Surveying bersertifikasi.",
+        systemInstruction: `${APP_SYSTEM_KNOWLEDGE}\n\nAnda adalah Direktur Estimasi Biaya & Ahli Quantity Surveying bersertifikasi pada aplikasi "RAB Pro Enterprise".`,
         responseMimeType: "application/json",
       },
     });
@@ -2007,7 +2025,9 @@ app.post("/api/ai/estimate", async (req, res) => {
       });
     }
 
-    const systemInstruction = `Anda adalah Estimator Biaya Konstruksi Profesional di Indonesia (Ahli Quantity Surveyor & RAB SNI).
+    const systemInstruction = `${APP_SYSTEM_KNOWLEDGE}
+
+Anda adalah Estimator Biaya Konstruksi Profesional di Indonesia (Ahli Quantity Surveyor & RAB SNI) pada aplikasi "RAB Pro Enterprise".
 Tugas Anda adalah membuat estimasi Rencana Anggaran Biaya (RAB) terinci berdasarkan deskripsi proyek konstruksi di Indonesia.
 Gunakan standar kategori pekerjaan konstruksi Indonesia:
 1. Pekerjaan Persiapan
@@ -2107,7 +2127,7 @@ Berikan analisis profesional dalam format JSON dengan struktur:
     const { response } = await generateGeminiContent(ai, {
       contents: prompt,
       config: {
-        systemInstruction: "Anda adalah auditor teknik sipil dan quantity surveyor senior di Indonesia. Berikan tinjauan kritis dan solutif.",
+        systemInstruction: `${APP_SYSTEM_KNOWLEDGE}\n\nAnda adalah auditor teknik sipil dan quantity surveyor senior di Indonesia pada aplikasi "RAB Pro Enterprise". Berikan tinjauan kritis dan solutif.`,
         responseMimeType: "application/json",
       },
     });
@@ -2147,8 +2167,10 @@ app.post("/api/ai/analyze-drawing", async (req, res) => {
         const base64Data = imageData.split("base64,")[1];
         const mimeType = imageData.split(";")[0].replace("data:", "") || fileType || "image/png";
 
-        const systemInstruction = `V17 MASTER DRAWING INTELLIGENCE ENGINE - TWO PASS
-Anda adalah AI Spesialis Analisis Gambar Konstruksi.
+        const systemInstruction = `${APP_SYSTEM_KNOWLEDGE}
+
+V17 MASTER DRAWING INTELLIGENCE ENGINE - TWO PASS
+Anda adalah AI Spesialis Analisis Gambar Konstruksi pada aplikasi "RAB Pro Enterprise".
 ATURAN KETAT INTEGRITAS DATA (ANTI-HALUSINASI & GEOMETRY LOCKING):
 1. ZERO HALLUCINATION: JANGAN MENGARANG DIMENSI.
 2. GEOMETRY LOCKING: Evaluasi relasi matematis.
@@ -2267,7 +2289,9 @@ app.post("/api/rab/parse-document-ocr", aiZeroCostGuard, async (req, res) => {
 
     if (ai) {
       try {
-        const systemPrompt = `Anda adalah AI Spesialis OCR & Ekstraksi Tabel Rencana Anggaran Biaya (RAB) Konstruksi Indonesia.
+        const systemPrompt = `${APP_SYSTEM_KNOWLEDGE}
+
+Anda adalah AI Spesialis OCR & Ekstraksi Tabel Rencana Anggaran Biaya (RAB) Konstruksi Indonesia pada aplikasi "RAB Pro Enterprise".
 Tugas Anda adalah membaca gambar/dokumen tabel RAB secara presisi baris per baris.
 
 ATURAN EKSTRAKSI TABEL RAB:
@@ -2436,7 +2460,7 @@ Kembalikan format JSON:
     const { response } = await generateGeminiContent(ai, {
       contents: prompt,
       config: {
-        systemInstruction: "Anda adalah ekonom konstruksi senior Indonesia dengan spesialisasi analisis prediktif harga material dan eskalasi biaya proyek.",
+        systemInstruction: `${APP_SYSTEM_KNOWLEDGE}\n\nAnda adalah ekonom konstruksi senior Indonesia dengan spesialisasi analisis prediktif harga material dan eskalasi biaya proyek pada aplikasi "RAB Pro Enterprise".`,
         responseMimeType: "application/json",
         temperature: 0.25,
       },
@@ -2501,6 +2525,7 @@ Kembalikan JSON:
       const { response } = await generateGeminiContent(ai, {
         contents: prompt,
         config: {
+          systemInstruction: `${APP_SYSTEM_KNOWLEDGE}\n\nAnda adalah asisten QS yang mengklasifikasikan uraian pekerjaan konstruksi ke dalam kategori WBS standar SNI.`,
           responseMimeType: "application/json",
           temperature: 0.1,
         },
@@ -2834,7 +2859,7 @@ async function processPdfRabTask(taskId: string, base64Data: string, projectName
     task.progress = 35;
 
     // Super strict Zero-Hallucination & Geometry Locking system prompt
-    const pass1SystemPrompt = "Anda adalah Agen Ekstraksi Visi & QS. Dilarang mengarang (Zero Hallucination). Ekstrak dimensi dan spesifikasi material dari gambar, lalu petakan menjadi item Rencana Anggaran Biaya (RAB). Jika angka tidak terbaca, jangan ditebak, abaikan atau beri nilai 0. Wajib sertakan 'evidence' (bukti posisi teks pada gambar).";
+    const pass1SystemPrompt = `${APP_SYSTEM_KNOWLEDGE}\n\nAnda adalah Agen Ekstraksi Visi & QS pada aplikasi "RAB Pro Enterprise". Dilarang mengarang (Zero Hallucination). Ekstrak dimensi dan spesifikasi material dari gambar, lalu petakan menjadi item Rencana Anggaran Biaya (RAB). Jika angka tidak terbaca, jangan ditebak, abaikan atau beri nilai 0. Wajib sertakan 'evidence' (bukti posisi teks pada gambar).`;
 
     const promptText = `Lakukan ekstraksi gambar kerja arsitektur/struktur/MEP atau dokumen PDF teknis berikut untuk proyek: "${projectName}".
 Petakan seluruh item pekerjaan yang tertera secara presisi ke dalam format item Rencana Anggaran Biaya (RAB) standar konstruksi Indonesia.
@@ -2935,7 +2960,7 @@ Format respon JSON wajib memenuhi skema:
     // =========================================================================
     task.progress = 75;
 
-    const pass2SystemPrompt = `Anda adalah Agen Quality Control (QC) Quantity Surveyor. Tugas Anda adalah mengaudit data ekstraksi RAB berikut. 
+    const pass2SystemPrompt = `${APP_SYSTEM_KNOWLEDGE}\n\nAnda adalah Agen Quality Control (QC) Quantity Surveyor pada aplikasi "RAB Pro Enterprise". Tugas Anda adalah mengaudit data ekstraksi RAB berikut. 
 - Periksa konsistensi matematis (misal: jika evidence menyebutkan luas 4x5 meter, pastikan volume tertulis 20, bukan angka lain).
 - Identifikasi dan hapus item yang terindikasi halusinasi (item yang tidak memiliki 'evidence' jelas dari gambar).
 - Perbaiki kesalahan hitung atau ketidakwajaran harga satuan.

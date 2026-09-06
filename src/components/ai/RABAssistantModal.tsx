@@ -50,7 +50,7 @@ export const RABAssistantModal: React.FC<RABAssistantModalProps> = ({
   onClose,
   initialTab = 'chat',
 }) => {
-  const { selectedProject, projectRABItems, addRABItem, updateRABItem, showToast } = useApp();
+  const { selectedProject, projectRABItems, addRABItem, updateRABItem, showToast, setActiveTab: setGlobalActiveTab } = useApp();
 
   const [activeTab, setActiveTab] = useState<
     'chat' | 'missing' | 'audit' | 'volume' | 'savings' | 'summary' | 'estimate' | 'escalation'
@@ -179,6 +179,8 @@ Saya siap membantu Anda dalam:
         text: response.reply,
         timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
         suggestedActionType: response.suggestedActionType,
+        navigationTarget: response.navigationTarget,
+        navigationLabel: response.navigationLabel,
         suggestedItems: response.suggestedItems,
         priceAdjustments: response.priceAdjustments,
         volumeResult: response.volumeResult,
@@ -425,6 +427,11 @@ Saya siap membantu Anda dalam:
 
   // Quick Prompt Chips
   const promptChips = [
+    'Bagaimana cara membuat Kurva S?',
+    'Di mana menyimpan RAB sebagai template?',
+    'Bagaimana cara export laporan ke PDF?',
+    'Bagaimana cara ganti kata sandi?',
+    'Apa bedanya Rencana Kurva S dan Aktual Kurva S?',
     'Saran satuan standar SNI untuk pekerjaan sipil',
     'Cek pekerjaan yang belum dimasukkan di proyek ini',
     'Jelaskan analisa komponen biaya AHSP plesteran dinding',
@@ -617,6 +624,37 @@ Saya siap membantu Anda dalam:
                             className="mt-2 w-full py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold rounded-lg"
                           >
                             + Masukkan Pos Pekerjaan ke RAB
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Actionable Card for Navigation Hint */}
+                      {(msg.suggestedActionType === 'navigate_hint' || msg.navigationTarget) && msg.navigationTarget && (
+                        <div className="mt-3 p-3.5 bg-blue-50/80 dark:bg-blue-500/15 rounded-xl border border-blue-200 dark:border-blue-500/30 text-[var(--text-primary)] shadow-2xs">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-6 h-6 rounded-lg bg-blue-600 text-white flex items-center justify-center flex-shrink-0 shadow-2xs">
+                              <ArrowRight className="w-3.5 h-3.5" />
+                            </div>
+                            <span className="font-bold text-xs text-blue-900 dark:text-blue-300">
+                              Navigasi Cepat ke Fitur Terkait
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-1.5">
+                            AI merekomendasikan Anda untuk langsung membuka menu ini guna melanjutkan pekerjaan:
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (msg.navigationTarget) {
+                                setGlobalActiveTab(msg.navigationTarget);
+                                onClose();
+                                showToast('Navigasi', `Membuka menu ${msg.navigationLabel || msg.navigationTarget}`, 'info');
+                              }
+                            }}
+                            className="mt-2.5 w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-xs font-bold rounded-xl flex items-center justify-center space-x-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
+                          >
+                            <span>{msg.navigationLabel || `Buka Menu (${msg.navigationTarget})`}</span>
+                            <ArrowRight className="w-4 h-4" />
                           </button>
                         </div>
                       )}

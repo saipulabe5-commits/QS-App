@@ -6,7 +6,9 @@ export interface AIChatMessage {
   sender: 'user' | 'assistant';
   text: string;
   timestamp: string;
-  suggestedActionType?: 'add_items' | 'adjust_price' | 'calculate_volume' | 'none';
+  suggestedActionType?: 'add_items' | 'adjust_price' | 'calculate_volume' | 'navigate_hint' | 'none';
+  navigationTarget?: string;
+  navigationLabel?: string;
   suggestedItems?: Array<{
     code: string;
     category: RABCategory;
@@ -227,7 +229,9 @@ export const aiService = {
     items: RABItem[]
   ): Promise<{
     reply: string;
-    suggestedActionType?: 'add_items' | 'adjust_price' | 'calculate_volume' | 'none';
+    suggestedActionType?: 'add_items' | 'adjust_price' | 'calculate_volume' | 'navigate_hint' | 'none';
+    navigationTarget?: string;
+    navigationLabel?: string;
     suggestedItems?: any[];
     priceAdjustments?: any[];
     volumeResult?: any;
@@ -244,6 +248,8 @@ export const aiService = {
       return {
         reply: data.reply || 'Maaf, saya tidak dapat merespon saat ini.',
         suggestedActionType: data.suggestedActionType || 'none',
+        navigationTarget: data.navigationTarget,
+        navigationLabel: data.navigationLabel,
         suggestedItems: data.suggestedItems || [],
         priceAdjustments: data.priceAdjustments || [],
         volumeResult: data.volumeResult,
@@ -251,12 +257,85 @@ export const aiService = {
     } catch {
       // Intelligent fallback simulator
       const lower = message.toLowerCase();
+      if (lower.includes('kurva s') || lower.includes('kurva-s') || lower.includes('jadwal') || lower.includes('gantt')) {
+        if (lower.includes('aktual')) {
+          return {
+            reply: `### Cara Mengisi & Menggunakan Aktual Kurva S:
+1. Masuk ke menu **Aktual Kurva S** di panel navigasi samping (Pengendalian Proyek).
+2. Tentukan periode waktu evaluasi proyek (misal: Minggu ke-1, Minggu ke-2).
+3. Masukkan realisasi bobot fisik riil yang tercapai di lapangan dan catat kendala (cuaca, suplai material, upah tukang).
+4. Hasil aktual akan secara otomatis dibandingkan dengan kurva rencana di menu **Perbandingan Kurva S**.`,
+            suggestedActionType: 'navigate_hint',
+            navigationTarget: 'scurve-actual',
+            navigationLabel: 'Buka Aktual Kurva S',
+          };
+        }
+        if (lower.includes('beda') || lower.includes('banding')) {
+          return {
+            reply: `### Perbedaan Rencana Kurva S vs Aktual Kurva S:
+- **Rencana Kurva S ('scurve-plan')**: Merupakan baseline atau proyeksi target bobot pekerjaan kumulatif (0% - 100%) dari awal hingga akhir proyek yang dihitung dari alokasi item RAB.
+- **Aktual Kurva S ('scurve-actual')**: Merupakan rekaman realisasi progres fisik nyata di lapangan pada setiap periode pemantauan.
+- **Perbandingan Kurva S ('scurve-comparison')**: Menggabungkan kedua kurva dalam satu grafik komparatif serta menghitung indikator Earned Value Management (EVM) seperti SPI, CPI, dan deviasi keterlambatan.`,
+            suggestedActionType: 'navigate_hint',
+            navigationTarget: 'scurve-comparison',
+            navigationLabel: 'Buka Perbandingan Kurva S',
+          };
+        }
+        return {
+          reply: `### Cara Membuat Kurva S:
+1. Pastikan seluruh item pekerjaan RAB proyek aktif sudah memiliki volume dan harga satuan di lembar kerja **RAB & Anggaran**.
+2. Buka menu **Rencana Kurva S** pada bagian *Pengendalian Proyek* di sidebar.
+3. Tentukan durasi pelaksanaan proyek (misal: 12 minggu).
+4. Pilih metode alokasi bobot mingguan: **Linear**, **Distribusi Normal (Bell Curve)**, atau atur bobot persentase secara manual.
+5. Grafik Kurva S rencana akan otomatis terbentuk dan siap dijadikan acuan pengendalian proyek.`,
+          suggestedActionType: 'navigate_hint',
+          navigationTarget: 'scurve-plan',
+          navigationLabel: 'Buka Rencana Kurva S',
+        };
+      }
+      if (lower.includes('template')) {
+        return {
+          reply: `### Cara Menyimpan & Menggunakan Template Pekerjaan:
+1. **Menyimpan Proyek Aktif sebagai Template**: Buka menu **Template Pekerjaan** di sidebar. Klik tombol **"+ Simpan Proyek Aktif Sebagai Template"**, beri nama dan deskripsi template.
+2. **Menggunakan Template**: Di menu **Template Pekerjaan**, pilih template yang sesuai (misal: Rumah Tinggal 2 Lantai atau Renovasi) lalu klik **"Terapkan ke Proyek Aktif"**. Seluruh susunan WBS dan item pekerjaan standar akan langsung tersalin ke RAB Anda.`,
+          suggestedActionType: 'navigate_hint',
+          navigationTarget: 'templates',
+          navigationLabel: 'Buka Template Pekerjaan',
+        };
+      }
+      if (lower.includes('export') || lower.includes('pdf') || lower.includes('cetak') || lower.includes('laporan') || lower.includes('excel')) {
+        return {
+          reply: `### Cara Ekspor & Cetak Laporan RAB ke PDF:
+1. Buka menu **Laporan & Cetak** pada sidebar.
+2. Pilih tipe laporan yang dibutuhkan: **Rekapitulasi Anggaran Proyek**, **Rincian RAB Lengkap (BQ)**, atau **Rekapitulasi Kebutuhan Bahan & Upah**.
+3. Periksa kelengkapan kop surat, nama kontraktor, dan kolom tanda tangan.
+4. Klik tombol **"Cetak ke PDF (Print)"** untuk mengunduh dokumen resmi dalam format PDF beresolusi tinggi, atau **"Download Excel"** untuk format spreadsheet.`,
+          suggestedActionType: 'navigate_hint',
+          navigationTarget: 'reports',
+          navigationLabel: 'Buka Laporan & Cetak',
+        };
+      }
+      if (lower.includes('kata sandi') || lower.includes('password') || lower.includes('ganti sandi') || lower.includes('keamanan')) {
+        return {
+          reply: `### Cara Mengganti Kata Sandi Akun:
+1. Buka menu **Pengaturan** di sidebar navigasi.
+2. Gulir ke bagian **"Keamanan Akun & Ganti Kata Sandi"**.
+3. Masukkan kata sandi akun saat ini.
+4. Masukkan kata sandi baru (minimal 10 karakter dengan kombinasi huruf besar, kecil, angka, dan simbol).
+5. Konfirmasi ulang kata sandi baru lalu klik **"Perbarui Kata Sandi"**. Data diamankan dengan enkripsi salted scrypt.`,
+          suggestedActionType: 'navigate_hint',
+          navigationTarget: 'settings',
+          navigationLabel: 'Buka Pengaturan',
+        };
+      }
       if (lower.includes('volume') || lower.includes('hitung')) {
         return {
           reply: `Berikut adalah simulasi perhitungan volume teknis berdasarkan standar SNI:
 - **Rumus Dasar**: Volume = Panjang × Lebar × Tinggi / Luas Penampang
-- Pastikan untuk selalu menambahkan faktor susut (waste factor) 3-5% pada material cor beton dan adukan spesi.`,
-          suggestedActionType: 'none',
+- Anda juga dapat menggunakan modul **Kalkulator Volume** mandiri di aplikasi untuk menghitung galian tanah, pondasi batu kali, sloof/kolom/balok beton bertulang, dinding, atap, dan finishing secara instan.`,
+          suggestedActionType: 'navigate_hint',
+          navigationTarget: 'calculator',
+          navigationLabel: 'Buka Kalkulator Volume',
         };
       }
       if (lower.includes('satuan') || lower.includes('unit')) {
